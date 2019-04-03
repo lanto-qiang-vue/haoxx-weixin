@@ -7,8 +7,11 @@ export default new Router({
 routes: [
 	{
 		path: '/',
-		name: 'home',
-		redirect: '/my'
+		name: 'index',
+		meta:{
+			footer: true
+		},
+		component: () => import('@/views/index.vue')
 	},
 	{
 		path: '/login',
@@ -18,12 +21,20 @@ routes: [
 	{
 		path: '/my',
 		name: 'my',
-		meta: { keepAlive: true},
+		meta: {
+			keepAlive: true,
+			footer: true
+		},
 		component: () => import('@/views/my.vue')
 	},
 	{
 		path: '/setting',
 		name: 'setting',
 		component: () => import('@/views/setting.vue')
+	},
+	{
+		path: '/my-reservation',
+		name: 'my-reservation',
+		component: () => import('@/views/my-reservation.vue')
 	},
 ]})

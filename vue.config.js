@@ -16,9 +16,25 @@ module.exports = {
 	devServer: {
 		port: 7777,
 		proxy: {
-			'/default-proxy': {
-				target: 'http://192.168.169.231:8888/',
+			'/hxx-proxy': {
+				// target: 'http://developer.hxx.hoxiuxiu.com/',
+				target: 'http://192.168.169.119:8761/',
 				pathRewrite: {'^/default-proxy': ''},
+				secure: false
+			},
+			'/qixiu-proxy': {
+				target: 'http://192.168.169.231:8888/',
+				// target: 'https://www.test.shanghaiqixiu.org/proxy/',
+				// target: 'https://www.shanghaiqixiu.org/proxy/',
+				// target: 'http://192.168.169.128:7310/',
+				// target: 'http://212.64.5.54:8888/',
+				pathRewrite: {'^/qixiu-proxy': ''},
+				secure: false
+			},
+			'/repair-proxy': {
+				target: 'http://192.168.169.230:7210/',
+				// target: 'https://www.shanghaiqixiu.org/repair/',
+				pathRewrite: {'^/repair-proxy': ''},
 				secure: false
 			},
 		}

@@ -6,12 +6,14 @@
 			<span>183***1358</span>
 		</div>
 		<div class="button">
-			<div><span>1</span><p>我的卡券</p></div>
-			<div><span>2</span><p>我的预约</p></div>
+			<router-link tag="div" to="/"><span>1</span><p>我的卡券</p></router-link>
+			<router-link tag="div" to="/my-reservation"><span>2</span><p>我的预约</p></router-link>
 			<i></i>
 		</div>
 	</div>
 	<ul class="list">
+		<router-link tag="li" to="/">我的爱车 <i></i></router-link>
+		<router-link tag="li" to="/">更改授权 <i></i></router-link>
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
 		<li @click="logout">退出</li>
 	</ul>
@@ -85,7 +87,7 @@ export default {
 			line-height: 54px;
 			color: #333333;
 			font-size: 16px;
-			border-bottom: 1px solid #D9D9D9;
+			border-bottom: 1px solid #EDEDED;
 			position: relative;
 			i{
 				position: absolute;

@@ -17,7 +17,8 @@ import { Input, Form, FormItem } from 'iview';
 Vue.config.productionTip = false
 Vue.use(MintUI)
 Vue.use(VueImg);
-Vue.prototype.axios = axios;
+Vue.prototype.axiosHxx = axios.axiosHxx;
+Vue.prototype.axiosQixui = axios.axiosQixui;
 
 Vue.component('Input', Input);
 Vue.component('Form', Form);

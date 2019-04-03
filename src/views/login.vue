@@ -8,11 +8,11 @@
 		<mt-tab-container-item id="code">
 			<Form :model="codeForm" class="account-form"
 			      :label-width="0" label-position="left" ref="codeForm">
-				<FormItem prop="phone" required>
-					<Input v-model="codeForm.phone" :maxlength="11" placeholder="手机号"></Input>
+				<FormItem prop="phone">
+					<Input v-model.trim="codeForm.phone" :maxlength="11" placeholder="手机号"></Input>
 				</FormItem>
 				<FormItem prop="code">
-					<Input v-model="codeForm.code" placeholder="验证码"></Input>
+					<Input v-model.trim="codeForm.code" placeholder="验证码"></Input>
 					<countdown class="get-code" text="获取验证码" ref="countdown" @click="getCode"></countdown>
 				</FormItem>
 			</Form>
@@ -20,18 +20,19 @@
 		<mt-tab-container-item id="pass">
 			<Form :model="passForm" class="account-form"
 			      :label-width="0" label-position="left" ref="passForm">
-				<FormItem prop="account" required>
-					<Input v-model="passForm.account" placeholder="账号"></Input>
+				<FormItem prop="telphone">
+					<Input v-model.trim="passForm.telphone" placeholder="账号"></Input>
 				</FormItem>
-				<FormItem prop="pass">
-					<Input v-model="passForm.pass" type="password" placeholder="密码"></Input>
+				<FormItem prop="telpass">
+					<Input v-model.trim="passForm.telpass" type="password" placeholder="密码"></Input>
 				</FormItem>
 			</Form>
 			<a class="forget">忘记密码</a>
 		</mt-tab-container-item>
 	</mt-tab-container>
 
-	<div class="submit" @click="login">登录</div>
+	<div :class="['submit',{on: canLogin}]" @click="login">登录</div>
+
 	<p class="protocol">新用户登录即完成注册，代表同意
 		<a>《好修修车生活用户协议》</a>
 	</p>
@@ -53,6 +54,7 @@
 
 <script>
 import Countdown from '@/components/countdown-button.vue'
+import { reg} from '@/util.js'
 export default {
 	name: "login",
 	components: {Countdown },
@@ -64,9 +66,29 @@ export default {
 				code:'',
 			},
 			passForm: {
-				account: '',
-				pass: '',
+				telphone: '15900418638',
+				telpass: '123456',
 			}
+		}
+	},
+	computed:{
+		canLogin(){
+			let status= false
+			switch (this.activeBlock){
+				case 'code':{
+					if(reg.vehicle.test(this.codeForm.phone) && this.codeForm.code){
+						status= true
+					}
+					break
+				}
+				case 'pass':{
+					if(this.passForm.telphone && this.passForm.telpass){
+						status= true
+					}
+					break
+				}
+			}
+			return status
 		}
 	},
 	methods:{
@@ -75,6 +97,21 @@ export default {
 		},
 		login(){
 			this.$router.push('/')
+			if(this.canLogin){
+				switch (this.activeBlock){
+					case 'code':{
+
+						break
+					}
+					case 'pass':{
+
+						break
+					}
+				}
+				this.axiosHxx.post('/operate/controller/passwordLogin', this.passForm).then(res => {
+
+				})
+			}
 		}
 	}
 }
@@ -127,11 +164,14 @@ export default {
 		margin-top: 40px;
 		height:40px;
 		line-height: 40px;
-		background: #FF9738;
+		background-color: #FFCB9C;
 		border-radius:20px;
 		font-size: 16px;
 		color: white;
 		text-align: center;
+		&.on{
+			background-color: #FF9738;
+		}
 	}
 	.protocol{
 		margin-top: 20px;
