@@ -1,19 +1,21 @@
-import axiosHxx from 'axios'
-import axiosQixui from 'axios'
+import axios from 'axios'
 import router from './router'
 
 import { Toast, Indicator, Popup } from 'mint-ui'
 import { isWeixn} from './util'
 
-// axios 配置;
-axiosHxx.defaults.timeout = 60000
+let axiosHxx= axios.create({
+	baseURL: '/hxx-proxy/',
+	timeout: 6000,
+	headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
+});
 
+let axiosQixui= axios.create({
+	baseURL: '/hxx-proxy/',
+	timeout: 6000,
+	headers: {'Content-Type': 'application/json;charset=UTF-8'}
+});
 
-axiosHxx.defaults.baseURL = '/hxx-proxy/';
-// axiosHxx.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-axiosHxx.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
-
-// Add a request interceptor  请求拦截器
 axiosHxx.interceptors.request.use(config => {
 	let data= config.data
 	let contentType= config.headers['Content-Type']
@@ -89,35 +91,23 @@ axiosHxx.interceptors.response.use(response => {
     return Promise.reject(error)
   });
 
-axiosQixui.defaults.timeout = 60000
 
-// console.log(process.env.NODE_ENV)
-
-
-axiosQixui.defaults.baseURL = '/qixiu-proxy/';
-axiosQixui.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-
-// Add a request interceptor  请求拦截器
 axiosQixui.interceptors.request.use(config => {
-		// console.log(store)
-		// let token= store.state.user.token
-		let token= localStorage.getItem("ACCESSTOKEN")
-		if(token) {
-			config.headers.token= token
-		}
-		Indicator.open({
-			text: '请稍候...',
-			spinnerType: 'snake'
-		});
-		return config
-	},
-	error => {
-		return Promise.reject(error);
+	let token= localStorage.getItem("ACCESSTOKEN")
+	if(token) {
+		config.headers.token= token
+	}
+	Indicator.open({
+		text: '请稍候...',
+		spinnerType: 'snake'
 	});
+	return config
+},
+error => {
+	return Promise.reject(error);
+});
 
-let toast=null
 
-// Add a response interceptor 响应拦截器
 axiosQixui.interceptors.response.use(
 	response => {
 		Indicator.close()
