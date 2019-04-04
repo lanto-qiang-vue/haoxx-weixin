@@ -7,7 +7,7 @@ import { isWeixn} from './util'
 let axiosHxx= axios.create({
 	baseURL: '/hxx-proxy/',
 	timeout: 6000,
-	headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
+	headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
 });
 
 let axiosQixiu= axios.create({
@@ -135,7 +135,7 @@ axiosQixiu.interceptors.response.use(
 				if(response.data.msg) content+= ' '+response.data.msg
 				if(response.data.code &&content){
 					if(toast) toast.close()
-					toast= Toast(content)
+					toast = Toast(content)
 				}
 			}
 		}
