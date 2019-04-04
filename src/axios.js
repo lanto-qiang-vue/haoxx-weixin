@@ -10,8 +10,8 @@ let axiosHxx= axios.create({
 	headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
 });
 
-let axiosQixui= axios.create({
-	baseURL: '/hxx-proxy/',
+let axiosQixiu= axios.create({
+	baseURL: '/qixiu-proxy/',
 	timeout: 6000,
 	headers: {'Content-Type': 'application/json;charset=UTF-8'}
 });
@@ -92,7 +92,7 @@ axiosHxx.interceptors.response.use(response => {
   });
 
 
-axiosQixui.interceptors.request.use(config => {
+axiosQixiu.interceptors.request.use(config => {
 	let token= localStorage.getItem("ACCESSTOKEN")
 	if(token) {
 		config.headers.token= token
@@ -108,7 +108,7 @@ error => {
 });
 
 
-axiosQixui.interceptors.response.use(
+axiosQixiu.interceptors.response.use(
 	response => {
 		Indicator.close()
 		switch (response.data.code){
@@ -214,4 +214,4 @@ function weixinLogin() {
   }
 }
 
-export default {axiosHxx, axiosQixui};
+export default {axiosHxx, axiosQixiu};

@@ -19,7 +19,7 @@ Vue.use(MintUI)
 Vue.use(VueImg);
 
 Vue.prototype.axiosHxx = axios.axiosHxx;
-Vue.prototype.axiosQixui = axios.axiosQixui;
+Vue.prototype.axiosQixiu = axios.axiosQixiu;
 
 Vue.component('Input', Input);
 Vue.component('Form', Form);

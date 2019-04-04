@@ -33,8 +33,18 @@ routes: [
 		component: () => import('@/views/setting.vue')
 	},
 	{
+		path: '/accredit',
+		name: 'accredit',
+		component: () => import('@/views/accredit.vue')
+	},
+	{
 		path: '/my-reservation',
 		name: 'my-reservation',
 		component: () => import('@/views/my-reservation.vue')
+	},
+	{
+		path: '/maintain',
+		name: 'maintain',
+		component: () => import('@/views/service-map/maintain.vue')
 	},
 ]})

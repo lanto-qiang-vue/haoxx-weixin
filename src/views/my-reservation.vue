@@ -46,7 +46,7 @@ export default {
 				status:parseInt(this.selected[this.selected.length - 1])
 			}
 			// if(this.selected) params.hasRead= this.selected
-			this.axios.get('/promotion/user_coupon/query',{params: params}).then(res=>{
+			this.axiosQixiu.get('/promotion/user_coupon/query',{params: params}).then(res=>{
 				this.total= res.data.totalElements
 				if(res.data.content&&res.data.content.length){
 					this.list=this.list.concat(res.data.content)
