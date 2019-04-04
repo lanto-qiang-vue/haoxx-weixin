@@ -7,11 +7,13 @@
 	<ul class="maintain-type" v-if="mapType=='300' && showHead!='baseMap'">
 		<li v-for="(item, index) in schoolPoint" :class="{on : tagIsOn('schoolPoint', item.value)}"
 		    @click="select('schoolPoint', item.value)" :key="index">{{item.name}}
-			<img v-if="item.value=='300'" src="/static/img/maintain/icon-school.png"/>
-			<img v-if="item.value=='301'" src="/static/img/maintain/icon-base.png"/>
+			<img v-if="item.value=='300'" src="/img/maintain/icon-school.png"/>
+			<img v-if="item.value=='301'" src="/img/maintain/icon-base.png"/>
 		</li>
 	</ul>
-<slide-bar v-show="show=='maintainList'" :minHeight="45" :toLocation="toLocation" @bodyHeight="height= $event;calcHeight">
+<slide-bar :pageLocation="[ 1, 200, 1000 ]"
+           v-show="show" :minHeight="0" :toLocation="toLocation" @toLocation="toLocation= $event"
+           @bodyHeight="height= $event;calcHeight">
 <div class="maintainList">
 	<div id="head1" v-show="showHead=='search'">
     <div class="search-input">
@@ -89,8 +91,8 @@
         <div class="head"><span>最近搜索</span><img @click="clearHistory" src="~@/assets/img/maintain/del.png"/></div>
         <li v-for="(item, index) in maintainListHistory" :key="index" @click="goDetail(item)">
           <div class="picWrap">
-            <img :src="item.pic? item.pic.split(',')[0] :'/static/img/shqxw.jpg'" />
-            <img class="tag" :src="item.is4s?'/static/img/maintain/tag-4s.png':'/static/img/maintain/tag-normal.png'"/>
+            <img :src="item.pic? item.pic.split(',')[0] :'/img/maintain/shqxw.jpg'" />
+            <img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>
           </div>
           <div class="info">
             <!--<span>{{businessStatus(item.status)}}</span>-->
@@ -115,8 +117,8 @@
         <div class="head"><span>智能推荐</span></div>
         <li v-for="(item, index) in list" :key="index" @click="goDetail(item)">
           <div class="picWrap">
-            <img :src="item.pic? item.pic.split(',')[0] :'/static/img/shqxw.jpg'" />
-            <img class="tag" :src="item.is4s?'/static/img/maintain/tag-4s.png':'/static/img/maintain/tag-normal.png'"/>
+            <img :src="item.pic? item.pic.split(',')[0] :'/img/maintain/shqxw.jpg'" />
+            <img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>
           </div>
           <div class="info">
             <!--<span>{{businessStatus(item.status)}}</span>-->
@@ -143,8 +145,8 @@
 			    <!--<div class="head"><span>智能推荐</span></div>-->
 			    <li v-for="(item, index) in list" :key="index" @click="goDetail(item)">
 				    <div class="picWrap">
-					    <img :src="item.pic? item.pic.split(',')[0] :'/static/img/drive-school.jpg'" />
-					    <!--<img class="tag" :src="item.is4s?'/static/img/maintain/tag-4s.png':'/static/img/maintain/tag-normal.png'"/>-->
+					    <img :src="item.pic? item.pic.split(',')[0] :'/img/drive-school.jpg'" />
+					    <!--<img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>-->
 				    </div>
 				    <div class="info">
 					    <!--<span>{{businessStatus(item.status)}}</span>-->
@@ -201,7 +203,7 @@ export default {
 		    }
 	    }
 		return{
-			toLocation: 0,
+			toLocation: 1,
 			height: 0,
             isFocus: false,
 		    search:{
@@ -284,7 +286,7 @@ export default {
         return this.search.q
       },
       show(){
-        return this.$store.state.app.slideState.showBody
+        return !this.$route.query.compId
       },
 	    mapType(){
       	    let type= '164'
@@ -606,8 +608,7 @@ export default {
 			      this.$emit('goMap', item)
 			      this.$store.commit('setMaintainListHistory', false)
 			      this.$store.commit('setMaintainListHistory', item)
-			      this.$store.commit('setMaintainDetail', item)
-			      this.$store.commit('setSlideShowBody', 'maintainDetail')
+			      this.$router.push({path:'/maintain', query:{compId: item.sid}})
 		      }
 	      }
 
@@ -615,25 +616,25 @@ export default {
 	    renderMap(pointList, renderMarker){
 
 		    let iconNormal = new AMap.Icon({
-			    image: "/static/img/maintain/icon-normal.png",
+			    image: "/img/maintain/icon-normal.png",
 			    size: new AMap.Size(30, 30),
 			    // imageOffset: new AMap.Size(11, 11),
 			    imageSize: new AMap.Size(30, 30),
 		    });
 		    let icon4s = new AMap.Icon({
-			    image: "/static/img/maintain/icon-4s.png",
+			    image: "/img/maintain/icon-4s.png",
 			    size: new AMap.Size(30, 30),
 			    // imageOffset: new AMap.Size(11, 11),
 			    imageSize: new AMap.Size(30, 30),
 		    });
 		    let iconSchool = new AMap.Icon({
-			    image: "/static/img/maintain/point-school.png",
+			    image: "/img/maintain/point-school.png",
 			    size: new AMap.Size(30, 37),
 			    // imageOffset: new AMap.Size(11, 11),
 			    imageSize: new AMap.Size(30, 37),
 		    });
 		    let iconBase = new AMap.Icon({
-			    image: "/static/img/maintain/point-base.png",
+			    image: "/img/maintain/point-base.png",
 			    size: new AMap.Size(30, 37),
 			    // imageOffset: new AMap.Size(11, 11),
 			    imageSize: new AMap.Size(30, 37),

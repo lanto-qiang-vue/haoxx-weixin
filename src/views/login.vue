@@ -108,7 +108,7 @@ export default {
 						break
 					}
 				}
-				this.axiosQixiuHxx.post('/operate/controller/passwordLogin', this.passForm).then(res => {
+				this.axiosHxx.post('/operate/controller/passwordLogin', this.passForm).then(res => {
 
 				})
 			}

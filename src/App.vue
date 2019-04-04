@@ -39,6 +39,7 @@ export default {
 
 <style scoped lang="less">
 .app-body{
+	min-height: 100vh;
 	.footer{
 		height: 50px;
 		width: 100%;

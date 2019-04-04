@@ -9,70 +9,33 @@
 </template>
 
 <script>
-	let   bodyScrollTop= function(){
-		if($('body').scrollTop()!= 0 ) $('body').scrollTop(0)
-	}
-	export default {
-		name: "slide-bar",
-    props: [  'minHeight', 'init', 'toLocation', 'noslide'],
+let bodyScrollTop= function(){
+	if($('body').scrollTop()!= 0 ) $('body').scrollTop(0)
+}
+export default {
+	name: "slide-bar",
+    props: [ 'minHeight', 'toLocation', 'pageLocation', 'action'],
     data(){
-		  return {
+		return {
         timer: null,
         first: true,
-        moveLocation: {
-          'maintainList':[
-            {now: false, height: 1},
-            {now: true, height: 200},
-            {now: false, height: 1000},
-          ],
-          'maintainDetail':[
-            {now: true, height: 1},
-            {now: false, height: 1000}
-          ],
-        },
         minTop: 80,
         bodyHeight: 0,
-        location: 1,
 
 	    footerHeight: 50
       }
     },
     computed: {
 
-      showBody(){
-        return this.$store.state.app.slideState.showBody
-      },
-
     },
     watch:{
-      showBody(){
-      	let name= this.moveLocation[this.showBody]
-	      for (let i in name){
-      		if(name[i].now){
-		        this.resize(name[i].height, 0)
-	        }
-	      }
-
-      },
-
       toLocation(val){
-        // console.log('slide-bar.toLocation', val)
-        this.location= val
+	      this.resize(this.pageLocation[val], 10)
       },
-      location(val){
-        this.changeLocation(val)
-      },
-      init(){
-        this.resize(this.moveLocation[this.showBody][this.location].height, 10)
-        this.$emit('toLocation', this.location)
-      }
     },
     mounted(){
-      // this.location= this.toLocation
 
-	    this.needHideFooter()
-
-      this.resize(this.moveLocation[this.showBody][this.location].height, 10)
+      this.resize(this.pageLocation[this.toLocation], 10)
       // this.$emit('toLocation', this.location)
       let self=this
       let dom= $(this.$refs.slide)
@@ -87,7 +50,7 @@
       // $(dom).css({transform: 'translateY('+ (docHeight- this.setBodyHeight - touchBarHeight) + 'px)'})
       // $(dom).css({transform: 'translateY('+ this.slideState.minTop+ 'px);'})
       dom.bind('touchstart',function(startE){
-      	if(self.noslide){return}
+
 
         // console.log('touchstart')
       // dom.children('.real-touch-bar').bind('touchstart',function(startE){
@@ -147,13 +110,7 @@
       }
     },
 	activated(){
-		this.needHideFooter()
-		let name= this.moveLocation[this.showBody]
-		for (let i in name){
-			if(name[i].now){
-				this.resize(name[i].height, 0)
-			}
-		}
+		this.resize(this.pageLocation[this.toLocation], 0)
 	},
     deactivated(){
 			// console.log(1)
@@ -189,11 +146,8 @@
       },
 	    changeLocation(val){
 		    // console.log('slide-bar.location', val)
-		    for (let i in this.moveLocation[this.showBody]){
-			    this.moveLocation[this.showBody][parseInt(i)].now= false
-		    }
-		    this.moveLocation[this.showBody][val].now= true
-		    this.resize(this.moveLocation[this.showBody][val].height, 10)
+
+		    this.resize(this.pageLocation[this.toLocation], 10)
 		    this.$emit('toLocation', val)
 	    },
       resize(height, time, noToMove){
@@ -227,66 +181,34 @@
       },
 
       /**
-       * @param {moveNumber} 滑动距离
+       * @param {moveNumber} 滑动间距
        * @param {upOrDown} 滑动方向
-       * @param {height} 滑动结束高度
+       * @param {height} 滑动至高度
        * @returns {}
-       * @description 分档滑动
+       * @description 分层滑动
        */
-      autoMove(moveNumber, upOrDown, height){
-        let arr= this.moveLocation[this.showBody], index= 0
-        // console.log(moveNumber, upOrDown, height, arr)
-        if(Math.abs(moveNumber)< 50){
-          for (let i in arr){
-            if(arr[parseInt(i)].now) {
-              this.resize(arr[parseInt(i)].height, 10)
-              // this.$emit('toLocation', parseInt(i))
-              this.location= parseInt(i)
-            }
-          }
-        }else{
-          for (let i in arr){
-            arr[parseInt(i)].now= false
-            if(height> arr[parseInt(i)].height) index= parseInt(i)
-          }
-          // console.log('index', index)
-          if (upOrDown=='up') {
-            arr[index+1].now= true
-            this.resize(arr[index+1].height, 10)
-            this.$emit('toLocation', index+1)
-            this.location= index+1
-          }
-          else {
-            arr[index].now= true
-            this.resize(arr[index].height, 10)
-            this.$emit('toLocation', index)
-            this.location= index
-          }
-        }
-      },
-	    needHideFooter(){
-			    let height= 50
-			    // console.log('route', route)
-			    switch (this.$route.name){
-				    case 'base-map':
-				    case 'school-map':
-				    case 'rescue-map':
-				    case 'remark-map':{
-					    $('.footer').hide()
-					    height=0;
-					    break;
-				    }
-				    default :{
-					    height= 50
-					    $('.footer').show()
-				    }
-			    }
-			    // console.log('height', height)
-			    this.footerHeight= height
-			    // this.resize(this.moveLocation[this.showBody][this.location].height, 10)
-
-	    }
-    },
+	autoMove(moveNumber, upOrDown, height){
+		let arr= this.pageLocation, index=0
+		// console.log(moveNumber, upOrDown, height, arr)
+		if(Math.abs(moveNumber)< 50){
+			this.resize(this.pageLocation[this.toLocation], 10)
+		}else{
+			if (upOrDown=='up') {
+				for (let i in arr){
+					if(height> arr[i]) index= i+1
+				}
+				this.resize(arr[index], 10)
+				this.$emit('toLocation', index)
+			} else {
+				for (let i in arr){
+					if(height> arr[i]) index= i-1
+				}
+				this.resize(arr[index], 10)
+				this.$emit('toLocation', index)
+			}
+		}
+	},
+},
 
 }
 </script>

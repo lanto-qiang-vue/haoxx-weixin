@@ -452,9 +452,11 @@
     z-index: 11;
   }
   #allmap {
-    position: relative;
     overflow: hidden;
-    height: 100vh;
+	  width: 100%;
+	  position: absolute;
+	  top: 0;
+	  bottom: 0;
 	  .amap-toolbar, .amap-touch-toolbar .amap-zoomcontrol, .amap-logo, .amap-geolocation-con, .amap-copyright{
 		  z-index: 10!important;
 	  }

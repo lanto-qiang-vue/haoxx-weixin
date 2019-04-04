@@ -1,6 +1,10 @@
 <template>
-<div id="compDetail">
-	<slide-bar v-show="show=='maintainDetail'" :minHeight="minHeight" :toLocation="toMaintainDetailLocation" @bodyHeight="height= $event;calcHeight" ref="slideBar" @toLocation="toMaintainDetailLocation= $event">
+<div id="compDetail" v-show="compId">
+	<slide-bar :pageLocation="[
+            {now: true, height: 1},
+            {now: false, height: 1000}
+          ]"
+			:minHeight="minHeight" :toLocation="toMaintainDetailLocation" @bodyHeight="height= $event;calcHeight" ref="slideBar" @toLocation="toMaintainDetailLocation= $event">
 <div>
 <img class="close" @click="closeDetail" src="~@/assets/img/maintain/关闭.png" />
 <div class="info" >
@@ -14,11 +18,11 @@
   <div class="text">特约维修：{{all.brand}}</div>
   <div class="text">经营范围：{{all.bizScope}}</div>
   <div class="button">
-    <router-link tag="div" :to="{path: '/carOwner-centre/appointment', query: {id: maintainDetail.sid} }">
+    <router-link tag="div" :to="{path: '/carOwner-centre/appointment', query: {id: this.compId} }">
       <span class="yuyue">预约服务</span></router-link>
     <!--<router-link tag="div" :to="{path: '/carOwner-centre/visitService', query: {id: id} }">-->
       <!--<span class="shangmeng">上门服务</span></router-link>-->
-    <router-link tag="div" :to="{ path : '/remarkMatch', query: { corpId: maintainDetail.sid }}">
+    <router-link tag="div" :to="{ path : '/remarkMatch', query: { corpId: this.compId }}">
       <span class="dianping">点评</span></router-link>
     <div v-show="all.tel" ><a class="lianxi" :href="'tel:'+ all.tel">联系</a></div>
     <div v-show="!all.tel"><a class="lianxi" @click="noTal">联系</a></div>
@@ -31,7 +35,7 @@
       <!--<img @click="small();$emit('back')" class="back" src="~@/assets/img/maintain/back.png" />-->
     </div>
     <div class="head">累计评论（{{(comment.totalElements||0)+1}}条）
-      <router-link tag="a" :to="{path: '/maintainRemark', query: {id: maintainDetail.sid, joint: all.joint} }">
+      <router-link tag="a" :to="{path: '/maintainRemark', query: {id: this.compId, joint: all.joint} }">
         <img src="~@/assets/img/maintain/箭头.png"/>
       </router-link>
     </div>
@@ -89,23 +93,30 @@
 
 </div>
 	</slide-bar>
-	<maintain-bottom  @openMap="sheetVisible=true;companyDetail=$event" @toLocation="toMaintainDetailLocation= $event"
-	:location="toMaintainDetailLocation"></maintain-bottom>
+	<!--<maintain-bottom  @openMap="sheetVisible=true;companyDetail=$event" @toLocation="toMaintainDetailLocation= $event"-->
+	<!--:location="toMaintainDetailLocation"></maintain-bottom>-->
 	<mt-actionsheet
 			style="z-index: 16"
 			:actions="actions"
 			v-model="sheetVisible">
 	</mt-actionsheet>
+
+	<div class="detail-bottom">
+		<div class="lookall" >查看详情</div>
+		<!--<div class="lookmap" >显示地图</div>-->
+		<div class="gps" @click="sheetVisible=true">导航</div>
+		<div class="distance">距离您 {{all.distance? all.distance.toFixed(1): 0}}km</div>
+	</div>
 </div>
 </template>
 
 <script>
 import { Toast } from 'mint-ui'
 import SlideBar from '@/views/service-map/SlideBar'
-import maintainBottom from '@/views/service-map/maintainBottom'
+// import maintainBottom from '@/views/service-map/maintainBottom'
 export default {
   name: "mantain-detail",
-	components:{SlideBar, maintainBottom},
+	components:{SlideBar,},
   // props: ['id','distance', 'random', 'searchCompanyType', 'showDetail', 'height'],
   // props: ['height'],
   data() {
@@ -143,11 +154,8 @@ export default {
   },
   computed: {
 
-    show(){
-      return this.$store.state.app.slideState.showBody
-    },
-    maintainDetail(){
-      return this.$store.state.app.maintainDetail
+	  compId(){
+      return this.$route.query.compId
     },
 	  isOpenTime(){
 		  console.log('isOpenTime')
@@ -167,41 +175,41 @@ export default {
 		  else return false
 	  },
   },
-  watch: {
-    maintainDetail(){
-      if(this.show=== 'maintainDetail') this.getData()
-    },
-    height(val){
-      this.calcHeight(val)
-    }
-  },
+	watch: {
+		compId(id){
+			if(id){
+
+			}
+		},
+	    height(val){
+	      this.calcHeight(val)
+	    },
+	},
 
   mounted(){
-    console.log('maintainDetail.mounted')
-    if(this.show=== 'maintainDetail') this.getData()
+    if(this.compId) this.getData()
     $(".list").bind('touchmove',function(e){
-      // if($(this).scrollTop()<=1) $(this).scrollTop(2)
       e.stopPropagation();
     })
 
-    // document.body.addEventListener('touchstart',self.noscroll,{ passive: false });
-    // this.bodyNoScoll()
   },
   methods:{
+	  showBlock(){
+		  let compId= this.$route.query.compId
+		  if(compId){
+
+		  }
+	  },
     noscroll(evt) {
       if(!evt._isScroller) {
         evt.preventDefault();
       }
     },
     getData(){
-      this.maintainDetailShow=false
-      let self= this
-
-
 	    this.axiosQixiu({
 		    method: 'get',
 		    baseURL: '/repair-proxy',
-		    url: '/micro/search/company/repair/'+this.maintainDetail.sid ,
+		    url: '/micro/search/company/repair/'+ this.compId,
 	    }).then(res => {
 		    this.all=res.data
 		    this.maintainDetailShow= true
@@ -225,7 +233,7 @@ export default {
 
 	    })
 
-	    this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page=0&companyId='+this.maintainDetail.sid).then( (res) => {
+	    this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page=0&companyId='+this.compId).then( (res) => {
 			    let data=res.data;
 			    // this.total=res.data.totalElements;
 		    // for (let i in data.content){
@@ -245,7 +253,8 @@ export default {
       this.listHeight= (lh<0 ? 0 : lh)
     },
     closeDetail(){
-      this.$store.commit('setSlideShowBody', 'maintainList')
+      // this.$store.commit('setSlideShowBody', 'maintainList')
+	    this.$router.go(-1)
     },
     showAll(show){
       if(show){
@@ -549,6 +558,47 @@ export default {
       margin: 0 5px;
     }
   }
+	.detail-bottom{
+		position: fixed;
+		width: 100%;
+		height: 50px;
+		line-height: 50px;
+		padding: 0 15px;
+		left: 0;
+		bottom: 0;
+		background-color: white;
+		border-top: 1px solid #eeeeee;
+		font-size: 14px;
+		z-index: 16;
+		.lookall{
+			padding-left: 20px;
+			background: url("~@/assets/img/maintain/detail.png") no-repeat left center;
+			display: inline-block;
+			background-size: 15px;
+		}
+		.lookmap{
+			padding-left: 20px;
+			background: url("~@/assets/img/maintain/map.png") no-repeat left center;
+			display: inline-block;
+			background-size: 15px;
+		}
+		.gps{
+			color: white;
+			float: right;
+			padding: 0 15px 0 35px;
+			/*background-color: #438eff;*/
+			border-radius: 10px;
+			background: #438eff url("~@/assets/img/maintain/mile.png") no-repeat 15px center;
+			background-size: 15px;
+			line-height: 30px;
+			height: 30px;
+			margin-top: 10px;
+		}
+		.distance{
+			float: right;
+			margin: 0 5px;
+		}
+	}
 }
 </style>
 
