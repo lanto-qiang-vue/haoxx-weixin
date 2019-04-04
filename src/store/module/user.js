@@ -6,7 +6,9 @@ export default {
 
 	},
 	mutations: {
-
+              setToken(token){
+              	this.token = token;
+			  }
 	},
 	actions:{
 

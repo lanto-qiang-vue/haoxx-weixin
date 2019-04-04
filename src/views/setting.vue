@@ -7,18 +7,18 @@
 	<div class="change-pass" v-show="showChangePass">
 		<Form :model="passChange" class="account-form"
 		      :label-width="0" label-position="left" ref="passChange">
-			<FormItem prop="pass1" required>
-				<Input v-model="passChange.pass1" type="password" placeholder="原密码"></Input>
+			<FormItem prop="old_pwd">
+				<Input v-model="passChange.old_pwd" type="password" placeholder="原密码"></Input>
 			</FormItem>
-			<FormItem prop="pass2">
-				<Input v-model="passChange.pass2" type="password" placeholder="新密码"></Input>
+			<FormItem prop="new_pwd">
+				<Input v-model="passChange.new_pwd" type="password" placeholder="新密码"></Input>
 			</FormItem>
-			<FormItem prop="pass3">
-				<Input v-model="passChange.pass3" type="password" placeholder="再次确认新密码"></Input>
+			<FormItem prop="new_pwd_cp">
+				<Input v-model="passChange.new_pwd_cp" type="password" placeholder="再次确认新密码"></Input>
 			</FormItem>
 		</Form>
 
-		<div class="submit">确定</div>
+		<div class="submit" @click="ChangePass">确定</div>
 	</div>
 	<div class="verify-phone" v-show="showVerifyPhone">
 		<Form :model="phoneVerify" class="account-form"
@@ -61,9 +61,10 @@ export default {
 	data(){
 		return{
 			passChange:{
-				pass1: '',
-				pass2: '',
-				pass3: '',
+                old_pwd: '123456',
+                new_pwd: '654321',
+                new_pwd_cp: '654321',
+                access_token:localStorage.getItem("token"),
 			},
 			phoneVerify:{
 				phone: '',
@@ -87,6 +88,12 @@ export default {
 		this.showBlock()
 	},
 	methods:{
+        ChangePass(){
+            this.axiosHxx.post('/operate/account/resetPassword', this.passChange).then(res => {
+                // console.log(res);
+                // localStorage.setItem('token',res.data.data.tokenStr);
+            })
+		},
 		showBlock(){
 			let show= this.$route.query.show
 			if(show== 'showChangePass') this.showChangePass=true
