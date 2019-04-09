@@ -12,7 +12,7 @@ export default {
 			default: 60
 		},
 		text:{
-			default: ''
+			default: '获取验证码'
 		},
 		disableClass:{
 			default: 'off'
@@ -37,15 +37,14 @@ export default {
 	methods:{
 		click(){
 			if(!this.disable){
-                this.axiosHxx.post(this.url,{telphone:this.phone,access_token:localStorage.getItem("token")}).then(res => {
+				this.disable= true;
+                this.axiosHxx.post(this.url,{telphone:this.phone}).then(res => {
                     if(res.data.success){
-                        this.$toast({
-                            message: '验证码已发送',
-                            iconClass: 'icon icon-success'
-                        });
-                        this.disable= true;
-                        this.$emit('click',res.data.data.telSession);
+                        this.$toast('验证码已发送');
+                        this.$emit('click', res.data.data.telSession);
                         this.startTimers();
+                    }else{
+                    	this.enable()
                     }
                 })
 			}

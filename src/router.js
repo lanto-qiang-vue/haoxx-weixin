@@ -22,7 +22,6 @@ routes: [
 		path: '/my',
 		name: 'my',
 		meta: {
-			keepAlive: true,
 			footer: true
 		},
 		component: () => import('@/views/my.vue')
@@ -40,7 +39,12 @@ routes: [
 	{
 		path: '/my-reservation',
 		name: 'my-reservation',
-		component: () => import('@/views/my-reservation.vue')
+		component: () => import('@/views/reservation/my-reservation.vue')
+	},
+	{
+		path: '/reservation',
+		name: 'reservation',
+		component: () => import('@/views/reservation/reservation-detail.vue')
 	},
 	{
 		path: '/maintain',

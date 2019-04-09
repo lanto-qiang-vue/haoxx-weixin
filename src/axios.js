@@ -1,6 +1,6 @@
 import axios from 'axios'
 import router from './router'
-
+import store from './store'
 import { Toast, Indicator, Popup } from 'mint-ui'
 import { isWeixn} from './util'
 
@@ -21,6 +21,9 @@ axiosHxx.interceptors.request.use(config => {
 	let contentType= config.headers['Content-Type']
 	if(contentType.indexOf('application/x-www-form-urlencoded')>=0){
 		let form = new FormData();
+		if(!data.access_token && store.state.user.hxxtoken){
+			data.access_token= store.state.user.hxxtoken
+		}
 		for(let key in data){
 			form.append(key, data[key]);
 		}
@@ -99,7 +102,7 @@ axiosHxx.interceptors.response.use(response => {
 
 
 axiosQixiu.interceptors.request.use(config => {
-	let token= localStorage.getItem("ACCESSTOKEN")
+	let token= store.state.user.qixiutoken
 	if(token) {
 		config.headers.token= token
 	}

@@ -13,6 +13,7 @@
 	</div>
 	<ul class="list">
 		<router-link tag="li" to="/">我的爱车 <i></i></router-link>
+		<router-link tag="li" to="/">我的点评 <i></i></router-link>
 		<router-link tag="li" to="/accredit">更改授权 <i></i></router-link>
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
 		<li @click="logout">退出</li>
@@ -25,7 +26,16 @@ export default {
 	name: "my",
 	methods:{
 		logout(){
-			this.$router.push('/login')
+			this.$messagebox({ message: '确定退出吗？', confirmButtonClass:'error-red',
+				confirmButtonText:'退出', showCancelButton: true}).then(action => {
+				switch (action){
+					case 'confirm':{
+						this.$store.commit('logout');
+						this.$router.push('/login')
+						break
+					}
+				}
+			})
 		}
 	}
 }
@@ -102,5 +112,12 @@ export default {
 			}
 		}
 	}
+
+}
+
+</style>
+<style lang="less">
+.error-red{
+	color: red;
 }
 </style>

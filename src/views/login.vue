@@ -8,12 +8,13 @@
 		<mt-tab-container-item id="code">
 			<Form :model="codeForm" class="account-form"
 			      :label-width="0" label-position="left" ref="codeForm">
-				<FormItem prop="phone">
-					<Input v-model.trim="codeForm.phone" :maxlength="11" placeholder="手机号"></Input>
+				<FormItem prop="telphone">
+					<Input v-model.trim="codeForm.telphone" :maxlength="11" placeholder="手机号"></Input>
 				</FormItem>
-				<FormItem prop="code">
-					<Input v-model.trim="codeForm.code" placeholder="验证码"></Input>
-					<countdown class="get-code" text="获取验证码" ref="countdown" @click="getCode"></countdown>
+				<FormItem prop="telcode">
+					<Input v-model.trim="codeForm.telcode" :maxlength="10" placeholder="验证码"></Input>
+					<countdown class="get-code" text="获取验证码" ref="countdown" @click="codeForm.telSession= $event"
+					url="operate/controller/getCarliveCode" :phone="codeForm.telphone"></countdown>
 				</FormItem>
 			</Form>
 		</mt-tab-container-item>
@@ -62,12 +63,13 @@ export default {
 		return{
 			activeBlock: 'code',
 			codeForm:{
-				phone:'',
-				code:'',
+				telphone:'15026769688',
+				telcode:'',
+				telSession:'',
 			},
 			passForm: {
 				telphone: '15900418638',
-				telpass: '123456',
+				telpass: 'lantoev.com',
 			}
 		}
 	},
@@ -76,7 +78,7 @@ export default {
 			let status= false
 			switch (this.activeBlock){
 				case 'code':{
-					if(reg.vehicle.test(this.codeForm.phone) && this.codeForm.code){
+					if(reg.mobile.test(this.codeForm.telphone) && this.codeForm.telcode){
 						status= true
 					}
 					break
@@ -92,29 +94,42 @@ export default {
 		}
 	},
 	methods:{
-		getCode(){
-			this.$refs.countdown.startTimers()
-		},
 		login(){
-			this.$router.push('/')
 			if(this.canLogin){
 				switch (this.activeBlock){
 					case 'code':{
-
+						this.axiosHxx.post('/operate/controller/operateLogin', this.codeForm).then(res => {
+							this.loginSuccess(res.data)
+						})
 						break
 					}
 					case 'pass':{
-
+						this.axiosHxx.post('/operate/controller/passwordLogin', this.passForm).then(res => {
+							this.loginSuccess(res.data)
+						})
 						break
 					}
 				}
-				this.axiosHxx.post('/operate/controller/passwordLogin', this.passForm).then(res => {
-					if(res.data.success){
-                        localStorage.setItem('token',res.data.data.tokenStr);
-					}
+			}
+		},
+		loginSuccess(data){
+			if(data.success){
+				this.$store.commit('setHxxToken',data.data.tokenStr);
+				this.$toast('登录成功');
+				this.goBackUrl()
+			}
+		},
+		goBackUrl(){
+			if(this.$route.query.redirect){
+				this.$router.replace({
+					path: this.$route.query.redirect
+				})
+			}else{
+				this.$router.replace({
+					path: '/'
 				})
 			}
-		}
+		},
 	}
 }
 </script>
@@ -144,6 +159,7 @@ export default {
 	}
 	.active-block{
 		.get-code{
+			background-color: white;
 			color: #333333;
 			font-size: 14px;
 			position: absolute;

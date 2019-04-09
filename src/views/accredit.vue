@@ -5,15 +5,16 @@
 	</div>
 	<Form :model="form" class="common-form"
 	      :label-width="100" label-position="left" ref="form">
-		<FormItem label="汽修平台账号" prop="account">
-			<Input v-model="form.account"></Input>
+		<FormItem label="汽修平台账号" prop="telphone">
+			<Input v-model="form.telphone" :maxlength="11" ></Input>
 		</FormItem>
-		<FormItem label="验证码" prop="code">
-			<Input v-model="form.code"></Input>
-			<countdown class="get-code" text="获取验证码" ref="countdown" @click="getCode"></countdown>
+		<FormItem label="验证码" prop="telcode">
+			<Input v-model="form.telcode" :maxlength="10" ></Input>
+			<countdown class="get-code" @click="form.telSession= $event"
+			           url="operate/controller/getCarliveCode" :phone="form.telphone"></countdown>
 		</FormItem>
 	</Form>
-	<div :class="['submit',{on: canLogin}]">同意授权</div>
+	<div :class="['submit',{on: canLogin}]" @click="bind">同意授权</div>
 </div>
 </template>
 
@@ -26,14 +27,46 @@ export default {
 	data(){
 		return{
 			form: {
-				account: '1111111111',
-				code: '11111'
+				telphone: '15026769688',
+				telcode: '',
+				telSession: ''
 			}
 		}
 	},
+	computed:{
+		canLogin(){
+			let status= false
+				if(reg.mobile.test(this.form.telphone) && this.form.telcode){
+					status= true
+				}
+			return status
+		}
+	},
 	methods:{
-		getCode(){
-			this.$refs.countdown.startTimers()
+		bind() {
+			if (this.canLogin) {
+				this.axiosHxx.post('/operate/controller/operateLogin', this.form).then(res => {
+					this.bindSuccess(res.data)
+				})
+			}
+		},
+		bindSuccess(data){
+			if(data.success){
+				// this.$store.commit('setHxxToken',data.data.tokenStr);
+				this.$toast('绑定成功');
+				this.goBackUrl()
+			}
+		},
+		goBackUrl(){
+			if(this.$route.query.redirect){
+				this.$router.replace({
+					path: this.$route.query.redirect
+				})
+			}else{
+				this.$router.replace({
+					path: '/'
+				})
+			}
 		},
 	}
 }
