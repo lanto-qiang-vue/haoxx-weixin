@@ -57,7 +57,7 @@
 import Countdown from '@/components/countdown-button.vue'
 import { reg} from '@/util.js'
 export default {
-	name: "login",
+	name: "accredit-bind",
 	components: {Countdown },
 	data(){
 		return{

@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
 		if (!store.state.user.qixiutoken) {
 			Toast('请绑定汽修平台账号')
 			// console.log(to.fullPath)
-			next({path: '/accredit', query: { redirect: to.fullPath }})
+			next({path: '/accredit-bind', query: { redirect: to.fullPath }})
 		} else {
 			next()
 		}
