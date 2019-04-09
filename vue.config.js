@@ -30,8 +30,8 @@ module.exports = {
 				secure: false
 			},
 			'/repair-proxy': {
-				target: 'http://192.168.169.230:7210/',
-				// target: 'https://www.shanghaiqixiu.org/repair/',
+				// target: 'http://192.168.169.230:7210/',
+				target: 'https://www.shanghaiqixiu.org/repair/',
 				pathRewrite: {'^/repair-proxy': ''},
 				secure: false
 			},

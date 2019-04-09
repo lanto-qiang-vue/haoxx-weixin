@@ -14,32 +14,36 @@ let bodyScrollTop= function(){
 }
 export default {
 	name: "slide-bar",
-    props: [ 'minHeight', 'toLocation', 'pageLocation', 'action'],
+    props: [ 'minHeight', 'toLocation', 'pageLocation', 'action', 'bottom'],
     data(){
 		return {
         timer: null,
         first: true,
         minTop: 80,
-        bodyHeight: 0,
-
-	    footerHeight: 50
+		docHeight: 0
       }
     },
     computed: {
-
+		calcMinHeight(){
+			return this.minHeight+ (this.bottom|| 0)
+		}
     },
     watch:{
       toLocation(val){
 	      this.resize(this.pageLocation[val], 10)
       },
+	    calcMinHeight(val){
+		    this.resize(val, 10)
+	    }
     },
     mounted(){
-
+		this.docHeight= $(document).height()
+		// console.log('docHeight', this.docHeight)
+		// console.log('this.pageLocation[this.toLocation]', this.pageLocation[this.toLocation])
       this.resize(this.pageLocation[this.toLocation], 10)
       // this.$emit('toLocation', this.location)
       let self=this
       let dom= $(this.$refs.slide)
-      let docHeight= $(document).height()- this.footerHeight
       let touchBarHeight= $('.touch-bar').outerHeight(true) //bar高度（20）
       let startY= 0
       let endY= 0
@@ -67,16 +71,16 @@ export default {
           // console.log(isMove)
           //移动位置
           let y = e.originalEvent.targetTouches[0].pageY - (startY- domY);
-          let height= docHeight- y - touchBarHeight
+          let height= self.docHeight- y - touchBarHeight
 
-          if(height> docHeight- self.minTop){
-            height= docHeight- self.minTop -touchBarHeight
-          }else if(height< self.minHeight){
-            height= self.minHeight
+          if(height> self.docHeight- self.minTop){
+            height= self.docHeight- self.minTop -touchBarHeight
+          }else if(height< self.calcMinHeight){
+            height= self.calcMinHeight
           }
 
           if(y< self.minTop) y= self.minTop
-          if(y> docHeight- self.minHeight -touchBarHeight) y= docHeight- self.minHeight -touchBarHeight
+          if(y> self.docHeight- self.calcMinHeight -touchBarHeight) y= self.docHeight- self.calcMinHeight -touchBarHeight
 
           // console.log('touchmove', dom)
           $(dom).css({transform: 'translateY('+ y+ 'px)'})
@@ -91,9 +95,9 @@ export default {
         endY= endE.originalEvent.changedTouches[0].pageY
         // console.log('move', endY- startY)
         if(isMove){
-          // console.log('isMove',isMove)
-          self.autoMove(endY- startY, isMove, docHeight- parseInt(dom.css('transform').split(',')[5])- touchBarHeight)
-          // self.resize(docHeight- self.slideState.minTop -touchBarHeight, 0)
+          // console.log('startY, endY', startY, endY)
+          self.autoMove(endY- startY, isMove, self.docHeight- parseInt(dom.css('transform').split(',')[5])- touchBarHeight)
+          // self.resize(this.docHeight- self.slideState.minTop -touchBarHeight, 0)
           // self.resize(1, 0)
           isMove=false
         }
@@ -105,8 +109,8 @@ export default {
 	    $("body").bind('touchend', this.bodyScrollTop)
 
       window.onresize = function(){
-        if($(document).height()== (docHeight+ self.footerHeight)) self.$emit('maintainListBlur')
-        self.resize(docHeight- self.minTop -touchBarHeight)
+        if($(document).height()== (self.docHeight)) self.$emit('maintainListBlur')
+        self.resize(self.docHeight- self.minTop -touchBarHeight)
       }
     },
 	activated(){
@@ -144,23 +148,25 @@ export default {
           if (!this.translateY) event.preventDefault();
         }
       },
-	    changeLocation(val){
-		    // console.log('slide-bar.location', val)
-
-		    this.resize(this.pageLocation[this.toLocation], 10)
-		    this.$emit('toLocation', val)
+	    resetHeight(){
+		    this.resize(this.pageLocation[this.toLocation], 50)
 	    },
+	    // changeLocation(val){
+		 //    // console.log('slide-bar.location', val)
+	    //
+		 //    this.resize(this.pageLocation[this.toLocation], 10)
+		 //    this.$emit('toLocation', val)
+	    // },
       resize(height, time, noToMove){
         // console.log('resize.height,this.minHeight', height, this.minHeight)
         let self= this
         let timeout= (time=== undefined? 500: time)
-        let docHeight= $(document).height()- this.footerHeight
         let touchBarHeight= $('.touch-bar').outerHeight(true)
         let calcHeight= 0
-        if(height> docHeight- this.minTop -touchBarHeight){
-          calcHeight= docHeight- this.minTop -touchBarHeight
-        }else if(height< this.minHeight){
-          calcHeight= this.minHeight
+        if(height> this.docHeight- this.minTop -touchBarHeight){
+          calcHeight= this.docHeight- this.minTop -touchBarHeight
+        }else if(height< this.calcMinHeight){
+          calcHeight= this.calcMinHeight
         }else calcHeight= height
 
         // console.log('calcHeight', calcHeight)
@@ -168,14 +174,14 @@ export default {
         this.timer = setTimeout(function(){
           // self.bodyHeight= height
           // self.$store.commit('setSlideBodyHeight', calcHeight)
-          self.bodyHeight= calcHeight
-	        self.$emit('bodyHeight', calcHeight);
+            self.$emit('bodyHeight', (calcHeight - (self.bottom|| 0)));
           // self.$store.commit('reSetSlideBodyHeight', height)
         }, timeout);
         if(!noToMove){
 
-          // console.log('docHeight- calcHeight- touchBarHeight', docHeight, calcHeight, touchBarHeight)
-          $(this.$refs.slide).css({transform: 'translateY('+ (docHeight- calcHeight- touchBarHeight) + 'px)'})
+          // console.log('this.docHeight- calcHeight- touchBarHeight', this.docHeight, calcHeight, touchBarHeight)
+          $(this.$refs.slide).css({
+	          transform: 'translateY('+ (this.docHeight- calcHeight- touchBarHeight ) + 'px)'})
           // self.$store.commit('reSetSlideBodyHeight', calcHeight)
         }
       },
@@ -189,20 +195,22 @@ export default {
        */
 	autoMove(moveNumber, upOrDown, height){
 		let arr= this.pageLocation, index=0
-		// console.log(moveNumber, upOrDown, height, arr)
+		// console.log('moveNumber, upOrDown, height, arr', moveNumber, upOrDown, height, arr)
 		if(Math.abs(moveNumber)< 50){
 			this.resize(this.pageLocation[this.toLocation], 10)
 		}else{
 			if (upOrDown=='up') {
 				for (let i in arr){
-					if(height> arr[i]) index= i+1
+					if(height> arr[i]) index= parseInt(i) + 1
 				}
+				// console.log('index.up', index, arr[index])
 				this.resize(arr[index], 10)
 				this.$emit('toLocation', index)
 			} else {
 				for (let i in arr){
-					if(height> arr[i]) index= i-1
+					if(height> arr[i]) index= parseInt(i)
 				}
+				// console.log('index.down', index, arr[index])
 				this.resize(arr[index], 10)
 				this.$emit('toLocation', index)
 			}
@@ -226,7 +234,7 @@ export default {
   border-top-right-radius: 10px;
   box-shadow: 0 -1px 10px #d8d9d8;
   height: 100vh;
-  transition: all 0.1s;
+  /*transition: all 0.1s;*/
   .real-touch-bar{
     width: 100%;
     height: 34px;
