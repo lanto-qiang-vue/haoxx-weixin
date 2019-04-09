@@ -16,7 +16,13 @@ export default {
 		},
 		disableClass:{
 			default: 'off'
-		}
+		},
+        phone:{
+		    default:"",
+        },
+        url:{
+		    default:"",
+        }
 	},
 	data(){
 		return{
@@ -31,8 +37,17 @@ export default {
 	methods:{
 		click(){
 			if(!this.disable){
-				this.disable= true
-				this.$emit('click');
+                this.axiosHxx.post(this.url,{telphone:this.phone,access_token:localStorage.getItem("token")}).then(res => {
+                    if(res.data.success){
+                        this.$toast({
+                            message: '验证码已发送',
+                            iconClass: 'icon icon-success'
+                        });
+                        this.disable= true;
+                        this.$emit('click',res.data.data.telSession);
+                        this.startTimers();
+                    }
+                })
 			}
 		},
 		enable(){

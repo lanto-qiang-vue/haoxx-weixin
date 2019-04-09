@@ -24,13 +24,12 @@
 		<Form :model="phoneVerify" class="account-form"
 		      :label-width="0" label-position="left" ref="phoneVerify">
 			<FormItem prop="phone">
-				<Input v-model="phoneVerify.phone" :maxlength="11" placeholder="手机号"></Input>
+				<Input v-model="phoneVerify.telphone" :maxlength="11" placeholder="原手机号"></Input>
 			</FormItem>
 			<FormItem prop="pass">
-				<Input v-model="phoneVerify.pass" type="password" placeholder="登录密码"></Input>
+				<Input v-model="phoneVerify.pwd" type="password" placeholder="登录密码"></Input>
 			</FormItem>
 		</Form>
-
 		<div class="submit" @click="next">下一步</div>
 	</div>
 
@@ -39,15 +38,15 @@
 			<Form :model="phoneChange" class="account-form"
 			      :label-width="0" label-position="left" ref="phoneChange">
 				<FormItem prop="phone">
-					<Input v-model="phoneChange.phone" :maxlength="11" placeholder="手机号"></Input>
+					<Input v-model="phoneChange.telphone" :maxlength="11" placeholder="手机号"></Input>
 				</FormItem>
 				<FormItem prop="code">
-					<Input v-model="phoneChange.code" placeholder="验证码"></Input>
-					<countdown class="get-code" text="获取验证码" ref="countdown" @click="getCode"></countdown>
+					<Input v-model="phoneChange.telcode" placeholder="验证码"></Input>
+					<countdown class="get-code" text="获取验证码" ref="countdown" :phone="phoneChange.telphone" @click="getCode" url="/operate/account/getCode"></countdown>
 				</FormItem>
 			</Form>
 
-			<div class="submit">确定并重新登录</div>
+			<div class="submit" @click="submit">确定并重新登录</div>
 		</div>
 	</mt-popup>
 </div>
@@ -67,12 +66,15 @@ export default {
                 access_token:localStorage.getItem("token"),
 			},
 			phoneVerify:{
-				phone: '',
-				pass: '',
+                telphone: '17321492645',
+                pwd: '123456',
+                access_token:localStorage.getItem("token"),
 			},
 			phoneChange:{
-				phone: '',
-				code: '',
+                telphone: '',
+                telcode: '',
+                access_token:localStorage.getItem("token"),
+                telSession:'',
 			},
 			showChangePass: false,
 			showVerifyPhone: false,
@@ -90,8 +92,7 @@ export default {
 	methods:{
         ChangePass(){
             this.axiosHxx.post('/operate/account/resetPassword', this.passChange).then(res => {
-                // console.log(res);
-                // localStorage.setItem('token',res.data.data.tokenStr);
+              //下一步操作
             })
 		},
 		showBlock(){
@@ -103,11 +104,20 @@ export default {
 			this.showChangePhone= false
 		},
 		next(){
-			this.showChangePhone= true
+            this.axiosHxx.post('/operate/account/checkUser',this.phoneVerify).then(res => {
+               if(res.data.success)  this.showChangePhone= true;
+            })
 		},
-		getCode(){
-			this.$refs.countdown.startTimers()
+		getCode(telSession){
+         this.phoneChange.telSession = telSession;
 		},
+        submit(){
+            this.axiosHxx.post('/operate/account/updateTel', this.phoneChange).then(res => {
+                  if(res.data.success){
+
+				  }
+            })
+		}
 	}
 }
 </script>

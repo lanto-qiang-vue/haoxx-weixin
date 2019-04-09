@@ -109,9 +109,9 @@ export default {
 					}
 				}
 				this.axiosHxx.post('/operate/controller/passwordLogin', this.passForm).then(res => {
-
-				    // console.log(res);
-                    localStorage.setItem('token',res.data.data.tokenStr);
+					if(res.data.success){
+                        localStorage.setItem('token',res.data.data.tokenStr);
+					}
 				})
 			}
 		}

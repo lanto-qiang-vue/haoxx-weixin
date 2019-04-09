@@ -46,14 +46,20 @@ axiosHxx.interceptors.request.use(config => {
 axiosHxx.interceptors.response.use(response => {
     Indicator.close()
 	  console.log('response', response)
-
 	  let { data } = response
 	  console.log('data', data)
 	  if (data &&!data.success) {
 		  	if(data.code == 808){
 			    Toast("请重新登陆");
 			    return false;
-		    }else Toast(data.title);
+		    }else{
+		  		if(data.hasOwnProperty("Exception")){
+		  			console.log(data.Exception.message);
+                    Toast( data.Exception.message || data.title);
+				}else{
+                    Toast(data.title);
+				}
+			}
 	  }
     return response;
   },
