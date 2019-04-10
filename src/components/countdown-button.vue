@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { reg} from '@/util.js'
 export default {
 	name: "countdown-button",
 	props:{
@@ -37,16 +38,20 @@ export default {
 	methods:{
 		click(){
 			if(!this.disable){
-				this.disable= true;
-                this.axiosHxx.post(this.url,{telphone:this.phone}).then(res => {
-                    if(res.data.success){
-                        this.$toast('验证码已发送');
-                        this.$emit('click', res.data.data.telSession);
-                        this.startTimers();
-                    }else{
-                    	this.enable()
-                    }
-                })
+				if(reg.mobile.test(this.phone)){
+					this.disable= true;
+					this.axiosHxx.post(this.url,{telphone:this.phone}).then(res => {
+						if(res.data.success){
+							this.$toast('验证码已发送');
+							this.$emit('click', res.data.data.telSession);
+							this.startTimers();
+						}else{
+							this.enable()
+						}
+					})
+				}else{
+					this.$toast('请输入正确手机号');
+				}
 			}
 		},
 		enable(){

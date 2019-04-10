@@ -3,14 +3,14 @@
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 		<ul class="list">
-			<li>
+			<router-link tag="li" to="/reservation-detail">
 				<div class="head"><label>预约时间：</label>
 					2019-03-27 10:00
 					<span class="status">待处理</span>
 				</div>
 				<p><label>指派公司：</label>上海申海汽车修理有限公司</p>
 				<p><label>服务内容：</label>洗车</p>
-			</li>
+			</router-link>
 			<li>
 				<div class="head"><label>预约时间：</label>
 					2019-03-27 10:00

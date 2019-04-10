@@ -3,7 +3,8 @@
 	<div class="above">
 		<div class="head">
 			<img :src="'/img/head.png'"/>
-			<span>183***1358</span>
+			<!--<span>183***1358</span>-->
+			<span>{{userinfo.nickName}}</span>
 		</div>
 		<div class="button">
 			<router-link tag="div" to="/"><span>1</span><p>我的卡券</p></router-link>
@@ -13,8 +14,8 @@
 	</div>
 	<ul class="list">
 		<router-link tag="li" to="/my-car-list">我的爱车 <i></i></router-link>
-		<router-link tag="li" to="/">我的点评 <i></i></router-link>
-		<router-link tag="li" to="/accredit">更改授权 <i></i></router-link>
+		<router-link tag="li" to="/my-remark">我的点评 <i></i></router-link>
+		<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
 		<li @click="logout">退出</li>
 	</ul>
@@ -24,6 +25,11 @@
 <script>
 export default {
 	name: "my",
+	computed:{
+		userinfo(){
+			return this.$store.state.user.userinfo
+		}
+	},
 	methods:{
 		logout(){
 			this.$messagebox({ message: '确定退出吗？', confirmButtonClass:'error-red',

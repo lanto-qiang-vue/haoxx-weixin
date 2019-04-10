@@ -15,9 +15,8 @@
               <!--</div>-->
               <div class="mui-slider-handle" style="transform: translate(0px, 0px);">
                 <div class="title">
-                  <img style="width: 15px; height: 15px;" src="~@/assets/img//record/list.png"/>
+                  <img style="width: 15px; height: 15px;" src="/img/car-record/list.png"/>
                   <span>{{ item.vehicleplatenumber }}</span>
-                  <img class="arrow" src="~@/assets/img//my/right-arrow.png" width="7px" height="14px">
 	                <span class="status" :style="'color:'+showStatus(item.status).color">
 	                    {{ showStatus(item.status).text}}</span>
                 </div>
@@ -134,7 +133,7 @@ export default {
       }
       if(vin) {
         this.$router.push({
-          path: '/recordList',
+          path: '/record-list',
           query: {id:vin, vehicleplatenumber: vehicleplatenumber}
         })
       } else {
@@ -150,7 +149,7 @@ export default {
 		  }
 	  },
     getData(flag){
-	    this.axios.post('/vehicle/owner/queryVehicelist', {
+	    this.axiosQixiu.post('/vehicle/owner/queryVehicelist', {
 		    "cartype": "",
 		    "page": this.page,
 		    "pageSize": 10,
@@ -204,7 +203,7 @@ export default {
 
     deleteVehicle(id) {
       MessageBox.confirm('确定解绑?').then(action => {
-        this.axios({
+        this.axiosQixiu({
           method: 'post',
           url: '/vehicle/carfile/remove-bind/'+ id,
         }).then(res => {
@@ -244,7 +243,7 @@ export default {
           }
         }
 
-      this.axios({
+      this.axiosQixiu({
         method: 'post',
         url: '/scan/relieve',
         data: {
@@ -274,11 +273,15 @@ export default {
   /*position: relative;*/
     .add_car{
       position: fixed; left: 0;bottom: 0; border-radius: 0; border: none; width: 100%;
+	    background-color: #FF9738;
     }
     .carList{
 	    height: 100vh;
       padding: 50px 0 40px 0;
       overflow: auto;
+	    li{
+		    position: relative;
+	    }
     }
   .search {
     padding: 8px 12px;
@@ -290,7 +293,7 @@ export default {
     top: 0;
     form {
       input {
-        background: url(~@/assets/img//record/search.png) no-repeat 10px 10px;
+        background: url(/img/car-record/search.png) no-repeat 10px 10px;
         font-size: 14px;
         background-color: #eee;
         background-size: 18px 18px;
@@ -325,11 +328,21 @@ export default {
       border-bottom: 1px solid #f8f8f8;
       height: 30px;
       overflow: hidden;
+	    position: relative;
+	    &:after{
+		    content: '';
+		    position: absolute;
+		    right: 6px;
+		    top: 50%;
+		    border-right: 1px solid;
+		    border-bottom: 1px solid;
+		    width: 8px;
+		    height: 8px;
+		    color: #999;
+		    transform: translateY(-50%) rotate(-45deg);
+	    }
       img {
         margin-top: 7px;
-      }
-      .arrow {
-        float: right;
       }
       span {
         font-size: 16px;
@@ -340,7 +353,7 @@ export default {
       }
 	    .status{
 			font-size: 12px;
-		    margin-right: 5px;
+		    margin-right: 15px;
 		    float: right;
 	    }
     }

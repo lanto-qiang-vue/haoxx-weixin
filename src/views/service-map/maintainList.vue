@@ -377,17 +377,14 @@ export default {
 		},
 	    calcQuery(limit){
 		    let is164= this.search.type== '164'
-		    let is300= this.search.type== '300'
-		    let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours'+
+		    let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours,licenseNo'+
 			    '&q='+ this.search.q +
 			    '&page='+ (this.page-1) +','+ (limit ||this.limit)
-		    let defaultSort= is300?'_score asc,rating desc,distance asc': '_score asc,distance asc'
+		    let defaultSort= '_score asc,distance asc'
 		    query+= ('&sort='+ (this.search.sort|| defaultSort))
 		    if(this.nowLnglat.lng) query+=('&point='+this.nowLnglat.lat+','+this.nowLnglat.lng)
-		    let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
-		    if(is300 && this.search.biz) fq+= ('+AND+kw:'+  this.search.biz)
-		    if(is300 && this.search.base) fq+= ('+AND+tag:'+  encodeURI(this.search.base))
-		    if(this.search.area && (is164 || is300)) fq+= '+AND+areaKey:'+ this.search.area
+		    let fq='&fq=status:1+AND+tag:hxx+AND+type:'+ this.search.type, is4s=''
+		    if(this.search.area && (is164 )) fq+= '+AND+areaKey:'+ this.search.area
 		    if(this.search.is4s && is164){
 			    is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
 			    fq+= '+AND+' + is4s

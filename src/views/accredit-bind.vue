@@ -11,10 +11,10 @@
 		<FormItem label="验证码" prop="telcode">
 			<Input v-model="form.telcode" :maxlength="10" ></Input>
 			<countdown class="get-code" @click="form.telSession= $event"
-			           url="operate/controller/getCarliveCode" :phone="form.telphone"></countdown>
+			           url="/operate/controller/getCarliveCode" :phone="form.telphone"></countdown>
 		</FormItem>
 	</Form>
-	<div :class="['submit',{on: canLogin}]" @click="bind">同意授权</div>
+	<div :class="['submit',{on: activity}]" @click="bind">同意授权</div>
 </div>
 </template>
 
@@ -27,14 +27,14 @@ export default {
 	data(){
 		return{
 			form: {
-				telphone: '15026769688',
+				telphone: '13761321186',
 				telcode: '',
 				telSession: ''
 			}
 		}
 	},
 	computed:{
-		canLogin(){
+		activity(){
 			let status= false
 				if(reg.mobile.test(this.form.telphone) && this.form.telcode){
 					status= true
@@ -44,15 +44,15 @@ export default {
 	},
 	methods:{
 		bind() {
-			if (this.canLogin) {
-				this.axiosHxx.post('/operate/controller/operateLogin', this.form).then(res => {
+			if (this.activity) {
+				this.axiosHxx.post('/operate/qixiuwang/bind', this.form).then(res => {
 					this.bindSuccess(res.data)
 				})
 			}
 		},
 		bindSuccess(data){
 			if(data.success){
-				// this.$store.commit('setHxxToken',data.data.tokenStr);
+				this.$store.commit('setQixiuToken', data.data.qxToken);
 				this.$toast('绑定成功');
 				this.goBackUrl()
 			}
@@ -63,9 +63,7 @@ export default {
 					path: this.$route.query.redirect
 				})
 			}else{
-				this.$router.replace({
-					path: '/'
-				})
+				this.$router.go(-1)
 			}
 		},
 	}
@@ -98,7 +96,7 @@ export default {
 		}
 	}
 	.submit{
-		margin: 40px 20px 0px 20px;
+		margin: 60px 20px 0;
 		height:40px;
 		line-height: 40px;
 		background-color: #FFCB9C;

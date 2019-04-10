@@ -12,17 +12,17 @@ router.beforeEach((to, from, next) => {
 			// console.log(to.fullPath)
 			next({path: '/login', query: { redirect: to.fullPath }})
 		} else {
-			next()
+			if (to.matched.some(record => record.meta.requiresQixiu)){
+				if (!store.state.user.qixiutoken) {
+					Toast('请绑定汽修平台账号')
+					// console.log(to.fullPath)
+					next({path: '/accredit-bind', query: { redirect: to.fullPath }})
+				} else {
+					next()
+				}
+			} else next()
 		}
-	} else if (to.matched.some(record => record.meta.requiresQixiu)){
-		if (!store.state.user.qixiutoken) {
-			Toast('请绑定汽修平台账号')
-			// console.log(to.fullPath)
-			next({path: '/accredit-bind', query: { redirect: to.fullPath }})
-		} else {
-			next()
-		}
-	}else {
+	} else {
 		next() // 确保一定要调用 next()
 	}
 })

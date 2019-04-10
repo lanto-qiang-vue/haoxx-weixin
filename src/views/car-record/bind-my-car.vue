@@ -143,19 +143,19 @@
 		  <div class="rule">
 			  <p>拍摄时确保证件<span style="color: #fc0;">边框完整，字体清晰，亮度均匀</span></p>
 			  <li>
-				  <img src="/static/img/carOwner-centre/身份证_标准@3x.png">
+				  <img src="/img/carOwner-centre/身份证_标准@3x.png">
 				  <p>标准</p>
 			  </li>
 			  <li>
-				  <img src="/static/img/carOwner-centre/身份证_边框缺失@3x.png">
+				  <img src="/img/carOwner-centre/身份证_边框缺失@3x.png">
 				  <p>边框缺失</p>
 			  </li>
 			  <li>
-				  <img src="/static/img/carOwner-centre/身份证_照片模糊@3x.png">
+				  <img src="/img/carOwner-centre/身份证_照片模糊@3x.png">
 				  <p>照片模糊</p>
 			  </li>
 			  <li>
-				  <img src="/static/img/carOwner-centre/身份证_闪光强烈@3x.png">
+				  <img src="/img/carOwner-centre/身份证_闪光强烈@3x.png">
 				  <p>闪光强烈</p>
 			  </li>
 		  </div>
@@ -243,7 +243,7 @@
 
 <script>
 import { Field, Button, Toast, MessageBox, Popup } from 'mint-ui'
-import Upload from '@/page/components/compress-upload.vue'
+import Upload from '@/components/compress-upload.vue'
 import {deepClone, formatDate, reg} from '@/util.js'
 let travelLicense= {
 	ownerName: '',
@@ -419,7 +419,7 @@ export default{
 	},
 	methods: {
     	getInfo(id){
-		    this.axios.get('/scan/auditDetail/'+ id).then(res=>{
+		    this.axiosQixiu.get('/scan/auditDetail/'+ id).then(res=>{
 			    if(res.data.code==='0'){
 			    	let item= res.data.item
 			    	this.status= item.status.toString()
@@ -456,7 +456,7 @@ export default{
 		    })
 	    },
     	getId(){
-			this.axios.get('/scan/getCard').then(res=>{
+			this.axiosQixiu.get('/scan/getCard').then(res=>{
 				if(res.data.code==='0' && res.data.item){
 					this.hasId= true
 					let item= res.data.item
@@ -491,7 +491,7 @@ export default{
 		},
 
 		identifyCard(base64, type){
-			this.axios({
+			this.axiosQixiu({
 			url: '/scan/newUpload',
 			method: 'post',
 			data: {
@@ -527,7 +527,7 @@ export default{
 		},
 
 		identifyDriveLicense(base64){
-			this.axios({
+			this.axiosQixiu({
 				url: '/scan/newDriverLicense',
 				method: 'post',
 				data: {
@@ -610,7 +610,7 @@ export default{
 							break
 						}
 					}
-				this.axios.post(url, data).then(res=>{
+				this.axiosQixiu.post(url, data).then(res=>{
 				if(res.data.code==='0'){
 					Toast('修改成功')
 					this.popupShow= false
@@ -703,7 +703,7 @@ export default{
 
 
 
-			this.axios({
+			this.axiosQixiu({
 				url: '/scan/newBind',
 				method: 'post',
 				data: data}).then(res=>{
@@ -753,13 +753,13 @@ export default{
 		border-bottom: 1px solid #E5E5E5
 	}
 	.drive .img{
-		background: #f2f7fd url("/static/img/carOwner-centre/行驶证@3x.png") no-repeat center center;
+		background: #f2f7fd url("/img/carOwner-centre/行驶证@3x.png") no-repeat center center;
 	}
 	.id .img{
-		background: #f2f7fd url("/static/img/carOwner-centre/身份证_正面@3x.png") no-repeat center center;
+		background: #f2f7fd url("/img/carOwner-centre/身份证_正面@3x.png") no-repeat center center;
 	}
 	.business .img{
-		background: #f2f7fd url("/static/img/carOwner-centre/营业执照@3x.png") no-repeat center center;
+		background: #f2f7fd url("/img/carOwner-centre/营业执照@3x.png") no-repeat center center;
 	}
 	.upBlock{
 		padding: 20px 15px 15px;

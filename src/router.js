@@ -82,4 +82,49 @@ routes: [
 		},
 		component: () => import('@/views/car-record/bind-my-car.vue')
 	},
+	{
+		path: '/bind-other-car',
+		name: 'bind-other-car',
+		meta: {
+			requiresAuth: true,
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/car-record/bind-other-car.vue')
+	},
+	{
+		path: '/record-list',
+		name: 'record-list',
+		meta: {
+			requiresAuth: true,
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/car-record/record-list.vue')
+	},
+	{
+		path: '/record-detail',
+		name: 'record-detail',
+		meta: {
+			requiresAuth: true,
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/car-record/record-detail.vue')
+	},
+	{
+		path: '/my-reservation',
+		name: 'my-reservation',
+		meta: {
+			requiresAuth: true,
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/reservation/my-reservation.vue')
+	},
+	{
+		path: '/reservation-detail',
+		name: 'reservation-detail',
+		meta: {
+			requiresAuth: true,
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/reservation/reservation-detail.vue')
+	},
 ]})

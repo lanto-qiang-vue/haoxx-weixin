@@ -9,12 +9,12 @@
 			<Form :model="codeForm" class="account-form"
 			      :label-width="0" label-position="left" ref="codeForm">
 				<FormItem prop="telphone">
-					<Input v-model.trim="codeForm.telphone" :maxlength="11" placeholder="手机号"></Input>
+					<Input v-model.trim="codeForm.telphone" :maxlength="11" placeholder="手机号" clearable></Input>
 				</FormItem>
 				<FormItem prop="telcode">
 					<Input v-model.trim="codeForm.telcode" :maxlength="10" placeholder="验证码"></Input>
 					<countdown class="get-code" text="获取验证码" ref="countdown" @click="codeForm.telSession= $event"
-					url="operate/controller/getCarliveCode" :phone="codeForm.telphone"></countdown>
+					url="/operate/controller/getCarliveCode" :phone="codeForm.telphone"></countdown>
 				</FormItem>
 			</Form>
 		</mt-tab-container-item>
@@ -22,17 +22,17 @@
 			<Form :model="passForm" class="account-form"
 			      :label-width="0" label-position="left" ref="passForm">
 				<FormItem prop="telphone">
-					<Input v-model.trim="passForm.telphone" placeholder="账号"></Input>
+					<Input v-model.trim="passForm.telphone" placeholder="账号" clearable></Input>
 				</FormItem>
 				<FormItem prop="telpass">
-					<Input v-model.trim="passForm.telpass" type="password" placeholder="密码"></Input>
+					<Input v-model.trim="passForm.telpass" type="password" placeholder="密码" clearable></Input>
 				</FormItem>
 			</Form>
-			<a class="forget">忘记密码</a>
+			<router-link to="/login?type=forget" class="forget">忘记密码</router-link>
 		</mt-tab-container-item>
 	</mt-tab-container>
 
-	<div :class="['submit',{on: canLogin}]" @click="login">登录</div>
+	<div :class="['submit',{on: activity}]" @click="submit">登录</div>
 
 	<p class="protocol">新用户登录即完成注册，代表同意
 		<a>《好修修车生活用户协议》</a>
@@ -50,6 +50,51 @@
 		</ul>
 	</div>
 
+	<mt-popup v-model="showBind" position="right">
+		<div class="bind-phone">
+			<p><label>提示：</label>平台登录方式更新为使用手机号登录,请验证您的手机号</p>
+			<Form :model="bindForm" class="account-form"
+			      :label-width="0" label-position="left" ref="bindForm">
+				<FormItem prop="telphone">
+					<Input v-model.trim="bindForm.telphone" :maxlength="11" placeholder="手机号" clearable></Input>
+				</FormItem>
+				<FormItem prop="smsCode">
+					<Input v-model.trim="bindForm.smsCode" placeholder="验证码" :maxlength="10"></Input>
+					<countdown class="get-code" text="获取验证码" @click="bindForm.telSession= $event"
+					           :phone="bindForm.telphone"  url="/operate/account/getCode"></countdown>
+				</FormItem>
+				<FormItem prop="password">
+					<Input v-model.trim="bindForm.password" type="password" placeholder="登录密码" clearable></Input>
+				</FormItem>
+			</Form>
+
+			<div :class="['submit',{on: activity}]" @click="submit">提交</div>
+		</div>
+	</mt-popup>
+
+	<mt-popup v-model="showForget" position="right">
+		<div class="forget-phone">
+			<Form :model="forgetForm" class="account-form"
+			      :label-width="0" label-position="left" ref="forgetForm">
+				<FormItem prop="telphone">
+					<Input v-model.trim="forgetForm.telphone" :maxlength="11" placeholder="手机号" clearable></Input>
+				</FormItem>
+				<FormItem prop="telcode">
+					<Input v-model.trim="forgetForm.telcode" placeholder="验证码" :maxlength="10"></Input>
+					<countdown class="get-code" text="获取验证码" @click="forgetForm.telSession= $event"
+					           :phone="forgetForm.telphone"  url="/getResetCode.do"></countdown>
+				</FormItem>
+				<FormItem prop="password">
+					<Input v-model.trim="forgetForm.password" type="password" placeholder="输入密码" clearable></Input>
+				</FormItem>
+				<FormItem prop="password_cp">
+					<Input v-model.trim="forgetForm.password_cp" type="password" placeholder="确认密码" clearable></Input>
+				</FormItem>
+			</Form>
+
+			<div :class="['submit',{on: activity}]" @click="submit">提交</div>
+		</div>
+	</mt-popup>
 </div>
 </template>
 
@@ -70,11 +115,26 @@ export default {
 			passForm: {
 				telphone: '15900418638',
 				telpass: 'lantoev.com',
-			}
+			},
+			bindForm:{
+				telphone:'',
+				smsCode:'',
+				telSession:'',
+				password:'',
+			},
+			forgetForm:{
+				telphone:'',
+				telcode:'',
+				telSession:'',
+				password:'',
+				password_cp:'',
+			},
+			showBind: false,
+			showForget: false,
 		}
 	},
 	computed:{
-		canLogin(){
+		activity(){
 			let status= false
 			switch (this.activeBlock){
 				case 'code':{
@@ -89,23 +149,78 @@ export default {
 					}
 					break
 				}
+				case 'bindPhone':{
+					if(reg.mobile.test(this.bindForm.telphone) && this.bindForm.smsCode&& this.bindForm.password){
+						status= true
+					}
+					break
+				}
+				case 'bindWeixin':{
+
+					break
+				}
+				case 'forget':{
+					if(reg.mobile.test(this.forgetForm.telphone) && this.forgetForm.telcode
+						&& this.forgetForm.password && this.forgetForm.password_cp){
+						status= true
+					}
+					break
+				}
 			}
 			return status
 		}
 	},
+	watch:{
+		'$route'(){
+			this.showBlock()
+		},
+	},
+	mounted(){
+		this.showBlock('code')
+	},
 	methods:{
-		login(){
-			if(this.canLogin){
+		showBlock(block){
+			let show= this.$route.query.type
+			if(show== 'forget'){
+				this.activeBlock= 'forget'
+				this.showForget=true
+			} else {
+				this.activeBlock= block|| 'pass'
+				this.showForget=false
+			}
+		},
+		submit(){
+			if(this.activity){
 				switch (this.activeBlock){
 					case 'code':{
-						this.axiosHxx.post('/operate/controller/operateLogin', this.codeForm).then(res => {
+						this.axiosHxx.post('/operate/controller/carLiveLogin', this.codeForm).then(res => {
 							this.loginSuccess(res.data)
 						})
 						break
 					}
 					case 'pass':{
-						this.axiosHxx.post('/operate/controller/passwordLogin', this.passForm).then(res => {
+						this.axiosHxx.post('/operate/controller/carlivePWDLogin', this.passForm).then(res => {
 							this.loginSuccess(res.data)
+						})
+						break
+					}
+					case 'bindPhone':{
+						this.axiosHxx.post('/operate/qixiuwang/bind', this.bindForm).then(res => {
+							if(res.data.success){
+								this.activeBlock='code'
+								this.showBind= false
+								this.$toast('绑定成功');
+								this.goBackUrl()
+							}
+						})
+						break
+					}
+					case 'forget':{
+						this.axiosHxx.post('/resetPassword.do', this.forgetForm).then(res => {
+							if(res.data.success){
+								this.$toast('密码重置成功，请登录');
+								this.$router.go(-1)
+							}
 						})
 						break
 					}
@@ -114,9 +229,17 @@ export default {
 		},
 		loginSuccess(data){
 			if(data.success){
+				if(data.data.qxtoken) this.$store.commit('setQixiuToken',data.data.qxtoken);
 				this.$store.commit('setHxxToken',data.data.tokenStr);
-				this.$toast('登录成功');
-				this.goBackUrl()
+				this.$store.commit('setUserInfo',data.data);
+
+				if(data.data.isBindNewphone== 1){
+					this.$toast('登录成功');
+					this.goBackUrl()
+				}else{
+					this.activeBlock='bindPhone'
+					this.showBind= true
+				}
 			}
 		},
 		goBackUrl(){
@@ -125,9 +248,7 @@ export default {
 					path: this.$route.query.redirect
 				})
 			}else{
-				this.$router.replace({
-					path: '/'
-				})
+				this.$router.replace({path: '/'})
 			}
 		},
 	}
@@ -158,24 +279,24 @@ export default {
 		}
 	}
 	.active-block{
-		.get-code{
-			background-color: white;
-			color: #333333;
-			font-size: 14px;
-			position: absolute;
-			top: 50%;
-			right: 0;
-			transform: translateY(-50%);
-			&.off{
-				color: #999999;
-			}
-		}
 		.forget{
 			position: absolute;
 			right: 0;
 			bottom: 0;
 			font-size: 14px;
 			color: #666666;
+		}
+	}
+	.get-code{
+		background-color: white;
+		color: #333333;
+		font-size: 14px;
+		position: absolute;
+		top: 50%;
+		right: 0;
+		transform: translateY(-50%);
+		&.off{
+			color: #999999;
 		}
 	}
 	.submit{
@@ -246,6 +367,25 @@ export default {
 					color: #999999;
 					font-size: 12px;
 				}
+			}
+		}
+	}
+	.bind-phone, .forget-phone{
+		padding: 40px 30px 0;
+		height: 100vh;
+		width: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		background-color: white;
+		>p{
+			color: #333333;
+			font-size: 14px;
+			line-height: 20px;
+			text-align: center;
+			margin-bottom: 40px;
+			label{
+				color: #FE8636;
 			}
 		}
 	}

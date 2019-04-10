@@ -34,6 +34,7 @@ axiosHxx.interceptors.request.use(config => {
 	// if(token) {
 	// 	config.headers.token= token
 	// }
+	Indicator.close()
     Indicator.open({
       text: '请稍候...',
       spinnerType: 'snake'
@@ -71,7 +72,7 @@ axiosHxx.interceptors.response.use(response => {
   	// 	console.log(key)
     // }
 	 //  console.log('error.response', error.response)
-	  Indicator.close()
+	 //  Indicator.close()
 	  // Toast({
 		//   message: error.response.data.error,
 		//   position: 'bottom',
@@ -106,6 +107,7 @@ axiosQixiu.interceptors.request.use(config => {
 	if(token) {
 		config.headers.token= token
 	}
+	Indicator.close()
 	Indicator.open({
 		text: '请稍候...',
 		spinnerType: 'snake'

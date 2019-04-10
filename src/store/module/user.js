@@ -6,7 +6,7 @@ export default {
 	state: {
 		hxxtoken: hxxtoken,
 		qixiutoken: qixiutoken,
-		userinfo: userinfo
+		userinfo: userinfo? JSON.parse(userinfo): ''
 	},
 	getters: {
 
@@ -19,6 +19,10 @@ export default {
 		setQixiuToken(state, token){
 			localStorage.setItem('QIXIUTOKEN', token || '')
 			state.qixiutoken = token;
+		},
+		setUserInfo(state, info){
+			localStorage.setItem('USERINFO', info? JSON.stringify(info): '')
+			state.userinfo = info;
 		},
 		logout(state){
 			localStorage.removeItem('HXXTOKEN')
