@@ -1,11 +1,11 @@
 <template>
 <div style="height: 100vh;overflow: auto;">
-  <mt-header title="匹配车辆" style="position: fixed;top: 0;width: 100%;z-index: 1"><mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button></mt-header>
-  <img class="compImg" :src="companyDetail.pic||'/static/img/shqxwbig.png'">
+  <!--<mt-header title="匹配车辆" style="position: fixed;top: 0;width: 100%;z-index: 1"><mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button></mt-header>-->
+  <img class="compImg" :src="companyDetail.pic||'/img/maintain/shqxwbig.png'">
   <div class="content" >
     <div class="row">
       <p>{{companyDetail.name}}</p>
-      <span style="padding-left: 15px;background-image: url('/static/img/remark/address_gray.png');background-size: 12px auto;background-position: left center;background-repeat: no-repeat">门店地址：{{companyDetail.addr}}</span>
+      <span style="padding-left: 15px;background-image: url('/img/remark/address_gray.png');background-size: 12px auto;background-position: left center;background-repeat: no-repeat">门店地址：{{companyDetail.addr}}</span>
     </div>
     <div class="row" style="margin-bottom: 5px">
       <p>匹配车辆信息</p>
@@ -19,28 +19,19 @@
         <input placeholder="请输入车牌号" v-model="cardno" @blur="bodyScroll" ref="input" style="padding-left: 50px"/>
       </div>
     </div>
-    <!--<div class="row">-->
-      <!--<label>手机号</label>-->
-      <!--<div class="input">-->
-        <!--<input placeholder="请输入手机号" v-model="tel" :readonly="islogin" :class="{readonly: islogin}"/>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div class="row" v-show="!islogin">-->
-      <!--<label>验证码-->
-        <!--<em id="code" style="float: right; color: #438eff;font-style: normal" @click="getcode">{{codebutton}}</em>-->
-      <!--</label>-->
-      <!--<div class="input">-->
-        <!--<input placeholder="请输入验证码" v-model="code" />-->
-      <!--</div>-->
-    <!--</div>-->
+
     <div id="next" :class="{on: buttonon, button:true}" @click="next">下一步</div>
   </div>
 
-  <!--<pic_verification style="display: none"></pic_verification>-->
   <mt-popup v-model="areavisible"  style="width: 90%" class="areaselect">
-    <mt-picker :slots="areaslots" @change="areachange" :showToolbar="true" >
-      <div @click="areavisible=false" class="sure">确定</div>
-    </mt-picker>
+	  <div class="popupBlock">
+		  <mt-radio
+				  @click.native="areavisible= false"
+				  align="right"
+				  v-model="area"
+				  :options="plateArea">
+		  </mt-radio>
+	  </div>
   </mt-popup>
 
   <mt-popup v-model="remarkvisible" position="right" class="remarkblock">
@@ -48,7 +39,7 @@
     <div class="remarkhead">
       <h1>您对该门店服务满意吗？</h1>
       <p>以下反馈是匿名的，便于我们记录并沟通改进</p>
-      <img src="../../assets/img/remark/chartico.png"/>
+      <img src="/img/remark/chartico.png"/>
     </div>
     <div class="remarkbody">
       <div class="head">{{companyDetail.name|| $route.query.compName}}<em @click="$router.go(-2)">修改</em></div>
@@ -56,19 +47,19 @@
         <li :data-index='index' v-for='(item, index) in satisfaction' :key='index'>
           <div class="left">{{ item.title }}</div>
           <div class="center">
-            <img data-index='0' src="/static/img/yellow.png" alt="" @click='chooseLevel($event)'>
-            <img data-index='1' src="/static/img/yellow.png" alt="" @click='chooseLevel($event)'>
-            <img data-index='2' src="/static/img/yellow.png" alt="" @click='chooseLevel($event)'>
-            <img data-index='3' src="/static/img/gray.png" alt="" @click='chooseLevel($event)'>
-            <img data-index='4' src="/static/img/gray.png" alt="" @click='chooseLevel($event)'>
+            <img data-index='0' src="/img/remark/yellow.png" alt="" @click='chooseLevel($event)'>
+            <img data-index='1' src="/img/remark/yellow.png" alt="" @click='chooseLevel($event)'>
+            <img data-index='2' src="/img/remark/yellow.png" alt="" @click='chooseLevel($event)'>
+            <img data-index='3' src="/img/remark/gray.png" alt="" @click='chooseLevel($event)'>
+            <img data-index='4' src="/img/remark/gray.png" alt="" @click='chooseLevel($event)'>
           </div>
           <div class="right" id='satisfaction'>一般</div>
         </li>
       </ul>
       <div class="saymore">
         <input v-model="saymore" placeholder="还想再说点什么吗？" readonly="readonly"/>
-        <img class="good" @click="remark('good')" src="/static/img/remark/goodon.png"/>
-        <img class="bad" @click="remark('bad')" src="/static/img/remark/bad.png"/>
+        <img class="good" @click="remark('good')" src="/img/remark/goodon.png"/>
+        <img class="bad" @click="remark('bad')" src="/img/remark/bad.png"/>
       </div>
       <ul class="tag">
         <li v-for="(item, index) in tags" @click="clicktag(index)" :class="{on: item.checked}">{{item.name}}</li>
@@ -95,11 +86,6 @@
         codebutton: "获取验证码",
         islogin: false,
         areavisible: false,
-        areaslots: [{
-          flex: 1,
-          values: ['沪','京','津','渝','黑','吉','辽','蒙','冀','新','甘','青','陕','宁','豫','鲁','晋','皖','鄂','湘','苏','川','黔','滇','桂','藏','浙','赣','粤','闽','台','琼','港','澳'],
-          className: 'areas',
-        }],
 
         remarkvisible: false,
         satisfaction: [    //满意度
@@ -129,6 +115,18 @@
         ]
       }
 		},
+		computed:{
+			plateArea(){
+				let area= ['沪','京','津','渝','黑','吉','辽','蒙','冀','新','甘','青','陕','宁','豫','鲁','晋','皖','鄂','湘','苏','川','黔','滇','桂','藏','浙','赣','粤','闽','台','琼','港','澳'], arr=[]
+				for(let i in area){
+					arr.push({
+						label: area[i],
+						value: area[i],
+					})
+				}
+				return arr
+			}
+		},
     watch: {
       cardno(val){
         this.cardno= this.cardno.toUpperCase()
@@ -151,9 +149,9 @@
 		  // console.log(this.$router)
       if(this.$route.query.show=='yes') this.remarkvisible=true
 	    if(this.$route.query.corpId){
-		    this.axios({
+		    this.axiosQixiu({
 			    method: 'get',
-			    baseURL: '/repairproxy',
+			    baseURL: '/repair-proxy',
 			    url: '/micro/search/company/repair/'+this.$route.query.corpId ,
 		    }).then(res => {
 			    this.companyDetail = res.data
@@ -170,7 +168,7 @@
           Toast("请输入正确手机号")
           return
         }
-        this.axios({
+        this.axiosQixiu({
           method: 'post',
           url: '/message/sms/sendsmscaptcha',
           headers: {
@@ -243,7 +241,7 @@
       	// 	console.log('MessageBox', key)
         // }
         if(!this.checkval()) return
-	      this.axios.get('/comment/maintain/checkUserVehicle?vehicleNum='+this.area+ this.cardno.trim()).then(res => {
+	      this.axiosQixiu.get('/comment/maintain/checkUserVehicle?vehicleNum='+this.area+ this.cardno.trim()).then(res => {
 			console.log('res.data', res.data)
 			if(Boolean(res.data)){
 				this.$router.push({path: '/remarkMatch', query: { corpId: this.$route.query.corpId, show: 'yes' }})
@@ -316,18 +314,18 @@
           }
         }
         for(let i=0; i<next.length; i++){
-          next[i].setAttribute('src','/static/img/gray.png')
+          next[i].setAttribute('src','/img/gray.png')
         }
         for(let i=0; i<previous.length; i++){
-          previous[i].setAttribute('src','/static/img/yellow.png')
+          previous[i].setAttribute('src','/img/yellow.png')
         }
         console.log(this.promise,this.serviceQuality,this.repairQuality,this.repairSpeed,this.repairPrice);
       },
       remark(item){
         if(item=='good'){
           this.please=0
-          $(".good").attr('src','/static/img/remark/goodon.png')
-          $(".bad").attr('src','/static/img/remark/bad.png')
+          $(".good").attr('src','/img/remark/goodon.png')
+          $(".bad").attr('src','/img/remark/bad.png')
           this.tags=[
             {name: '价格实惠', checked: false},
             {name: '服务热情', checked: false},
@@ -341,8 +339,8 @@
           ]
         }else{
           this.please=1
-          $(".good").attr('src','/static/img/remark/good.png')
-          $(".bad").attr('src','/static/img/remark/badon.png')
+          $(".good").attr('src','/img/remark/good.png')
+          $(".bad").attr('src','/img/remark/badon.png')
           this.tags=[
             {name: '乱收费', checked: false},
             {name: '维修时间长', checked: false},
@@ -385,7 +383,7 @@
             delete param.unionid
           }
 
-        this.axios({
+        this.axiosQixiu({
           method: 'post',
           url: url,
           data: param
@@ -421,7 +419,7 @@
 .compImg{
   width: 100%;
 	max-height: 200px;
-  margin-top: 40px;
+  /*margin-top: 40px;*/
 }
   .content{
     width: 100%;
@@ -589,19 +587,19 @@
 
 </style>
 <style>
-  .areaselect .picker-toolbar{
-    position:  absolute;
-    bottom: -40px;
-    width: 100%;
-  }
-  .areaselect .picker-toolbar .sure{
-    margin-top: 5px;
-    width: 100%;
-    text-align: center;
-    border-radius: 5px;
-    color: white;
-    background-color: #438eff;
-    height: 40px;
-    line-height: 40px;
-  }
+  /*.areaselect .picker-toolbar{*/
+    /*position:  absolute;*/
+    /*bottom: -40px;*/
+    /*width: 100%;*/
+  /*}*/
+  /*.areaselect .picker-toolbar .sure{*/
+    /*margin-top: 5px;*/
+    /*width: 100%;*/
+    /*text-align: center;*/
+    /*border-radius: 5px;*/
+    /*color: white;*/
+    /*background-color: #438eff;*/
+    /*height: 40px;*/
+    /*line-height: 40px;*/
+  /*}*/
 </style>

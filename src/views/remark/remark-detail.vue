@@ -1,9 +1,9 @@
 <template>
 <div id="remarkdetail" >
-	<mt-header title="点评详情" style="position: fixed;top: 0;width: 100%;z-index: 100"><mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button></mt-header>
+	<!--<mt-header title="点评详情" style="position: fixed;top: 0;width: 100%;z-index: 100"><mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button></mt-header>-->
 
       <div class="compinfo" >
-        <img :src="info.companyPhoto ||'/static/img/shqxw.jpg'"/>
+        <img :src="info.companyPhoto ||'/img/maintain/shqxw.jpg'"/>
         <div class="rightinfo">
           <p class="name">{{info.companyName}}</p>
           <p class="small">{{info.companyAddress}}</p>
@@ -12,8 +12,8 @@
 	<div class="remark">
 		<p>维修车牌：{{info.vehicleNum}}</p>
 		<p>点评日期：{{info.createDate}}</p>
-		<p v-if="info.avgScore">我的评分：<img src="/static/img/yellow.png" v-for="index in parseInt(info.avgScore)" :key="'yellow'+index"/>
-			<img src="/static/img/gray.png" v-for="index in (5-parseInt(info.avgScore))" :key="'gray'+index"/>
+		<p v-if="info.avgScore">我的评分：<img src="/img/remark/yellow.png" v-for="index in parseInt(info.avgScore)" :key="'yellow'+index"/>
+			<img src="/img/remark/gray.png" v-for="index in (5-parseInt(info.avgScore))" :key="'gray'+index"/>
 		</p>
 		<p>评分详情：
 			履约:{{info.keepAppointment}}
@@ -51,13 +51,13 @@ export default {
 	    let openid= localStorage.getItem('QXWOPENID')
 	    let url= '/comment/maintain/'+ this.$route.query.id
 	    if(!token && openid) url+= ('?openId='+ openid)
-      this.axios({
+      this.axiosQixiu({
         method: 'get',
         url: url,
       }).then(res => {
 		this.info= res.data
 	      if(res.data.complaintId){
-		      this.axios.get('/comment/complaint/maintain/'+ res.data.complaintId).then(res => {
+		      this.axiosQixiu.get('/comment/complaint/maintain/'+ res.data.complaintId).then(res => {
 			      this.complaint= res.data
 		      })
 	      }
@@ -73,7 +73,7 @@ export default {
 
 <style scoped lang='less'>
 .compinfo{
-	margin-top: 40px;
+	/*margin-top: 40px;*/
 	padding: 10px 20px;
 	position: relative;
 	border-bottom: 1px solid #f1f1f1;
@@ -103,7 +103,7 @@ export default {
 			font-size: 12px;
 			padding-left: 15px;
 			color: #d1d1d1;
-			background: url("/static/img/remark/address_gray.png") no-repeat left center;
+			background: url("/img/remark/address_gray.png") no-repeat left center;
 			background-size: 12px auto;
 		}
 	}

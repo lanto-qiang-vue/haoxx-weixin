@@ -33,7 +33,7 @@
 		<div class="submit" @click="next">下一步</div>
 	</div>
 
-	<mt-popup v-model="showChangePhone" position="right">
+	<mt-popup v-model="showChangePhone" position="right" style="height: 100vh;width: 100%">
 		<div class="change-phone">
 			<Form :model="phoneChange" class="account-form"
 			      :label-width="0" label-position="left" ref="phoneChange">
