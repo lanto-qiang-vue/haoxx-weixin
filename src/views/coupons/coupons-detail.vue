@@ -59,6 +59,7 @@
 </template>
 <script>
 import qrcode from '~/public/lib/qrcode.js'
+
 export default {
 	name: "coupons-detail",
 	data(){
@@ -90,6 +91,7 @@ export default {
 		});
         this.img =  qr.toDataURL("image/png");
         this.getList(this.detail.code);
+
 	},
 }
 </script>
