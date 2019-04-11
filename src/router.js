@@ -143,4 +143,36 @@ routes: [
 		},
 		component: () => import('@/views/remark/match.vue')
 	},
+	{
+		path: '/coupons-type',
+		name: 'coupons-type',
+		meta: {
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/coupons/coupons-type.vue')
+	},
+	{
+		path: '/coupons',
+		name: 'coupons',
+		meta: {
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/coupons/coupons.vue')
+	},
+	{
+		path: '/coupons-detail',
+		name: 'coupons-detail',
+		meta: {
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/coupons/coupons-detail.vue')
+	},
+	{
+		path: '/coupons-coms',
+		name: 'coupons-coms',
+		meta: {
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/coupons/coupons-coms.vue')
+	},
 ]})

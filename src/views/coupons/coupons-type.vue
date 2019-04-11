@@ -1,35 +1,19 @@
 <template>
-<div class="get-coupons">
-	<div class="head">
-		<img src="/static/img/coupons/head.png"/>
-		<p>活动时间：2019.03.15-2019.04.14</p>
-		<div class="rule" @click="showRule">使用规则</div>
-	</div>
+<div class="coupons-type">
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 	<ul class="coupons-list">
-		<li v-for="item in list">
+		<router-link tag="li" v-for="(item, key) in list" :key="key" to="/coupons">
 			<div class="content">
 				<div class="left">
-					<p>{{item.name}}</p>
-					<span>有效期：{{item.startDate}}-{{item.endDate}}</span>
+					<label>{{item.name}}</label>
 				</div>
 				<i></i>
 				<div class="right">
-					<div v-if="item.type == 1" class="button on" style="cursor:pointer;" @click="getCoupons(item.id)" >立即领取</div>
-					<div v-else-if="item.type == 2" class="tag">
-						<p>已领取</p>
-					</div>
-					<div v-else class="tag">
-						<p>已领完</p>
-					</div>
-					<!--<div class="times">-->
-						<!--<p>已核销数</p>-->
-						<!--<span>1690</span>-->
-					<!--</div>-->
+					<div class="times"><span>可用{{item.type}}张</span></div>
 				</div>
 			</div>
-		</li>
+		</router-link>
 		<!--<div v-if="allLoaded" style="text-align: center; line-height: 30px; background-color: #f8f8f8; font-size: 14px; color: #999;">暂无更多数据...</div>-->
 	</ul>
 	</mt-loadmore>
@@ -39,10 +23,13 @@
 <script>
 import {MessageBox,Toast,} from 'mint-ui'
 export default {
-	name: "get-coupons",
+	name: "coupons-type",
 	data(){
 		return{
-			list:[],
+			list:[
+				{name: '优惠券', type: 1},
+				{name: '优惠券', type: 2},
+			],
 			page: 1,
 			total: 0,
 			allLoaded: false,
@@ -56,7 +43,7 @@ export default {
 	},
 	methods:{
         getCoupons(id){
-            this.axios.post('/promotion/user_coupon',{couponId:id}).then(res=>{
+            this.axiosQixiu.post('/promotion/user_coupon',{couponId:id}).then(res=>{
                 switch(res.data.code){
 					case "1000":
 					    //重复领取
@@ -93,7 +80,7 @@ export default {
 				size: 10,
 			}
 			if(this.selected) params.hasRead= this.selected
-			this.axios.get('/promotion/coupon/query',{params: params}).then(res=>{
+			this.axiosQixiu.get('/promotion/coupon/query',{params: params}).then(res=>{
 				this.total= res.data.totalElements
                 if(res.data.content&&res.data.content.length){
 				    let data = res.data.content;
@@ -122,59 +109,14 @@ export default {
 </script>
 
 <style scoped lang="less">
-.get-coupons{
+.coupons-type{
 	height: 100vh;
 	overflow: auto;
 	background-color: white;
-	.head{
-		position: relative;
-		img{
-			width: 100%;
-		}
-		p{
-			font-size: 14px;
-			color: #FBD008;
-			position: absolute;
-			bottom: 10%;
-			right: 10%;
-		}
-		div{
-			font-size: 12px;
-			position: absolute;
-			border-radius: 12px 0 0 12px;
-			background-color: black;
-			color: white;
-			opacity: .6;
-			height: 26px;
-			line-height: 26px;
-			padding: 0 15px 0 10px;
-			top: 10px;
-			right: 0;
-			&:after{
-				content: '';
-				position: absolute;
-				right: 5px;
-				top: 9px;
-				border-right: 1px solid;
-				border-bottom: 1px solid;
-				width: 8px;
-				height: 8px;
-				color: white;
-				-webkit-transform: rotate(-45deg);
-				transform: rotate(-45deg);
-			}
-		}
-
+	.coupons-list{
+		padding-top: 20px;
 	}
 }
-
 @import "./coupons.less";
 </style>
-<style lang="less">
-.coupons-rules{
-	text-align: left;
-	color: #999999;
-	font-size: 12px;
-	line-height: 20px;
-}
-</style>
+

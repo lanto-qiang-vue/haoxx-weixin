@@ -1,17 +1,17 @@
 <template>
-<div>
-	{{}}
+<span class="select-radio">
+	<label @click="click">{{label}}</label>
 	<mt-popup v-model="showRadio" style="width: 90%">
 		<div class="popupBlock">
 			<mt-radio
-					@click.native="select"
+					@click.native="showRadio= false"
 					align="right"
-					v-model="value"
+					v-model="val"
 					:options="options">
 			</mt-radio>
 		</div>
 	</mt-popup>
-</div>
+</span>
 </template>
 
 <script>
@@ -23,33 +23,54 @@ export default {
 				return []
 			}
 		},
-		text:{
-			default: '获取验证码'
+		value:{
+			default: ''
 		},
-		disableClass:{
-			default: 'off'
-		},
-		phone:{
-			default:"",
-		},
-		url:{
-			default:"",
+		setclass:{
+			default: ''
 		}
 	},
 	data(){
 		return{
-			value: '',
 			showRadio: false
 		}
 	},
+	computed:{
+		label(){
+			let label= ''
+			if(this.value && this.options.length){
+				for(let i in this.options){
+					if(this.options[i].value== this.value){
+						label= this.options[i].label
+						break
+					}
+				}
+			}
+			return label
+		},
+		val:{
+			get () {
+				return this.value
+			},
+			set (newValue) {
+				this.$emit('input', newValue)
+			}
+		}
+	},
 	methods:{
-		select(){
-
+		click(){
+			console.log('click')
+			if(!this.showRadio) this.showRadio= true
 		}
 	}
 }
 </script>
 
 <style scoped lang="less">
-
+.select-radio{
+	label{
+		display: inline-block;
+		width: 100%;
+	}
+}
 </style>

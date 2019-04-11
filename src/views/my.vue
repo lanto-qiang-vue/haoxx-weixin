@@ -7,7 +7,7 @@
 			<span>{{userinfo.nickName}}</span>
 		</div>
 		<div class="button">
-			<router-link tag="div" to="/"><span>1</span><p>我的卡券</p></router-link>
+			<router-link tag="div" to="/coupons-type"><span>1</span><p>我的卡券</p></router-link>
 			<router-link tag="div" to="/my-reservation"><span>2</span><p>我的预约</p></router-link>
 			<i></i>
 		</div>

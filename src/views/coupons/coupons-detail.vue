@@ -58,7 +58,7 @@
 </div>
 </template>
 <script>
-import qrcode from '~/public/static/lib/qrcode.js'
+import qrcode from '~/public/lib/qrcode.js'
 export default {
 	name: "coupons-detail",
 	data(){
@@ -77,7 +77,7 @@ export default {
 	},
 	methods:{
 	    getList(code){
-            this.axios.get('/promotion/user_coupon/'+code).then(res=>{
+            this.axiosQixiu.get('/promotion/user_coupon/'+code).then(res=>{
                   this.detail = res.data;
 			});
 		}
