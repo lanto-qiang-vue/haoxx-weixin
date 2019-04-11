@@ -1,10 +1,7 @@
 <template>
 <div id="compDetail" v-show="compId">
-	<slide-bar :pageLocation="[
-            {now: true, height: 1},
-            {now: false, height: 1000}
-          ]"
-			:minHeight="minHeight" :toLocation="toMaintainDetailLocation" @bodyHeight="height= $event;calcHeight" ref="slideBar" @toLocation="toMaintainDetailLocation= $event">
+	<slide-bar :pageLocation="[ 1, 1000 ]"
+			:minHeight="minHeight" :toLocation="toMaintainDetailLocation" @bodyHeight="height= $event;calcHeight" ref="slideBar" @toLocation="toMaintainDetailLocation= $event" :bottom="50">
 <div>
 <img class="close" @click="closeDetail" src="~@/assets/img/maintain/关闭.png" />
 <div class="info" >
@@ -18,11 +15,13 @@
   <div class="text">特约维修：{{all.brand}}</div>
   <div class="text">经营范围：{{all.bizScope}}</div>
   <div class="button">
-    <router-link tag="div" :to="{path: '/carOwner-centre/appointment', query: {id: this.compId} }">
+    <router-link tag="div" :to="{
+    	path: '/reservation-detail',
+    	query: {license: this.all.licenseNo, name: this.all.name}}">
       <span class="yuyue">预约服务</span></router-link>
     <!--<router-link tag="div" :to="{path: '/carOwner-centre/visitService', query: {id: id} }">-->
       <!--<span class="shangmeng">上门服务</span></router-link>-->
-    <router-link tag="div" :to="{ path : '/remarkMatch', query: { corpId: this.compId }}">
+    <router-link tag="div" :to="{ path : '/remark-match', query: { corpId: this.compId }}">
       <span class="dianping">点评</span></router-link>
     <div v-show="all.tel" ><a class="lianxi" :href="'tel:'+ all.tel">联系</a></div>
     <div v-show="!all.tel"><a class="lianxi" @click="noTal">联系</a></div>
@@ -102,10 +101,10 @@
 	</mt-actionsheet>
 
 	<div class="detail-bottom">
-		<div class="lookall" >查看详情</div>
-		<!--<div class="lookmap" >显示地图</div>-->
+		<div class="lookall" v-show="toMaintainDetailLocation==0" @click="toMaintainDetailLocation=1">查看详情</div>
+		<div class="lookmap" v-show="toMaintainDetailLocation==1" @click="toMaintainDetailLocation=0">显示地图</div>
 		<div class="gps" @click="sheetVisible=true">导航</div>
-		<div class="distance">距离您 {{all.distance? all.distance.toFixed(1): 0}}km</div>
+		<div class="distance">距离您 {{distance.toFixed(1)}}km</div>
 	</div>
 </div>
 </template>
@@ -145,7 +144,6 @@ export default {
 			    }
 		    }],
 	    sheetVisible: false,
-      maintainDetailShow: false,
 	    height: 300,
       listHeight: 300,
 	    minHeight: 0,
@@ -153,7 +151,9 @@ export default {
     }
   },
   computed: {
-
+	distance(){
+		return this.$route.query.distance? parseFloat(this.$route.query.distance): 0
+	},
 	  compId(){
       return this.$route.query.compId
     },
@@ -178,7 +178,7 @@ export default {
 	watch: {
 		compId(id){
 			if(id){
-
+				this.getData()
 			}
 		},
 	    height(val){
@@ -212,25 +212,14 @@ export default {
 		    url: '/micro/search/company/repair/'+ this.compId,
 	    }).then(res => {
 		    this.all=res.data
-		    this.maintainDetailShow= true
 		    setTimeout( ()=> {
-			    // console.log('$("#compDetail .info").outerHeight()',$("#compDetail .info").outerHeight())
-			    // self.$store.commit('reSetSlideBodyHeight', $("#compDetail .info").outerHeight())
-			    // self.$store.commit('setSlideMinHeight', $("#compDetail .info").outerHeight())
-			    this.toMaintainDetailLocation= 0
+
 			    this.minHeight= $("#compDetail .info").outerHeight()
-			    // this.$emit('minHeight', $("#compDetail .info").outerHeight())
-			    setTimeout( ()=> {
-				    this.$refs.slideBar.changeLocation(this.toMaintainDetailLocation)
-				    $("#compDetail .list").scrollTop(0)
-			    },0)
-
-			    this.$emit('goMap', {lon: res.data.lon, lat: res.data.lat})
-			    // this.toMaintainDetailLocation=0
-			    this.$emit('toLocation', 0)
-			    this.$emit('init')
-		    },5)
-
+			    // this.$refs.slideBar.setHeight(this.minHeight)
+			    this.toMaintainDetailLocation= 0
+				console.log('this.minHeight', this.minHeight)
+		    },50)
+		    this.$emit('goMap', {lon: res.data.lon, lat: res.data.lat})
 	    })
 
 	    this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page=0&companyId='+this.compId).then( (res) => {

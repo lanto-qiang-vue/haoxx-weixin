@@ -11,8 +11,8 @@
 			<img v-if="item.value=='301'" src="/img/maintain/icon-base.png"/>
 		</li>
 	</ul>
-<slide-bar :pageLocation="[ 1, 200, 1000 ]"
-           v-show="show" :minHeight="0" :toLocation="toLocation" @toLocation="toLocation= $event"
+<slide-bar :pageLocation="[ 1, 200, 1000 ]" ref="slideBar"
+           v-show="show" :minHeight="45" :toLocation="toLocation" @toLocation="toLocation= $event"
            @bodyHeight="height= $event;calcHeight">
 <div class="maintainList">
 	<div id="head1" v-show="showHead=='search'">
@@ -21,7 +21,7 @@
     <div class="left on">
       <input v-model="search.q" type="search" :placeholder='inputPlaceholder'
              @focus="focus" @blur="isFocus=false" @keydown="key($event)" ref="searchInput"/>
-      <div class="query"  @click="toQuery(true)"></div>
+      <!--<div class="query"  @click="toQuery(true)"></div>-->
       <img class="close" v-show="search.q" @click="search.q='';toQuery(true)" src="~@/assets/img/maintain/关闭.png" />
     </div>
     <!--<span @click="cancel" v-show="isFocus || search.q">取消</span>-->
@@ -140,29 +140,6 @@
         </li>
       </ul>
     </div>
-	    <div v-if="mapType=='300'">
-		    <ul class="com-list">
-			    <!--<div class="head"><span>智能推荐</span></div>-->
-			    <li v-for="(item, index) in list" :key="index" @click="goDetail(item)">
-				    <div class="picWrap">
-					    <img :src="item.pic? item.pic.split(',')[0] :'/img/drive-school.jpg'" />
-					    <!--<img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>-->
-				    </div>
-				    <div class="info">
-					    <!--<span>{{businessStatus(item.status)}}</span>-->
-
-					    <!--<span class="orange">{{item.grade=='N' ?'未评级' :item.grade}}</span>-->
-					    <p style="margin: 0;overflow: visible;">{{ item.name.split('(')[0] }}<span style="color: #fa8c16;margin-left: 5px">{{item.grade=='N' ?'未评' :item.grade}}级</span><small>（{{gradeText(item.grade)}}）</small></p>
-					    <div class="address">{{ item.name.substring(item.name.indexOf('('), item.name.length)  }}</div>
-					    <div class="address">
-						    <span class="miles">{{ item.distance.toFixed(1) }}km</span>
-						    <span class="address_area" style="white-space: normal;">培训驾照类型：{{item.bizScope}}</span>
-					    </div>
-
-				    </div>
-			    </li>
-		    </ul>
-	    </div>
       <div v-show="allLoaded && total>=10" style="text-align: center; line-height: 30px; background-color: #f8f8f8; font-size: 14px; color: #999;">已经到底啦...</div>
     </mt-loadmore>
   </div>
@@ -190,7 +167,7 @@ let search= {
 export default {
 	name: "maintain-list",
 	components: { SlideBar},
-	props: [ 'blur', 'location', 'originalLocation'],
+	props: [ 'blur', 'nowLnglat' ],
     data(){
 		let sotrName= ''
 	    switch (this.$route.name){
@@ -311,14 +288,14 @@ export default {
         // console.log('maintainListHistory')
         return this.$store.state.app.maintainListHistory
       },
-	    getSchoolPoint(){
-      	    return this.search.schoolPoint
-	    },
-	    originalLng(){
-      	    return this.originalLocation.lng
-	    }
     },
     watch:{
+		show(isShow){
+			if(isShow){
+				this.calcHeight(this.height)
+			}
+			// this.$refs.slideBar.resetHeight()
+		},
       q(val){
         let flag= true
         // this.search.hot=''
@@ -327,13 +304,9 @@ export default {
         }
         if (flag) this.search.hot=''
       },
-      location(val){
-        // if(val!=2) this.showBlock = ''
-	      console.log('location', val)
-      },
       height(val){
-        // console.log('bodyHeightList', val)
-        if (this.show=='maintainList') this.calcHeight(val)
+        console.log('watch.height', val)
+        this.calcHeight(val)
 
       },
       is4s(){
@@ -344,66 +317,74 @@ export default {
         $('.search-input input').blur()
       },
 	    originalLng(){
+      	console.log('originalLng')
       	    this.search.sort= ''
 		    this.getCompList(true, true)
 	    }
     },
     mounted(){
+		console.log('list.mounted')
 		this.getArea()
 	    this.getQuery()
       // this.calcHeight(this.height)
-      $(".roll").bind('touchmove',function(e){
-      	// console.log('.roll-touchmove')
-        e.stopPropagation();
-      })
+      // $(".roll").bind('touchmove',function(e){
+      // 	// console.log('.roll-touchmove')
+      //   e.stopPropagation();
+      // })
+	   //  $("body").on('touchmove', '.roll',function(e){
+		//     // console.log('.roll-touchmove')
+		//     e.stopPropagation();
+		// })
+
+	    document.querySelector(".roll").addEventListener("touchmove",function(){
+		    event.stopImmediatePropagation();
+	    },false);
     },
     activated(){
+		console.log('maintainList.activated')
 		  this.getQuery()
     },
     methods:{
 		getQuery(){
-			let query= this.$route.query
-			if(query){
-				switch(query.special){
-					case 'base':{
-						console.log('query.item', query.item)
-
-						this.search= deepClone(search)
-						this.search.type= '300'
-						this.search.sort= '_score asc,rating desc,distance asc'
-						this.search.base= query.item.name.replace('驾校基地', '')
-						this.showHead= 'base'
-						this.getCompList(true, true, true)
-						setTimeout(()=>{
-							this.$emit('goMap', query.item)
-							this.$emit('renderMap', []);
-							this.renderMap([query.item], true)
-						},100)
-
-					}
-					default:{
-
-					}
-				}
-			}
-
-			for(let key in query){
-				this.search[key]= this.$route.query[key]
-			}
+			// let query= this.$route.query
+			// if(query){
+			// 	switch(query.special){
+			// 		case 'base':{
+			// 			console.log('query.item', query.item)
+			//
+			// 			this.search= deepClone(search)
+			// 			this.search.type= '300'
+			// 			this.search.sort= '_score asc,rating desc,distance asc'
+			// 			this.search.base= query.item.name.replace('驾校基地', '')
+			// 			this.showHead= 'base'
+			// 			this.getCompList(true, true, true)
+			// 			setTimeout(()=>{
+			// 				this.$emit('goMap', query.item)
+			// 				this.$emit('renderMap', []);
+			// 				this.renderMap([query.item], true)
+			// 			},100)
+			//
+			// 		}
+			// 		default:{
+			//
+			// 		}
+			// 	}
+			// }
+			//
+			// for(let key in query){
+			// 	this.search[key]= this.$route.query[key]
+			// }
 		},
 	    calcQuery(limit){
 		    let is164= this.search.type== '164'
-		    let is300= this.search.type== '300'
-		    let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours'+
+		    let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours,licenseNo'+
 			    '&q='+ this.search.q +
 			    '&page='+ (this.page-1) +','+ (limit ||this.limit)
-		    let defaultSort= is300?'_score asc,rating desc,distance asc': '_score asc,distance asc'
+		    let defaultSort= '_score asc,distance asc'
 		    query+= ('&sort='+ (this.search.sort|| defaultSort))
-		    if(this.location.lng) query+=('&point='+this.location.lat+','+this.location.lng)
-		    let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
-		    if(is300 && this.search.biz) fq+= ('+AND+kw:'+  this.search.biz)
-		    if(is300 && this.search.base) fq+= ('+AND+tag:'+  encodeURI(this.search.base))
-		    if(this.search.area && (is164 || is300)) fq+= '+AND+areaKey:'+ this.search.area
+		    if(this.nowLnglat.lng) query+=('&point='+this.nowLnglat.lat+','+this.nowLnglat.lng)
+		    let fq='&fq=status:1+AND+tag:hxx+AND+type:'+ this.search.type, is4s=''
+		    if(this.search.area && (is164 )) fq+= '+AND+areaKey:'+ this.search.area
 		    if(this.search.is4s && is164){
 			    is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
 			    fq+= '+AND+' + is4s
@@ -438,6 +419,7 @@ export default {
         // },100)
       },
 		select( arrName, val ){
+			console.log('select')
 			this.search[arrName]= val
 			switch(arrName){
 				case 'hot':{
@@ -542,7 +524,7 @@ export default {
 			if(this.$route.name=='school-map' && this.search.schoolPoint!= 300){
 				this.axiosQixiu({
 					baseURL: '/repair-proxy',
-					url: '/micro/search/company?fl=sid,type,name,addr,lon,lat,brand&q=&page=0,10&point='+this.location.lat+','+this.location.lng+'&fq=status:1+AND+type:301',
+					url: '/micro/search/company?fl=sid,type,name,addr,lon,lat,brand&q=&page=0,10&point='+this.nowLnglat.lat+','+this.nowLnglat.lng+'&fq=status:1+AND+type:301',
 					method: 'get',
 				}).then( (res) => {
 					this.renderMap(res.data.content, true)
@@ -551,6 +533,7 @@ export default {
 
 	    },
 	    dragend(){
+			console.log('dragend')
 		    switch (this.$route.name){
 			    case 'base-map':{
 			    	break
@@ -565,7 +548,6 @@ export default {
 				    this.getBase()
 			    }
 		    }
-
 	    },
       key(e) {
         if ( e.keyCode == 13 || e=='search') {
@@ -573,6 +555,7 @@ export default {
         }
       },
       cancel(){
+			// console.log('cancel')
         this.toLocation=0
         this.search.q='';
         this.search.area= ''
@@ -584,33 +567,19 @@ export default {
         this.$store.commit('setMaintainListHistory', false)
       },
       goDetail(item){
-			let type= item.type.toString()
-	      switch (this.$route.name){
-		      case 'remark-map':{
-			      this.$router.push({path: '/remarkMatch', query: { corpId: item.sid }})
-			      break;
-		      }
-		      case 'base-map':
-		      case 'school-map':{
-			      if(type=='301'){
-				      this.search.schoolPoint= '301'
-				      this.search.base= item.name.replace('驾校基地', '')
-				      this.$emit('goMap', item)
-				      this.getCompList(true, true)
-			      }else{
-				      this.$router.push({
-					      path: '/school-detail',
-					      query: { id: item.sid, lng: this.originalLocation.lng, lat: this.originalLocation.lat }})
-			      }
-			      break;
-		      }
-		      default :{
-			      this.$emit('goMap', item)
-			      this.$store.commit('setMaintainListHistory', false)
+			// let type= item.type.toString()
+	      // switch (this.$route.name){
+		   //    case 'remark-map':{
+			//       this.$router.push({path: '/remarkMatch', query: { corpId: item.sid }})
+			//       break;
+		   //    }
+		   //    default :{
+			//       // this.$emit('goMap', item)
+			//       this.$store.commit('setMaintainListHistory', false)
 			      this.$store.commit('setMaintainListHistory', item)
-			      this.$router.push({path:'/maintain', query:{compId: item.sid}})
-		      }
-	      }
+			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance}})
+		   //    }
+	      // }
 
       },
 	    renderMap(pointList, renderMarker){
@@ -645,42 +614,10 @@ export default {
 			    let point= pointList[i]
 			    let type= point.type.toString()
 			    let routeName= this.$route.name
-			    let lngLat= new AMap.LngLat(point.lon|| this.location.lng, point.lat|| this.location.lat)
+			    let lngLat= new AMap.LngLat(point.lon|| this.nowLnglat.lng, point.lat|| this.nowLnglat.lat)
 			    let marker= null, icon= null, callback= null, zIndex= 100
 
 			    switch (type){
-				    case '300':{
-					    icon= iconSchool
-					    callback= (e)=>{
-							this.list=[e.target.getExtData()]
-						    this.total=1
-						    this.showHead= 'none'
-						    this.allLoaded= true
-						    this.$emit('goMap', e.target.getExtData())
-						    this.calcHeight(this.height)
-					    }
-					    break;
-				    }
-				    case '301':{
-					    icon= iconBase
-					    zIndex= 110
-					    callback= (e)=>{
-					    	let temp= this.search
-							this.search= deepClone(search)
-						    this.search.schoolPoint= temp.schoolPoint
-						    this.search.type= '300'
-						    this.search.sort= '_score asc,rating desc,distance asc'
-						    this.search.base= e.target.getExtData().name.replace('驾校基地', '')
-						    this.showHead= 'base'
-						    this.schoolBrand= e.target.getExtData().brand
-						    this.getCompList(true, true, true)
-						    this.$emit('goMap', e.target.getExtData())
-						    // this.$emit('renderMap', []);
-						    // this.$emit('renderMap', [e.target], true);
-						    this.calcHeight(this.height)
-					    }
-					    break;
-				    }
 				    default :{
 					    icon= point.is4s? icon4s: iconNormal
 					    callback= (e)=>{
@@ -706,7 +643,7 @@ export default {
 			    markers.push(marker)
 		    }
 
-		    // console.log('markers', markers)
+		    console.log('markers', markers)
 
 		    // if(renderMarker){
 			 //    this.$emit('renderMarker', markers);

@@ -6,6 +6,10 @@ const maintainListHistory = () => {
 export default {
 	state: {
 		maintainListHistory: maintainListHistory(),
+		location:{
+			lng: 0,
+			lat: 0
+		}
 	},
 	getters: {
 
@@ -24,6 +28,10 @@ export default {
 				}
 			} else state.maintainListHistory=[]
 			localStorage.setItem('maintainListHistory', JSON.stringify(state.maintainListHistory))
+		},
+		setLocation(state, obj){
+			state.location.lng= obj.lng
+			state.location.lat= obj.lat
 		},
 	},
 	actions:{

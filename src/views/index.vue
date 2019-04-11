@@ -20,8 +20,8 @@
 		<router-link tag="li" to="/maintain"><img src="~@/assets/img/index/查选维修.png"/><p>查选维修</p></router-link>
 		<li><img src="~@/assets/img/index/维修记录.png"/><p>维修记录</p></li>
 		<li><img src="~@/assets/img/index/维修点评.png"/><p>维修点评</p></li>
-		<li><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></li>
-		<li><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></li>
+		<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>
+		<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>
 	</ul>
 </div>
 </template>

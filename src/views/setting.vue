@@ -33,7 +33,7 @@
 		<div class="submit" @click="next">下一步</div>
 	</div>
 
-	<mt-popup v-model="showChangePhone" position="right">
+	<mt-popup v-model="showChangePhone" position="right" style="height: 100vh;width: 100%">
 		<div class="change-phone">
 			<Form :model="phoneChange" class="account-form"
 			      :label-width="0" label-position="left" ref="phoneChange">
@@ -42,7 +42,8 @@
 				</FormItem>
 				<FormItem prop="code">
 					<Input v-model="phoneChange.telcode" placeholder="验证码"></Input>
-					<countdown class="get-code" text="获取验证码" ref="countdown" :phone="phoneChange.telphone" @click="getCode" url="/operate/account/getCode"></countdown>
+					<countdown class="get-code" text="获取验证码" ref="countdown"
+					           :phone="phoneChange.telphone" @click="getCode" url="/operate/account/getCode"></countdown>
 				</FormItem>
 			</Form>
 
@@ -60,20 +61,20 @@ export default {
 	data(){
 		return{
 			passChange:{
-                old_pwd: '123456',
-                new_pwd: '654321',
-                new_pwd_cp: '654321',
-                access_token:localStorage.getItem("token"),
+                old_pwd: 'lantoev.com1',
+                new_pwd: 'lantoev.com',
+                new_pwd_cp: 'lantoev.com',
+                // access_token:localStorage.getItem("token"),
 			},
 			phoneVerify:{
                 telphone: '17321492645',
                 pwd: '123456',
-                access_token:localStorage.getItem("token"),
+                // access_token:localStorage.getItem("token"),
 			},
 			phoneChange:{
                 telphone: '',
                 telcode: '',
-                access_token:localStorage.getItem("token"),
+                // access_token:localStorage.getItem("token"),
                 telSession:'',
 			},
 			showChangePass: false,
@@ -92,7 +93,10 @@ export default {
 	methods:{
         ChangePass(){
             this.axiosHxx.post('/operate/account/resetPassword', this.passChange).then(res => {
-              //下一步操作
+	            if(res.data.success){
+		            this.$toast("修改成功");
+		            this.$router.go(-1)
+	            }
             })
 		},
 		showBlock(){
