@@ -3,21 +3,13 @@
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 		<ul class="list">
-			<router-link tag="li" to="/reservation-detail">
+			<li v-for="item in list" :to="'/reservation-detail?id='+item.ORDER_ID">
 				<div class="head"><label>预约时间：</label>
-					2019-03-27 10:00
-					<span class="status">待处理</span>
+					{{item.ORDER_DATE.substr(0,16)}}
+					<span class="status">{{this.$store.state.user.unit[item.ORDER_TYPE]}}</span>
 				</div>
-				<p><label>指派公司：</label>上海申海汽车修理有限公司</p>
-				<p><label>服务内容：</label>洗车</p>
-			</router-link>
-			<li>
-				<div class="head"><label>预约时间：</label>
-					2019-03-27 10:00
-					<span class="status">待处理</span>
-				</div>
-				<p><label>指派公司：</label>上海申海汽车修理有限公司</p>
-				<p><label>服务内容：</label>洗车</p>
+				<p><label>指派公司：</label>{{item.TENANT_NAME}}</p>
+				<p><label>服务内容：</label>{{this.$store.state.user.unit[item.REPAIR_TYPE]}}</p>
 			</li>
 		</ul>
 	</mt-loadmore>
@@ -36,22 +28,21 @@ export default {
 		}
 	},
 	mounted(){
-		// this.getList(false)
+		this.getList(false)
 	},
 	methods:{
 		getList(flag){
 			let params={
-				page: this.page-1,
-				size: 10,
-				status:parseInt(this.selected[this.selected.length - 1])
+				page: this.page,
+				limit: 2,
 			}
 			// if(this.selected) params.hasRead= this.selected
-			this.axiosQixiu.get('/promotion/user_coupon/query',{params: params}).then(res=>{
-				this.total= res.data.totalElements
-				if(res.data.content&&res.data.content.length){
-					this.list=this.list.concat(res.data.content)
+			this.axiosHxx.post('/operate/order/list ',params).then(res=>{
+				this.total= res.data.total
+				if(res.data.data&&res.data.data.length){
+					this.list=this.list.concat(res.data.data)
 					// this.list=res.data.comments
-					if(this.list.length>=res.data.totalElements){
+					if(this.list.length>=res.data.total){
 						this.allLoaded=true
 					}else{
 						this.allLoaded=false

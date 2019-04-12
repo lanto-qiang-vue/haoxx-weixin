@@ -69,9 +69,9 @@ export default {
                 REPAIR_TYPE:"10191001",//维修类型1019系列
                 FAULT_DESC:"接口通不通",//故障描述
                 ORDER_ID:"",
+                ORDER_TYPE: "10411001",
 				//无关页面还必须有写字段
                 VIN_NO:"",
-                ORDER_TYPE: "10411001",
                 CUSTOMER_INFO:"",
                 STATUS: "10421001",
                 IS_ITEM_GROUP: "10041002",
@@ -87,7 +87,7 @@ export default {
 	},
 	methods:{
         confirmTime(res){
-        this.form.ORDER_DATE = res.getFullYear()+"-"+this.fillZero(res.getMonth()+1)+"-"+this.fillZero(res.getDay());
+        this.form.ORDER_DATE = res.getFullYear()+"-"+this.fillZero(res.getMonth()+1)+"-"+this.fillZero(res.getDate());
         this.form.ORDER_TIME= this.fillZero(res.getHours()) +":"+this.fillZero(res.getMinutes());
         this.form.appointmentTime = this.form.ORDER_DATE  + " " + this.form.ORDER_TIME;
         this.pickerVisible = this.form.appointmentTime;
@@ -104,9 +104,18 @@ export default {
                     //下一步操作
 				}
             })
+		},
+		getData(id){
+            this.axiosHxx.post('/operate/order/queryOrderDetail', {ORDER_ID:id}).then(res => {
+                if(res.success){
+                    //下一步操作
+					this.form = res.data.data;
+                }
+            })
 		}
 	},
 	mounted(){
+	   if(this.$route.query.id > 0) this.getData(this.$route.query.id);
        this.confirmTime(new Date());
         this.typeList =  this.$store.state.user.dict['1019'];
 	},
