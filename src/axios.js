@@ -25,7 +25,7 @@ axiosHxx.interceptors.request.use(config => {
 			data.access_token= store.state.user.hxxtoken
 		}
 		for(let key in data){
-			form.append(key, data[key]);
+			form.append(key, typeof data[key]=='object'?  JSON.stringify( data[key]): data[key] );
 		}
 		config.data= form
 	}

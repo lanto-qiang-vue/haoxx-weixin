@@ -1,12 +1,15 @@
 let hxxtoken= localStorage.getItem('HXXTOKEN')||''
 let qixiutoken= localStorage.getItem('QIXIUTOKEN')||''
 let userinfo= localStorage.getItem('USERINFO')||''
-
+let dict = localStorage.getItem('dict') || ''
+let unit = localStorage.getItem('unit') || ''
 export default {
 	state: {
 		hxxtoken: hxxtoken,
 		qixiutoken: qixiutoken,
-		userinfo: userinfo? JSON.parse(userinfo): ''
+		userinfo: userinfo? JSON.parse(userinfo): '',
+		dict:dict ? JSON.parse(dict) : '',
+		unit:unit ? JSON.parse(unit) : ''
 	},
 	getters: {
 
@@ -24,6 +27,14 @@ export default {
 			localStorage.setItem('USERINFO', info? JSON.stringify(info): '')
 			state.userinfo = info;
 		},
+		setDict(state,dict){
+            localStorage.setItem('dict', dict ? JSON.stringify(dict): '')
+			state.dict = dict;
+		},
+		setUnit(state,unit){
+            localStorage.setItem('unit', dict ? JSON.stringify(unit): '')
+            state.unit = unit;
+		},
 		logout(state){
 			localStorage.removeItem('HXXTOKEN')
 			localStorage.removeItem('QIXIUTOKEN')
@@ -34,6 +45,18 @@ export default {
 		}
 	},
 	actions:{
-
+		dictInit(context,dict){
+           let newObj = {};
+           let unitObj = {};
+           for(let i in dict){
+           	if(!newObj[dict[i].group]){
+           		newObj[dict[i].group] = [];
+			}
+			   unitObj[dict[i].code] = dict[i].name;
+               newObj[dict[i].group].push({label:dict[i].name,value:dict[i].code});
+		   }
+            context.commit('setDict',newObj);
+            context.commit('setUnit',unitObj);
+		},
 	},
 }

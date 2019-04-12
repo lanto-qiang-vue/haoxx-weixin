@@ -232,7 +232,7 @@ export default {
 				if(data.data.qxtoken) this.$store.commit('setQixiuToken',data.data.qxtoken);
 				this.$store.commit('setHxxToken',data.data.tokenStr);
 				this.$store.commit('setUserInfo',data.data);
-
+				this.$store.dispatch('dictInit',data.data.dict);
 				if(data.data.isBindNewphone== 1){
 					this.$toast('登录成功');
 					this.goBackUrl()
