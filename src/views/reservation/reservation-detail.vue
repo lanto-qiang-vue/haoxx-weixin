@@ -66,7 +66,7 @@ export default {
                 PLATE_NUM:"沪FY3303",//车牌号码
                 VEHICLE_MODEL:"B4 BITURBO N55R30A 后轮驱动 8A/MT（2016-",//车型中文说明
                 VEHICLE_ID:"22393",//车型ID
-                REPAIR_TYPE:"10091001",//维修类型1019系列
+                REPAIR_TYPE:"10191001",//维修类型1019系列
                 FAULT_DESC:"接口通不通",//故障描述
                 ORDER_ID:"",
 				//无关页面还必须有写字段
@@ -108,7 +108,7 @@ export default {
 	},
 	mounted(){
        this.confirmTime(new Date());
-        this.typeList =  this.$store.state.user.dict['1009'];
+        this.typeList =  this.$store.state.user.dict['1019'];
 	},
 	computed:{
 		compname(){
