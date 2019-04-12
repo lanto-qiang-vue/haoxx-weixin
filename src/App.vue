@@ -1,7 +1,8 @@
 <template>
 <div :class="['app-body', {'show-footer': showFooter}]">
-	<keep-alive><router-view v-if="cache"/></keep-alive>
 	<router-view v-if="!cache"/>
+	<keep-alive v-else><router-view /></keep-alive>
+
 	<ul class="footer" v-show="showFooter">
 		<router-link to="/" tag="li">
 			<img src="~@/assets/img/index/home.png" v-show="active('/')">
@@ -32,6 +33,31 @@ export default {
 		},
 		cache(){
 			return this.$route.meta.cache
+		}
+	},
+	mounted(){
+		let state= this.getUrlParam('state')
+		let appId= 'wx71b3e2a11334e62d', URL= encodeURIComponent(window.location.href)
+		if(this.isWeixn() && !state){
+			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${URL}&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect`
+		}
+
+	},
+	methods:{
+		isWeixn(){
+			let ua = navigator.userAgent.toLowerCase();
+			if(ua.match(/MicroMessenger/i)=="micromessenger") {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		getUrlParam(name) {
+			let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			let r = window.location.search.substr(1).match(reg);
+			// if(r!=null)return  unescape(r[2]); return null;
+			if(r!=null)return r[2];
+			return null;
 		}
 	}
 }

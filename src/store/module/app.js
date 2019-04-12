@@ -9,7 +9,8 @@ export default {
 		location:{
 			lng: 0,
 			lat: 0
-		}
+		},
+		vehiclemodelIndex: null
 	},
 	getters: {
 
@@ -32,6 +33,9 @@ export default {
 		setLocation(state, obj){
 			state.location.lng= obj.lng
 			state.location.lat= obj.lat
+		},
+		setVehiclemodelIndex(state, obj){
+			state.vehiclemodelIndex= obj
 		},
 	},
 	actions:{
