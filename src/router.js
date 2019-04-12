@@ -115,7 +115,7 @@ routes: [
 		path: '/reservation-detail',
 		name: 'reservation-detail',
 		meta: {
-			requiresQixiu: true,
+			requiresQixiu: false,
 		},
 		component: () => import('@/views/reservation/reservation-detail.vue')
 	},

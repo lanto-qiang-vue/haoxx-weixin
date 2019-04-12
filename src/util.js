@@ -14,8 +14,6 @@ export const getParams = url => {
   })
   return paramObj
 }
-
-
 /**
  * @param {obj} 任意参数
  * @returns {String}
