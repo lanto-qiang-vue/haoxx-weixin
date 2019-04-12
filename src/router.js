@@ -6,6 +6,14 @@ Vue.use(Router)
 export default new Router({
 routes: [
 	{
+		path: '/test',
+		name: 'test',
+		meta:{
+			tourist: true
+		},
+		component: () => import('@/views/test.vue')
+	},
+	{
 		path: '/',
 		name: 'index',
 		meta:{
