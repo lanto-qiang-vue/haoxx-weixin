@@ -82,7 +82,7 @@ export default {
                 REPAIR_PART_MONEY: 0,
                 SUM_MONEY: 0
 			},
-            roadliense:"370181320005",//道路许可证
+            roadliense:"",//道路许可证
 			typeList:[{label:'1009001',value:1009001},{label:'1009002',value:1009002},],
 		}
 	},
@@ -149,7 +149,7 @@ export default {
                     let data = res.data.data[0];
                     this.pickerVisible = data.appointmentTime = data.ORDER_DATE.substr(0,10) + " " + data.ORDER_TIME;
                     for(let i in this.form){
-                        if(data[i])this.form[i] = data[i];
+                       this.form[i] = data[i] || "";
                     }
                     this.TENANT_NAME = data.TENANT_NAME || '';
                 }

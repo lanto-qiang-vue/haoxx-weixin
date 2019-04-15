@@ -1,6 +1,6 @@
 <template>
 <div class="coupons">
-	<p class="num">共10张，可用10张</p>
+	<p class="num">共{{total}}张，可用{{canuse}}张</p>
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 	<ul class="coupons-list">
@@ -8,18 +8,13 @@
 			<div class="content">
 				<div class="left">
 					<p>{{item.name}}</p>
-					<span>有效期：{{item.startDate}}-{{item.endDate}}</span>
+					<span>有效期：{{item.begin_time}}-{{item.end_time}}</span>
 				</div>
 				<i></i>
 				<div class="right">
-					<router-link tag="div" :to="'/coupons-detail?code='+item.code+'&use='+item.isuse" class="button">查看详情</router-link>
-					<!--<div class="tag">-->
-					<!--<p>已领取</p>-->
-					<!--</div>-->
-					<!--<div class="times">-->
-						<!--<p>已核销数</p>-->
-						<!--<span>1690</span>-->
-					<!--</div>-->
+					<div class="tag">
+					<p :class="[{orange:item.usetype == '可使用'}]">{{item.usetype}}</p>
+					</div>
 				</div>
 			</div>
 		</li>
@@ -34,34 +29,38 @@ export default {
 	data(){
 		return{
 			list:[
-				{name: '优惠券', type: 1},
-				{name: '优惠券', type: 2},
+
 			],
 			page: 1,
 			total: 0,
+            canuse:0,
 			allLoaded: false,
+			type:"",
 		}
 	},
 	watch:{
 
 	},
 	mounted(){
-		// this.getList(false)
+	    this.type = this.$route.query.type;
+		this.getList(false);
 	},
 	methods:{
 		getList(flag){
 			let params={
-				page: this.page-1,
-				size: 10,
-                status:parseInt(this.selected[this.selected.length - 1])
+				page: this.page,
+				limit: 10,
+                USER_ID:this.$store.state.user.userinfo.userId,
+				type:this.type,
 			}
 			// if(this.selected) params.hasRead= this.selected
-			this.axiosQixiu.get('/promotion/user_coupon/query',{params: params}).then(res=>{
-				this.total= res.data.totalElements
-				if(res.data.content&&res.data.content.length){
-					this.list=this.list.concat(res.data.content)
+			this.axiosHxx.post('/operate/coupon/mycoupondetail',params).then(res=>{
+				this.total= res.data.total;
+				this.canuse = res.data.canuse;
+				if(res.data.data&&res.data.data.length){
+					this.list=this.list.concat(res.data.data)
 					// this.list=res.data.comments
-					if(this.list.length>=res.data.totalElements){
+					if(this.list.length>=this.total){
 						this.allLoaded=true
 					}else{
 						this.allLoaded=false
@@ -93,4 +92,7 @@ export default {
 	}
 }
 @import "./coupons.less";
+.coupons-list li .content .right .tag .orange{
+	background-color:#ffaa6a;
+}
 </style>
