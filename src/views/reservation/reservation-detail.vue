@@ -1,7 +1,7 @@
 <template>
 <div class="reservation-detail">
 	<div :class="['status', 'statu'+status]" v-show="statusText">{{statusText}}</div>
-	<Form :class="['common-form']" :model="form"
+	<Form :class="['common-form']" :model="form" :rules="ruleValidate"
 	      :label-width="80" label-position="left" ref="form">
 		<FormItem label="门店名称">
 			<span class="line">{{compname}}</span>
@@ -11,6 +11,7 @@
 		</FormItem>
 		<FormItem label="当前里程" prop="MILEAGE">
 			<Input v-model.trim="form.MILEAGE" type="number"></Input>
+			<p style="position: absolute;top: 50%;right: 5px;transform: translateY(-50%);width: auto;margin: 0">公里</p>
 		</FormItem>
 		<FormItem label="预约人" prop="ORDER_PERSON">
 			<Input v-model.trim="form.ORDER_PERSON"></Input>
@@ -19,17 +20,18 @@
 			<Input v-model.trim="form.TELPHONE"></Input>
 		</FormItem>
 		<FormItem label="车牌号码" prop="PLATE_NUM">
-			<Input v-model.trim="form.PLATE_NUM"></Input>
-			<!--<select-radio class="ivu-input select" v-model="form.area" :options="options"></select-radio>-->
+			<Input v-model.trim="form.PLATE_NUM" style="padding-right: 15px"></Input>
+			<div class="next" @click="showCarList= true"></div>
 		</FormItem>
 		<FormItem label="车辆型号" prop="VEHICLE_MODEL">
-			<Input v-model.trim="form.VEHICLE_MODEL"></Input>
+			<Input v-model.trim="form.VEHICLE_MODEL" style="padding-right: 15px"></Input>
+			<div class="next" @click="$refs.vehicle.open()"></div>
 		</FormItem>
 		<FormItem label="维修类型" prop="REPAIR_TYPE">
 			<select-radio class="ivu-input select" v-model="form.REPAIR_TYPE" :options="typeList"></select-radio>
 		</FormItem>
 		<FormItem label="故障描述" prop="FAULT_DESC">
-			<Input v-model.trim="form.FAULT_DESC" type="textarea" :rows="2"></Input>
+			<Input v-model.trim="form.FAULT_DESC"></Input>
 		</FormItem>
 	</Form>
 	<div class="common-submit" @click="submit"><a>提交预约</a></div>
@@ -42,15 +44,23 @@
 			month-format="{value} 月"
 			date-format="{value} 日">
 	</mt-datetime-picker>
+
+	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME"></vehicle-model>
+	<my-car-list style="position: fixed;top: 0;left: 0" v-if="true" v-show="showCarList"
+	             :isPage="false" :showButton="false"
+		@select="form.PLATE_NUM=$event.vehicleplatenumber; showCarList=false"></my-car-list>
 </div>
 </template>
 
 <script>
 import SelectRadio from '@/components/select-radio.vue'
+import VehicleModel from '@/components/vehicle-model.vue'
+import MyCarList from '@/views/car-record/my-car-list.vue'
 export default {
 	name: "reservation-detail",
-	components: {SelectRadio },
+	components: {SelectRadio, VehicleModel, MyCarList},
 	data(){
+		let rule= { required: true, message:'必填项不能为空'}
 		return{
             pickerVisible:"",
             defaultYear:"",
@@ -81,10 +91,46 @@ export default {
                 REPAIR_PART_MONEY: 0,
                 SUM_MONEY: 0
 			},
+			ruleValidate : {
+				appointmentTime: [rule],
+			},
             roadliense:"370181320005",//道路许可证
 			typeList:[{label:'1009001',value:1009001},{label:'1009002',value:1009002},],
+			showCarList: false
 		}
 	},
+	computed:{
+		compname(){
+			return this.$route.query.name||''
+		},
+		status(){
+			return this.form.status? this.form.status.toString(): ''
+		},
+		statusText(){
+			let text= ''
+			switch (this.status){
+				case '1':{
+					text= '待审核';break
+				}
+				case '2':{
+					text= '审核成功';break
+				}
+				case '3':{
+					text= '审核不通过';break
+				}
+				default :{
+					text= '新建';break
+				}
+			}
+			return text
+		},
+	},
+	mounted(){
+		if(this.$route.query.id > 0) this.getData(this.$route.query.id);
+		this.confirmTime(new Date());
+		this.typeList =  this.$store.state.user.dict['1019'];
+	},
+
 	methods:{
         confirmTime(res){
         this.form.ORDER_DATE = res.getFullYear()+"-"+this.fillZero(res.getMonth()+1)+"-"+this.fillZero(res.getDate());
@@ -112,39 +158,12 @@ export default {
 					this.form = res.data.data;
                 }
             })
+		},
+		selectPlate(){
+
 		}
 	},
-	mounted(){
-	   if(this.$route.query.id > 0) this.getData(this.$route.query.id);
-       this.confirmTime(new Date());
-        this.typeList =  this.$store.state.user.dict['1019'];
-	},
-	computed:{
-		compname(){
-			return this.$route.query.name||''
-		},
-		status(){
-			return this.form.status? this.form.status.toString(): ''
-		},
-		statusText(){
-			let text= ''
-			switch (this.status){
-				case '1':{
-					text= '待审核';break
-				}
-				case '2':{
-					text= '审核成功';break
-				}
-				case '3':{
-					text= '审核不通过';break
-				}
-				default :{
-					text= '新建';break
-				}
-			}
-			return text
-		},
-	}
+
 }
 </script>
 

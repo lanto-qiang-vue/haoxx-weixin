@@ -8,7 +8,7 @@
       <div class="carList">
         <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :autoFill="false" bottomPullText="加载更多"  ref="loadmore">
           <ul>
-            <li @click="goRecordList(item.vin, item.status, item.vehicleplatenumber, item.id, item.ownerType)" class="block mui-table-view-cell mui-transitioning" v-for='(item, index) in carList' :key='index'>
+            <li @click="goRecordList(item)" class="block mui-table-view-cell mui-transitioning" v-for='(item, index) in carList' :key='index'>
               <!--<div class="mui-slider-right mui-disabled">-->
                 <!--<a class="mui-btn mui-btn-red" style="transform: translate(0px, 0px);" v-if="item.binds&&item.binds.length" @click.stop.prevent="removeAuthorize(item.binds)">解除授权</a>-->
                 <!--<a class="mui-btn mui-btn-yellow" style="transform: translate(0px, 0px);" @click.stop="deleteVehicle(item.vehicleId)">解绑车辆</a>-->
@@ -28,9 +28,9 @@
                 </div>
               </div>
 	            <div class="remove">
-		            <div class="button" @click.stop.prevent="deleteVehicle(item.id)">解绑</div>
+		            <div class="button" @click.stop.prevent="deleteVehicle(item.id)" v-show="showButton">解绑</div>
 		            <div class="button" v-if="item.self &&item.binds && item.binds.length"
-		                 @click.stop.prevent="removeAuthorize(item.binds, item.vehicleplatenumber)">解除授权</div>
+		                 @click.stop.prevent="removeAuthorize(item.binds, item.vehicleplatenumber)" v-show="showButton">解除授权</div>
 	            </div>
 
             </li>
@@ -39,7 +39,7 @@
       </div>
 
 
-    <mt-button @click="sheetVisible=!sheetVisible" type="primary" class="add_car" size="large">新增绑定车辆</mt-button>
+    <mt-button @click="sheetVisible=!sheetVisible" v-show="showButton" type="primary" class="add_car" size="large">新增绑定车辆</mt-button>
     <mt-actionsheet
       :actions="actions"
       v-model="sheetVisible">
@@ -71,6 +71,14 @@
 import { Toast, Loadmore, Button, MessageBox, Actionsheet, Popup, Radio } from 'mint-ui'
 export default {
   name: 'carList',
+	props:{
+		isPage:{
+			default: true
+		},
+		showButton:{
+			default: true
+		},
+	},
   data() {
     let _this = this
     return {
@@ -122,24 +130,27 @@ export default {
 		}
 	},
   methods: {
-    goRecordList(vin, status, vehicleplatenumber, id, ownerType) {
-      if(status != 2){
+    goRecordList(item) {
+    	if(this.isPage) {
+		    if (item.status != 2) {
 
-	      this.$router.push({
-		      path: ownerType==1? '/bind-my-car': '/bind-my-car-com',
-		      query: {id:id}
-	      })
-        return
-      }
-      if(vin) {
-        this.$router.push({
-          path: '/record-list',
-          query: {id:vin, vehicleplatenumber: vehicleplatenumber}
-        })
-      } else {
-        Toast('该车暂无维修记录')
-      }
-
+			    this.$router.push({
+				    path: item.ownerType == 1 ? '/bind-my-car' : '/bind-my-car-com',
+				    query: {id: item.id}
+			    })
+			    return
+		    }
+		    if (item.vin) {
+			    this.$router.push({
+				    path: '/record-list',
+				    query: {id: item.vin, vehicleplatenumber: item.vehicleplatenumber}
+			    })
+		    } else {
+			    Toast('该车暂无维修记录')
+		    }
+	    }else{
+			this.$emit('select', item)
+	    }
     },
 	  key(e){
 		  if ( e.keyCode == 13 || e=='search') {
@@ -270,6 +281,7 @@ export default {
   background-color: #f8f8f8;
   height: 100vh;
   overflow: auto;
+	  width: 100%;
   /*position: relative;*/
     .add_car{
       position: fixed; left: 0;bottom: 0; border-radius: 0; border: none; width: 100%;

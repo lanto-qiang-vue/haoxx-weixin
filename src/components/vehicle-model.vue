@@ -1,19 +1,40 @@
 <template>
-<div class="vehicle-model" v-show="blocknum>0">
+<div class="vehicle-model" v-show="blockId>0">
 	<mt-index-list>
 		<div class="query">
 			<div class="search"><i class="fa fa-search icon"></i>
 				<form action="javascript:return true">
-					<input type="search" ref="input" v-model="search" @keydown="key($event)" placeholder="车辆品牌"/>
+					<input type="search" ref="input" v-model="search" placeholder="车辆品牌"/>
 				</form>
 				<i class="fa fa-times-circle close" v-show="search" @click="close" ></i>
 			</div>
 		</div>
 		<mt-index-section v-for="(item, key) in showList" :index="key" :key="key">
-			<mt-cell v-for="(item2, key2) in item" :key="key2" :title="item2.text"></mt-cell>
+			<mt-cell v-for="(item2, key2) in item" :key="key2" :title="item2.text"
+			         @click.native="clickItem(2, item2)"></mt-cell>
 		</mt-index-section>
 	</mt-index-list>
 
+	<mt-popup :value="blockId>1" position="right" class="vehicle-popup">
+		<div class="list-head">{{block2Item.text}}</div>
+		<common-fold v-for="(item, key) in block2Item.children" :key="key"
+		             :label="item.jkName+' - '+item.text" :show="false">
+			<ul class="list-items">
+				<li v-for="(item2, key2) in item.children" :key="key2"
+				    @click="clickItem(3, item2)">{{item2.text}}</li>
+			</ul>
+		</common-fold>
+	</mt-popup>
+	<mt-popup :value="blockId>2" position="right" class="vehicle-popup">
+		<div class="list-head">{{block3Item.text}}</div>
+		<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
+		             bottomPullText="加载更多" ref="loadmore">
+			<ul class="list-items">
+				<li v-for="(item, key) in block3List" :key="key"
+				    @click="decide(item)">{{item.MODEL_NAME}}</li>
+			</ul>
+		</mt-loadmore>
+	</mt-popup>
 </div>
 </template>
 
@@ -21,13 +42,22 @@
 import pinying from '~/public/lib/pinying.js'
 import { deepClone } from '@/util.js'
 import { IndexList, IndexSection } from 'mint-ui';
+import CommonFold from '@/components/common-fold.vue'
 export default {
 	name: "vehicle-model",
+	components: {CommonFold},
 	data(){
 		return{
-			indexList:{},
 			search: '',
-			blocknum: 0
+			indexList:{},
+			block2Item: {},
+			block3Item: {},
+			block3List: [],
+			page: 1,
+			total: 0,
+			allLoaded: false,
+
+			sign:''
 		}
 	},
 	computed:{
@@ -56,42 +86,51 @@ export default {
 			}else return this.indexList
 		},
 		blockId(){
-			return this.$route.query.vehiclemodelblock
+			return parseInt(this.$route.query.vehiclemodelblock || 0)
 		}
 	},
 	watch:{
-		'$route'(to){
-			console.log("'$route'(to)",to)
-			this.blocknum= parseInt(to.query.vehiclemodelblock || 0)
-		},
-		blockId(val){
-			console.log('blockId(val)', val)
-		}
+		// '$route'(to){
+		// 	console.log("'$route'(to)",to)
+		// 	this.blocknum= parseInt(to.query.vehiclemodelblock || 0)
+		// },
+		// blockId(val){
+		// 	console.log('blockId(val)', val)
+		// 	return parseInt(val || 0)
+		// }
 	},
 	created(){
-		this.getList()
+		this.getTreeData()
 		this.initBlock()
 	},
 	mounted(){
 
 	},
 	methods:{
-		open(){
-			this.$router.push({path: this.$route.path, query: this.getBlockHash(1)})
-			console.log('open', this.$route.query.vehiclemodelblock)
+		open(sign){
+			// console.log('this.$route0', this.$route)
+			// console.log('this.getBlockHash(1)', typeof this.getBlockHash(2), '['+ this.getBlockHash(2)+']')
+			// this.$router.push( this.$route.path+ '?vehiclemodelblock=1')
+			// let aa= this.$route.path+ this.getBlockHash(1)
+			this.$router.push(  this.$route.path+ this.getBlockHash(1))
+			this.sign= sign|| ''
+			// this.$router.push({path: this.$route.path, query: this.getBlockHash(1)})
+			// console.log('this.$route', this.$route)
+			// console.log('open', this.$route.query.vehiclemodelblock)
 		},
 		getBlockHash(num){
-			let query= this.$route.query
+			let query= deepClone(this.$route.query)
 			query.vehiclemodelblock= num
 			// console.log('this.getHash(query)', this.getHash(query))
-			// return this.getHash(query)
-			return query
+			return this.getHash(query)
+			// return query
 		},
 		initBlock(){
-			let query= this.$route.query, path= window.location.hash.split('?')[0]
+			let query= deepClone(this.$route.query), path= window.location.hash.split('?')[0]
 			delete query.vehiclemodelblock
 			// if(Object.keys(query).length){
-			history.replaceState(null, null, window.location.origin + path+ this.getHash(query))
+			this.$router.replace(  this.$route.path+ this.getHash(query))
+			// history.replaceState(null, null, window.location.origin + path+ this.getHash(query))
 			// }
 		},
 		getHash(query){
@@ -103,12 +142,12 @@ export default {
 			if(hash) hash= '?'+hash
 			return hash
 		},
-		getList(){
+		getTreeData(){
 			let list= this.$store.state.app.vehiclemodelIndex
 			if(list){
 				this.indexList= deepClone(list)
 			}else{
-				this.axiosHxx.post('/tenant/basedata/vehiclemodel/tree', {node: 0}).then(res => {
+				this.axiosHxx.post('/operate/basedata/vehiclemodel/tree', {node: 0}).then(res => {
 					if(res.data.success){
 						let data= res.data.data
 						this.indexList= this.getIndexList(this.getTree(data))
@@ -157,15 +196,54 @@ export default {
 			}
 			return resObj
 		},
-		key(e) {
-			if ( e.keyCode == 13 || e=='search') {
-
-			}
-		},
 		close(){
 			this.search='';
 			// this.$refs.input.focus()
-
+		},
+		clickItem(toLevel, item){
+			console.log(item)
+			if(toLevel== 2){
+				this.block2Item= item
+			}else{
+				this.block3Item= item
+				this.page= 1
+				this.block3List= []
+				this.getList(false)
+			}
+			this.$router.push(  this.$route.path+ this.getBlockHash(toLevel))
+		},
+		getList(flag){
+			this.axiosHxx.post('/operate/basedata/vehiclemodel/list', {
+				KEYWORD: '',
+				mdtype: this.block3Item.type,
+				mdid: this.block3Item.id,
+				page: this.page,
+				limit: 2,
+			}).then(res => {
+				if(res.data.success){
+					// this.block3List= res.data.data
+					if(res.data.data&&res.data.data.length){
+						let data = res.data.data;
+						this.block3List=this.block3List.concat(data)
+						if(this.block3List.length>=res.data.total){
+							this.allLoaded=true
+						}else{
+							this.allLoaded=false
+						}
+						if(flag) this.$refs.loadmore.onBottomLoaded()
+					}else{
+						this.allLoaded=true
+					}
+				}
+			})
+		},
+		decide(item){
+			this.$emit('ok', item, this.sign)
+			this.$router.go(-3)
+		},
+		loadMore(){
+			this.page++
+			this.getList(true)
 		},
 	},
 }
@@ -219,7 +297,28 @@ export default {
 	.mint-indexlist{
 		padding-top: 50px;
 	}
-
+	.list-head{
+		line-height: 40px;
+		text-align: center;
+		font-size: 14px;
+		border-bottom: 1px solid #ededed;
+	}
+	.list-items{
+		padding-left: 20px;
+		li{
+			line-height: 20px;
+			padding-top: 10px;
+			min-height: 40px;
+			font-size: 14px;
+			border-bottom: 1px solid #ededed;
+			padding-right: 10px;
+		}
+	}
+	.vehicle-popup{
+		height: 100vh;
+		width: 100%;
+		overflow: auto;
+	}
 }
 </style>
 <style lang="less">
