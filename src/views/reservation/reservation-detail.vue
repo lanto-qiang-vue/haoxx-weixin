@@ -86,40 +86,32 @@ export default {
 			typeList:[{label:'1009001',value:1009001},{label:'1009002',value:1009002},],
 		}
 	},
-	methods:{
-        confirmTime(res){
-        this.form.ORDER_DATE = res.getFullYear()+"-"+this.fillZero(res.getMonth()+1)+"-"+this.fillZero(res.getDate());
-        this.form.ORDER_TIME= this.fillZero(res.getHours()) +":"+this.fillZero(res.getMinutes());
-        this.form.appointmentTime = this.form.ORDER_DATE  + " " + this.form.ORDER_TIME;
-        this.pickerVisible = this.form.appointmentTime;
-		},
-	    open(){
-            this.$refs.picker.open();
-		},
-		fillZero(n){
-            return n < 10 ? "0"+n : n + "";
-		},
-	    submit(){
-            this.axiosHxx.post('/operate/order/saveOrSubmit', {data:this.form,items:[],itemGroups:[],parts:[],roadliense:this.roadliense}).then(res => {
-                if(res.success){
-                    //下一步操作
-				}
-            })
-		},
-		getData(id){
-            this.axiosHxx.post('/operate/order/queryOrderDetail', {ORDER_ID:id}).then(res => {
-                if(res.data.success){
-                    //下一步操作;
-					let data = res.data.data[0];
-					this.pickerVisible = data.appointmentTime = data.ORDER_DATE.substr(0,10) + " " + data.ORDER_TIME;
-					for(let i in this.form){
-					  if(data[i])this.form[i] = data[i];
-					}
-					this.TENANT_NAME = data.TENANT_NAME || '';
-                }
-            })
-		}
-	},
+    computed:{
+        compname(){
+            return this.$route.query.name||''
+        },
+        status(){
+            return this.form.status? this.form.status.toString(): ''
+        },
+        // statusText(){
+        // 	let text= ''
+        // 	switch (this.status){
+        // 		case '1':{
+        // 			text= '待审核';break
+        // 		}
+        // 		case '2':{
+        // 			text= '审核成功';break
+        // 		}
+        // 		case '3':{
+        // 			text= '审核不通过';break
+        // 		}
+        // 		default :{
+        // 			text= '新建';break
+        // 		}
+        // 	}
+        // 	return text
+        // },
+    },
 	mounted(){
 	   if(this.$route.query.id > 0){
            this.getData(this.$route.query.id);
@@ -130,32 +122,40 @@ export default {
 	   }
         this.typeList =  this.$store.state.user.dict['1019'];
 	},
-	computed:{
-		compname(){
-			return this.$route.query.name||''
-		},
-		status(){
-			return this.form.status? this.form.status.toString(): ''
-		},
-		// statusText(){
-		// 	let text= ''
-		// 	switch (this.status){
-		// 		case '1':{
-		// 			text= '待审核';break
-		// 		}
-		// 		case '2':{
-		// 			text= '审核成功';break
-		// 		}
-		// 		case '3':{
-		// 			text= '审核不通过';break
-		// 		}
-		// 		default :{
-		// 			text= '新建';break
-		// 		}
-		// 	}
-		// 	return text
-		// },
-	}
+    methods:{
+        confirmTime(res){
+            this.form.ORDER_DATE = res.getFullYear()+"-"+this.fillZero(res.getMonth()+1)+"-"+this.fillZero(res.getDate());
+            this.form.ORDER_TIME= this.fillZero(res.getHours()) +":"+this.fillZero(res.getMinutes());
+            this.form.appointmentTime = this.form.ORDER_DATE  + " " + this.form.ORDER_TIME;
+            this.pickerVisible = this.form.appointmentTime;
+        },
+        open(){
+            this.$refs.picker.open();
+        },
+        fillZero(n){
+            return n < 10 ? "0"+n : n + "";
+        },
+        submit(){
+            this.axiosHxx.post('/operate/order/saveOrSubmit', {data:this.form,items:[],itemGroups:[],parts:[],roadliense:this.roadliense}).then(res => {
+                if(res.success){
+                    //下一步操作
+                }
+            })
+        },
+        getData(id){
+            this.axiosHxx.post('/operate/order/queryOrderDetail', {ORDER_ID:id}).then(res => {
+                if(res.data.success){
+                    //下一步操作;
+                    let data = res.data.data[0];
+                    this.pickerVisible = data.appointmentTime = data.ORDER_DATE.substr(0,10) + " " + data.ORDER_TIME;
+                    for(let i in this.form){
+                        if(data[i])this.form[i] = data[i];
+                    }
+                    this.TENANT_NAME = data.TENANT_NAME || '';
+                }
+            })
+        }
+    },
 }
 </script>
 
