@@ -3,13 +3,13 @@
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 		<ul class="list">
-			<li v-for="item in list" :to="'/reservation-detail?id='+item.ORDER_ID">
+			<li v-for="item in list" tag="a" @click="to(item.ORDER_ID)">
 				<div class="head"><label>预约时间：</label>
 					{{item.ORDER_DATE.substr(0,16)}}
-					<span class="status">{{this.$store.state.user.unit[item.ORDER_TYPE]}}</span>
+					<span class="status">{{$store.state.user.unit[item.ORDER_TYPE]}}</span>
 				</div>
 				<p><label>指派公司：</label>{{item.TENANT_NAME}}</p>
-				<p><label>服务内容：</label>{{this.$store.state.user.unit[item.REPAIR_TYPE]}}</p>
+				<p><label>服务内容：</label>{{$store.state.user.unit[item.REPAIR_TYPE]}}</p>
 			</li>
 		</ul>
 	</mt-loadmore>
@@ -31,10 +31,13 @@ export default {
 		this.getList(false)
 	},
 	methods:{
+	    to(id){
+	      this.$router.push({path:'/reservation-detail',query:{id:id}});
+		},
 		getList(flag){
 			let params={
 				page: this.page,
-				limit: 2,
+				limit: 10,
 			}
 			// if(this.selected) params.hasRead= this.selected
 			this.axiosHxx.post('/operate/order/list ',params).then(res=>{
