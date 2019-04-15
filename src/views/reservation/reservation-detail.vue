@@ -1,10 +1,10 @@
 <template>
 <div class="reservation-detail">
-	<div :class="['status', 'statu'+status]" v-show="statusText">{{statusText}}</div>
+	<div :class="['status', 'statu'+status]">{{$store.state.user.unit[form.STATUS]}}</div>
 	<Form :class="['common-form']" :model="form"
 	      :label-width="80" label-position="left" ref="form">
 		<FormItem label="门店名称">
-			<span class="line">{{compname}}</span>
+			<span class="line">{{TENANT_NAME}}</span>
 		</FormItem>
 		<FormItem label="到店时间" prop="appointmentTime">
 			<span class="ivu-input select"  readonly @click="open">{{form.appointmentTime}}</span>
@@ -56,18 +56,19 @@ export default {
             defaultYear:"",
             defaultMonth:"",
             defaultDay:"",
+			TENANT_NAME:"",
 			form: {
-                ORDER_DATE:"2019-04-04",//预约时间 年月日
-                ORDER_TIME:"22:22",//时分
-                appointmentTime:"2019-04-04 22:22",//拼接的时间
-                MILEAGE:"1",//里程
-                ORDER_PERSON:"王旭",//预约人
-                TELPHONE:"138888888",//联系人
-                PLATE_NUM:"沪FY3303",//车牌号码
+                ORDER_DATE:"",//预约时间 年月日
+                ORDER_TIME:"",//时分
+                appointmentTime:"",//拼接的时间
+                MILEAGE:"",//里程
+                ORDER_PERSON:"",//预约人
+                TELPHONE:"",//联系人
+                PLATE_NUM:"",//车牌号码
                 VEHICLE_MODEL:"B4 BITURBO N55R30A 后轮驱动 8A/MT（2016-",//车型中文说明
                 VEHICLE_ID:"22393",//车型ID
                 REPAIR_TYPE:"10191001",//维修类型1019系列
-                FAULT_DESC:"接口通不通",//故障描述
+                FAULT_DESC:"",//故障描述
                 ORDER_ID:"",
                 ORDER_TYPE: "10411001",
 				//无关页面还必须有写字段
@@ -107,16 +108,26 @@ export default {
 		},
 		getData(id){
             this.axiosHxx.post('/operate/order/queryOrderDetail', {ORDER_ID:id}).then(res => {
-                if(res.success){
-                    //下一步操作
-					this.form = res.data.data;
+                if(res.data.success){
+                    //下一步操作;
+					let data = res.data.data[0];
+					this.pickerVisible = data.appointmentTime = data.ORDER_DATE.substr(0,10) + " " + data.ORDER_TIME;
+					for(let i in this.form){
+					  if(data[i])this.form[i] = data[i];
+					}
+					this.TENANT_NAME = data.TENANT_NAME || '';
                 }
             })
 		}
 	},
 	mounted(){
-	   if(this.$route.query.id > 0) this.getData(this.$route.query.id);
-       this.confirmTime(new Date());
+	   if(this.$route.query.id > 0){
+           this.getData(this.$route.query.id);
+	   }else{
+	       this.TENANT_NAME = this.$route.query.name;
+	       this.roadliense = this.$route.query.license;
+           this.confirmTime(new Date());
+	   }
         this.typeList =  this.$store.state.user.dict['1019'];
 	},
 	computed:{
@@ -126,24 +137,24 @@ export default {
 		status(){
 			return this.form.status? this.form.status.toString(): ''
 		},
-		statusText(){
-			let text= ''
-			switch (this.status){
-				case '1':{
-					text= '待审核';break
-				}
-				case '2':{
-					text= '审核成功';break
-				}
-				case '3':{
-					text= '审核不通过';break
-				}
-				default :{
-					text= '新建';break
-				}
-			}
-			return text
-		},
+		// statusText(){
+		// 	let text= ''
+		// 	switch (this.status){
+		// 		case '1':{
+		// 			text= '待审核';break
+		// 		}
+		// 		case '2':{
+		// 			text= '审核成功';break
+		// 		}
+		// 		case '3':{
+		// 			text= '审核不通过';break
+		// 		}
+		// 		default :{
+		// 			text= '新建';break
+		// 		}
+		// 	}
+		// 	return text
+		// },
 	}
 }
 </script>
