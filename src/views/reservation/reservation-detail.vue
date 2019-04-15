@@ -1,6 +1,6 @@
 <template>
 <div class="reservation-detail">
-	<div :class="['status', 'statu'+status]">{{$store.state.user.unit[form.STATUS]}}</div>
+	<div :class="['status', 'statu'+status]">{{$store.state.user.unit[form.STATUS]|| '新建'}}</div>
 	<Form :class="['common-form']" :model="form" :rules="ruleValidate"
 	      :label-width="80" label-position="left" ref="form">
 		<FormItem label="门店名称">
@@ -21,7 +21,7 @@
 		</FormItem>
 		<FormItem label="车牌号码" prop="PLATE_NUM">
 			<Input v-model.trim="form.PLATE_NUM" style="padding-right: 15px"></Input>
-			<div class="next" @click="showCarList= true"></div>
+			<div class="next" @click="selectPlate"></div>
 		</FormItem>
 		<FormItem label="车辆型号" prop="VEHICLE_MODEL">
 			<Input v-model.trim="form.VEHICLE_MODEL" style="padding-right: 15px"></Input>
@@ -45,8 +45,8 @@
 			date-format="{value} 日">
 	</mt-datetime-picker>
 
-	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME"></vehicle-model>
-	<my-car-list style="position: fixed;top: 0;left: 0" v-if="true" v-show="showCarList"
+	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME;form.VEHICLE_ID= $event.VEHICLE_ID"></vehicle-model>
+	<my-car-list style="position: fixed;top: 0;left: 0" v-if="qixiutoken" v-show="showCarList"
 	             :isPage="false" :showButton="false"
 		@select="form.PLATE_NUM=$event.vehicleplatenumber; showCarList=false"></my-car-list>
 </div>
@@ -75,8 +75,8 @@ export default {
                 ORDER_PERSON:"",//预约人
                 TELPHONE:"",//联系人
                 PLATE_NUM:"",//车牌号码
-                VEHICLE_MODEL:"B4 BITURBO N55R30A 后轮驱动 8A/MT（2016-",//车型中文说明
-                VEHICLE_ID:"22393",//车型ID
+                VEHICLE_MODEL:"",//车型中文说明
+                VEHICLE_ID:"",//车型ID
                 REPAIR_TYPE:"10191001",//维修类型1019系列
                 FAULT_DESC:"",//故障描述
                 ORDER_ID:"",
@@ -104,24 +104,9 @@ export default {
 		status(){
 			return this.form.status? this.form.status.toString(): ''
 		},
-		statusText(){
-			let text= ''
-			switch (this.status){
-				case '1':{
-					text= '待审核';break
-				}
-				case '2':{
-					text= '审核成功';break
-				}
-				case '3':{
-					text= '审核不通过';break
-				}
-				default :{
-					text= '新建';break
-				}
-			}
-			return text
-		},
+		qixiutoken(){
+			return this.$store.state.user.qixiutoken
+		}
 	},
 	mounted(){
 		if(this.$route.query.id > 0){
@@ -150,6 +135,8 @@ export default {
             this.axiosHxx.post('/operate/order/saveOrSubmit', {data:this.form,items:[],itemGroups:[],parts:[],roadliense:this.roadliense}).then(res => {
                 if(res.success){
                     //下一步操作
+	                this.$toast('提交成功')
+	                this.$router.go(-1)
                 }
             })
         },
@@ -165,8 +152,15 @@ export default {
                     this.TENANT_NAME = data.TENANT_NAME || '';
                 }
             })
-
-        }
+        },
+	    selectPlate(){
+        	if(this.qixiutoken){
+		        this.showCarList= true
+	        }else{
+		        this.$toast('请绑定汽修平台账号')
+		        this.$router.push({path: '/accredit-bind', query: { redirect: this.$route.fullPath }})
+	        }
+	    }
     },
 }
 </script>

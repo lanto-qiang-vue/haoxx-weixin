@@ -7,7 +7,19 @@ import { isWeixn} from './util'
 let axiosHxx= axios.create({
 	baseURL: '/hxx-proxy/',
 	timeout: 6000,
-	headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
+	headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
+	transformRequest: [function (data) {
+		let ret = '',hashxxtoken= false, token= store.state.user.hxxtoken;
+		for (let key in data) {
+			let item= data[key]
+			if(key=='access_token') hashxxtoken= true;
+			if(ret) ret += '&';
+			ret += (encodeURIComponent(key) + '=' +
+				encodeURIComponent(typeof item=='object'?  JSON.stringify( item): item ))
+		}
+		if(!hashxxtoken && token) ret += encodeURIComponent('access_token') + '=' + encodeURIComponent(token)
+		return ret
+	}]
 });
 
 let axiosQixiu= axios.create({
@@ -17,18 +29,20 @@ let axiosQixiu= axios.create({
 });
 
 axiosHxx.interceptors.request.use(config => {
-	let data= config.data
-	let contentType= config.headers['Content-Type']
-	if(contentType.indexOf('application/x-www-form-urlencoded')>=0){
-		let form = new FormData();
-		if(!data.access_token && store.state.user.hxxtoken){
-			data.access_token= store.state.user.hxxtoken
-		}
-		for(let key in data){
-			form.append(key, typeof data[key]=='object'?  JSON.stringify( data[key]): data[key] );
-		}
-		config.data= form
-	}
+	// let data= config.data
+	// let contentType= config.headers['Content-Type']
+	// console.log('config.headers', config.headers)
+	// if(contentType.indexOf('application/x-www-form-urlencoded')>=0){
+	// 	let form = new FormData(), res=''
+	// 	if(!data.access_token && store.state.user.hxxtoken){
+	// 		data.access_token= store.state.user.hxxtoken
+	// 	}
+	// 	for(let key in data){
+	// 		// form.append(key, typeof data[key]=='object'?  JSON.stringify( data[key]): data[key] );
+	//
+	// 	}
+	// 	config.data= form
+	// }
 
 	// let token= localStorage.getItem("ACCESSTOKEN")
 	// if(token) {

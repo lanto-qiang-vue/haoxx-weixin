@@ -38,10 +38,10 @@
 		<a>《好修修车生活用户协议》</a>
 	</p>
 
-	<div class="other-way">
+	<div class="other-way" v-show="unionid">
 		<small>其他登录方式</small>
 		<ul>
-			<li>
+			<li @click="unionidLogin">
 				<div style="background-color: #50B674">
 					<i class="fa fa-weixin"></i>
 				</div>
@@ -50,9 +50,12 @@
 		</ul>
 	</div>
 
-	<mt-popup v-model="showBind" position="right">
+	<mt-popup v-model="showBind" position="right" class="login-popup">
 		<div class="bind-phone">
-			<p><label>提示：</label>平台登录方式更新为使用手机号登录,请验证您的手机号</p>
+			<p><label>提示：</label>
+				<span v-show="activeBlock=='bindPhone'">平台登录方式更新为使用手机号登录,请验证您的手机号</span>
+				<span v-show="activeBlock=='bindWeixin'">此微信还未绑定账号，请绑定</span>
+			</p>
 			<Form :model="bindForm" class="account-form"
 			      :label-width="0" label-position="left" ref="bindForm">
 				<FormItem prop="telphone">
@@ -61,9 +64,13 @@
 				<FormItem prop="smsCode">
 					<Input v-model.trim="bindForm.smsCode" placeholder="验证码" :maxlength="10"></Input>
 					<countdown class="get-code" text="获取验证码" @click="bindForm.telSession= $event"
-					           :phone="bindForm.telphone"  url="/operate/account/getCode"></countdown>
+					           :phone="bindForm.telphone"  url="/operate/account/getCode"
+					           v-show="activeBlock=='bindPhone'"></countdown>
+					<countdown class="get-code" text="获取验证码" @click="bindForm.telSession= $event"
+					           url="/operate/controller/getCarliveCode" :phone="bindForm.telphone"
+					           v-show="activeBlock=='bindWeixin'"></countdown>
 				</FormItem>
-				<FormItem prop="password">
+				<FormItem prop="password" v-show="activeBlock=='bindPhone'">
 					<Input v-model.trim="bindForm.password" type="password" placeholder="登录密码" clearable></Input>
 				</FormItem>
 			</Form>
@@ -72,7 +79,7 @@
 		</div>
 	</mt-popup>
 
-	<mt-popup v-model="showForget" position="right">
+	<mt-popup v-model="showForget" position="right" class="login-popup">
 		<div class="forget-phone">
 			<Form :model="forgetForm" class="account-form"
 			      :label-width="0" label-position="left" ref="forgetForm">
@@ -156,7 +163,9 @@ export default {
 					break
 				}
 				case 'bindWeixin':{
-
+					if(reg.mobile.test(this.bindForm.telphone) && this.bindForm.smsCode){
+						status= true
+					}
 					break
 				}
 				case 'forget':{
@@ -168,6 +177,15 @@ export default {
 				}
 			}
 			return status
+		},
+		unionid(){
+			return localStorage.getItem("UNIONID");
+		},
+		weixinid(){
+			return {
+				open_id: localStorage.getItem("OPENID")||'',
+				union_id: localStorage.getItem("UNIONID")||'',
+			}
 		}
 	},
 	watch:{
@@ -193,13 +211,15 @@ export default {
 			if(this.activity){
 				switch (this.activeBlock){
 					case 'code':{
-						this.axiosHxx.post('/operate/controller/carLiveLogin', this.codeForm).then(res => {
+						this.axiosHxx.post('/operate/controller/carLiveLogin',
+							Object.assign(this.codeForm, this.weixinid)).then(res => {
 							this.loginSuccess(res.data)
 						})
 						break
 					}
 					case 'pass':{
-						this.axiosHxx.post('/operate/controller/carlivePWDLogin', this.passForm).then(res => {
+						this.axiosHxx.post('/operate/controller/carlivePWDLogin',
+							Object.assign(this.passForm, this.weixinid)).then(res => {
 							this.loginSuccess(res.data)
 						})
 						break
@@ -224,8 +244,34 @@ export default {
 						})
 						break
 					}
+					case 'bindWeixin':{
+						this.axiosHxx.post('/operate/controller/carLiveLogin', Object.assign({
+							telphone: this.bindForm.telphone,
+							telcode: this.bindForm.smsCode,
+							telSession: this.bindForm.telSession,
+						}, this.weixinid)).then(res => {
+							if(res.data.success){
+								this.activeBlock='code'
+								this.showBind= false
+								this.loginSuccess(res.data)
+							}
+						})
+						break
+					}
 				}
 			}
+		},
+		unionidLogin(){
+			this.axiosHxx.post('/operate/controller/loginByWx', {unionid: this.unionid}).then(res => {
+				if(res.data.success){
+					this.loginSuccess(res.data)
+				}else{
+					this.$indicator.close()
+					// this.$toast('');
+					this.activeBlock='bindWeixin'
+					this.showBind= true
+				}
+			})
 		},
 		loginSuccess(data){
 			if(data.success){
@@ -292,6 +338,7 @@ export default {
 		color: #333333;
 		font-size: 14px;
 		position: absolute;
+		line-height: 30px;
 		top: 50%;
 		right: 0;
 		transform: translateY(-50%);
@@ -369,6 +416,10 @@ export default {
 				}
 			}
 		}
+	}
+	.login-popup{
+		width: 100%;
+		height: 100vh;
 	}
 	.bind-phone, .forget-phone{
 		padding: 40px 30px 0;

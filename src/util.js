@@ -238,19 +238,6 @@ export const formatDate= (value1, format) => {
 	}
 };
 
-export const getwxticket= (jsApiList, callback) => {
-	axios.get('/weixin/qixiu/ticket/jsapi?url='+ (window.location.href.split('#')[0])).then(res=>{
-	// axios.get('/weixin/qixiu/ticket/jsapi?url='+('http://192.168.169.121:8888?code=0716QWVV0hJ0b22adjVV0QF6WV06QWVe&state=snsapi_base')).then(res=>{
-		wx.config({
-			debug: false,
-			appId: config.appid,
-			timestamp: res.data.timeStamp,
-			nonceStr: res.data.uuid,
-			signature: res.data.signature,
-			jsApiList: jsApiList
-		})
-	})
-}
 
 export const isIos= () => {
 	// let u = navigator.userAgent
@@ -301,4 +288,63 @@ export const reg={
 	vehicle: /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4,5}[A-Z0-9挂学警港澳]{1}$/,
 	vin: /^[A-Z0-9]{17}$/,
 	mobile: /^1[3456789]\d{9}$/,
+}
+
+export const getUrlParam= (name)=> {
+	let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	let r = window.location.search.substr(1).match(reg);
+	// if(r!=null)return  unescape(r[2]); return null;
+	if(r!=null)return r[2];
+	return null;
+}
+
+export const weixinappid= process.env.NODE_ENV=='development'? 'wx71b3e2a11334e62d': 'wx6b11ffb51b409ac3'
+
+export const getWeixinId=()=>{
+	if(isWeixn()){
+		let unionid= localStorage.getItem("UNIONID");
+		let state= getUrlParam('state')
+		let URL = encodeURIComponent(window.location.href)
+		if( !unionid &&!state){
+			let appId = weixinappid
+			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${URL}&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect`
+		}
+		if(!unionid && state=='snsapi_base'){
+			console.log("getUrlParam('code')", getUrlParam('code'))
+			axios.axiosHxx({
+				url: '/operate/controller/wxlogin',
+				method: 'post',
+				data: {
+					code: getUrlParam('code'),
+				}
+			}).then(res=>{
+				if(res.data.success) {
+					// this.UnionID = res.data.openId.openId
+					localStorage.setItem("UNIONID",res.data.data.unionid);
+					localStorage.setItem("OPENID",res.data.data.openid);
+					history.replaceState(null, null, window.location.origin + window.location.hash)
+				}
+			})
+		}
+
+		let shareLink= getUrlParam('share')
+		if(shareLink){
+			// alert(decodeURIComponent(shareLink))
+			window.location.href=window.location.origin + decodeURIComponent(shareLink)
+		}
+	}
+}
+
+export const getwxticket= (jsApiList, callback) => {
+	axios.get('/weixin/hxx/ticket/jsapi?url='+ (window.location.href.split('#')[0])).then(res=>{
+		// axios.get('/weixin/qixiu/ticket/jsapi?url='+('http://192.168.169.121:8888?code=0716QWVV0hJ0b22adjVV0QF6WV06QWVe&state=snsapi_base')).then(res=>{
+		wx.config({
+			debug: false,
+			appId: weixinappid,
+			timestamp: res.data.timeStamp,
+			nonceStr: res.data.uuid,
+			signature: res.data.signature,
+			jsApiList: jsApiList
+		})
+	})
 }

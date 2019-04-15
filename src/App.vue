@@ -19,7 +19,7 @@
 </template>
 
 <script>
-
+import { getWeixinId } from '@/util.js'
 export default {
 	name: "app-body",
 	computed:{
@@ -36,29 +36,24 @@ export default {
 		}
 	},
 	mounted(){
-		let state= this.getUrlParam('state')
-		let appId= 'wx71b3e2a11334e62d', URL= encodeURIComponent(window.location.href)
-		if(this.isWeixn() && !state){
-			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${URL}&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect`
-		}
+		console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+		// let state= this.getUrlParam('state')
+		// let appId= 'wx71b3e2a11334e62d', URL= encodeURIComponent(window.location.href)
+		// if(this.isWeixn() && !state){
+		// 	window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${URL}&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect`
+		// }
+
+		getWeixinId()
+
+		$('body').on('blur', 'input, textarea', ()=>{
+			// console.log('blur')
+			if($('body').scrollTop()!= 0 ) $('body').scrollTop(0)
+		})
+
 
 	},
 	methods:{
-		isWeixn(){
-			let ua = navigator.userAgent.toLowerCase();
-			if(ua.match(/MicroMessenger/i)=="micromessenger") {
-				return true;
-			} else {
-				return false;
-			}
-		},
-		getUrlParam(name) {
-			let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-			let r = window.location.search.substr(1).match(reg);
-			// if(r!=null)return  unescape(r[2]); return null;
-			if(r!=null)return r[2];
-			return null;
-		}
+
 	}
 }
 </script>
