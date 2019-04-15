@@ -109,6 +109,27 @@ p {
         padding: 0;
         margin: 0 0 2px 0;
       }
+      .next{
+        margin: 0;
+        width: 20px;
+        height: 90%;
+        position: absolute;
+        right: 0;
+        top: 45%;
+        transform: translateY(-50%);
+        background-color: white;
+        &:after{
+          content: '';
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          border-right: 1px solid #666666;
+          border-bottom: 1px solid #666666;
+          width: 10px;
+          height: 10px;
+          transform: rotate(-45deg) translateY(-50%);
+        }
+      }
     }
 
     .half, .line{
@@ -149,7 +170,6 @@ p {
         border-bottom: 1px solid #666666;
         width: 10px;
         height: 10px;
-        -webkit-transform: rotate(-45deg);
         transform: rotate(-45deg);
       }
     }
