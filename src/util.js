@@ -1,5 +1,6 @@
 import axios from './axios.js'
-import config from '~/config.js'
+import store from './store'
+// import config from '~/config.js'
 
 /**
  * @param {String} url
@@ -336,7 +337,7 @@ export const getWeixinId=()=>{
 }
 
 export const getwxticket= (jsApiList, callback) => {
-	axios.get('/weixin/hxx/ticket/jsapi?url='+ (window.location.href.split('#')[0])).then(res=>{
+	axios.axiosQixiu.get('/weixin/hxx/ticket/jsapi?url='+ (window.location.href.split('#')[0])).then(res=>{
 		// axios.get('/weixin/qixiu/ticket/jsapi?url='+('http://192.168.169.121:8888?code=0716QWVV0hJ0b22adjVV0QF6WV06QWVe&state=snsapi_base')).then(res=>{
 		wx.config({
 			debug: false,
@@ -347,4 +348,33 @@ export const getwxticket= (jsApiList, callback) => {
 			jsApiList: jsApiList
 		})
 	})
+}
+
+export const getLocation= ()=>{
+
+	return new Promise((resolve, reject) => {
+		if(store.state.app.location.lng){
+			resolve(true)
+		}else{
+			AMap.plugin('AMap.Geolocation', () => {
+				let geolocation = new AMap.Geolocation({
+					// timeout: 2000,
+				});
+				geolocation.getCurrentPosition();
+				AMap.event.addListener(geolocation, 'complete', (result)=>{
+					// console.log('result', result)
+					store.commit('setLocation', {
+						lng: result.position.lng,
+						lat: result.position.lat
+					})
+					resolve(true)
+				});
+				AMap.event.addListener(geolocation, 'error', (err)=>{
+					// console.log(err)
+					resolve(false)
+				});
+			});
+		}
+	});
+
 }

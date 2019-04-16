@@ -19,13 +19,13 @@
 						<div class="right">
 							<span v-show="localSuccess">距离{{item.distance.toFixed(2)}}km <i class="fa fa-location-arrow icon"></i></span>
 							<router-link tag="div" class="goto"
-							             :to="`/maintain?maintainId=${item.sid}&distance=${item.distance}`">前往</router-link>
+							             :to="`/maintain?compId=${item.sid}&distance=${item.distance}`">前往</router-link>
 						</div>
 					</div>
 				</li>
 
-				<p class="show-rule" v-show="allLoaded">没有更多了</p>
 			</ul>
+			<p class="show-rule" v-show="allLoaded">没有更多了</p>
 		</mt-loadmore>
 		<mt-popup v-model="showRadio"  style="width: 90%" >
 			<div class="popupBlock">
@@ -41,10 +41,10 @@
 </template>
 
 <script>
-	import { Toast} from 'mint-ui'
-	import {getwxticket} from '@/util.js'
-	export default {
-		name: "activity-com-list",
+import { Toast} from 'mint-ui'
+import {getwxticket, getLocation} from '@/util.js'
+export default {
+		name: "coupons-coms",
 		props:['type'],
 		data(){
 			return{
@@ -85,6 +85,9 @@
 			hasLng(){
 				return this.$store.state.app.location.lng
 			},
+			location(){
+				return this.$store.state.app.location
+			},
 			show10km(){
 				return (this.localSuccess && (this.search.area=='310000'||!this.search.area) && !this.search.q)
 			}
@@ -97,28 +100,7 @@
 			},
 		},
 		created(){
-			switch (this.type){
-				case 'discounts':{
-					this.search.type= '164'
-					this.label={
-						input: '企业名称/优惠内容',
-						items: '服务承诺及惠民项目',
-						shareText: '车主福利大放送',
-						sort: 'gradeLevel asc,distance asc'
-					}
-					break
-				}
-				case 'freeWash':{
-					this.search.type= '1640'
-					this.label={
-						input: '企业名称',
-						items: '服务声明',
-						shareText: '免费洗车活动',
-						sort: 'distance asc,gradeLevel asc'
-					}
-					break
-				}
-			}
+
 		},
 		mounted(){
 			console.log('path:', this.$route.path)
@@ -149,18 +131,35 @@
 		},
 		methods:{
 			init(){
-				if(this.hasLng){
-					this.getLocationSuccess()
-				}else{
-					this.getLocation((successful)=>{
-						if(successful){
-							this.getLocationSuccess()
-						}else{
-							this.localSuccess= false
-							this.getList(false)
-						}
-					})
-				}
+				getLocation().then((success)=>{
+					if(success){
+						this.getLocationSuccess()
+					}else{
+						this.localSuccess= false
+						this.getList(false)
+					}
+				})
+
+				this.axiosHxx.post('/operate/coupon/returncouponmsg', {
+					code: '6DABE01D45',
+					BUSINESS_TYPE: 1
+				}).then(res => {
+
+				})
+
+				// if(this.hasLng){
+				// 	this.getLocationSuccess()
+				// }else{
+				// 	// getLocation((successful)=>{
+				// 	// 	if(successful){
+				// 	// 		this.getLocationSuccess()
+				// 	// 	}else{
+				// 	// 		this.localSuccess= false
+				// 	// 		this.getList(false)
+				// 	// 	}
+				// 	// })
+				//
+				// }
 			},
 			getLocationSuccess(){
 				this.search.lng= this.$store.state.app.location.lng
@@ -180,10 +179,10 @@
 				this.showRadio= false
 			},
 			calcQuery(limit){
-				let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,promoDetail,credit'+
+				let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,credit'+
 					'&q='+ this.search.q +
 					'&page='+ (this.page-1) +','+ (limit ||this.limit)
-				query+= ('&sort='+ (this.localSuccess?this.label.sort:'gradeLevel asc,distance asc'))
+				query+= ('&sort='+ '_score asc,distance asc')
 				if(this.search.lng) {
 					let point=('&point='+this.search.lat+','+this.search.lng)
 					if(this.show10km) point+= ',10'
@@ -195,6 +194,7 @@
 					is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
 					fq+= '+AND+' + is4s
 				}
+				fq+='+AND+licenseNo:(310115010281+310000004695)'
 				query += fq
 
 				return query
@@ -203,7 +203,7 @@
 				console.log('getList')
 				this.axiosQixiu({
 					baseURL: '/repair-proxy',
-					url: '/micro/search/promotion'+ this.calcQuery(),
+					url: '/micro/search/company'+ this.calcQuery(),
 					method: 'get',
 				}).then(res=>{
 					this.total= res.data.totalElements
@@ -269,27 +269,27 @@
 				this.page++
 				this.getList(true)
 			},
-			getLocation(callback){
-				AMap.plugin('AMap.Geolocation', () => {
-					this.geolocation = new AMap.Geolocation({
-						// timeout: 2000,
-					});
-					this.geolocation.getCurrentPosition();
-					AMap.event.addListener(this.geolocation, 'complete', (result)=>{
-						// console.log('result', result)
-						this.$store.commit('setLocation', {
-							lng: result.position.lng,
-							lat: result.position.lat
-						})
-						callback(true)
-					});//返回定位信息
-					AMap.event.addListener(this.geolocation, 'error', (err)=>{
-						console.log(err)
-						Toast('定位失败')
-						callback(false)
-					});      //返回定位出错信息
-				});
-			},
+			// getLocation(callback){
+			// 	AMap.plugin('AMap.Geolocation', () => {
+			// 		this.geolocation = new AMap.Geolocation({
+			// 			// timeout: 2000,
+			// 		});
+			// 		this.geolocation.getCurrentPosition();
+			// 		AMap.event.addListener(this.geolocation, 'complete', (result)=>{
+			// 			// console.log('result', result)
+			// 			this.$store.commit('setLocation', {
+			// 				lng: result.position.lng,
+			// 				lat: result.position.lat
+			// 			})
+			// 			callback(true)
+			// 		});//返回定位信息
+			// 		AMap.event.addListener(this.geolocation, 'error', (err)=>{
+			// 			console.log(err)
+			// 			Toast('定位失败')
+			// 			callback(false)
+			// 		});      //返回定位出错信息
+			// 	});
+			// },
 			close(){
 				this.search.q='';
 				// setTimeout(()=>{
@@ -335,7 +335,7 @@
 </script>
 
 <style scoped lang="less">
-	.activity-com-list{
+.activity-com-list{
 		height: 100vh;
 		overflow: auto;
 		background-color: white;
@@ -505,14 +505,14 @@
 					padding: 6px 15px 6px 0;
 				}
 			}
-			.show-rule{
-				text-align: center;
-				line-height: 30px;
-				font-size: 12px;
-				background-color: #b1b1b1;
-				color: white;
-			}
-		}
 
+		}
+		.show-rule{
+			text-align: center;
+			line-height: 30px;
+			font-size: 12px;
+			background-color: #b1b1b1;
+			color: white;
+		}
 	}
 </style>

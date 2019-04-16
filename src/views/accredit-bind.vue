@@ -27,7 +27,7 @@ export default {
 	data(){
 		return{
 			form: {
-				telphone: '13761321186',
+				telphone: '',
 				telcode: '',
 				telSession: ''
 			}

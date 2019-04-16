@@ -1,7 +1,7 @@
 <template>
 <div :class="['app-body', {'show-footer': showFooter}]">
 	<router-view v-if="!cache"/>
-	<keep-alive v-else><router-view /></keep-alive>
+	<keep-alive><router-view v-if="cache"/></keep-alive>
 
 	<ul class="footer" v-show="showFooter">
 		<router-link to="/" tag="li">
