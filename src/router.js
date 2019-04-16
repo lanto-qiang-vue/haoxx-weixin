@@ -128,6 +128,14 @@ routes: [
 		component: () => import('@/views/reservation/reservation-detail.vue')
 	},
 	{
+		path: '/remark-map',
+		name: 'remark-map',
+		meta: {
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/remark/remark-map.vue')
+	},
+	{
 		path: '/my-remark',
 		name: 'my-remark',
 		meta: {

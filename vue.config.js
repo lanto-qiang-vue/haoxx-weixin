@@ -16,9 +16,10 @@ module.exports = {
 		port: 7777,
 		proxy: {
 			'/hxx-proxy': {
+				target: 'http://192.168.169.122:8761',
+				// target: 'https://hxx.test.hoxiuxiu.com/',
+				// target: 'https://developer.hxx.hoxiuxiu.com/',
 				// target: 'http://192.168.169.114:8761',
-				// target: 'http://developer.hxx.hoxiuxiu.com/',
-				target: 'http://192.168.169.114:8761',
 				pathRewrite: {'^/hxx-proxy': ''},
 				secure: false
 			},

@@ -167,7 +167,7 @@ let search= {
 export default {
 	name: "maintain-list",
 	components: { SlideBar},
-	props: [ 'blur', 'nowLnglat' ],
+	props: [ 'blur', 'nowLnglat', 'type'],
     data(){
 		let sotrName= ''
 	    switch (this.$route.name){
@@ -568,18 +568,18 @@ export default {
       },
       goDetail(item){
 			// let type= item.type.toString()
-	      // switch (this.$route.name){
-		   //    case 'remark-map':{
-			//       this.$router.push({path: '/remarkMatch', query: { corpId: item.sid }})
-			//       break;
-		   //    }
-		   //    default :{
+	      switch (this.type){
+		      case 'remark':{
+			      this.$router.push({path: '/remark-match', query: { corpId: item.sid }})
+			      break;
+		      }
+		      default :{
 			//       // this.$emit('goMap', item)
 			//       this.$store.commit('setMaintainListHistory', false)
 			      this.$store.commit('setMaintainListHistory', item)
 			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance}})
-		   //    }
-	      // }
+		      }
+	      }
 
       },
 	    renderMap(pointList, renderMarker){

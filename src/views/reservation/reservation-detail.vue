@@ -34,7 +34,7 @@
 			<Input v-model.trim="form.FAULT_DESC"></Input>
 		</FormItem>
 	</Form>
-	<div class="common-submit" @click="submit"><a>提交预约</a></div>
+	<div class="common-submit" @click="submit" v-show="!orderId"><a>提交预约</a></div>
 	<mt-datetime-picker
 			v-model="pickerVisible"
 			type="datetime"
@@ -106,11 +106,14 @@ export default {
 		},
 		qixiutoken(){
 			return this.$store.state.user.qixiutoken
+		},
+		orderId(){
+			return this.$route.query.id
 		}
 	},
 	mounted(){
-		if(this.$route.query.id > 0){
-			this.getData(this.$route.query.id);
+		if(this.orderId){
+			this.getData(this.orderId);
 		}else{
 			this.TENANT_NAME = this.$route.query.name;
 			this.roadliense = this.$route.query.license;
@@ -133,7 +136,7 @@ export default {
         },
         submit(){
             this.axiosHxx.post('/operate/order/saveOrSubmit', {data:this.form,items:[],itemGroups:[],parts:[],roadliense:this.roadliense}).then(res => {
-                if(res.success){
+                if(res.data.success){
                     //下一步操作
 	                this.$toast('提交成功')
 	                this.$router.go(-1)

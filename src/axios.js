@@ -17,7 +17,7 @@ let axiosHxx= axios.create({
 			ret += (encodeURIComponent(key) + '=' +
 				encodeURIComponent(typeof item=='object'?  JSON.stringify( item): item ))
 		}
-		if(!hashxxtoken && token) ret += encodeURIComponent('access_token') + '=' + encodeURIComponent(token)
+		if(!hashxxtoken && token) ret += ('&'+ encodeURIComponent('access_token') + '=' + encodeURIComponent(token))
 		return ret
 	}]
 });

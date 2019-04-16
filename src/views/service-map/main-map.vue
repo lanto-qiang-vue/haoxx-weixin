@@ -12,7 +12,7 @@
 		<div id="container"></div>
 	 </div>
 
-	<maintain-list v-if="hasList" ref="maintainList" :nowLnglat="nowLnglat"
+	<maintain-list v-if="hasList" ref="maintainList" :nowLnglat="nowLnglat" :type="type"
 	               @renderMap="renderMap" @goMap="goMap"></maintain-list>
 	<maintain-detail v-if="type=='maintain'" ref="maintainDetail" @goMap="goMap"></maintain-detail>
 </div>
