@@ -3,12 +3,11 @@
 	<div class="above">
 		<div class="head">
 			<img :src="'/img/head.png'"/>
-			<!--<span>183***1358</span>-->
 			<span>{{userinfo.nickName}}</span>
 		</div>
 		<div class="button">
-			<router-link tag="div" to="/coupons-type"><span>1</span><p>我的卡券</p></router-link>
-			<router-link tag="div" to="/my-reservation"><span>2</span><p>我的预约</p></router-link>
+			<router-link tag="div" to="/coupons-type"><span>{{couponsNum}}</span><p>我的卡券</p></router-link>
+			<router-link tag="div" to="/my-reservation"><span>{{reservationNum}}</span><p>我的预约</p></router-link>
 			<i></i>
 		</div>
 	</div>
@@ -25,12 +24,24 @@
 <script>
 export default {
 	name: "my",
+	data(){
+		return{
+			couponsNum: 0,
+			reservationNum: 0,
+		}
+	},
 	computed:{
 		userinfo(){
 			return this.$store.state.user.userinfo
 		}
 	},
+	mounted(){
+		this.init()
+	},
 	methods:{
+		init(){
+
+		},
 		logout(){
 			this.$messagebox({ message: '确定退出吗？', confirmButtonClass:'error-red',
 				confirmButtonText:'退出', showCancelButton: true}).then(action => {

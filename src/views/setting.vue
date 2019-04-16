@@ -7,7 +7,7 @@
 	<div class="change-pass" v-show="showChangePass">
 		<Form :model="passChange" class="account-form"
 		      :label-width="0" label-position="left" ref="passChange">
-			<FormItem prop="old_pwd">
+			<FormItem prop="old_pwd" v-show="isModify==0">
 				<Input v-model="passChange.old_pwd" type="password" placeholder="原密码"></Input>
 			</FormItem>
 			<FormItem prop="new_pwd">
@@ -61,25 +61,27 @@ export default {
 	data(){
 		return{
 			passChange:{
-                old_pwd: 'lantoev.com1',
-                new_pwd: 'lantoev.com',
-                new_pwd_cp: 'lantoev.com',
-                // access_token:localStorage.getItem("token"),
+                old_pwd: '',
+                new_pwd: '',
+                new_pwd_cp: '',
 			},
 			phoneVerify:{
-                telphone: '17321492645',
-                pwd: '123456',
-                // access_token:localStorage.getItem("token"),
+                telphone: '',
+                pwd: '',
 			},
 			phoneChange:{
                 telphone: '',
                 telcode: '',
-                // access_token:localStorage.getItem("token"),
                 telSession:'',
 			},
 			showChangePass: false,
 			showVerifyPhone: false,
 			showChangePhone: false,
+		}
+	},
+	computed:{
+		isModify(){
+			return this.$store.state.user.userinfo.is_modify
 		}
 	},
 	watch:{
