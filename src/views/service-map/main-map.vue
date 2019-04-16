@@ -67,6 +67,7 @@ export default {
     	hasList(){
     		let has= false
     		switch (this.type){
+			    case 'remark':
 			    case 'maintain':{
 				    has= true
 			    }

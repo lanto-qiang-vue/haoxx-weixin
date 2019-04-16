@@ -1,5 +1,5 @@
 <template>
-	<main-map type="maintain"></main-map>
+	<main-map type="remark"></main-map>
 </template>
 
 <script>
