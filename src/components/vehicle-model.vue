@@ -239,6 +239,7 @@ export default {
 		},
 		decide(item){
 			this.$emit('ok', item, this.sign)
+			console.log(JSON.stringify(item));
 			this.$router.go(-3)
 		},
 		loadMore(){

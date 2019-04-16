@@ -3,14 +3,14 @@
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 	<ul class="coupons-list">
-		<router-link tag="li" v-for="(item, key) in list" :key="key" :to="'/coupons?type='+item.type">
+		<router-link tag="li" v-for="(item, key) in list" :key="key" :to="'/coupons?type='+item.type+'&number='+item.canuse">
 			<div class="content">
 				<div class="left">
 					<label>{{item.name}}</label>
 				</div>
 				<i></i>
 				<div class="right">
-					<div class="times"><span>可用{{item.count}}张</span></div>
+					<div class="times"><span>可用{{item.canuse}}张</span></div>
 				</div>
 			</div>
 		</router-link>

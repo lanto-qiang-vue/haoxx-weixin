@@ -45,7 +45,7 @@
 			date-format="{value} 日">
 	</mt-datetime-picker>
 
-	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME;form.VEHICLE_ID= $event.VEHICLE_ID"></vehicle-model>
+	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID"></vehicle-model>
 	<my-car-list style="position: fixed;top: 0;left: 0" v-if="qixiutoken" v-show="showCarList"
 	             :isPage="false" :showButton="false"
 		@select="form.PLATE_NUM=$event.vehicleplatenumber; showCarList=false"></my-car-list>

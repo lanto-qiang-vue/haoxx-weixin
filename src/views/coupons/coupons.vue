@@ -9,6 +9,8 @@
 				<div class="left">
 					<p>{{item.name}}</p>
 					<span>有效期：{{item.begin_time}}-{{item.end_time}}</span>
+					<p>限用车牌:</p>
+					<span>{{item.license}}</span>
 				</div>
 				<i></i>
 				<div class="right">
@@ -43,6 +45,7 @@ export default {
 	},
 	mounted(){
 	    this.type = this.$route.query.type;
+	    this.canuse = this.$route.query.count || 0;
 		this.getList(false);
 	},
 	methods:{
