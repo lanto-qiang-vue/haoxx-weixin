@@ -18,7 +18,8 @@ routes: [
 		name: 'index',
 		meta:{
 			footer: true,
-			tourist: true
+			tourist: true,
+			cache: true
 		},
 		component: () => import('@/views/index.vue')
 	},

@@ -53,15 +53,19 @@ export default {
 		}
 	},
 	mounted(){
-		this.showSwiper= true
+		// this.showSwiper= true
+		this.getBanner()
 	},
 	methods:{
 		getBanner(){
 			this.axiosQixiu.post('/banner/query', {
-				terminal: 'P'
+				terminal: 'W',
+				useSystem: 2,
 			}).then( (res) => {
-				this.banners= res.items
-				this.showSwiper= true
+				if(res.data.code=='0'){
+					this.banners= res.data.items
+					this.showSwiper= true
+				}
 			})
 		},
 		bannerLink(item){
