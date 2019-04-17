@@ -23,7 +23,10 @@ export default {
         },
         url:{
 		    default:"",
-        }
+        },
+        token:{
+		    default:"",
+        },
 	},
 	data(){
 		return{
@@ -40,7 +43,7 @@ export default {
 			if(!this.disable){
 				if(reg.mobile.test(this.phone)){
 					this.disable= true;
-					this.axiosHxx.post(this.url,{telphone:this.phone}).then(res => {
+					this.axiosHxx.post(this.url,{telphone:this.phone, access_token: this.token}).then(res => {
 						if(res.data.success){
 							this.$toast('验证码已发送');
 							this.$emit('click', res.data.data.telSession);

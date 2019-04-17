@@ -3,7 +3,7 @@ import router from './router'
 import store from './store'
 import { Toast, Indicator, Popup } from 'mint-ui'
 import { isWeixn} from './util'
-
+let toast= null
 let axiosHxx= axios.create({
 	baseURL: '/hxx-proxy/',
 	timeout: 6000,
@@ -12,7 +12,7 @@ let axiosHxx= axios.create({
 		let ret = '',hashxxtoken= false, token= store.state.user.hxxtoken;
 		for (let key in data) {
 			let item= data[key]
-			if(key=='access_token') hashxxtoken= true;
+			if(key=='access_token' && item) hashxxtoken= true;
 			if(ret) ret += '&';
 			ret += (encodeURIComponent(key) + '=' +
 				encodeURIComponent(typeof item=='object'?  JSON.stringify( item): item ))
@@ -69,6 +69,7 @@ axiosHxx.interceptors.response.use(response => {
 	  if (data &&!data.success) {
 		  	if(data.code == 808){
 			    Toast("请重新登陆");
+			    weixinLogin()
 			    return false;
 		    }else{
 		  		if(data.hasOwnProperty("Exception")){
@@ -202,9 +203,25 @@ axiosQixiu.interceptors.response.use(
 
 
 function weixinLogin() {
-  if(isWeixn() &&localStorage.getItem('UNIONID')){
-	  Indicator.close()
+	let unionid= localStorage.getItem('UNIONID')
+  if(isWeixn() && unionid){
+    Indicator.close()
     Toast('登录中')
+
+	  axiosHxx.post('/operate/controller/loginByWx', {unionid}).then(res => {
+		  if(res.data.success){
+		  	let data= res.data.data
+			  if(data.qxtoken) store.commit('setQixiuToken',data.qxtoken);
+			  store.commit('setHxxToken',data.tokenStr);
+			  store.dispatch('dictInit',data.dict);
+			  delete data.dict
+			  store.commit('setUserInfo',data);
+			  Toast('登录成功');
+		  }else{
+		  	    Toast('自动登录失败，请手动登录')
+		  }
+		  router.replace({ path: '/'})
+	  })
 
     axiosHxx({
       url: '/user/useraccount/login',

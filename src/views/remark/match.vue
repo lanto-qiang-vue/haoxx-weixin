@@ -394,7 +394,7 @@
             // setTimeout(function () {
               // if(!this.$route.query.repairId){
                // self.$router.replace({path: '/remarkDetail', query: { id: res.data.commentId }})
-            self.$router.replace({path: '/home'}) //去掉点评玩分享页面
+            self.$router.replace({path: '/'}) //去掉点评玩分享页面
               // }else{
               //   self.$router.replace({path: '/my'})
               // }

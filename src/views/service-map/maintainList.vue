@@ -205,7 +205,7 @@ export default {
 	        area: [{name: '全部', value: ''}],
 	        sort:[
 				{name: '默认', value: ''},
-				{name: '距离优先', value: 'score asc,distance asc'},
+				{name: '距离优先', value: '_score asc,distance asc'},
 				{name: sotrName, value: '_score asc,rating desc,distance asc'},
 	        ],
 	        hot:[

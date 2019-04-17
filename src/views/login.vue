@@ -35,7 +35,7 @@
 	<div :class="['submit',{on: activity}]" @click="submit">登录</div>
 
 	<p class="protocol">新用户登录即完成注册，代表同意
-		<a>《好修修车生活用户协议》</a>
+		<router-link to="/article-detail?infoId=hxx-protocol">《好修修车生活用户协议》</router-link>
 	</p>
 
 	<div class="other-way" v-show="unionid">
@@ -65,6 +65,7 @@
 					<Input v-model.trim="bindForm.smsCode" placeholder="验证码" :maxlength="10"></Input>
 					<countdown class="get-code" text="获取验证码" @click="bindForm.telSession= $event"
 					           :phone="bindForm.telphone"  url="/operate/account/getCode"
+					           :token="tempToken"
 					           v-show="activeBlock=='bindPhone'"></countdown>
 					<countdown class="get-code" text="获取验证码" @click="bindForm.telSession= $event"
 					           url="/operate/controller/getCarliveCode" :phone="bindForm.telphone"
@@ -115,13 +116,13 @@ export default {
 		return{
 			activeBlock: 'code',
 			codeForm:{
-				telphone:'15026769688',
+				telphone:'',
 				telcode:'',
 				telSession:'',
 			},
 			passForm: {
-				telphone: '17321492645',
-				telpass: '123456',
+				telphone: '',
+				telpass: '',
 			},
 			bindForm:{
 				telphone:'',
@@ -138,6 +139,7 @@ export default {
 			},
 			showBind: false,
 			showForget: false,
+			tempToken: ''
 		}
 	},
 	computed:{
@@ -225,12 +227,16 @@ export default {
 						break
 					}
 					case 'bindPhone':{
-						this.axiosHxx.post('/operate/qixiuwang/bind', this.bindForm).then(res => {
+						this.axiosHxx.post('/operate/account/bind',{
+							access_token: this.tempToken,
+							...this.bindForm
+						}).then(res => {
 							if(res.data.success){
 								this.activeBlock='code'
 								this.showBind= false
 								this.$toast('绑定成功');
-								this.goBackUrl()
+								// this.goBackUrl()
+								this.loginSuccess(res.data)
 							}
 						})
 						break
@@ -276,17 +282,22 @@ export default {
 		loginSuccess(data){
 			if(data.success){
 				if(data.data.qxtoken) this.$store.commit('setQixiuToken',data.data.qxtoken);
-				this.$store.commit('setHxxToken',data.data.tokenStr);
-				this.$store.commit('setUserInfo',data.data);
-				this.$store.dispatch('dictInit',data.data.dict);
 				if(data.data.isBindNewphone== 1){
+					this.setStore(data)
 					this.$toast('登录成功');
 					this.goBackUrl()
 				}else{
+					this.tempToken= data.data.tokenStr
 					this.activeBlock='bindPhone'
 					this.showBind= true
 				}
 			}
+		},
+		setStore(data){
+			this.$store.commit('setHxxToken',data.data.tokenStr);
+			this.$store.dispatch('dictInit',data.data.dict);
+			delete data.dict
+			this.$store.commit('setUserInfo',data.data);
 		},
 		goBackUrl(){
 			if(this.$route.query.redirect){
@@ -433,7 +444,7 @@ export default {
 			color: #333333;
 			font-size: 14px;
 			line-height: 20px;
-			text-align: center;
+			/*text-align: center;*/
 			margin-bottom: 40px;
 			label{
 				color: #FE8636;
