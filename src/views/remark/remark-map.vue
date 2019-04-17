@@ -5,7 +5,7 @@
 <script>
 import MainMap from '@/views/service-map/main-map'
 export default {
-	name: "maintain",
+	name: "remark-map",
 	components: {MainMap},
 }
 </script>

@@ -308,7 +308,14 @@ export default {
 				this.$router.replace({path: '/'})
 			}
 		},
-	}
+	},
+	beforeRouteLeave (to, from, next) {
+		console.log('beforeRouteLeave')
+		next()
+	},
+	beforeDestory(){
+		console.log('beforeDestory')
+	},
 }
 </script>
 

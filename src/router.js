@@ -113,14 +113,6 @@ routes: [
 		component: () => import('@/views/car-record/record-detail.vue')
 	},
 	{
-		path: '/my-reservation',
-		name: 'my-reservation',
-		meta: {
-			requiresQixiu: true,
-		},
-		component: () => import('@/views/reservation/my-reservation.vue')
-	},
-	{
 		path: '/reservation-detail',
 		name: 'reservation-detail',
 		meta: {
@@ -188,7 +180,7 @@ routes: [
 		path: '/coupons-coms',
 		name: 'coupons-coms',
 		meta: {
-			
+
 		},
 		component: () => import('@/views/coupons/coupons-coms.vue')
 	},

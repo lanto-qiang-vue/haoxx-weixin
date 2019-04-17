@@ -1,5 +1,5 @@
 <template>
-<div id="allmap" >
+<div class="allmap" >
 	<div class='search'>
 	    <div class="fixGuide" v-show="showCenter=='simple'">
 		    <img class="point" src="/img/maintain/center-point.png"/>
@@ -110,9 +110,8 @@ export default {
 			    need= false
 		    }
 		    return need
-	    }
+	    },
     },
-
     mounted(){
 	    console.log('maintain.mounted')
     	this.bodyNoScoll()
@@ -203,19 +202,6 @@ export default {
 
 			    });
 		    }
-	    },
-	    getCity(){
-		    AMap.plugin('AMap.CitySearch', () => {
-			    let city = new AMap.CitySearch();
-			    city.getLocalCity((status, result)=>{
-				    // console.log('getLocalCity', status, result)
-				    if(status== 'complete'){
-
-				    }else{
-
-				    }
-			    })
-		    });
 	    },
 
 	    getCompList(clearPoint, clearList){
@@ -310,34 +296,22 @@ export default {
 		this.map.panTo(new AMap.LngLat(this.nowLnglat.lng, this.nowLnglat.lat))
 
 	},
+	canscroll(){
+		document.body.removeEventListener('touchmove', this.noscroll,false)
+	}
 
-
-    },
+},
 	activated(){
-		// console.log('maintain.activated')
 		this.bodyNoScoll()
 	},
-	beforeRouteUpdate (to, from, next) {
-	// 在当前路由改变，但是该组件被复用时调用
-	// 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
-	// 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
-	// 可以访问组件实例 `this`
-	// this.getCompList(true, true)
-		next()
-	},
-	beforeRouteLeave (to, from, next) {
-	// 导航离开该组件的对应路由时调用
-	// 可以访问组件实例 `this`
-		document.body.removeEventListener('touchmove', this.noscroll,false)
-		next()
-	},
 	deactivated(){
-		document.body.removeEventListener('touchmove', this.noscroll,false)
+		console.log('deactivated')
+		this.canscroll()
 	},
-	beforeDestory(){
-		document.body.removeEventListener('touchmove', this.noscroll,false)
+	beforeDestroy(){
+		console.log('beforeDestroy')
+		this.canscroll()
 	},
-
 }
 </script>
 <style scoped>
@@ -351,7 +325,7 @@ export default {
     position: absolute;
     z-index: 11;
   }
-  #allmap {
+  .allmap {
     overflow: hidden;
 	  width: 100%;
 	  position: absolute;

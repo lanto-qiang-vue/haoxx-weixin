@@ -161,55 +161,6 @@
       // this.checklogin()
     },
     methods:{
-      getcode(){
-        let reg = /^1[3|4|5|7|8][0-9]{9}$/, self= this, timer=null, number= 60;
-        if(this.codebutton!="获取验证码") return
-        if(!reg.test(this.tel.trim())){
-          Toast("请输入正确手机号")
-          return
-        }
-        this.axiosQixiu({
-          method: 'post',
-          url: '/message/sms/sendsmscaptcha',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          data: JSON.stringify({
-            businessType: "10",
-            cid: this.$store.state.picVerification.imageToken,
-            code: this.$store.state.picVerification.YZM,
-            mobile: this.tel,
-            systemToken: localStorage.getItem("SYSTEMTOKEN")
-          })
-        }).then(res=>{
-            if(res.data.code === '0'){
-              Toast('验证码发送成功,请及时查收!')
-            }else {
-              Toast(res.data.status)
-              clearInterval(timer)
-              self.codebutton="获取验证码"
-            }
-        })
-        timer= setInterval(()=>{
-          self.codebutton= number+'秒后再获取'
-          number--
-          if(number==0) {
-            clearInterval(timer)
-            self.codebutton="获取验证码"
-          }
-        }, 1000)
-      },
-      areachange(index, values){
-        // console.log(values)
-        this.area=values[0]
-      },
-      checklogin(){
-        let userinfo= localStorage.getItem("USERINFO")
-        if(userinfo){
-          this.islogin=true
-          this.tel=JSON.parse(userinfo).telphone
-        }
-      },
       checkval(){
         let reg = /^1[3|4|5|7|8][0-9]{9}$/,flag=false,
           regcar= /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4,5}[A-Z0-9挂学警港澳]{1}$/, carcode= this.area+this.cardno.trim();

@@ -1,7 +1,7 @@
 <template>
 <div :class="['app-body', {'show-footer': showFooter}]">
-	<router-view v-if="!cache"/>
-	<keep-alive><router-view v-if="cache"/></keep-alive>
+	<router-view v-if="!cache"></router-view>
+	<keep-alive><router-view v-if="cache"></router-view></keep-alive>
 
 	<ul class="footer" v-show="showFooter">
 		<router-link to="/" tag="li">
@@ -36,7 +36,7 @@ export default {
 		}
 	},
 	mounted(){
-		console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+		// console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 		// let state= this.getUrlParam('state')
 		// let appId= 'wx71b3e2a11334e62d', URL= encodeURIComponent(window.location.href)
 		// if(this.isWeixn() && !state){
