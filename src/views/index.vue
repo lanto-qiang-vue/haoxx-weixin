@@ -18,7 +18,7 @@
 	</div>
 	<ul class="button">
 		<router-link tag="li" to="/maintain"><img src="~@/assets/img/index/查选维修.png"/><p>查选维修</p></router-link>
-		<li><img src="~@/assets/img/index/维修记录.png"/><p>维修记录</p></li>
+		<router-link tag="li" :to="recordPath"><img src="~@/assets/img/index/维修记录.png"/><p>维修记录</p></router-link>
 		<router-link tag="li" to="/remark-map"><img src="~@/assets/img/index/维修点评.png"/><p>维修点评</p></router-link>
 		<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>
 		<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>
@@ -50,13 +50,31 @@ export default {
 				},
 			},
 			showSwiper: false,
+			recordPath: '/my-car-list'
 		}
 	},
+	computed:{
+		qixiutoken(){
+			return this.$store.state.user.qixiutoken
+		},
+	},
 	mounted(){
-		// this.showSwiper= true
 		this.getBanner()
+		this.init()
 	},
 	methods:{
+		init(){
+			if(this.qixiutoken){
+				this.axiosQixiu.post('/vehicle/owner/queryVehicelist', {"page": 1, "pageSize": 1,}).then( (res) => {
+					if(res.data.code=='0'){
+						if(res.data.total==1){
+							let item= res.data.items[0]
+							this.recordPath= `/record-list?id=${item.vin}&vehicleplatenumber=${item.vehicleplatenumber}`
+						}
+					}
+				})
+			}
+		},
 		getBanner(){
 			this.axiosQixiu.post('/banner/query', {
 				terminal: 'W',

@@ -4,19 +4,21 @@
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 	<ul class="coupons-list">
-		<router-link tag="li" v-for="item in list" :to="'/coupons-detail?code='+ item.code">
+		<router-link tag="li" v-for="(item, key) in list" :to="'/coupons-detail?code='+ item.code" :key="key">
 			<div class="content">
+
 				<div class="left">
 					<p>{{item.name}}</p>
 					<span>有效期{{formatDate(item.begin_time)}}-{{formatDate(item.end_time)}}</span>
 					<span style="margin: 0">限用车牌：{{item.license}}</span>
+
 				</div>
 				<i></i>
-				<div class="right">
+				<router-link tag="div" class="right" :to="'/coupons-detail?code='+item.code">
 					<div class="tag">
 					<p :class="[{orange:item.isuse == 1}]">{{item.usetype}}</p>
 					</div>
-				</div>
+				</router-link>
 			</div>
 		</router-link>
 	</ul>
@@ -56,7 +58,6 @@ export default {
 			// if(this.selected) params.hasRead= this.selected
 			this.axiosHxx.post('/operate/coupon/mycoupondetail',params).then(res=>{
 				this.total= res.data.total;
-				this.canuse = res.data.canuse;
 				if(res.data.data&&res.data.data.length){
 					this.list=this.list.concat(res.data.data)
 					// this.list=res.data.comments

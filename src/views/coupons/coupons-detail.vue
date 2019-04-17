@@ -22,10 +22,10 @@
 			</div>
 		</li>
 	</ul>
-	<Form class="common-form" :label-width="100" label-position="left" ref="form">
-		<FormItem label="验证二维码" class="top-position">
+	<Form class="common-form" :label-width="90" label-position="left" ref="form">
+		<!--<FormItem label="验证二维码" class="top-position" >-->
+		<FormItem label="验证二维码" class="top-position" v-show="detail.isuse == 1">
 			<div class="content">
-				<!--<img id="qrcode" src="/static/img/coupons/head.png"/>-->
 				<img id="qrcode" :src="img"/>
 			</div>
 		</FormItem>
@@ -33,13 +33,13 @@
 			<Input v-model="detail.code" :readonly="true"></Input>
 		</FormItem>
 		<FormItem label="使用日期" v-show="detail.isuse == 2">
-			<Input v-model="detail.spendingDate" :readonly="true"></Input>
+			<Input v-model="detail.spending_time" :readonly="true"></Input>
 		</FormItem>
 		<FormItem label="使用门店" v-show="detail.isuse == 2">
-			<Input v-model="detail.spendingCompanyName" :readonly="true"></Input>
+			<span class="line">{{detail.tenantName}}</span>
 		</FormItem>
 		<FormItem label="门店地址" v-show="detail.isuse == 2">
-			<Input v-model="detail.spendingCompanyAddress" :readonly="true"></Input>
+			<span class="line">{{detail.tenantAdd}}</span>
 		</FormItem>
 		<FormItem label="适用门店">
 			<router-link tag="span" :to="'/coupons-coms?road_license='+detail.ROAD_LICENSE" class="ivu-input half select"></router-link>
@@ -78,6 +78,13 @@ export default {
 			return this.detail.note? this.detail.note.license: ''
 		}
 	},
+	mounted(){
+		let qr = new qrcode({
+			text: window.location.origin
+		});
+		this.img =  qr.toDataURL("image/png");
+		this.getData()
+	},
 	methods:{
 	    getData(){
 		    this.axiosHxx.post('/operate/coupon/returncouponmsg', {
@@ -91,38 +98,31 @@ export default {
 		},
 		formatDate: formatDate
 	},
-	mounted(){
-		let qr = new qrcode({
-            text: window.location.origin
-		});
-        this.img =  qr.toDataURL("image/png");
-        this.getData()
-	},
 }
 </script>
 
 <style scoped lang="less">
-.coupons-detail{
-	min-height: 100vh;
-
-	.common-form{
-		border-bottom: 10px solid #F3F3F3;
-		 .ivu-form-item .ivu-form-item-content > *{
-			text-align: center;
-			img{
-				width: 160px;
-				height: 160px;
-				margin-bottom: 10px;
-			}
-		}
-	}
+.coupons-detail {
+    min-height: 100vh;
+    .common-form {
+        border-bottom: 10px solid #F3F3F3;
+        .content {
+            text-align: center;
+            img {
+                width: 160px;
+                height: 160px;
+                margin-bottom: 10px;
+            }
+        }
+    }
 }
+
 @import "./coupons.less";
 </style>
 <style lang="less">
-.coupons-detail{
-	.common-form .ivu-form-item .ivu-form-item-label{
-		color: #666666;
-	}
-}
+    .coupons-detail {
+        .common-form .ivu-form-item .ivu-form-item-label {
+            color: #666666;
+        }
+    }
 </style>

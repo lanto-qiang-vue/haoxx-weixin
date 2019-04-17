@@ -3,7 +3,7 @@
 		<div class="head">
 			<div class="left"><i class="fa fa-search icon"></i>
 				<form action="javascript:return true">
-					<input type="search" ref="input" v-model="search.q" @keydown="key($event)" :placeholder="label.input"/>
+					<input type="search" ref="input" v-model="search.q" @keydown="key($event)" placeholder="门店名称"/>
 				</form>
 				<i class="fa fa-times-circle close" v-show="search.q" @click="close" ></i>
 			</div>
@@ -139,12 +139,12 @@ export default {
 					}
 				})
 
-				this.axiosHxx.post('/operate/coupon/returncouponmsg', {
-					code: '6DABE01D45',
-					BUSINESS_TYPE: 1
-				}).then(res => {
-
-				})
+				// this.axiosHxx.post('/operate/coupon/returncouponmsg', {
+				// 	code: '6DABE01D45',
+				// 	BUSINESS_TYPE: 1
+				// }).then(res => {
+				//
+				// })
 
 				// if(this.hasLng){
 				// 	this.getLocationSuccess()
@@ -193,7 +193,8 @@ export default {
 					is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
 					fq+= '+AND+' + is4s
 				}
-				fq+='+AND+licenseNo:(310115010281+310000004695)'
+				let road_license= this.$route.query.road_license
+				if(road_license) fq+= '+AND+licenseNo:('+road_license+')'
 				query += fq
 
 				return query
