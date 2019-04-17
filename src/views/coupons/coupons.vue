@@ -5,19 +5,21 @@
 	             bottomPullText="加载更多"   ref="loadmore">
 	<ul class="coupons-list">
 		<li v-for="item in list">
-			<div class="content">
+			<div class="content" style="height:100px;">
 				<div class="left">
+					<!--<p>限用车牌:</p>-->
+					<!--<span>{{item.license}}</span>-->
 					<p>{{item.name}}</p>
 					<span>有效期：{{item.begin_time}}-{{item.end_time}}</span>
-					<p>限用车牌:</p>
-					<span>{{item.license}}</span>
+					<p></p>
+					<span>有效期：{{item.begin_time}}-{{item.end_time}}</span>
 				</div>
 				<i></i>
-				<div class="right">
+				<router-link tag="div" class="right" :to="'/coupons-detail?code='+item.code">
 					<div class="tag">
 					<p :class="[{orange:item.usetype == '可使用'}]">{{item.usetype}}</p>
 					</div>
-				</div>
+				</router-link>
 			</div>
 		</li>
 	</ul>
@@ -45,7 +47,7 @@ export default {
 	},
 	mounted(){
 	    this.type = this.$route.query.type;
-	    this.canuse = this.$route.query.count || 0;
+	    this.canuse = this.$route.query.number || 0;
 		this.getList(false);
 	},
 	methods:{
@@ -59,7 +61,6 @@ export default {
 			// if(this.selected) params.hasRead= this.selected
 			this.axiosHxx.post('/operate/coupon/mycoupondetail',params).then(res=>{
 				this.total= res.data.total;
-				this.canuse = res.data.canuse;
 				if(res.data.data&&res.data.data.length){
 					this.list=this.list.concat(res.data.data)
 					// this.list=res.data.comments
