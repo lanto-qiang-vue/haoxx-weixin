@@ -5,7 +5,7 @@
 		<ul class="list">
 			<li v-for="item in list" tag="a" @click="to(item.ORDER_ID)">
 				<div class="head"><label>预约时间：</label>
-					{{item.ORDER_DATE.substr(0,16)}}
+					{{item.ORDER_DATE.substr(0,10) + " " + item.ORDER_TIME}}
 					<span class="status">{{$store.state.user.unit[item.ORDER_TYPE]}}</span>
 				</div>
 				<p><label>指派公司：</label>{{item.TENANT_NAME}}</p>

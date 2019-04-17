@@ -149,6 +149,7 @@ export default {
 			    Toast('该车暂无维修记录')
 		    }
 	    }else{
+    	    console.log(JSON.stringify(item));
 			this.$emit('select', item)
 	    }
     },

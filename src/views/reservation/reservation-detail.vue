@@ -45,10 +45,10 @@
 			date-format="{value} 日">
 	</mt-datetime-picker>
 
-	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID"></vehicle-model>
+	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID;form.TID = $event.TID;"></vehicle-model>
 	<my-car-list style="position: fixed;top: 0;left: 0" v-if="qixiutoken" v-show="showCarList"
 	             :isPage="false" :showButton="false"
-		@select="form.PLATE_NUM=$event.vehicleplatenumber; showCarList=false"></my-car-list>
+		@select="form.PLATE_NUM=$event.vehicleplatenumber;form.VIN_NO=$event.vin;showCarList=false"></my-car-list>
 </div>
 </template>
 
@@ -81,8 +81,8 @@ export default {
                 FAULT_DESC:"",//故障描述
                 ORDER_ID:"",
                 ORDER_TYPE: "10411001",
-				//无关页面还必须有写字段
                 VIN_NO:"",
+				//无关页面还必须有写字段
                 CUSTOMER_INFO:"",
                 STATUS: "10421001",
                 IS_ITEM_GROUP: "10041002",
@@ -90,7 +90,9 @@ export default {
                 REPAIR_PART_DERATE_MONEY: 0,
                 REPAIR_ITEM_MONEY: 0,
                 REPAIR_PART_MONEY: 0,
-                SUM_MONEY: 0
+                SUM_MONEY: 0,
+				//新增字段
+				TID:'',
 			},
             roadliense:"",//道路许可证
 			ruleValidate : {
