@@ -35,6 +35,7 @@ axiosHxx.interceptors.request.use(config => {
 	// if(contentType.indexOf('application/x-www-form-urlencoded')>=0){
 	// 	let form = new FormData(), res=''
 	// 	if(!data.access_token && store.state.user.hxxtoken){
+	// 	if(!data.access_token && store.state.user.hxxtoken){
 	// 		data.access_token= store.state.user.hxxtoken
 	// 	}
 	// 	for(let key in data){
