@@ -67,9 +67,8 @@ export default {
 					lat: '31.236301',
 				},
 				localSuccess: true,
-				action:'',
 
-				label:{}
+				// label:{}
 			}
 		},
 		computed:{
@@ -124,10 +123,10 @@ export default {
 				}
 			})
 
-			getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
-			this.share()
+			// getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
+			// this.share()
 
-			this.action= window.location.href
+			// this.action= window.location.href
 		},
 		methods:{
 			init(){
@@ -212,7 +211,7 @@ export default {
 						for(let i in arr){
 							arr[i].rating= 0
 							arr[i].commentCount= 0
-							this.getScore(arr[i].sid)
+							// this.getScore(arr[i].sid)
 						}
 						this.list=this.list.concat(arr)
 
@@ -227,44 +226,30 @@ export default {
 					}
 				})
 			},
-			showItems(promoDetail){
-				let html= ''
-				switch (this.type){
-					case 'discounts':{
-						html= promoDetail.replace(/\n/g,'</br>')
-						break
-					}
-					case 'freeWash':{
-						html= promoDetail? promoDetail.replace(/\n/g,'</br>'): '免费洗车'
-						break
-					}
-				}
-				return html
-			},
-			getScore(id){
-				this.axiosQixiu({
-					method: 'get',
-					baseURL: '/repair-proxy',
-					url: '/micro/search/company/repair/'+ id,
-				}).then(res => {
-					let arr= this.list
-					for(let i in arr){
-						if(arr[i].sid== res.data.sid){
-							arr[i].rating= res.data.rating
-							arr[i].commentCount= res.data.commentCount+1
-						}
-					}
-				})
-			},
-			levelText(item){
-				let text=''
-				if(item.grade){
-					text= item.grade+'级'
-				}else if(!item.credit){
-					text= '未评级'
-				}
-				return text
-			},
+			// getScore(id){
+			// 	this.axiosQixiu({
+			// 		method: 'get',
+			// 		baseURL: '/repair-proxy',
+			// 		url: '/micro/search/company/repair/'+ id,
+			// 	}).then(res => {
+			// 		let arr= this.list
+			// 		for(let i in arr){
+			// 			if(arr[i].sid== res.data.sid){
+			// 				arr[i].rating= res.data.rating
+			// 				arr[i].commentCount= res.data.commentCount+1
+			// 			}
+			// 		}
+			// 	})
+			// },
+			// levelText(item){
+			// 	let text=''
+			// 	if(item.grade){
+			// 		text= item.grade+'级'
+			// 	}else if(!item.credit){
+			// 		text= '未评级'
+			// 	}
+			// 	return text
+			// },
 			loadMore(){
 				this.page++
 				this.getList(true)
@@ -299,37 +284,37 @@ export default {
 				this.$refs.input.focus()
 				// },500)
 			},
-			share(){
-				let link= window.location.href
-				let titles= this.label.shareText
-				let shareImg= 'https://download.image.shanghaiqixiu.org/2019/03/13/1552468798349.png'
-				// console.log(news[j].headimg)
-
-				wx.ready(function(){
-					//分享到朋友圈
-					wx.onMenuShareTimeline({
-						title: titles, // 分享标题
-						link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-						imgUrl: shareImg|| 'https://weixin.shanghaiqixiu.org/static/img/shqxw.jpg', // 分享图标
-						success: function () {
-							// 用户点击了分享后执行的回调函数
-						}
-					})
-					//分享给朋友
-					wx.onMenuShareAppMessage({
-						title: titles, // 分享标题
-						desc: titles, // 分享描述
-						// link: 'https://weixin.shanghaiqixiu.org/#/remarkDetail?id='+self.$route.query.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-						link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-						imgUrl: shareImg|| 'https://weixin.shanghaiqixiu.org/static/img/shqxw.jpg', // 分享图标
-						type: '', // 分享类型,music、video或link，不填默认为link
-						dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-						success: function () {
-// 用户点击了分享后执行的回调函数
-						}
-					});
-				})
-			},
+// 			share(){
+// 				let link= window.location.href
+// 				let titles= this.label.shareText
+// 				let shareImg= 'https://download.image.shanghaiqixiu.org/2019/03/13/1552468798349.png'
+// 				// console.log(news[j].headimg)
+//
+// 				wx.ready(function(){
+// 					//分享到朋友圈
+// 					wx.onMenuShareTimeline({
+// 						title: titles, // 分享标题
+// 						link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+// 						imgUrl: shareImg|| 'https://weixin.shanghaiqixiu.org/static/img/shqxw.jpg', // 分享图标
+// 						success: function () {
+// 							// 用户点击了分享后执行的回调函数
+// 						}
+// 					})
+// 					//分享给朋友
+// 					wx.onMenuShareAppMessage({
+// 						title: titles, // 分享标题
+// 						desc: titles, // 分享描述
+// 						// link: 'https://weixin.shanghaiqixiu.org/#/remarkDetail?id='+self.$route.query.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+// 						link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+// 						imgUrl: shareImg|| 'https://weixin.shanghaiqixiu.org/static/img/shqxw.jpg', // 分享图标
+// 						type: '', // 分享类型,music、video或link，不填默认为link
+// 						dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+// 						success: function () {
+// // 用户点击了分享后执行的回调函数
+// 						}
+// 					});
+// 				})
+// 			},
 		}
 	}
 </script>

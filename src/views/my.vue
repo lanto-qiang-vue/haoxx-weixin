@@ -40,7 +40,19 @@ export default {
 	},
 	methods:{
 		init(){
-
+			this.axiosHxx.post('/operate/coupon/mycoupons', {USER_ID:this.$store.state.user.userinfo.userId}).then(res => {
+				if(res.data.success){
+					let list= res.data.data
+					for(let i in list){
+						this.couponsNum+= parseInt(list[i].canuse)
+					}
+				}
+			})
+			this.axiosHxx.post('/operate/order/list ',{page: 1, limit: 1,}).then(res=>{
+				if(res.data.success){
+					this.reservationNum= res.data.total
+				}
+			})
 		},
 		logout(){
 			this.$messagebox({ message: '确定退出吗？', confirmButtonClass:'error-red',

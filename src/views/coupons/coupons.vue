@@ -1,51 +1,48 @@
 <template>
 <div class="coupons">
-	<p class="num">共{{total}}张，可用{{canuse}}张</p>
+	<p class="num">共{{total}}张，可用{{query.canuse}}张</p>
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 	<ul class="coupons-list">
-		<li v-for="item in list">
+		<router-link tag="li" v-for="item in list" :to="'/coupons-detail?code='+ item.code">
 			<div class="content">
 				<div class="left">
 					<p>{{item.name}}</p>
-					<span>有效期：{{item.begin_time}}-{{item.end_time}}</span>
-					<p>限用车牌:</p>
-					<span>{{item.license}}</span>
+					<span>有效期{{formatDate(item.begin_time)}}-{{formatDate(item.end_time)}}</span>
+					<span style="margin: 0">限用车牌：{{item.license}}</span>
 				</div>
 				<i></i>
 				<div class="right">
 					<div class="tag">
-					<p :class="[{orange:item.usetype == '可使用'}]">{{item.usetype}}</p>
+					<p :class="[{orange:item.isuse == 1}]">{{item.usetype}}</p>
 					</div>
 				</div>
 			</div>
-		</li>
+		</router-link>
 	</ul>
 	</mt-loadmore>
 </div>
 </template>
 
 <script>
+import {formatDate} from '@/util.js'
 export default {
 	name: "coupons",
 	data(){
 		return{
-			list:[
-
-			],
+			list:[],
 			page: 1,
 			total: 0,
-            canuse:0,
 			allLoaded: false,
 			type:"",
 		}
 	},
-	watch:{
-
+	computed:{
+		query(){
+			return this.$route.query
+		}
 	},
 	mounted(){
-	    this.type = this.$route.query.type;
-	    this.canuse = this.$route.query.count || 0;
 		this.getList(false);
 	},
 	methods:{
@@ -54,7 +51,7 @@ export default {
 				page: this.page,
 				limit: 10,
                 USER_ID:this.$store.state.user.userinfo.userId,
-				type:this.type,
+				type:this.query.type,
 			}
 			// if(this.selected) params.hasRead= this.selected
 			this.axiosHxx.post('/operate/coupon/mycoupondetail',params).then(res=>{
@@ -74,6 +71,7 @@ export default {
 				}
 			})
 		},
+		formatDate: formatDate,
 		loadMore(){
 			this.page++
 			this.getList(true)

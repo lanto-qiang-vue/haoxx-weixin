@@ -120,8 +120,8 @@ export default {
 				telSession:'',
 			},
 			passForm: {
-				telphone: '15900418638',
-				telpass: 'lantoev.com',
+				telphone: '17321492645',
+				telpass: '123456',
 			},
 			bindForm:{
 				telphone:'',

@@ -1,9 +1,9 @@
 <template>
 <div class="coupons-type">
-	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
-	             bottomPullText="加载更多"   ref="loadmore">
+	<!--<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"-->
+	             <!--bottomPullText="加载更多"   ref="loadmore">-->
 	<ul class="coupons-list">
-		<router-link tag="li" v-for="(item, key) in list" :key="key" :to="'/coupons?type='+item.type+'&number='+item.canuse">
+		<router-link tag="li" v-for="(item, key) in list" :key="key" :to="'/coupons?type='+item.type+'&canuse='+item.canuse">
 			<div class="content">
 				<div class="left">
 					<label>{{item.name}}</label>
@@ -16,7 +16,7 @@
 		</router-link>
 		<!--<div v-if="allLoaded" style="text-align: center; line-height: 30px; background-color: #f8f8f8; font-size: 14px; color: #999;">暂无更多数据...</div>-->
 	</ul>
-	</mt-loadmore>
+	<!--</mt-loadmore>-->
 </div>
 </template>
 
@@ -26,16 +26,11 @@ export default {
 	name: "coupons-type",
 	data(){
 		return{
-			list:[
-
-			],
-			page: 1,
-			total: 0,
-			allLoaded: false,
+			list:[],
+			// page: 1,
+			// total: 0,
+			// allLoaded: false,
 		}
-	},
-	watch:{
-
 	},
 	mounted(){
 		this.getList();
@@ -45,7 +40,6 @@ export default {
 		getList(){
             this.axiosHxx.post('/operate/coupon/mycoupons', {USER_ID:this.$store.state.user.userinfo.userId}).then(res => {
                 if(res.data.success){
-                    //下一步操作
 					this.list = res.data.data;
                 }
             })
