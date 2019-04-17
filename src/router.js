@@ -164,7 +164,7 @@ routes: [
 		path: '/coupons-type',
 		name: 'coupons-type',
 		meta: {
-			requiresQixiu: true,
+
 		},
 		component: () => import('@/views/coupons/coupons-type.vue')
 	},
@@ -172,7 +172,7 @@ routes: [
 		path: '/coupons',
 		name: 'coupons',
 		meta: {
-			requiresQixiu: true,
+
 		},
 		component: () => import('@/views/coupons/coupons.vue')
 	},
@@ -180,7 +180,7 @@ routes: [
 		path: '/coupons-detail',
 		name: 'coupons-detail',
 		meta: {
-			requiresQixiu: true,
+
 		},
 		component: () => import('@/views/coupons/coupons-detail.vue')
 	},
@@ -188,8 +188,16 @@ routes: [
 		path: '/coupons-coms',
 		name: 'coupons-coms',
 		meta: {
-			requiresQixiu: true,
+			
 		},
 		component: () => import('@/views/coupons/coupons-coms.vue')
+	},
+	{
+		path: '/article-detail',
+		name: 'article-detail',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/article/article-detail.vue')
 	},
 ]})

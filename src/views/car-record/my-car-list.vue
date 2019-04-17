@@ -101,7 +101,7 @@ export default {
       }, {
         name: '绑定他人车辆',
         method(){
-          _this.$router.push('/carOwner-centre/bind-car/bind-other-car')
+          _this.$router.push('/bind-other-car')
         }
       }],
 	    actions2: [{
