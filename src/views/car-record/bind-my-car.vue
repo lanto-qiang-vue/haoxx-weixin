@@ -143,19 +143,19 @@
 		  <div class="rule">
 			  <p>拍摄时确保证件<span style="color: #fc0;">边框完整，字体清晰，亮度均匀</span></p>
 			  <li>
-				  <img src="/img/carOwner-centre/身份证_标准@3x.png">
+				  <img src="/img/car-record/身份证_标准@3x.png">
 				  <p>标准</p>
 			  </li>
 			  <li>
-				  <img src="/img/carOwner-centre/身份证_边框缺失@3x.png">
+				  <img src="/img/car-record/身份证_边框缺失@3x.png">
 				  <p>边框缺失</p>
 			  </li>
 			  <li>
-				  <img src="/img/carOwner-centre/身份证_照片模糊@3x.png">
+				  <img src="/img/car-record/身份证_照片模糊@3x.png">
 				  <p>照片模糊</p>
 			  </li>
 			  <li>
-				  <img src="/img/carOwner-centre/身份证_闪光强烈@3x.png">
+				  <img src="/img/car-record/身份证_闪光强烈@3x.png">
 				  <p>闪光强烈</p>
 			  </li>
 		  </div>
@@ -753,13 +753,13 @@ export default{
 		border-bottom: 1px solid #E5E5E5
 	}
 	.drive .img{
-		background: #f2f7fd url("/img/carOwner-centre/行驶证@3x.png") no-repeat center center;
+		background: #f2f7fd url("/img/car-record/行驶证@3x.png") no-repeat center center;
 	}
 	.id .img{
-		background: #f2f7fd url("/img/carOwner-centre/身份证_正面@3x.png") no-repeat center center;
+		background: #f2f7fd url("/img/car-record/身份证_正面@3x.png") no-repeat center center;
 	}
 	.business .img{
-		background: #f2f7fd url("/img/carOwner-centre/营业执照@3x.png") no-repeat center center;
+		background: #f2f7fd url("/img/car-record/营业执照@3x.png") no-repeat center center;
 	}
 	.upBlock{
 		padding: 20px 15px 15px;

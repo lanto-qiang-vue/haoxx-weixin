@@ -70,6 +70,10 @@ routes: [
 	{
 		path: '/maintain',
 		name: 'maintain',
+		meta:{
+			tourist: true,
+			cache: true
+		},
 		component: () => import('@/views/service-map/maintain.vue')
 	},
 	{

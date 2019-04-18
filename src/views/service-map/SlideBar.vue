@@ -9,9 +9,9 @@
 </template>
 
 <script>
-let bodyScrollTop= function(){
-	if($('body').scrollTop()!= 0 ) $('body').scrollTop(0)
-}
+// let bodyScrollTop= function(){
+// 	if($('body').scrollTop()!= 0 ) $('body').scrollTop(0)
+// }
 export default {
 	name: "slide-bar",
     props: [ 'minHeight', 'toLocation', 'pageLocation', 'action', 'bottom'],
@@ -20,7 +20,8 @@ export default {
         timer: null,
         first: true,
         minTop: 80,
-		docHeight: 0
+		docHeight: 0,
+		touchBarHeight: 20
       }
     },
     computed: {
@@ -37,14 +38,18 @@ export default {
 	    }
     },
     mounted(){
-		this.docHeight= $(document).height()
+		// setTimeout(()=>{
+			this.docHeight=  document.body.offsetHeight
+			this.resize(this.pageLocation[this.toLocation], 10)
+		// },100)
+
 		// console.log('docHeight', this.docHeight)
 		// console.log('this.pageLocation[this.toLocation]', this.pageLocation[this.toLocation])
-      this.resize(this.pageLocation[this.toLocation], 10)
+
       // this.$emit('toLocation', this.location)
       let self=this
       let dom= $(this.$refs.slide)
-      let touchBarHeight= $('.touch-bar').outerHeight(true) //bar高度（20）
+      let touchBarHeight= self.touchBarHeight //bar高度（20）
       let startY= 0
       let endY= 0
       let domY= 0
@@ -109,7 +114,7 @@ export default {
 	    $("body").bind('touchend', this.bodyScrollTop)
 
       window.onresize = function(){
-        if($(document).height()== (self.docHeight)) self.$emit('maintainListBlur')
+        if( document.body.offsetHeight== (self.docHeight)) self.$emit('maintainListBlur')
         self.resize(self.docHeight- self.minTop -touchBarHeight)
       }
     },
@@ -161,7 +166,7 @@ export default {
         // console.log('resize.height,this.minHeight', height, this.minHeight)
         let self= this
         let timeout= (time=== undefined? 500: time)
-        let touchBarHeight= $('.touch-bar').outerHeight(true)
+        let touchBarHeight= self.touchBarHeight
         let calcHeight= 0
         if(height> this.docHeight- this.minTop -touchBarHeight){
           calcHeight= this.docHeight- this.minTop -touchBarHeight
@@ -179,7 +184,7 @@ export default {
         }, timeout);
         if(!noToMove){
 
-          // console.log('this.docHeight- calcHeight- touchBarHeight', this.docHeight, calcHeight, touchBarHeight)
+          console.log('this.docHeight- calcHeight- touchBarHeight', this.docHeight, calcHeight, touchBarHeight)
           $(this.$refs.slide).css({
 	          transform: 'translateY('+ (this.docHeight- calcHeight- touchBarHeight ) + 'px)'})
           // self.$store.commit('reSetSlideBodyHeight', calcHeight)

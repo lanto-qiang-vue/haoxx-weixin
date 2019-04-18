@@ -1,8 +1,8 @@
 <template>
 <div class="box" >
         <div v-show="(showComment|| showComplaint &&flag1 &&flag2) && showButton" class="button_wrap">
-          <mt-button v-show="showComment" :class="{half: showComplaint}" @click="goRemark" type="primary" size="large">我要评价</mt-button>
-          <mt-button v-show="showComplaint" :class="{half: showComment}" @click="goComplaint" type="primary" size="large">我要反馈</mt-button>
+          <mt-button v-show="showComment" :class="{half: false}" @click="goRemark" type="primary" size="large">我要评价</mt-button>
+          <!--<mt-button v-show="showComplaint" :class="{half: showComment}" @click="goComplaint" type="primary" size="large">我要反馈</mt-button>-->
 	        <span class="other"></span>
         </div>
         <div  :class="{bottom: (showComment|| showComplaint &&flag1 &&flag2) &&showButton}">
@@ -225,7 +225,7 @@ export default {
       //   }
       // })
 
-      this.$router.push({path: '/remarkMatch',
+      this.$router.push({path: '/remark-match',
         query: { corpId: this.$route.query.companyId,
           repairId: this.$route.query.repairbasicinfoId,
 	        vehicleplatenumber: this.$route.query.vehicleplatenumber,

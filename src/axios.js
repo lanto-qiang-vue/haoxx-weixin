@@ -12,10 +12,12 @@ let axiosHxx= axios.create({
 		let ret = '',hashxxtoken= false, token= store.state.user.hxxtoken;
 		for (let key in data) {
 			let item= data[key]
-			if(key=='access_token' && item) hashxxtoken= true;
 			if(ret) ret += '&';
-			ret += (encodeURIComponent(key) + '=' +
-				encodeURIComponent(typeof item=='object'?  JSON.stringify( item): item ))
+			if(key=='access_token' ){
+				if(item) hashxxtoken= true;
+				else continue
+			}
+			ret += (encodeURIComponent(key) + '=' + encodeURIComponent(typeof item=='object'? JSON.stringify( item): item))
 		}
 		if(!hashxxtoken && token) ret += ('&'+ encodeURIComponent('access_token') + '=' + encodeURIComponent(token))
 		return ret
@@ -27,6 +29,37 @@ let axiosQixiu= axios.create({
 	timeout: 6000,
 	headers: {'Content-Type': 'application/json;charset=UTF-8'}
 });
+
+let weixinLogin= ()=> {
+	let unionid= localStorage.getItem('UNIONID')
+	if(isWeixn() && unionid){
+		Indicator.close()
+		Toast('登录中')
+		axiosHxx.post('/operate/controller/loginByWx', {unionid}).then(res => {
+			if(res.data.success){
+				let data= res.data.data
+				if(data.qxtoken) store.commit('setQixiuToken',data.qxtoken);
+				store.commit('setHxxToken',data.tokenStr);
+				store.dispatch('dictInit',data.dict);
+				delete data.data.dict
+				store.commit('setUserInfo',data);
+				Toast('登录成功');
+			}else{
+				Toast('自动登录失败，请手动登录')
+			}
+			router.replace({ path: '/'})
+		})
+	}else{
+		// console.log('router', router)
+		router.push({path: '/login', query: { redirect: router.currentRoute.fullPath }})
+	}
+}
+
+let logout=()=>{
+	Toast("请重新登陆");
+	store.commit('logout')
+	weixinLogin()
+}
 
 axiosHxx.interceptors.request.use(config => {
 	// let data= config.data
@@ -51,44 +84,40 @@ axiosHxx.interceptors.request.use(config => {
 	// }
 	Indicator.close()
     Indicator.open({
-      text: '请稍候...',
-      spinnerType: 'snake'
+		text: '请稍候...',
+		spinnerType: 'snake'
     });
     return config
-  },
-  error => {
+}, error => {
     return Promise.reject(error);
 });
 
-
 // Add a response interceptor 响应拦截器
 axiosHxx.interceptors.response.use(response => {
-    Indicator.close()
-	  console.log('response', response)
-	  let { data } = response
-	  console.log('data', data)
-	  if (data &&!data.success) {
-		  	if(data.code == 808){
-			    Toast("请重新登陆");
-			    weixinLogin()
-			    return false;
-		    }else{
-		  		if(data.hasOwnProperty("Exception")){
-		  			console.log(data.Exception.message);
-                    Toast( data.Exception.message || data.title);
-				}else{
-                    Toast(data.title);
-				}
+	Indicator.close()
+	// console.log('response', response)
+	let { data } = response
+	// console.log('data', data)
+	if (data &&!data.success) {
+		if(data.code == 808){
+			logout()
+			return false;
+		}else{
+			if(data.hasOwnProperty("Exception")){
+				console.log(data.Exception.message);
+				Toast( data.Exception.message || data.title);
+			}else{
+				Toast(data.title);
 			}
-	  }
-    return response;
-  },
-  error => {
-  	// for(let key in error){
-  	// 	console.log(key)
-    // }
+		}
+	}
+	return response;
+}, error => {
+	// for(let key in error){
+	// 	console.log(key)
+	// }
 	 //  console.log('error.response', error.response)
-	 //  Indicator.close()
+	Indicator.close()
 	  // Toast({
 		//   message: error.response.data.error,
 		//   position: 'bottom',
@@ -114,8 +143,8 @@ axiosHxx.interceptors.response.use(response => {
 	// 		duration: 2000
 	// 	});
 	// }
-    return Promise.reject(error)
-  });
+	return Promise.reject(error)
+});
 
 
 axiosQixiu.interceptors.request.use(config => {
@@ -129,132 +158,71 @@ axiosQixiu.interceptors.request.use(config => {
 		spinnerType: 'snake'
 	});
 	return config
-},
-error => {
+}, error => {
+	Indicator.close()
 	return Promise.reject(error);
 });
 
 
-axiosQixiu.interceptors.response.use(
-	response => {
-		Indicator.close()
-		switch (response.data.code){
-			case '0': break
-			case '401':
-			case '2000':
-			case '100':
+axiosQixiu.interceptors.response.use(response => {
+	Indicator.close()
+	switch (response.data.code){
+		case '0': break
+		case '401':
+		case '2000':
+		case '100':
+			logout()
+			break
 
-				localStorage.removeItem("ACCESSTOKEN")
-				localStorage.removeItem("USERINFO")
-
-				weixinLogin()
-
-				break
-
-			// case '000001':
-			//   Toast('系统异常')
-			//   return
-			//   break
-			default:{
-				let content= ''
-				if(response.data.status) content+= response.data.status
-				if(response.data.message) content+= ' '+response.data.message
-				if(response.data.msg) content+= ' '+response.data.msg
-				if(response.data.code &&content){
-					if(toast) toast.close()
-					toast = Toast(content)
-				}
+		// case '000001':
+		//   Toast('系统异常')
+		//   return
+		//   break
+		default:{
+			let content= ''
+			if(response.data.status) content+= response.data.status
+			if(response.data.message) content+= ' '+response.data.message
+			if(response.data.msg) content+= ' '+response.data.msg
+			if(response.data.code &&content){
+				if(toast) toast.close()
+				toast = Toast(content)
 			}
 		}
-		return response;
-	},
-	error => {
-		// for(let key in error){
-		// 	console.log(key)
-		// }
-		//  console.log('error.response', error.response)
-		Indicator.close()
-		// Toast({
-		//   message: error.response.data.error,
-		//   position: 'bottom',
-		//   duration: 2000
-		// });
-		if(error.response.status==400){
-			let msg= (error.response.data&& error.response.data.msg)? error.response.data.msg: '系统异常'
-			Toast({
-				message: msg,
-				// position: 'bottom',
-				duration: 2000
-			});
-		} else if(error.message == 'timeout of 10000ms exceeded'){
-			Toast({
-				message: '请求超时',
-				position: 'bottom',
-				duration: 2000
-			});
-		}else{
-			Toast({
-				message: '系统异常',
-				position: 'bottom',
-				duration: 2000
-			});
-		}
-		return Promise.reject(error)
-	});
+	}
+	return response;
+}, error => {
+	// for(let key in error){
+	// 	console.log(key)
+	// }
+	//  console.log('error.response', error.response)
+	Indicator.close()
+	// Toast({
+	//   message: error.response.data.error,
+	//   position: 'bottom',
+	//   duration: 2000
+	// });
+	if(error.response.status==400){
+		let msg= (error.response.data&& error.response.data.msg)? error.response.data.msg: '系统异常'
+		Toast({
+			message: msg,
+			// position: 'bottom',
+			duration: 2000
+		});
+	} else if(error.message == 'timeout of 10000ms exceeded'){
+		Toast({
+			message: '请求超时',
+			position: 'bottom',
+			duration: 2000
+		});
+	}else{
+		Toast({
+			message: '系统异常',
+			position: 'bottom',
+			duration: 2000
+		});
+	}
+	return Promise.reject(error)
+});
 
-
-function weixinLogin() {
-	let unionid= localStorage.getItem('UNIONID')
-  if(isWeixn() && unionid){
-    Indicator.close()
-    Toast('登录中')
-
-	  axiosHxx.post('/operate/controller/loginByWx', {unionid}).then(res => {
-		  if(res.data.success){
-		  	let data= res.data.data
-			  if(data.qxtoken) store.commit('setQixiuToken',data.qxtoken);
-			  store.commit('setHxxToken',data.tokenStr);
-			  store.dispatch('dictInit',data.dict);
-			  delete data.dict
-			  store.commit('setUserInfo',data);
-			  Toast('登录成功');
-		  }else{
-		  	    Toast('自动登录失败，请手动登录')
-		  }
-		  router.replace({ path: '/'})
-	  })
-
-    axiosHxx({
-      url: '/user/useraccount/login',
-      method: 'post',
-      data: {
-		  openid: localStorage.getItem('UNIONID')+','+localStorage.getItem('QXWOPENID'),
-		  loginMethod: "微信",
-		  workOn: process.env.NODE_ENV!='development' ? 'pPro' : 'pDev',
-		  system: "wechatqixiu"
-	  }
-    }).then(res=>{
-      console.log(res.data.code)
-      if(res.data.code === "0"){
-	      localStorage.setItem("ACCESSTOKEN", res.data.item.accessToken);
-	      localStorage.setItem("USERINFO", JSON.stringify(res.data.item));
-
-        router.replace({ path: '/'})
-      }else if(res.data.code === "141010"){
-
-        setTimeout(function () {
-          Toast('此微信未绑定手机号，请手动登录')
-        },1000)
-
-        router.replace({ path: '/'})
-      }else {
-        setTimeout(function () {
-          Toast(res.data.status)
-	        router.replace({ path: '/login'})
-        },1000)
-      }
-    })
-  }
-}
 
 export default {axiosHxx, axiosQixiu};

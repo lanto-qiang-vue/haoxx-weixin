@@ -52,6 +52,7 @@ export default {
 					}
 					if(flag) this.$refs.loadmore.onBottomLoaded()
 				}else{
+					this.$toast('暂无数据')
 					this.allLoaded=true
 				}
 			})

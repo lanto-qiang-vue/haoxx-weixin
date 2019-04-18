@@ -195,7 +195,7 @@
 	      this.axiosQixiu.get('/comment/maintain/checkUserVehicle?vehicleNum='+this.area+ this.cardno.trim()).then(res => {
 			console.log('res.data', res.data)
 			if(Boolean(res.data)){
-				this.$router.push({path: '/remarkMatch', query: { corpId: this.$route.query.corpId, show: 'yes' }})
+				this.$router.push({path: '/remark-match', query: { corpId: this.$route.query.corpId, show: 'yes' }})
 			}else{
 				MessageBox({message: '为保证点评真实性，请绑定该车辆后进行点评！', closeOnClickModal: false,
 				   confirmButtonText: '前往绑定', cancelButtonText: '修改车牌', showCancelButton: true}).then(action => {

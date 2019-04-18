@@ -40,7 +40,12 @@ export default {
 		getList(){
             this.axiosHxx.post('/operate/coupon/mycoupons', {USER_ID:this.$store.state.user.userinfo.userId}).then(res => {
                 if(res.data.success){
-					this.list = res.data.data;
+                	if(res.data.data &&res.data.data.length){
+		                this.list = res.data.data;
+	                }else{
+		                this.$toast('暂无数据')
+	                }
+
                 }
             })
 		}
