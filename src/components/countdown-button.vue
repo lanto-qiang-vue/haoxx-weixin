@@ -51,6 +51,9 @@ export default {
 						}else{
 							this.enable()
 						}
+						console.log(res)
+					},(err)=>{
+						this.enable();
 					})
 				}else{
 					this.$toast('请输入正确手机号');
