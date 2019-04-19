@@ -4,7 +4,7 @@
 		<li>
 			<div class="content">
 				<div class="left">
-					<p>修车抵用券</p>
+					<p>{{detail.name}}</p>
 					<span>有效期：{{formatDate(detail.begin_time)}}-{{formatDate(detail.end_time)}}</span>
 					<span style="margin: 0" v-if="license">限用车牌：{{license}}</span>
 				</div>
@@ -12,7 +12,7 @@
 				<div class="right">
 					<!--<div class="button on">查看详情</div>-->
 					<div class="tag">
-					<p>{{useList[parseInt(detail.isuse)]}}</p>
+					<p>{{useList[parseInt(detail.type)]}}</p>
 					</div>
 					<!--<div class="times">-->
 					<!--<p>已核销数</p>-->
