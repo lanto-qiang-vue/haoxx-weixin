@@ -123,7 +123,7 @@ export default {
 		}
 		this.typeList =  this.$store.state.user.dict['1019'];
 
-		this.TELPHONE= this.$store.state.user.userinfo.nickName
+		this.form.TELPHONE= this.$store.state.user.userinfo.nickName
 	},
     methods:{
         confirmTime(res){

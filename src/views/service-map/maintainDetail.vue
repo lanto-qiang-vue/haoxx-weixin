@@ -34,7 +34,7 @@
       <!--<img @click="small();$emit('back')" class="back" src="~@/assets/img/maintain/back.png" />-->
     </div>
     <div class="head">累计评论（{{(comment.totalElements||0)+1}}条）
-      <router-link tag="a" :to="{path: '/maintainRemark', query: {id: this.compId, joint: all.joint} }">
+      <router-link tag="a" :to="{path: '/maintain-remark', query: {id: this.compId, joint: all.joint} }">
         <img src="~@/assets/img/maintain/箭头.png"/>
       </router-link>
     </div>

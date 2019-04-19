@@ -265,10 +265,10 @@
           }
         }
         for(let i=0; i<next.length; i++){
-          next[i].setAttribute('src','/img/gray.png')
+          next[i].setAttribute('src','/img/remark/gray.png')
         }
         for(let i=0; i<previous.length; i++){
-          previous[i].setAttribute('src','/img/yellow.png')
+          previous[i].setAttribute('src','/img/remark/yellow.png')
         }
         console.log(this.promise,this.serviceQuality,this.repairQuality,this.repairSpeed,this.repairPrice);
       },

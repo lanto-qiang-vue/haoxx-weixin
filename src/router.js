@@ -77,6 +77,14 @@ routes: [
 		component: () => import('@/views/service-map/maintain.vue')
 	},
 	{
+		path: '/maintain-remark',
+		name: 'maintain-remark',
+		meta:{
+			tourist: true,
+		},
+		component: () => import('@/views/service-map/maintain-remark.vue')
+	},
+	{
 		path: '/my-car-list',
 		name: 'my-car-list',
 		meta: {
