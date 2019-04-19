@@ -16,23 +16,23 @@ module.exports = {
 		port: 7777,
 		proxy: {
 			'/hxx-proxy': {
-				target: 'http://192.168.169.116:8761',
+				// target: 'http://192.168.169.116:8761',
 				// target: 'http://api.test.hoxiuxiu.com/',
-				// target: 'http://developer.hxx.hoxiuxiu.com/',
+				target: 'http://developer.hxx.hoxiuxiu.com/',
 				// target: 'http://192.168.169.114:8761',
 				pathRewrite: {'^/hxx-proxy': ''},
 				secure: false
 			},
 			'/qixiu-proxy': {
-				target: 'http://192.168.169.231:8888/',
-				// target: 'https://www.test.shanghaiqixiu.org/proxy/',
+				// target: 'http://192.168.169.231:8888/',
+				target: 'https://www.test.shanghaiqixiu.org/proxy/',
 				// target: 'https://www.shanghaiqixiu.org/proxy/',
 				pathRewrite: {'^/qixiu-proxy': ''},
 				secure: false
 			},
 			'/repair-proxy': {
-				target: 'http://192.168.169.230:7210/',
-				// target: 'https://www.shanghaiqixiu.org/repair/',
+				// target: 'http://192.168.169.230:7210/',
+				target: 'https://www.shanghaiqixiu.org/repair/',
 				pathRewrite: {'^/repair-proxy': ''},
 				secure: false
 			},

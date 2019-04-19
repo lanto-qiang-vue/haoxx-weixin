@@ -310,6 +310,7 @@ export default {
 		},
 	},
 	beforeRouteLeave (to, from, next) {
+		this.showBind= false
 		console.log('beforeRouteLeave')
 		next()
 	},

@@ -120,7 +120,8 @@ export default {
         submit(){
             this.axiosHxx.post('/operate/account/updateTel', this.phoneChange).then(res => {
                   if(res.data.success){
-
+	                  this.$store.commit('logout');
+	                  this.$router.push('/login')
 				  }
             })
 		}
