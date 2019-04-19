@@ -12,7 +12,7 @@
 				<div class="right">
 					<!--<div class="button on">查看详情</div>-->
 					<div class="tag">
-					<p>{{useList[parseInt(detail.isuse)]}}</p>
+					<p :class="[{orange:item.isuse == 1}]">{{useList[parseInt(detail.isuse)]}}</p>
 					</div>
 					<!--<div class="times">-->
 					<!--<p>已核销数</p>-->
@@ -66,7 +66,7 @@ export default {
 	data(){
 		return{
 			detail:{},
-			useList:['未领用','已领取','已使用','已过期'],
+			useList:['未领用','可使用','已使用','已过期'],
 			img: ''
 		}
 	},
@@ -148,6 +148,9 @@ export default {
             }
         }
     }
+	.orange{
+		background-color:#ffaa6a;
+	}
 }
 
 @import "./coupons.less";

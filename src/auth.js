@@ -9,17 +9,14 @@ router.beforeEach((to, from, next) => {
 	let title= to.meta.title|| '好修修车生活'
 	document.title = title
 
-	console.log('to', to)
 	if (!to.meta.tourist) {
 		if (!store.state.user.hxxtoken) {
 			Toast('请登录')
-			// console.log(to.fullPath)
 			next({path: '/login', query: { redirect: to.fullPath }})
 		} else {
 			if (to.meta.requiresQixiu){
 				if (!store.state.user.qixiutoken) {
 					Toast('请绑定汽修平台账号')
-					// console.log(to.fullPath)
 					next({path: '/accredit-bind', query: { redirect: to.fullPath }})
 				} else {
 					next()
