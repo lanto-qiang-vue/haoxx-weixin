@@ -24,7 +24,7 @@
 	</ul>
 	<Form class="common-form" :label-width="90" label-position="left" ref="form">
 		<!--<FormItem label="验证二维码" class="top-position" >-->
-		<FormItem label="验证二维码" class="top-position" v-show="detail.isuse == 1">
+		<FormItem label="验证二维码" class="top-position" v-show="detail.isuse == 1 && img">
 			<div class="content">
 				<img id="qrcode" :src="img"/>
 			</div>
@@ -60,7 +60,7 @@
 </template>
 <script>
 import qrcode from '~/public/lib/qrcode.js'
-import {formatDate} from '@/util.js'
+import {formatDate, getLocation} from '@/util.js'
 export default {
 	name: "coupons-detail",
 	data(){
@@ -79,6 +79,20 @@ export default {
 		}
 	},
 	mounted(){
+		getLocation().then((success)=>{
+			if(success){
+				let qr = new qrcode({
+					text: JSON.stringify({
+						code: this.query.code,
+						...this.$store.state.app.location
+					})
+				});
+				this.img =  qr.toDataURL("image/png");
+			}else{
+				this.$toast('请打开定位后刷新，获取二维码')
+			}
+		})
+
 		let qr = new qrcode({
 			text: window.location.origin
 		});
@@ -87,6 +101,25 @@ export default {
 	},
 	methods:{
 	    getData(){
+		    // Promise.all([ this.axiosHxx.post('/operate/coupon/returncouponmsg', {
+			 //    code: this.query.code,
+			 //    BUSINESS_TYPE: 1
+		    // }), getLocation()]).then(([resData, locationSuccess ]) => {
+			 //    if(resData.data.success){
+				//     this.detail= resData.data.data
+				//     if(locationSuccess){
+				// 	    let qr = new qrcode({
+				// 		    text: JSON.stringify({
+				// 			    code: this.query.code,
+				// 			    ...this.$store.state.app.location
+				// 		    })
+				// 	    });
+				// 	    this.img =  qr.toDataURL("image/png");
+				//     }else{
+				// 	    this.$toast('请打开定位获取二维码')
+				//     }
+			 //    }
+		    // });
 		    this.axiosHxx.post('/operate/coupon/returncouponmsg', {
 			    code: this.query.code,
 			    BUSINESS_TYPE: 1

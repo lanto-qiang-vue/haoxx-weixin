@@ -6,7 +6,7 @@ router.beforeEach((to, from, next) => {
 	Indicator.close()
 	document.title = to.meta.title|| '好修修车生活'
 
-	// console.log('to', to)
+	console.log('to', to)
 	if (!to.meta.tourist) {
 		if (!store.state.user.hxxtoken) {
 			Toast('请登录')

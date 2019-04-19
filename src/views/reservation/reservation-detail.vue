@@ -39,10 +39,10 @@
 			v-model="pickerVisible"
 			type="datetime"
 			ref="picker"
+			:startDate="new Date()"
 			@confirm="confirmTime"
-			year-format="{value} 年"
-			month-format="{value} 月"
-			date-format="{value} 日">
+			hour-format="{value}时"
+			minute-format="{value}分">
 	</mt-datetime-picker>
 
 	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID;form.TID = $event.TID;"></vehicle-model>
@@ -122,6 +122,8 @@ export default {
 			this.confirmTime(new Date());
 		}
 		this.typeList =  this.$store.state.user.dict['1019'];
+
+		this.TELPHONE= this.$store.state.user.userinfo.nickName
 	},
     methods:{
         confirmTime(res){

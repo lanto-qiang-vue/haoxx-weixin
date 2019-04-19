@@ -64,7 +64,7 @@
 				<FormItem prop="smsCode">
 					<Input v-model.trim="bindForm.smsCode" placeholder="验证码" :maxlength="10"></Input>
 					<countdown class="get-code" text="获取验证码" @click="bindForm.telSession= $event"
-					           :phone="bindForm.telphone"  url="/operate/account/getCode"
+					           :phone="bindForm.telphone"  url="/operate/account/getBindCode"
 					           :token="tempToken"
 					           v-show="activeBlock=='bindPhone'"></countdown>
 					<countdown class="get-code" text="获取验证码" @click="bindForm.telSession= $event"
@@ -285,6 +285,7 @@ export default {
 				if(data.data.isBindNewphone== 1){
 					this.setStore(data)
 					this.$toast('登录成功');
+					this.activeBlock='code'
 					this.goBackUrl()
 				}else{
 					this.tempToken= data.data.tokenStr
@@ -310,6 +311,8 @@ export default {
 		},
 	},
 	beforeRouteLeave (to, from, next) {
+		this.activeBlock='code'
+		this.showBind= false
 		console.log('beforeRouteLeave')
 		next()
 	},

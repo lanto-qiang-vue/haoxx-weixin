@@ -7,7 +7,7 @@
 	<div class="change-pass" v-show="showChangePass">
 		<Form :model="passChange" class="account-form"
 		      :label-width="0" label-position="left" ref="passChange">
-			<FormItem prop="old_pwd" v-show="isModify==0">
+			<FormItem prop="old_pwd" v-show="isModify!=0">
 				<Input v-model="passChange.old_pwd" type="password" placeholder="原密码"></Input>
 			</FormItem>
 			<FormItem prop="new_pwd">
@@ -120,7 +120,8 @@ export default {
         submit(){
             this.axiosHxx.post('/operate/account/updateTel', this.phoneChange).then(res => {
                   if(res.data.success){
-
+	                  this.$store.commit('logout');
+	                  this.$router.push('/login')
 				  }
             })
 		}

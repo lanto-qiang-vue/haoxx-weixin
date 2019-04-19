@@ -181,7 +181,7 @@ export default {
 				let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,credit'+
 					'&q='+ this.search.q +
 					'&page='+ (this.page-1) +','+ (limit ||this.limit)
-				query+= ('&sort='+ '_score asc,distance asc')
+				query+= ('&sort='+ '_score desc,distance asc')
 				if(this.search.lng) {
 					let point=('&point='+this.search.lat+','+this.search.lng)
 					if(this.show10km) point+= ',10'
