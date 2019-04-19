@@ -12,7 +12,7 @@
 				<div class="right">
 					<!--<div class="button on">查看详情</div>-->
 					<div class="tag">
-					<p :class="[{orange:item.isuse == 1}]">{{useList[parseInt(detail.isuse)]}}</p>
+					<p :class="[{orange:detail.isuse == 1}]">{{useList[parseInt(detail.isuse)]}}</p>
 					</div>
 					<!--<div class="times">-->
 					<!--<p>已核销数</p>-->
