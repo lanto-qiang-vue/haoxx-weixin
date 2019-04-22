@@ -116,7 +116,7 @@
         }else if(this.vehicleplatenumber===''){
           return Toast('车牌号不能为空')
         }
-        this.axios({
+        this.axiosQixiu({
           url: '/scan/authorize',
           method: 'post',
           data: {
@@ -137,7 +137,7 @@
         if(this.captcha.length != 6){
            return Toast('短信验证码为6位数字')
         }
-        this.axios({
+        this.axiosQixiu({
           url: '/scan/authorize',
           method: 'post',
           headers: {'Content-type': 'application/json'},
