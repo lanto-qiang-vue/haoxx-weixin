@@ -139,7 +139,7 @@ export default {
 			line-height: 54px;
 			color: #333333;
 			font-size: 16px;
-			border-bottom: 1px solid #D9D9D9;
+			border-bottom: 1px solid #EDEDED;
 			position: relative;
 			i{
 				position: absolute;
