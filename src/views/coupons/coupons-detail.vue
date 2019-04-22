@@ -93,10 +93,6 @@ export default {
 			}
 		})
 
-		let qr = new qrcode({
-			text: window.location.origin
-		});
-		this.img =  qr.toDataURL("image/png");
 		this.getData()
 	},
 	methods:{

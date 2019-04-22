@@ -184,7 +184,6 @@ export default {
 				query+= ('&sort='+ '_score desc,distance asc')
 				if(this.search.lng) {
 					let point=('&point='+this.search.lat+','+this.search.lng)
-					if(this.show10km) point+= ',10'
 					query+= point
 				}
 				let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
