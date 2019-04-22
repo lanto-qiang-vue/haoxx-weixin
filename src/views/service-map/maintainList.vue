@@ -707,7 +707,7 @@ export default {
 </script>
 
 <style scoped lang='less'>
-  @blue-color: #008bff;
+  @blue-color: #FF9738;
   @bottom-border-color: #f2f2f2;
   .maintain-type{
 	  width: 100%;

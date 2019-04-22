@@ -208,6 +208,7 @@ export default {
 				this.activeBlock= block|| 'pass'
 				this.showForget=false
 			}
+			this.showBind= false
 		},
 		submit(){
 			if(this.activity){

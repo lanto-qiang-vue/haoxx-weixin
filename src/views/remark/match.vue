@@ -415,11 +415,11 @@
     text-align: center;
     font-size: 16px;
     color: white;
-    background-color: #c4dffe;
+    background-color: #FFCB9C;
     border-radius: 5px
   }
 .button.on{
-  background-color: #438eff;
+  background-color: #FF9738;
 }
   .remarkblock{
     width: 100%;

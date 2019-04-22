@@ -272,7 +272,7 @@ export default {
 </script>
 
 <style scoped lang='less'>
-  @blue-color: #008bff;
+  @blue-color: #FF9738;
 #compDetail{
   width: 100%;
   /*height: 100vh;*/
@@ -536,7 +536,7 @@ export default {
       padding: 0 15px 0 35px;
       /*background-color: #438eff;*/
       border-radius: 10px;
-      background: #438eff url("~@/assets/img/maintain/mile.png") no-repeat 15px center;
+      background: @blue-color url("~@/assets/img/maintain/mile.png") no-repeat 15px center;
       background-size: 15px;
       line-height: 30px;
       height: 30px;
@@ -577,7 +577,7 @@ export default {
 			padding: 0 15px 0 35px;
 			/*background-color: #438eff;*/
 			border-radius: 10px;
-			background: #438eff url("~@/assets/img/maintain/mile.png") no-repeat 15px center;
+			background: @blue-color url("~@/assets/img/maintain/mile.png") no-repeat 15px center;
 			background-size: 15px;
 			line-height: 30px;
 			height: 30px;

@@ -6,10 +6,10 @@
 	<Form :model="form" class="common-form"
 	      :label-width="100" label-position="left" ref="form">
 		<FormItem label="汽修平台账号" prop="telphone">
-			<Input v-model="form.telphone" :maxlength="11" ></Input>
+			<Input v-model="form.telphone" :maxlength="11" placeholder="请输入汽修平台账号"></Input>
 		</FormItem>
 		<FormItem label="验证码" prop="telcode">
-			<Input v-model="form.telcode" :maxlength="10" ></Input>
+			<Input v-model="form.telcode" :maxlength="10" placeholder="请输入验证码"></Input>
 			<countdown class="get-code" @click="form.telSession= $event"
 			           url="/operate/controller/getCarliveCode" :phone="form.telphone"></countdown>
 		</FormItem>
@@ -77,6 +77,7 @@ export default {
 		line-height:40px;
 		background:#F3F3F3;
 		padding-left:15px;
+		font-size: 14px;
 		span{
 			color:#FE8636;
 		}
