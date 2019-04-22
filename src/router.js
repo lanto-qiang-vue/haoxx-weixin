@@ -101,6 +101,14 @@ routes: [
 		component: () => import('@/views/car-record/bind-my-car.vue')
 	},
 	{
+		path: '/bind-my-car-com',
+		name: 'bind-my-car-com',
+		meta: {
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/car-record/bind-my-car.vue')
+	},
+	{
 		path: '/bind-other-car',
 		name: 'bind-other-car',
 		meta: {
