@@ -152,7 +152,7 @@ export default {
 						let data= res.data.data
 						this.indexList= this.getIndexList(this.getTree(data))
 						this.$store.commit('setVehiclemodelIndex', deepClone(this.indexList));
-						console.log('this.indexList', this.indexList)
+						// console.log('this.indexList', this.indexList)
 					}
 				})
 			}
@@ -201,7 +201,7 @@ export default {
 			// this.$refs.input.focus()
 		},
 		clickItem(toLevel, item){
-			console.log(item)
+			// console.log(item)
 			if(toLevel== 2){
 				this.block2Item= item
 			}else{
@@ -239,7 +239,7 @@ export default {
 		},
 		decide(item){
 			this.$emit('ok', item, this.sign)
-			console.log(JSON.stringify(item));
+			// console.log(JSON.stringify(item));
 			this.$router.go(-3)
 		},
 		loadMore(){

@@ -83,10 +83,10 @@ export const imgUrlToBase64 = (url, callBack) => {
 
 	image.onload=function(){
 
-		for( let key in image){
-			console.log('key', key)
-		}
-		console.log('image.currentSrc', image.currentSrc)
+		// for( let key in image){
+			// console.log('key', key)
+		// }
+		// console.log('image.currentSrc', image.currentSrc)
 		var width = image.width;
 		var height = image.height;
 		_compress( url,
@@ -311,7 +311,7 @@ export const getWeixinId=()=>{
 			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${URL}&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect`
 		}
 		if(!unionid && state=='snsapi_base'){
-			console.log("getUrlParam('code')", getUrlParam('code'))
+			// console.log("getUrlParam('code')", getUrlParam('code'))
 			axios.axiosHxx({
 				url: '/operate/controller/wxlogin',
 				method: 'post',

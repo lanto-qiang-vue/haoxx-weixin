@@ -305,7 +305,7 @@ export default {
         if (flag) this.search.hot=''
       },
       height(val){
-        console.log('watch.height', val)
+        // console.log('watch.height', val)
         this.calcHeight(val)
 
       },
@@ -317,13 +317,13 @@ export default {
         $('.search-input input').blur()
       },
 	    originalLng(){
-      	console.log('originalLng')
+      	// console.log('originalLng')
       	    this.search.sort= ''
 		    this.getCompList(true, true)
 	    }
     },
     mounted(){
-		console.log('list.mounted')
+		// console.log('list.mounted')
 		this.getArea()
 	    this.getQuery()
       // this.calcHeight(this.height)
@@ -341,7 +341,7 @@ export default {
 	    },false);
     },
     activated(){
-		console.log('maintainList.activated')
+		// console.log('maintainList.activated')
 		  this.getQuery()
     },
     methods:{
@@ -419,7 +419,7 @@ export default {
         // },100)
       },
 		select( arrName, val ){
-			console.log('select')
+			// console.log('select')
 			this.search[arrName]= val
 			switch(arrName){
 				case 'hot':{
@@ -513,7 +513,7 @@ export default {
 
 	    },
 	    dragend(){
-			console.log('dragend')
+			// console.log('dragend')
 		    switch (this.$route.name){
 			    case 'base-map':{
 			    	break
@@ -623,7 +623,7 @@ export default {
 			    markers.push(marker)
 		    }
 
-		    console.log('markers', markers)
+		    // console.log('markers', markers)
 
 		    // if(renderMarker){
 			 //    this.$emit('renderMarker', markers);

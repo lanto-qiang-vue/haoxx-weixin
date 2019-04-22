@@ -41,102 +41,108 @@ export default {
 		// setTimeout(()=>{
 			this.docHeight=  document.body.offsetHeight
 			this.resize(this.pageLocation[this.toLocation], 10)
+	    this.bindEvent()
 		// },100)
 
 		// console.log('docHeight', this.docHeight)
 		// console.log('this.pageLocation[this.toLocation]', this.pageLocation[this.toLocation])
 
       // this.$emit('toLocation', this.location)
-      let self=this
-      let dom= $(this.$refs.slide)
-      let touchBarHeight= self.touchBarHeight //bar高度（20）
-      let startY= 0
-      let endY= 0
-      let domY= 0
-      let isMove= false
-      let moveY=0
-      // console.log(touchBarHeight)
-      // $(dom).css({transform: 'translateY('+ (docHeight- this.setBodyHeight - touchBarHeight) + 'px)'})
-      // $(dom).css({transform: 'translateY('+ this.slideState.minTop+ 'px);'})
-      dom.bind('touchstart',function(startE){
 
-
-        // console.log('touchstart')
-      // dom.children('.real-touch-bar').bind('touchstart',function(startE){
-        startY= startE.originalEvent.targetTouches[0].pageY;
-        domY = parseInt(dom.css('transform').split(',')[5])
-        isMove= false
-        moveY=0
-        document.body.addEventListener('touchmove',self.noscroll,{ passive: false });
-        $(document).bind('touchmove',function(e){
-          // console.log('touchmove')
-          if(e.originalEvent.targetTouches[0].pageY>startY) isMove= 'down'
-          if(e.originalEvent.targetTouches[0].pageY<startY) isMove= 'up'
-
-          // console.log(isMove)
-          //移动位置
-          let y = e.originalEvent.targetTouches[0].pageY - (startY- domY);
-          let height= self.docHeight- y - touchBarHeight
-
-          if(height> self.docHeight- self.minTop){
-            height= self.docHeight- self.minTop -touchBarHeight
-          }else if(height< self.calcMinHeight){
-            height= self.calcMinHeight
-          }
-
-          if(y< self.minTop) y= self.minTop
-          if(y> self.docHeight- self.calcMinHeight -touchBarHeight) y= self.docHeight- self.calcMinHeight -touchBarHeight
-
-          // console.log('touchmove', dom)
-          $(dom).css({transform: 'translateY('+ y+ 'px)'})
-          self.resize(height, 100, true)
-          self.$emit('maintainListBlur')
-        });
-
-      });
-      $(document).bind('touchend',function(endE){
-        // console.log('touchend')
-        $(document).unbind('touchmove');
-        endY= endE.originalEvent.changedTouches[0].pageY
-        // console.log('move', endY- startY)
-        if(isMove){
-          // console.log('startY, endY', startY, endY)
-          self.autoMove(endY- startY, isMove, self.docHeight- parseInt(dom.css('transform').split(',')[5])- touchBarHeight)
-          // self.resize(this.docHeight- self.slideState.minTop -touchBarHeight, 0)
-          // self.resize(1, 0)
-          isMove=false
-        }
-        document.body.removeEventListener('touchmove', self.noscroll,false)
-	      // $(document).unbind('touchmove');
-      });
-
-      // document.body.addEventListener('touchend', bodyScrollTop)
-	    $("body").bind('touchend', this.bodyScrollTop)
-
-      window.onresize = function(){
-        if( document.body.offsetHeight== (self.docHeight)) self.$emit('maintainListBlur')
-        self.resize(self.docHeight- self.minTop -touchBarHeight)
-      }
     },
 	activated(){
+		// console.log('slide-bar.activated')
 		this.resize(this.pageLocation[this.toLocation], 0)
+		this.bindEvent()
 	},
     deactivated(){
-			// console.log(1)
+	    // console.log('slide-bar.deactivated')
 	    this.removeEvent()
     },
 	beforeDestroy(){
-	    // console.log(2)
+		// console.log('slide-bar.beforeDestroy')
 	    this.removeEvent()
     },
 	beforeRouteLeave (to, from, next) {
-		// console.log(3)
+		// console.log('slide-bar.beforeRouteLeave')
 		// 导航离开该组件的对应路由时调用
 		// 可以访问组件实例 `this`
 		this.removeEvent()
 		next()
 	},
     methods:{
+		bindEvent(){
+			let self=this
+			let dom= $(this.$refs.slide)
+			let touchBarHeight= self.touchBarHeight //bar高度（20）
+			let startY= 0
+			let endY= 0
+			let domY= 0
+			let isMove= false
+			let moveY=0
+			// console.log(touchBarHeight)
+			// $(dom).css({transform: 'translateY('+ (docHeight- this.setBodyHeight - touchBarHeight) + 'px)'})
+			// $(dom).css({transform: 'translateY('+ this.slideState.minTop+ 'px);'})
+			dom.bind('touchstart',function(startE){
+
+
+				// console.log('touchstart')
+				// dom.children('.real-touch-bar').bind('touchstart',function(startE){
+				startY= startE.originalEvent.targetTouches[0].pageY;
+				domY = parseInt(dom.css('transform').split(',')[5])
+				isMove= false
+				moveY=0
+				document.body.addEventListener('touchmove',self.noscroll,{ passive: false });
+				$(document).bind('touchmove',function(e){
+					// console.log('touchmove')
+					if(e.originalEvent.targetTouches[0].pageY>startY) isMove= 'down'
+					if(e.originalEvent.targetTouches[0].pageY<startY) isMove= 'up'
+
+					// console.log(isMove)
+					//移动位置
+					let y = e.originalEvent.targetTouches[0].pageY - (startY- domY);
+					let height= self.docHeight- y - touchBarHeight
+
+					if(height> self.docHeight- self.minTop){
+						height= self.docHeight- self.minTop -touchBarHeight
+					}else if(height< self.calcMinHeight){
+						height= self.calcMinHeight
+					}
+
+					if(y< self.minTop) y= self.minTop
+					if(y> self.docHeight- self.calcMinHeight -touchBarHeight) y= self.docHeight- self.calcMinHeight -touchBarHeight
+
+					// console.log('touchmove', dom)
+					$(dom).css({transform: 'translateY('+ y+ 'px)'})
+					self.resize(height, 100, true)
+					self.$emit('maintainListBlur')
+				});
+
+			});
+			$(document).bind('touchend',function(endE){
+				// console.log('touchend')
+				$(document).unbind('touchmove');
+				endY= endE.originalEvent.changedTouches[0].pageY
+				// console.log('move', endY- startY)
+				if(isMove){
+					// console.log('startY, endY', startY, endY)
+					self.autoMove(endY- startY, isMove, self.docHeight- parseInt(dom.css('transform').split(',')[5])- touchBarHeight)
+					// self.resize(this.docHeight- self.slideState.minTop -touchBarHeight, 0)
+					// self.resize(1, 0)
+					isMove=false
+				}
+				document.body.removeEventListener('touchmove', self.noscroll,false)
+				// $(document).unbind('touchmove');
+			});
+
+			// document.body.addEventListener('touchend', bodyScrollTop)
+			$("body").bind('touchend', this.bodyScrollTop)
+
+			window.onresize = function(){
+				if( document.body.offsetHeight== (self.docHeight)) self.$emit('maintainListBlur')
+				self.resize(self.docHeight- self.minTop -touchBarHeight)
+			}
+		},
 	    removeEvent(){
 
 		    document.body.removeEventListener('touchmove', this.noscroll,false)
@@ -184,7 +190,7 @@ export default {
         }, timeout);
         if(!noToMove){
 
-          console.log('this.docHeight- calcHeight- touchBarHeight', this.docHeight, calcHeight, touchBarHeight)
+          // console.log('this.docHeight- calcHeight- touchBarHeight', this.docHeight, calcHeight, touchBarHeight)
           $(this.$refs.slide).css({
 	          transform: 'translateY('+ (this.docHeight- calcHeight- touchBarHeight ) + 'px)'})
           // self.$store.commit('reSetSlideBodyHeight', calcHeight)

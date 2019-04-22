@@ -113,7 +113,7 @@ computed: {
     },
 },
 mounted(){
-    console.log('maintain.mounted')
+    // console.log('maintain.mounted')
     this.bodyNoScoll()
     this.init()
 },
@@ -291,11 +291,11 @@ activated(){
 	this.bodyNoScoll()
 },
 deactivated(){
-	console.log('deactivated')
+	// console.log('deactivated')
 	this.canscroll()
 },
 beforeDestroy(){
-	console.log('beforeDestroy')
+	// console.log('beforeDestroy')
 	this.canscroll()
 },
 }

@@ -51,7 +51,7 @@ export default {
 						}else{
 							this.enable()
 						}
-						console.log(res)
+						// console.log(res)
 					},(err)=>{
 						this.enable();
 					})

@@ -102,7 +102,7 @@ export default {
 
 		},
 		mounted(){
-			console.log('path:', this.$route.path)
+			// console.log('path:', this.$route.path)
 			this.init()
 			// this.axiosQixiu.post('/area/region/list', {areaName: 'shanghai'}).then((res) => {
 			this.axiosQixiu.get('/area/query').then((res) => {

@@ -149,7 +149,7 @@
             vehicleNumber: this.vehicleNumber
           })
         }).then(resp=>{
-          console.log(resp);
+          // console.log(resp);
           if(resp.data.code==='0'){
             this.popupVisible = !this.popupVisible
             Toast('绑定成功')

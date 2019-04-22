@@ -313,12 +313,12 @@ export default {
 	beforeRouteLeave (to, from, next) {
 		this.activeBlock='code'
 		this.showBind= false
-		console.log('beforeRouteLeave')
+		// console.log('beforeRouteLeave')
 		next()
 	},
-	beforeDestory(){
-		console.log('beforeDestory')
-	},
+	// beforeDestory(){
+		// console.log('beforeDestory')
+	// },
 }
 </script>
 

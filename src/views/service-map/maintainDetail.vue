@@ -158,7 +158,7 @@ export default {
       return this.$route.query.compId
     },
 	  isOpenTime(){
-		  console.log('isOpenTime')
+		  // console.log('isOpenTime')
 		  let sTime=0, eTime=0, now=0;
 		  if(!this.all.openHours) return true
 		  let timeStrs= this.all.openHours.replace(/~/g,'-')
@@ -217,7 +217,7 @@ export default {
 			    this.minHeight= $("#compDetail .info").outerHeight()
 			    // this.$refs.slideBar.setHeight(this.minHeight)
 			    this.toMaintainDetailLocation= 0
-				console.log('this.minHeight', this.minHeight)
+				// console.log('this.minHeight', this.minHeight)
 		    },50)
 		    this.$emit('goMap', {lon: res.data.lon, lat: res.data.lat})
 	    })

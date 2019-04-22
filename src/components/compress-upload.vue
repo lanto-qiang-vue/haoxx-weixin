@@ -60,7 +60,7 @@ export default {
 			},
       getImg(fileName){
         let file= this.$refs[fileName].files[0]
-        console.log(file)
+        // console.log(file)
         imgToBase64(file, (base64, name ) => {
           // console.log(base64, name )
 	        if(this.operate=='base64'){
@@ -68,7 +68,7 @@ export default {
 	        }else{
 		        let formdata = new FormData();
 		        formdata.append('file' , base64ToBlob(base64), name);
-		        console.log(base64ToBlob(base64))
+		        // console.log(base64ToBlob(base64))
 		        this.axios({
 			        method: 'post',
 			        url: '/file/image/add',

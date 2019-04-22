@@ -104,7 +104,7 @@ axiosHxx.interceptors.response.use(response => {
 			return false;
 		}else{
 			if(data.hasOwnProperty("Exception")){
-				console.log(data.Exception.message);
+				// console.log(data.Exception.message);
 				Toast( data.Exception.message || data.title);
 			}else{
 				Toast(data.title);

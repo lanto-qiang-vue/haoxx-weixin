@@ -561,7 +561,7 @@ export default{
 			this.$refs.picker.open();
 		},
 		dateSelect(val){
-			console.log(val)
+			// console.log(val)
 			this.travelLicenseRevise[this.dateField]= formatDate(val, 'yyyy-MM-dd')
 		},
 		modifyCancel(){
