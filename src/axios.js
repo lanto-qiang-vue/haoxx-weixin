@@ -41,7 +41,7 @@ let weixinLogin= ()=> {
 				if(data.qxtoken) store.commit('setQixiuToken',data.qxtoken);
 				store.commit('setHxxToken',data.tokenStr);
 				store.dispatch('dictInit',data.dict);
-				delete data.data.dict
+				delete data.dict
 				store.commit('setUserInfo',data);
 				Toast('登录成功');
 			}else{
