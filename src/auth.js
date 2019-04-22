@@ -8,16 +8,20 @@ router.beforeEach((to, from, next) => {
 	Indicator.close()
 	let title= to.meta.title|| '好修修车生活'
 	document.title = title
+	// console.log('to, from', to, from)
 
+	if(from.path=='/login' && to.path=='/login' && to.query.redirect){
+		next(false)
+	}
 	if (!to.meta.tourist) {
 		if (!store.state.user.hxxtoken) {
 			Toast('请登录')
-			next({path: '/login', query: { redirect: to.fullPath }})
+			next({path: '/login', query: { redirect: to.fullPath }, replace: true})
 		} else {
 			if (to.meta.requiresQixiu){
 				if (!store.state.user.qixiutoken) {
 					Toast('请绑定汽修平台账号')
-					next({path: '/accredit-bind', query: { redirect: to.fullPath }})
+					next({path: '/accredit-bind', query: { redirect: to.fullPath, replace: true }})
 				} else {
 					next()
 				}

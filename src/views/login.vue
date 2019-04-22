@@ -311,12 +311,12 @@ export default {
 			}
 		},
 	},
-	beforeRouteLeave (to, from, next) {
-		this.activeBlock='code'
-		this.showBind= false
-		// console.log('beforeRouteLeave')
-		next()
-	},
+	// beforeRouteLeave (to, from, next) {
+	// 	this.activeBlock='code'
+	// 	this.showBind= false
+	// 	// console.log('beforeRouteLeave')
+	// 	next()
+	// },
 	// beforeDestory(){
 		// console.log('beforeDestory')
 	// },
