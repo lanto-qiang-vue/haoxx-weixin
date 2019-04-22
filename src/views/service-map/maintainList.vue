@@ -427,26 +427,6 @@ export default {
 					this.toQuery(true)
 					break;
 				}
-				case 'schoolPoint' :{
-					console.log('schoolPoint', val)
-					switch (val){
-						case '300':{
-							this.$emit('renderMap', [], true);
-							this.toQuery(true)
-							break
-						}
-						case '301':{
-							this.$emit('renderMap', []);
-							this.getBase()
-							break
-						}
-						default:{
-							this.getBase()
-							this.toQuery(true)
-						}
-					}
-					break;
-				}
 				default :{
 					this.toQuery(true)
 				}
@@ -461,7 +441,7 @@ export default {
 		},
 		toQuery(clearList){
 		    // console.log(clearList)
-			this.clearList= clearList|| false
+		    this.clearList= clearList|| false
 			// this.$emit('query', this.search, this.clearList);
 			this.getCompList(clearList, clearList)
 		},
@@ -541,9 +521,9 @@ export default {
 			    default:{
 				    this.showHead= 'search'
 				    // this.search.schoolPoint= ''
-				    this.search.sort= ''
-				    this.search.base= ''
-				    this.search.area= ''
+				    // this.search.sort= ''
+				    // this.search.base= ''
+				    // this.search.area= ''
 				    this.getCompList(true, true, this.search.schoolPoint=='301')
 				    this.getBase()
 			    }
