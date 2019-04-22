@@ -101,7 +101,7 @@ axiosHxx.interceptors.response.use(response => {
 	if (data &&!data.success) {
 		if(data.code == 808){
 			logout()
-			return false;
+			// return false;
 		}else{
 			if(data.hasOwnProperty("Exception")){
 				// console.log(data.Exception.message);
