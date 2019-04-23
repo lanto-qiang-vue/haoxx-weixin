@@ -415,6 +415,7 @@ export default {
 			  border-radius: 5px;
 			  color: white;
 			  background-color: #ed4014;
+			  display: inline-block;
 		  }
 	  }
 

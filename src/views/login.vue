@@ -193,6 +193,7 @@ export default {
 	watch:{
 		'$route'(){
 			this.showBlock()
+			this.goBackAll()
 		},
 	},
 	mounted(){
@@ -310,6 +311,11 @@ export default {
 				this.$router.replace({path: '/'})
 			}
 		},
+		goBackAll(){
+			if(this.$route.query.redirect && this.$store.state.user.hxxtoken){
+				this.$router.replace({path: this.$route.query.redirect})
+			}
+		}
 	},
 	// beforeRouteLeave (to, from, next) {
 	// 	this.activeBlock='code'
