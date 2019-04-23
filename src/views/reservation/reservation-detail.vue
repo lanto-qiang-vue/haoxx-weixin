@@ -85,7 +85,7 @@ export default {
 				//无关页面还必须有写字段
                 CUSTOMER_INFO:"",
                 STATUS: "10421001",
-                IS_ITEM_GROUP: "10041002",
+                IS_ITEM_GROUP: "10411003",
                 REPAIR_ITEM_DERATE_MONEY: 0,
                 REPAIR_PART_DERATE_MONEY: 0,
                 REPAIR_ITEM_MONEY: 0,
