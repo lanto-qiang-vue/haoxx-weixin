@@ -42,6 +42,9 @@ export default {
 			return status
 		}
 	},
+	mounted(){
+		this.form.telphone= this.$store.state.user.userinfo.telphone
+	},
 	methods:{
 		bind() {
 			if (this.activity) {
