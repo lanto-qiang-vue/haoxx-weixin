@@ -15,6 +15,11 @@
 		</FormItem>
 	</Form>
 	<div :class="['submit',{on: activity}]" @click="bind">同意授权</div>
+
+	<div class="qr" v-show="showQR">
+		<p>请注册上海汽修平台</p>
+		<img src="/img/shanghai-qrcode.jpg"/>
+	</div>
 </div>
 </template>
 
@@ -30,7 +35,8 @@ export default {
 				telphone: '',
 				telcode: '',
 				telSession: ''
-			}
+			},
+			showQR: false
 		}
 	},
 	computed:{
@@ -58,6 +64,8 @@ export default {
 				this.$store.commit('setQixiuToken', data.data.qxToken);
 				this.$toast('绑定成功');
 				this.goBackUrl()
+			}else{
+				this.showQR= true
 			}
 		},
 		goBackUrl(){
@@ -110,6 +118,15 @@ export default {
 		text-align: center;
 		&.on{
 			background-color: #FF9738;
+		}
+	}
+	.qr{
+		margin-top: 25px;
+		padding: 0 20px;
+		text-align: center;
+		color: #515a6e;
+		img{
+			width: 100%;
 		}
 	}
 }
