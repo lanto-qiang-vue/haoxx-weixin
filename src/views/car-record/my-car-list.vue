@@ -119,7 +119,8 @@ export default {
       checkedWho: '',
       authorizers: [],
       authorizers1: [],
-	    removeAuthNo: ''
+	    removeAuthNo: '',
+	    timer: null
     }
   },
 	mounted() {
@@ -154,11 +155,16 @@ export default {
 	    }
     },
 	  key(e){
-    	// console.log('e.keyCode', e.keyCode)
+		  // clearInterval(this.timer)
 		  if ( e.keyCode == 13 ) {
-			  this.page=1
-			  this.carList=[]
-			  this.getData()
+			  // let CancelToken = this.axiosQixiu.CancelToken;
+			  // let source = CancelToken.source();
+			  // source.cancel()
+			  // this.timer = setTimeout(()=>{
+				  this.page=1
+				  this.carList=[]
+				  this.getData()
+			  // }, 500)
 		  }
 	  },
     getData(flag){
@@ -168,6 +174,8 @@ export default {
 		    "pageSize": 10,
 		    "vehiclePlateNumber": this.vehicleplatenumber,
 	    }).then( (res) => {
+		    if(flag) this.$refs.loadmore.onBottomLoaded()
+		    else this.carList=[]
 		    this.total= res.data.total
 		    if(res.data.items&&res.data.items.length){
 			    let arr= res.data.items
@@ -178,7 +186,7 @@ export default {
 			    }else{
 				    this.allLoaded=false
 			    }
-			    if(flag) this.$refs.loadmore.onBottomLoaded()
+
 		    }else{
 			    this.allLoaded=true
 		    }

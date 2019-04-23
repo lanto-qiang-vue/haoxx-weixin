@@ -97,6 +97,7 @@ export default {
             this.axiosHxx.post('/operate/account/resetPassword', this.passChange).then(res => {
 	            if(res.data.success){
 		            this.$toast("修改成功");
+		            this.$store.commit('changePassSuccess');
 		            this.$router.go(-1)
 	            }
             })
