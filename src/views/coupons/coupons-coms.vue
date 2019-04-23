@@ -2,7 +2,7 @@
 	<div class="activity-com-list">
 		<div class="head">
 			<div class="left"><i class="fa fa-search icon"></i>
-				<form action="javascript:return true">
+				<form action="javascript:;">
 					<input type="search" ref="input" v-model="search.q" @keydown="key($event)" placeholder="门店名称"/>
 				</form>
 				<i class="fa fa-times-circle close" v-show="search.q" @click="close" ></i>
@@ -15,7 +15,7 @@
 				<li v-for="item in list" :key="item.sid">
 					<h2>{{item.name}}</h2>
 					<div class="info">
-						<span class="addr">{{item.name}}</span>
+						<span :class="['addr',{short: localSuccess}]">{{item.name}}</span>
 						<div class="right">
 							<span v-show="localSuccess">距离{{item.distance.toFixed(2)}}km <i class="fa fa-location-arrow icon"></i></span>
 							<router-link tag="div" class="goto"
@@ -443,10 +443,13 @@ export default {
 						bottom: 0;
 						font-size: 12px;
 						width: 100%;
-						padding-right: 130px;
+						padding-right: 110px;
 						overflow: hidden;
 						text-overflow: ellipsis;
 						white-space: nowrap;
+					}
+					.short.addr{
+						padding-right: 150px;
 					}
 					.right{
 						position: absolute;

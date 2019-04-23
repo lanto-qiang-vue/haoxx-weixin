@@ -1,8 +1,8 @@
 <template>
   <div id="carList">
     <div class='search'>
-      <form action="javascript:return true;">
-        <input type="search" placeholder="搜索车牌号码" class="mui-input-clear" v-model='vehicleplatenumber' @keydown="key($event)" style="padding-left: 35px; text-indent: 0;">
+      <form action="javascript:;">
+        <input type="search" placeholder="搜索车牌号码" class="mui-input-clear" v-model="vehicleplatenumber" @keydown="key" style="padding-left: 35px; text-indent: 0;">
       </form>
     </div>
       <div class="carList">
@@ -154,7 +154,8 @@ export default {
 	    }
     },
 	  key(e){
-		  if ( e.keyCode == 13 || e=='search') {
+    	// console.log('e.keyCode', e.keyCode)
+		  if ( e.keyCode == 13 ) {
 			  this.page=1
 			  this.carList=[]
 			  this.getData()
