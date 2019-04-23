@@ -17,7 +17,7 @@
 	<div :class="['submit',{on: activity}]" @click="bind">同意授权</div>
 
 	<div class="qr" v-show="showQR">
-		<p>请注册上海汽修平台</p>
+		<p>请识别下方二维码，关注并注册上海汽修平台</p>
 		<img src="/img/shanghai-qrcode.jpg"/>
 	</div>
 </div>
