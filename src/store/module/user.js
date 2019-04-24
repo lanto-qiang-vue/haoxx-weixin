@@ -42,6 +42,10 @@ export default {
 			state.hxxtoken = ''
 			state.qixiutoken = ''
 			state.userinfo = ''
+		},
+		changePassSuccess(state){
+			state.userinfo.is_modify= 1
+			localStorage.setItem('USERINFO', JSON.stringify(state.userinfo))
 		}
 	},
 	actions:{
@@ -55,7 +59,7 @@ export default {
 			   unitObj[dict[i].code] = dict[i].name;
                newObj[dict[i].group].push({label:dict[i].name,value:dict[i].code});
 		   }
-            context.commit('setDict',newObj);
+            // coxntext.commit('setDict',newObj);
             context.commit('setUnit',unitObj);
 		},
 	},

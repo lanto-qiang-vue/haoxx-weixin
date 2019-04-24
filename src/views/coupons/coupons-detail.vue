@@ -12,7 +12,7 @@
 				<div class="right">
 					<!--<div class="button on">查看详情</div>-->
 					<div class="tag">
-					<p>{{useList[parseInt(detail.type)]}}</p>
+					<p :class="[{orange:detail.isuse == 1}]">{{useList[parseInt(detail.isuse)]}}</p>
 					</div>
 					<!--<div class="times">-->
 					<!--<p>已核销数</p>-->
@@ -66,7 +66,7 @@ export default {
 	data(){
 		return{
 			detail:{},
-			useList:['未领用','已领取','已使用','已过期'],
+			useList:['未领用','可使用','已使用','已过期'],
 			img: ''
 		}
 	},
@@ -93,10 +93,6 @@ export default {
 			}
 		})
 
-		let qr = new qrcode({
-			text: window.location.origin
-		});
-		this.img =  qr.toDataURL("image/png");
 		this.getData()
 	},
 	methods:{
@@ -148,6 +144,9 @@ export default {
             }
         }
     }
+	.orange{
+		background-color:#ffaa6a;
+	}
 }
 
 @import "./coupons.less";

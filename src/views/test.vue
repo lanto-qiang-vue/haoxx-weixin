@@ -39,7 +39,7 @@ export default {
 			this.$router.push({path: this.$route.path, query:{vehiclemodelblock: 2}})
 		},
 		okay(item){
-			console.log('okay', item)
+			// console.log('okay', item)
 		}
 	}
 }

@@ -193,7 +193,7 @@
         // }
         if(!this.checkval()) return
 	      this.axiosQixiu.get('/comment/maintain/checkUserVehicle?vehicleNum='+this.area+ this.cardno.trim()).then(res => {
-			console.log('res.data', res.data)
+			// console.log('res.data', res.data)
 			if(Boolean(res.data)){
 				this.$router.push({path: '/remark-match', query: { corpId: this.$route.query.corpId, show: 'yes' }})
 			}else{
@@ -265,12 +265,12 @@
           }
         }
         for(let i=0; i<next.length; i++){
-          next[i].setAttribute('src','/img/gray.png')
+          next[i].setAttribute('src','/img/remark/gray.png')
         }
         for(let i=0; i<previous.length; i++){
-          previous[i].setAttribute('src','/img/yellow.png')
+          previous[i].setAttribute('src','/img/remark/yellow.png')
         }
-        console.log(this.promise,this.serviceQuality,this.repairQuality,this.repairSpeed,this.repairPrice);
+        // console.log(this.promise,this.serviceQuality,this.repairQuality,this.repairSpeed,this.repairPrice);
       },
       remark(item){
         if(item=='good'){
@@ -415,11 +415,11 @@
     text-align: center;
     font-size: 16px;
     color: white;
-    background-color: #c4dffe;
+    background-color: #FFCB9C;
     border-radius: 5px
   }
 .button.on{
-  background-color: #438eff;
+  background-color: #FF9738;
 }
   .remarkblock{
     width: 100%;

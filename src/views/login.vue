@@ -193,6 +193,7 @@ export default {
 	watch:{
 		'$route'(){
 			this.showBlock()
+			this.goBackAll()
 		},
 	},
 	mounted(){
@@ -208,6 +209,7 @@ export default {
 				this.activeBlock= block|| 'pass'
 				this.showForget=false
 			}
+			this.showBind= false
 		},
 		submit(){
 			if(this.activity){
@@ -309,16 +311,21 @@ export default {
 				this.$router.replace({path: '/'})
 			}
 		},
+		goBackAll(){
+			if(this.$route.query.redirect && this.$store.state.user.hxxtoken){
+				this.$router.replace({path: this.$route.query.redirect})
+			}
+		}
 	},
-	beforeRouteLeave (to, from, next) {
-		this.activeBlock='code'
-		this.showBind= false
-		console.log('beforeRouteLeave')
-		next()
-	},
-	beforeDestory(){
-		console.log('beforeDestory')
-	},
+	// beforeRouteLeave (to, from, next) {
+	// 	this.activeBlock='code'
+	// 	this.showBind= false
+	// 	// console.log('beforeRouteLeave')
+	// 	next()
+	// },
+	// beforeDestory(){
+		// console.log('beforeDestory')
+	// },
 }
 </script>
 

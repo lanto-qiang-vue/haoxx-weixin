@@ -305,7 +305,7 @@ export default {
         if (flag) this.search.hot=''
       },
       height(val){
-        console.log('watch.height', val)
+        // console.log('watch.height', val)
         this.calcHeight(val)
 
       },
@@ -317,13 +317,13 @@ export default {
         $('.search-input input').blur()
       },
 	    originalLng(){
-      	console.log('originalLng')
+      	// console.log('originalLng')
       	    this.search.sort= ''
 		    this.getCompList(true, true)
 	    }
     },
     mounted(){
-		console.log('list.mounted')
+		// console.log('list.mounted')
 		this.getArea()
 	    this.getQuery()
       // this.calcHeight(this.height)
@@ -341,7 +341,7 @@ export default {
 	    },false);
     },
     activated(){
-		console.log('maintainList.activated')
+		// console.log('maintainList.activated')
 		  this.getQuery()
     },
     methods:{
@@ -419,32 +419,12 @@ export default {
         // },100)
       },
 		select( arrName, val ){
-			console.log('select')
+			// console.log('select')
 			this.search[arrName]= val
 			switch(arrName){
 				case 'hot':{
 					this.search.q= val
 					this.toQuery(true)
-					break;
-				}
-				case 'schoolPoint' :{
-					console.log('schoolPoint', val)
-					switch (val){
-						case '300':{
-							this.$emit('renderMap', [], true);
-							this.toQuery(true)
-							break
-						}
-						case '301':{
-							this.$emit('renderMap', []);
-							this.getBase()
-							break
-						}
-						default:{
-							this.getBase()
-							this.toQuery(true)
-						}
-					}
 					break;
 				}
 				default :{
@@ -461,7 +441,7 @@ export default {
 		},
 		toQuery(clearList){
 		    // console.log(clearList)
-			this.clearList= clearList|| false
+		    this.clearList= clearList|| false
 			// this.$emit('query', this.search, this.clearList);
 			this.getCompList(clearList, clearList)
 		},
@@ -533,7 +513,7 @@ export default {
 
 	    },
 	    dragend(){
-			console.log('dragend')
+			// console.log('dragend')
 		    switch (this.$route.name){
 			    case 'base-map':{
 			    	break
@@ -541,9 +521,9 @@ export default {
 			    default:{
 				    this.showHead= 'search'
 				    // this.search.schoolPoint= ''
-				    this.search.sort= ''
-				    this.search.base= ''
-				    this.search.area= ''
+				    // this.search.sort= ''
+				    // this.search.base= ''
+				    // this.search.area= ''
 				    this.getCompList(true, true, this.search.schoolPoint=='301')
 				    this.getBase()
 			    }
@@ -643,7 +623,7 @@ export default {
 			    markers.push(marker)
 		    }
 
-		    console.log('markers', markers)
+		    // console.log('markers', markers)
 
 		    // if(renderMarker){
 			 //    this.$emit('renderMarker', markers);
@@ -727,7 +707,7 @@ export default {
 </script>
 
 <style scoped lang='less'>
-  @blue-color: #008bff;
+  @blue-color: #FF9738;
   @bottom-border-color: #f2f2f2;
   .maintain-type{
 	  width: 100%;
@@ -939,7 +919,7 @@ export default {
         p {
           font-size: 14px;
           margin-bottom: 0;
-          margin-right: 30px;
+          margin-right: 40px;
           color: #000;
           overflow: hidden;
           text-overflow:ellipsis;

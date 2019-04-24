@@ -77,6 +77,14 @@ routes: [
 		component: () => import('@/views/service-map/maintain.vue')
 	},
 	{
+		path: '/maintain-remark',
+		name: 'maintain-remark',
+		meta:{
+			tourist: true,
+		},
+		component: () => import('@/views/service-map/maintain-remark.vue')
+	},
+	{
 		path: '/my-car-list',
 		name: 'my-car-list',
 		meta: {
@@ -87,6 +95,14 @@ routes: [
 	{
 		path: '/bind-my-car',
 		name: 'bind-my-car',
+		meta: {
+			requiresQixiu: true,
+		},
+		component: () => import('@/views/car-record/bind-my-car.vue')
+	},
+	{
+		path: '/bind-my-car-com',
+		name: 'bind-my-car-com',
 		meta: {
 			requiresQixiu: true,
 		},

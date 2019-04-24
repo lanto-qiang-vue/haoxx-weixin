@@ -6,15 +6,20 @@
 	<Form :model="form" class="common-form"
 	      :label-width="100" label-position="left" ref="form">
 		<FormItem label="汽修平台账号" prop="telphone">
-			<Input v-model="form.telphone" :maxlength="11" ></Input>
+			<Input v-model="form.telphone" :maxlength="11" placeholder="请输入汽修平台账号"></Input>
 		</FormItem>
 		<FormItem label="验证码" prop="telcode">
-			<Input v-model="form.telcode" :maxlength="10" ></Input>
+			<Input v-model="form.telcode" :maxlength="10" placeholder="请输入验证码"></Input>
 			<countdown class="get-code" @click="form.telSession= $event"
 			           url="/operate/controller/getCarliveCode" :phone="form.telphone"></countdown>
 		</FormItem>
 	</Form>
 	<div :class="['submit',{on: activity}]" @click="bind">同意授权</div>
+
+	<div class="qr" v-show="showQR">
+		<p>请识别下方二维码，关注并注册上海汽修平台</p>
+		<img src="/img/shanghai-qrcode.jpg"/>
+	</div>
 </div>
 </template>
 
@@ -30,7 +35,8 @@ export default {
 				telphone: '',
 				telcode: '',
 				telSession: ''
-			}
+			},
+			showQR: false
 		}
 	},
 	computed:{
@@ -41,6 +47,9 @@ export default {
 				}
 			return status
 		}
+	},
+	mounted(){
+		this.form.telphone= this.$store.state.user.userinfo.telphone
 	},
 	methods:{
 		bind() {
@@ -55,6 +64,8 @@ export default {
 				this.$store.commit('setQixiuToken', data.data.qxToken);
 				this.$toast('绑定成功');
 				this.goBackUrl()
+			}else{
+				this.showQR= true
 			}
 		},
 		goBackUrl(){
@@ -77,6 +88,7 @@ export default {
 		line-height:40px;
 		background:#F3F3F3;
 		padding-left:15px;
+		font-size: 14px;
 		span{
 			color:#FE8636;
 		}
@@ -106,6 +118,15 @@ export default {
 		text-align: center;
 		&.on{
 			background-color: #FF9738;
+		}
+	}
+	.qr{
+		margin-top: 25px;
+		padding: 0 20px;
+		text-align: center;
+		color: #515a6e;
+		img{
+			width: 100%;
 		}
 	}
 }

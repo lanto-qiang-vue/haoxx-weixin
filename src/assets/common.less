@@ -18,6 +18,7 @@ img{vertical-align:top;border:none}
 
 input{
   -webkit-user-select: text;
+  caret-color: #FFCB9C;
 }
 input:focus{
   outline: none;
@@ -62,7 +63,7 @@ p {
     position: relative;
     border-bottom: 1px solid #EEEEEE;
     &:last-child{
-      border-bottom: none;
+      //border-bottom: none;
     }
     .ivu-form-item-label{
       color: #333333;
@@ -321,4 +322,12 @@ p {
 }
 .mint-radiolist-title{
   margin: 0;
+}
+
+.mint-button--primary{
+  background-color: #FF9738;
+}
+.mint-radio-input:checked + .mint-radio-core{
+  background-color: #FF9738;
+  border-color: #FF9738;
 }

@@ -5,8 +5,12 @@
 		    <img class="point" src="/img/maintain/center-point.png"/>
 	    </div>
 		<div class="fixGuide" v-show="showCenter=='all'">
-			<img src="/img/maintain/center-location.png"/>
-			<div class="fixGuideClick" @click="goLatePoint">{{centerName}}</div>
+			<div class="img">
+				<img src="~@/assets/img/maintain/fix-name.png" style="width: 100%"/>
+				<img src="~@/assets/img/maintain/fix-point.png" style="width: 20px"/>
+				<div class="fixGuideClick" @click="goLatePoint">{{centerName}}</div>
+			</div>
+
 		</div>
 
 		<div id="container"></div>
@@ -113,7 +117,7 @@ computed: {
     },
 },
 mounted(){
-    console.log('maintain.mounted')
+    // console.log('maintain.mounted')
     this.bodyNoScoll()
     this.init()
 },
@@ -291,11 +295,11 @@ activated(){
 	this.bodyNoScoll()
 },
 deactivated(){
-	console.log('deactivated')
+	// console.log('deactivated')
 	this.canscroll()
 },
 beforeDestroy(){
-	console.log('beforeDestroy')
+	// console.log('beforeDestroy')
 	this.canscroll()
 },
 }
@@ -348,7 +352,7 @@ beforeDestroy(){
         top: 50%;
         transform: translate(-50%, -50%);
         z-index: 10;
-        img {
+        &>img {
           position: absolute;
           width: 100px;
           top: 0;
@@ -356,21 +360,29 @@ beforeDestroy(){
           transform: translate(-50%, -100%);
           pointer-events: none;
         }
+	      .img{
+		      width: 96px;
+		      text-align: center;
+		      position: absolute;
+		      top: 0;
+		      left: 50%;
+		      transform: translate(-50%, -100%);
+		      .fixGuideClick{
+			      width: 100%;
+			      height: 24px;
+			      line-height: 24px;
+			      position: absolute;
+			      left: 0;
+			      top: 1px;
+			      font-size: 12px;
+			      color: white;
+			      text-align: center;
+		      }
+	      }
 	      .point{
 		      width: 20px;
 	      }
-        .fixGuideClick{
-          width: 100px;
-          height: 24px;
-	        line-height: 24px;
-          position: absolute;
-          left: -50px;
-          top: -66px;
-	        font-size: 12px;
-	        color: white;
-	        font-weight: 300;
-	        text-align: center;
-        }
+
       }
 
 

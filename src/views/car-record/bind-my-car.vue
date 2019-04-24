@@ -561,7 +561,7 @@ export default{
 			this.$refs.picker.open();
 		},
 		dateSelect(val){
-			console.log(val)
+			// console.log(val)
 			this.travelLicenseRevise[this.dateField]= formatDate(val, 'yyyy-MM-dd')
 		},
 		modifyCancel(){
@@ -824,7 +824,7 @@ export default{
 			p{
 				font-size: 15px;
 				line-height: 30px;
-				background-color: #5795FC;
+				background-color: #FF9738;
 				text-align: center;
 				color: white;
 			}
@@ -852,7 +852,7 @@ export default{
 	.info{
 		background-color: white;
 		.head{
-			background: #5795FC;
+			background: #FF9738;
 			font-size: 16px;
 			position: relative;
 			p{
@@ -927,7 +927,7 @@ export default{
 		line-height: 40px;
 		text-align: center;
 		color: white;
-		background-color: #26a2ff;
+		background-color: #FF9738;
 		font-size: 18px;
 		position: fixed;
 		left: 0;

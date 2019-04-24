@@ -1,8 +1,8 @@
 <template>
   <div id="carList">
     <div class='search'>
-      <form action="javascript:return true;">
-        <input type="search" placeholder="搜索车牌号码" class="mui-input-clear" v-model='vehicleplatenumber' @keydown="key($event)" style="padding-left: 35px; text-indent: 0;">
+      <form action="javascript:;">
+        <input type="search" placeholder="搜索车牌号码" class="mui-input-clear" v-model="vehicleplatenumber" @keydown="key" style="padding-left: 35px; text-indent: 0;">
       </form>
     </div>
       <div class="carList">
@@ -119,7 +119,8 @@ export default {
       checkedWho: '',
       authorizers: [],
       authorizers1: [],
-	    removeAuthNo: ''
+	    removeAuthNo: '',
+	    timer: null
     }
   },
 	mounted() {
@@ -149,15 +150,21 @@ export default {
 			    Toast('该车暂无维修记录')
 		    }
 	    }else{
-    	    console.log(JSON.stringify(item));
+    	    // console.log(JSON.stringify(item));
 			this.$emit('select', item)
 	    }
     },
 	  key(e){
-		  if ( e.keyCode == 13 || e=='search') {
-			  this.page=1
-			  this.carList=[]
-			  this.getData()
+		  // clearInterval(this.timer)
+		  if ( e.keyCode == 13 ) {
+			  // let CancelToken = this.axiosQixiu.CancelToken;
+			  // let source = CancelToken.source();
+			  // source.cancel()
+			  // this.timer = setTimeout(()=>{
+				  this.page=1
+				  this.carList=[]
+				  this.getData()
+			  // }, 500)
 		  }
 	  },
     getData(flag){
@@ -167,6 +174,8 @@ export default {
 		    "pageSize": 10,
 		    "vehiclePlateNumber": this.vehicleplatenumber,
 	    }).then( (res) => {
+		    if(flag) this.$refs.loadmore.onBottomLoaded()
+		    else this.carList=[]
 		    this.total= res.data.total
 		    if(res.data.items&&res.data.items.length){
 			    let arr= res.data.items
@@ -177,7 +186,7 @@ export default {
 			    }else{
 				    this.allLoaded=false
 			    }
-			    if(flag) this.$refs.loadmore.onBottomLoaded()
+
 		    }else{
 			    this.allLoaded=true
 		    }
@@ -415,6 +424,7 @@ export default {
 			  border-radius: 5px;
 			  color: white;
 			  background-color: #ed4014;
+			  display: inline-block;
 		  }
 	  }
 

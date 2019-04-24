@@ -16,7 +16,7 @@
 				<i></i>
 				<router-link tag="div" class="right" :to="'/coupons-detail?code='+item.code">
 					<div class="tag">
-					<p :class="[{orange:item.isuse == 1}]">{{item.usetype}}</p>
+					<p :class="[{orange:item.isuse == 1}]">{{useList[parseInt(item.isuse)]}}</p>
 					</div>
 				</router-link>
 			</div>
@@ -37,6 +37,7 @@ export default {
 			total: 0,
 			allLoaded: false,
 			type:"",
+			useList:['未领用','可使用','已使用','已过期'],
 		}
 	},
 	computed:{
