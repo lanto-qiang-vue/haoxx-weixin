@@ -20,6 +20,8 @@ module.exports = {
 				// target: 'https://hxx.test.hoxiuxiu.com/',
 				target: 'http://developer.hxx.hoxiuxiu.com/',
 				// target: 'http://192.168.169.114:8761',
+                pathRewrite: {'^/hxx-proxy': ''},
+                secure: false
 			},
 			'/qixiu-proxy': {
 				target: 'http://192.168.169.231:8888/',
