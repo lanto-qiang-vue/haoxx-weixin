@@ -8,7 +8,10 @@ export default {
 		maintainListHistory: maintainListHistory(),
 		location:{
 			lng: 0,
-			lat: 0
+			lat: 0,
+		},
+		manuallocation:{
+
 		},
 		vehiclemodelIndex: null
 	},
@@ -31,8 +34,7 @@ export default {
 			localStorage.setItem('maintainListHistory', JSON.stringify(state.maintainListHistory))
 		},
 		setLocation(state, obj){
-			state.location.lng= obj.lng
-			state.location.lat= obj.lat
+			state.location= obj
 		},
 		setVehiclemodelIndex(state, obj){
 			state.vehiclemodelIndex= obj

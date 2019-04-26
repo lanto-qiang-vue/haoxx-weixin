@@ -44,14 +44,22 @@ routes: [
 		name: 'setting',
 		meta: {
 		},
-		component: () => import('@/views/setting.vue')
+		component: () => import('@/views/setting/setting.vue')
 	},
 	{
 		path: '/accredit-bind',
 		name: 'accredit-bind',
 		meta: {
 		},
-		component: () => import('@/views/accredit-bind.vue')
+		component: () => import('@/views/setting/accredit-bind.vue')
+	},
+	{
+		path: '/city-select',
+		name: 'city-select',
+		meta: {
+			tourist: true
+		},
+		component: () => import('@/views/setting/city-select.vue')
 	},
 	{
 		path: '/my-reservation',
