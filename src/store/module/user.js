@@ -42,6 +42,10 @@ export default {
 			state.hxxtoken = ''
 			state.qixiutoken = ''
 			state.userinfo = ''
+		},
+		changePassSuccess(state){
+			state.userinfo.is_modify= 1
+			localStorage.setItem('USERINFO', JSON.stringify(state.userinfo))
 		}
 	},
 	actions:{

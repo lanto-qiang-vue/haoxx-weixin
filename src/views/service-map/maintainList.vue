@@ -919,7 +919,7 @@ export default {
         p {
           font-size: 14px;
           margin-bottom: 0;
-          margin-right: 30px;
+          margin-right: 40px;
           color: #000;
           overflow: hidden;
           text-overflow:ellipsis;

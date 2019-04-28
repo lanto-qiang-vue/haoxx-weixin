@@ -35,7 +35,7 @@
 	<div :class="['submit',{on: activity}]" @click="submit">登录</div>
 
 	<p class="protocol">新用户登录即完成注册，代表同意
-		<router-link to="/article-detail?infoId=hxx-protocol">《好修修车生活用户协议》</router-link>
+		<router-link to="/article-detail?infoId=hxx-protocol">《好修修用户协议》</router-link>
 	</p>
 
 	<div class="other-way" v-show="unionid">
