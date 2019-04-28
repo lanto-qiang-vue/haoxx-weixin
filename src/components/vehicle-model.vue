@@ -41,7 +41,7 @@
 <script>
 import pinying from '~/public/lib/pinying.js'
 import { deepClone } from '@/util.js'
-import { IndexList, IndexSection } from 'mint-ui';
+// import { IndexList, IndexSection } from 'mint-ui';
 import CommonFold from '@/components/common-fold.vue'
 export default {
 	name: "vehicle-model",
