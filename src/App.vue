@@ -9,6 +9,11 @@
 			<img src="~@/assets/img/index/home-off.png" v-show="!active('/')">
 			<p>首页</p>
 		</router-link>
+		<router-link to="/forum-index" tag="li">
+			<img src="~@/assets/img/index/forum.png" v-show="active('/forum-index')">
+			<img src="~@/assets/img/index/forum-off.png" v-show="!active('/forum-index')">
+			<p>车谈</p>
+		</router-link>
 		<router-link to="/my" tag="li">
 			<img src="~@/assets/img/index/my.png" v-show="active('/my')">
 			<img src="~@/assets/img/index/my-off.png" v-show="!active('/my')">
@@ -69,7 +74,7 @@ export default {
 		-webkit-transform: translateZ(0);
 		li{
 			height: 100%;
-			width: 100px;
+			width: 90px;
 			display: inline-block;
 			vertical-align: top;
 			padding-top: 8px;

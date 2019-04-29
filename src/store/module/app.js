@@ -2,6 +2,14 @@ const maintainListHistory = () => {
 	const val = localStorage.getItem('maintainListHistory')
 	return val ? JSON.parse(val) : []
 }
+const setCity= () => {
+	const val = localStorage.getItem('setCity')
+	return val ? JSON.parse(val) : {}
+}
+const setCityHistory= () => {
+	const val = localStorage.getItem('cityHistory')
+	return val ? JSON.parse(val) : []
+}
 
 export default {
 	state: {
@@ -10,9 +18,9 @@ export default {
 			lng: 0,
 			lat: 0,
 		},
-		manuallocation:{
-
-		},
+		city: setCity(),
+		cityHistory: setCityHistory(),
+		manuallocation:{},
 		vehiclemodelIndex: null
 	},
 	getters: {
@@ -39,8 +47,26 @@ export default {
 		setVehiclemodelIndex(state, obj){
 			state.vehiclemodelIndex= obj
 		},
+		setCity(state, item){
+			localStorage.setItem('setCity', item? JSON.stringify(item): '')
+			state.city = item;
+		},
+		setCityHistory(state, item){
+			let list= state.cityHistory, have= false, length= 0
+			for( let i in list){
+				if(list[i].citycode== item.citycode) have= true
+			}
+			if(!have){
+				length= list.unshift(item)
+				if(length>2) list.pop()
+			}
+			localStorage.setItem('cityHistory', JSON.stringify(list))
+		},
 	},
 	actions:{
-
+		setCity(context, item){
+			context.commit('setCity', item);
+			context.commit('setCityHistory', item);
+		},
 	},
 }
