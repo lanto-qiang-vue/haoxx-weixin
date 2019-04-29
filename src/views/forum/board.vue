@@ -1,5 +1,5 @@
 <template>
-<div id="queryList">
+<div class="boardList">
     <div class='search'>
       <form action="javascript:;">
         <input type="search" placeholder="话题搜索" class="mui-input-clear" v-model="searchValue">
@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style scoped lang='less'>
-#queryList {
+.boardList {
   background-color: #fff;
   height: 100vh;
   overflow: auto;
