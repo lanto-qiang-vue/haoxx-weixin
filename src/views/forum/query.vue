@@ -100,7 +100,7 @@ export default {
   .content{
 	  background: #fff;
 	  box-sizing: border-box;
-	  margin-top: 44px;
+	  margin-top: 36 px;
 	  .title {
 		  box-sizing: border-box;
 		  padding-left:15px;
