@@ -4,12 +4,11 @@
 		<div class="above">
 			<div class="query">
 				<div class="now">当前：<span>上海</span></div>
-				<div class="search"><i class="fa fa-search icon"></i>
-					<form action="javascript:;">
-						<input type="search" ref="input" v-model="search" placeholder="城市名/拼音"/>
-					</form>
+				<form action="javascript:;" class="common-search">
+					<i class="fa fa-search icon"></i>
+					<input type="search" ref="input" v-model="search" placeholder="城市名/拼音"/>
 					<i class="fa fa-times-circle close" v-show="search" @click="close"></i>
-				</div>
+				</form>
 			</div>
 			<div class="tag">
 				<p>定位/最近访问</p>
@@ -87,40 +86,7 @@ export default {
 					color: black;
 				}
 			}
-			.search{
-				display: inline-block;
-				vertical-align: middle;
-				position: relative;
-				width: 100%;
-				input{
-					width: 100%;
-					height: 30px;
-					line-height: 28px;
-					background-color: #EEEEEE;
-					border: 1px solid #DBDBDB;
-					border-radius: 15px;
-					padding: 0 10px 0 30px;
-					margin: 0;
-					text-align: left;
-					font-size: 14px;
-				}
-				.icon{
-					position: absolute;
-					font-size: 14px;
-					color: #999999;
-					left: 10px;
-					top: 50%;
-					transform: translateY(-50%);
-				}
-				.close{
-					position: absolute;
-					font-size: 18px;
-					color: #999999;
-					right: 32px;
-					top: 50%;
-					transform: translateY(-50%);
-				}
-			}
+
 		}
 		.tag{
 			margin-top: 10px;

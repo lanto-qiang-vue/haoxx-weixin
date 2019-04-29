@@ -24,11 +24,11 @@
 		</ul>
 		<div class="title">
 			<span>搜索记录</span>
-			<div class="cleargroup">
+			<!--<div class="cleargroup">-->
 				<div class="clearAll">清空全部</div>
 				<div class="clear">清空</div>
-			</div>
-			
+			<!--</div>-->
+
 		</div>
 		<ul class="themeList">
 			<li>
@@ -41,12 +41,12 @@
 			</li>
 			<li>
 				<span >今日头条新闻</span>
-				<span class="listClear">X</span>
+				<i class="fa fa-times "></i>
 			</li>
 
 		</ul>
 	</div>
-	
+
 </div>
 </template>
 
@@ -105,7 +105,7 @@ export default {
 		  box-sizing: border-box;
 		  padding-left:15px;
 			width: 100%;
-			
+
 			height: 35px;
 			line-height: 35px;
 			color: #333;
@@ -143,7 +143,7 @@ export default {
 					float: left;
 				}
 			}
-			
+
 
 	}
 	.title:first-child{
@@ -169,7 +169,7 @@ export default {
 			}
 		}
 	}
-  
+
 
 
 }
