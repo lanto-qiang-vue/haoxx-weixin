@@ -1,22 +1,43 @@
 <template>
 <div class="boardList">
     <div class='search'>
-      <form action="javascript:;">
-        <input type="search" placeholder="话题搜索" class="mui-input-clear" v-model="searchValue">
-      </form>
-    </div>
-	<div class="content">
+		<div class="z-search">
+			<form action="javascript:;" class="common-search ">
+				<i class="fa fa-search icon"></i>
+				<input type="search" ref="input" v-model="search" placeholder="搜索话题"/>
+				<i class="fa fa-times-circle close" v-show="search" @click="close"></i>
+			</form>
+		</div>
+		
 		<div class="title">
 			<span class="active">热聊话题</span>
 			<span>最新话题</span>
 		</div>
+
+    </div>
+	<div class="content">
 		<ul class="themeList">
 			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻今日头条新闻今日头条新闻今日头条新闻???</p>
+				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
 				<ul class="imgGroup">
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
+					<li style="background: url(/img/bank-01.png) no-repeat center center;background-size:cover;"><img src="/img/bank-01.png"></li>
+					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
+					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
+					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
+					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
 
+					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
+				</ul>
+				<div class="listFooter">
+					<span>186****5567 · 5分钟前</span>
+					<span class="left">50个评论</span>
+					<span class="right">去参与</span>
+				</div>
+			</li>
+			<li>
+				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
+				<ul class="imgGroup">
+					<li><img src="/img/bank-01.png" alt=""></li>
 					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
 					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
 				</ul>
@@ -27,26 +48,9 @@
 				</div>
 			</li>
 			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻今日头条新闻今日头条新闻今日头条新闻???</p>
+				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
 				<ul class="imgGroup">
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-				</ul>
-				<div class="listFooter">
-					<span>186****5567 · 5分钟前</span>
-					<span class="left">50个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
-			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻今日头条新闻今日头条新闻今日头条新闻???</p>
-				<ul class="imgGroup">
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-
+					<li><img src="/img/bank-01.png" alt=""></li>
 					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
 					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
 				</ul>
@@ -68,7 +72,12 @@ export default {
 	name: "board",
 	data(){
 		return{
-			searchValue:'',
+			search:'',
+		}
+	},
+	methods:{
+		close(){
+
 		}
 	}
 }
@@ -82,58 +91,39 @@ export default {
   width: 100%;
   box-sizing: border-box;
   .search {
-    padding: 5px 15px;
     width: 100%;
     background: #fff;
 	position: fixed;
 	top:0px;
 	left:0px;
 	box-sizing: border-box;
-    form {
-      input {
-        background: url(/img/car-record/search.png) no-repeat 5px 5px;
-        font-size: 12px;
-		background-color:rgba(238,238,238,1);
-        background-size: 18px 18px;
-        text-indent: 0;
-		padding-left: 35px;
-        border-radius: 15px;
-        outline: none;
-        border: none;
-		color:#A9A9A9;
-        width: 100%;
-        height: 26px;
-        position: relative;
-        text-align: left;
-        margin-bottom: 0;
+	z-index:20;
+    .z-search{
+		padding: 5px 15px;
+	}
+	.title {
 		box-sizing: border-box;
-      }
-    }
+		padding:12px 0 5px 15px;
+		width: 100%;
+		line-height: 20px;
+		color: #666;
+		font-size:14px;
+		font-weight:500;
+		overflow: hidden;
+		border-top: 8px #F3F3F3 solid;
+		span{
+			padding-right: 20px; 
+		}
+		.active{
+			color: #FF6D0E;
+		}
+	}
+
   }
   .content{
 	  background: #fff;
 	  box-sizing: border-box;
-	  margin-top: 36px;
-	  .title {
-		  box-sizing: border-box;
-		  padding-left:15px;
-			width: 100%;
-			height: 35px;
-			line-height: 35px;
-			color: #333;
-			font-size:14px;
-			font-weight:500;
-			overflow: hidden;
-			span{
-				padding-right: 20px; 
-			}
-			.active{
-				color: #FF6D0E;
-			}
-	}
-	.title:first-child{
-		border-top: 8px #F3F3F3 solid;
-	}
+	  padding-top: 85px;
 	.themeList {
 		box-sizing: border-box;
 		padding-left:15px;
@@ -143,10 +133,11 @@ export default {
 			padding: 10px 0;
 			font-size: 14px;
 			width: 100%;
-			color:#333;
 			p{
+				color:#333;
 				line-height: 20px;
 				font-weight: 500px;
+				padding-bottom:5px;
 			}
 			.listClear{
 				font-size: 12px;
@@ -154,17 +145,22 @@ export default {
 				padding-right: 20px;
 			}
 			.imgGroup{
-				overflow: hidden;
-				padding: 4px 0;
+				overflow: auto;
+				padding: 5px 0;
+				white-space:nowrap;
 				li{
 					width:60px;
 					height:60px;
 					border-radius:3px;
-					float: left;
-					margin-right:4px;
+					border-bottom: none;
+					padding:0;
+					margin-right:5px;
+					
+					
+					overflow:hidden;
+					display:inline-block;
 					img{
-						width: 100%;
-						height: 100%;
+						opacity: 0;
 					}
 				}
 			}
@@ -180,7 +176,7 @@ export default {
 					line-height: 22px;
 					position: absolute;
 					top: 5px;
-					right: 75px;
+					right: 85px;
 					color: #666;
 					
 				}
@@ -191,7 +187,7 @@ export default {
 					border-radius:11px;
 					display: inline-block;
 					position: absolute;
-					right: 10px;
+					right: 15px;
 					top: 5px;
 					text-align: center;
 					line-height: 22px;

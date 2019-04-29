@@ -1,47 +1,38 @@
 <template>
 <div class="queryList">
     <div class='search'>
-      <form action="javascript:;">
-        <input type="search" placeholder="话题搜索" class="mui-input-clear" v-model="searchValue">
-      </form>
+			<div class="z-search">
+				<form action="javascript:;" class="common-search ">
+					<i class="fa fa-search icon"></i>
+					<input type="search" ref="input" v-model="search" placeholder="搜索话题"/>
+					<i class="fa fa-times-circle close" v-show="search" @click="close"></i>
+				</form>
+			</div>
+			
     </div>
 	<div class="content">
 		<div class="title">
-			<span>热聊话题</span>
+			热聊话题
 		</div>
 		<ul class="themeList">
 			<li>
-				<span >今日头条新闻</span>
+				今日头条新闻
 			</li>
 			<li>
-				<span >今日头条新闻</span>
+				今日头条新闻
 			</li>
 			<li>
-				<span >今日头条新闻</span>
-			</li>
-
+				今日头条新闻
 			</li>
 		</ul>
-		<div class="title">
-			<span>搜索记录</span>
-			<!--<div class="cleargroup">-->
-				<div class="clearAll">清空全部</div>
-				<div class="clear">清空</div>
-			<!--</div>-->
-
+		<div class="title z-title">
+			搜索记录
+			<div class="clear">清空</div>
 		</div>
 		<ul class="themeList">
 			<li>
-				<span>今日头条新闻</span>
-				<span class="listClear">X</span>
-			</li>
-			<li>
-				<span >今日头条新闻</span>
-				<span class="listClear">X</span>
-			</li>
-			<li>
-				<span >今日头条新闻</span>
-				<i class="fa fa-times "></i>
+				今日头条新闻
+				<i class="fa fa-times z-fa"></i>
 			</li>
 
 		</ul>
@@ -55,7 +46,12 @@ export default {
 	name: "query",
 	data(){
 		return{
-			searchValue:'',
+			search:'',
+		}
+	},
+	methods:{
+		close(){
+
 		}
 	}
 }
@@ -69,105 +65,72 @@ export default {
   width: 100%;
   box-sizing: border-box;
   .search {
-    padding: 5px 15px;
+    
     width: 100%;
     background: #fff;
 	position: fixed;
+	z-index:20;
 	top:0px;
 	left:0px;
 	box-sizing: border-box;
-    form {
-      input {
-        background: url(/img/car-record/search.png) no-repeat 5px 5px;
-        font-size: 12px;
-		background-color:rgba(238,238,238,1);
-        background-size: 18px 18px;
-        text-indent: 0;
-		padding-left: 35px;
-        border-radius: 15px;
-        outline: none;
-        border: none;
-		color:#A9A9A9;
-        width: 100%;
-        height: 26px;
-        position: relative;
-        text-align: left;
-        margin-bottom: 0;
-		box-sizing: border-box;
-      }
-    }
+	.z-search{
+		padding: 5px 15px;
+		border-bottom: 8px #F3F3F3 solid;
+	}
   }
   .content{
 	  background: #fff;
 	  box-sizing: border-box;
-	  margin-top: 36 px;
+	  padding-top: 48px;
+	  
 	  .title {
-		  box-sizing: border-box;
-		  padding-left:15px;
-			width: 100%;
-
-			height: 35px;
-			line-height: 35px;
-			color: #333;
-			font-size:14px;
-			font-weight:500;
-			overflow: hidden;
-			.cleargroup{
-				    float: right;
-					margin-top: 10px;
-					margin-right: 15px;
-				.clear{
-					width:40px;
-					height:22px;
-					background:rgba(242,242,242,1);
-					border-radius:11px;
-					font-size:12px;
-					font-weight:400;
-					color:rgba(102,102,102,1);
-					line-height: 22px;
-					text-align: center;
-					float: left;
-					margin-left: 4px;
-					margin-right:10px;
-				}
-				.clearAll{
-					width:64px;
-					height:22px;
-					background:rgba(242,242,242,1);
-					border-radius:11px;
-					font-size:12px;
-					font-weight:400;
-					color:rgba(102,102,102,1);
-					line-height: 22px;
-					text-align: center;
-					float: left;
-				}
+		box-sizing: border-box;
+		padding:12px 0 3px 15px;
+		width: 100%;
+		line-height: 20px;
+		color: #333;
+		font-size:14px;
+		font-weight:500;
+		position: relative;
+			.clear{
+				width:40px;
+				background:rgba(242,242,242,1);
+				border-radius:11px;
+				font-size:12px;
+				font-weight:400;
+				color:rgba(102,102,102,1);
+				line-height: 22px;
+				text-align: center;
+				position: absolute;
+				right: 10px;
+				top: 12px;
 			}
+		
 
 
 	}
-	.title:first-child{
-			border-top: 8px #F3F3F3 solid;
+	.z-title{
+		padding-top: 14px;
 	}
-		.themeList {
+	.themeList {
+		box-sizing: border-box;
+		padding-left:15px;
+		li {
 			box-sizing: border-box;
-			padding-left:15px;
-			li {
-				box-sizing: border-box;
-				border-bottom: 1px solid #D9D9D9;
-				/*height: 40px;*/
-				line-height: 30px;
-				padding: 10px 0;
-				font-size: 14px;
-				width: 100%;
-				color:#666666;
-				.listClear{
-					font-size: 12px;
-					float: right;
-					padding-right: 20px;
-				}
+			border-bottom: 1px solid #D9D9D9;
+			line-height: 20px;
+			padding: 10px 0;
+			font-size: 14px;
+			width: 100%;
+			color:#666666;
+			position: relative;
+			.z-fa{
+				position: absolute;
+				right: 15px;
+				top: 14px;
 			}
 		}
+	}
 	}
 
 
