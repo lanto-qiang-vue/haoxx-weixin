@@ -220,4 +220,20 @@ routes: [
 		},
 		component: () => import('@/views/article/article-detail.vue')
 	},
+	{
+		path: '/forum-query',
+		name: 'forum-query',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/query.vue')
+	},
+	{
+		path: '/forum-board',
+		name: 'forum-board',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/board.vue')
+	},
 ]})
