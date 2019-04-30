@@ -21,7 +21,17 @@
 		<router-link tag="li" :to="recordPath"><img src="~@/assets/img/index/维修记录.png"/><p>维修记录</p></router-link>
 		<router-link tag="li" to="/remark-map"><img src="~@/assets/img/index/维修点评.png"/><p>维修点评</p></router-link>
 		<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>
-		<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>
+		<!--<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>-->
+	</ul>
+	<ul class="coupons">
+		<p class="title">车主权益<span @click="goCoupons">查看更多</span></p>
+		<li @click="goCoupons">洗车券<span>查看可用券</span></li>&thinsp;
+		<li @click="goCoupons">保养券<span>查看可用券</span></li>&thinsp;
+		<li @click="goCoupons">油漆券<span>查看可用券</span></li>
+	</ul>
+
+	<ul class="forum">
+
 	</ul>
 </div>
 </template>
@@ -34,9 +44,7 @@ export default {
 	components: {swiper, swiperSlide},
 	data(){
 		return{
-			banners:[
-				{createTime: "", id: 0, imageUrl: "http://download.image.lanto.com/2019/03/12/1552379660547.png", linkTarget: "", linkUrl: "#", place: 9, seq: 0, show: false, terminal: null, title: "石墨烯", updateTime: ""}
-				],
+			banners:[],
 			swiperOption: {
 				centeredSlides : true,
 				loop : true,
@@ -105,6 +113,9 @@ export default {
 			}
 			return obj
 		},
+		goCoupons(){
+			this.$router.push('/coupons-type')
+		}
 	},
 }
 </script>
@@ -149,7 +160,8 @@ export default {
 		}
 	}
 	.button{
-		margin-top: 20px;
+		margin-top: 10px;
+		overflow: hidden;
 		li{
 			padding: 0 10px;
 			width: 25%;
@@ -166,6 +178,74 @@ export default {
 				font-size: 14px;
 			}
 		}
+	}
+	.coupons{
+		border-top: 10px solid #F3F3F3;
+		text-align: justify;
+		padding: 0 10px;
+		height: 105px;
+		.title{
+			color: #333333;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 36px;
+			span{
+				float: right;
+				font-size: 12px;
+			}
+		}
+		&:after{
+			content: '';
+			display: inline-block;
+			width: 100%;
+		}
+		li{
+			display: inline-block;
+			overflow: hidden;
+			height: 50px;
+			min-width: 95px;
+			width: 30%;
+			/*max-width: 100px;*/
+			text-align: center;
+			background:linear-gradient(180deg, #fff2da, #FFB45F);
+			box-shadow:0px 1px 2px 0px rgba(144,138,138,0.5);
+			border-radius:3px;
+			position: relative;
+			color: #F70813;
+			font-size: 16px;
+			line-height: 28px;
+			font-weight: 500;
+			span{
+				display: block;
+				font-size: 12px;
+				color: #8A0A0A;
+				line-height: 20px;
+			}
+			&:before{
+				content: '';
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				border:2px dashed #FA5E54;
+			}
+			&:after{
+				content: '';
+				display: block;
+				position: absolute;
+				left: 0;
+				bottom: 22px;
+				width: 100%;
+				height: 1px;
+				border-top:1px dotted #E48E69;
+				opacity: .5;
+			}
+		}
+	}
+	.forum{
+		border-top: 10px solid #F3F3F3;
 	}
 }
 </style>
