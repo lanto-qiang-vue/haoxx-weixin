@@ -16,41 +16,15 @@
 
     </div>
 	<div class="content">
-		<ul class="themeList">
+		<ul class="commonList">
 			<li>
 				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
 				<ul class="imgGroup">
-					<li style="background: url(/img/bank-01.png) no-repeat center center;background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-				</ul>
-				<div class="listFooter">
-					<span>186****5567 · 5分钟前</span>
-					<span class="left">50个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
-			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-				<ul class="imgGroup">
-					<li><img src="/img/bank-01.png" alt=""></li>
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-				</ul>
-				<div class="listFooter">
-					<span>186****5567 · 5分钟前</span>
-					<span class="left">50个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
-			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-				<ul class="imgGroup">
-					<li><img src="/img/bank-01.png" alt=""></li>
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
-					<li><img src="/img/maintain/shqxw.jpg" alt=""></li>
+					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center;background-size:cover;"><img src="/img/bank-01.png"></li>
+					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
+					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
+					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
+					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
 				</ul>
 				<div class="listFooter">
 					<span>186****5567 · 5分钟前</span>
@@ -80,7 +54,73 @@ export default {
 	}
 }
 </script>
-
+<style lang='less'>
+@import './forum.less';
+</style>
 <style scoped lang='less'>
+.boardList {
+  background-color: #fff;
+  height: 100vh;
+  overflow: auto;
+  width: 100%;
+  box-sizing: border-box;
+  .search {
+    width: 100%;
+    background: #fff;
+	position: fixed;
+	top:0px;
+	left:0px;
+	box-sizing: border-box;
+	z-index:20;
+    .z-search{
+		padding: 5px 15px;
+	}
+	.title {
+		box-sizing: border-box;
+		padding:12px 0 5px 15px;
+		width: 100%;
+		line-height: 20px;
+		color: #666;
+		font-size:14px;
+		font-weight:500;
+		overflow: hidden;
+		border-top: 8px #F3F3F3 solid;
+		span{
+			padding-right: 20px; 
+		}
+		.active{
+			color: #FF6D0E;
+		}
+	}
+  .button{
+		padding:7px 0 0 7px;
+    overflow: auto;
+    white-space:nowrap;
+		li{
+			padding: 0 8px;
+			display: inline-block;
+			text-align: center;
+      overflow: hidden;
+			margin-bottom: 14px;
+			img{
+				width: 100%;
+				max-width: 38px;
+			}
+			p{
+				color: #333333;
+        padding-top: 6px;
+				font-size: 12px;
+        line-height: 17px;
+			}
+		}
+	}
 
+  }
+  .content{
+	  background: #fff;
+	  box-sizing: border-box;
+	  padding-top: 85px;
+
+}
+}
 </style>

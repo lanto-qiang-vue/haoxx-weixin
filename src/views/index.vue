@@ -29,9 +29,26 @@
 		<li @click="goCoupons">保养券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons">油漆券<span>查看可用券</span></li>
 	</ul>
-
-	<ul class="forum">
-
+	<div class="z-title">
+		<span>最新话题</span>
+	</div>
+	<ul class="commonList">
+		<li>
+			<p>今日头条新闻今日头条新闻今日头条新闻???</p>
+			<div class="listFooter">
+				<span>186****5567 · 5分钟前</span>
+				<span class="left">50个评论</span>
+				<span class="right z-right">参与</span>
+			</div>
+		</li>
+		<li>
+			<p>今日头条新闻今日头条新闻今日头条新闻???</p>
+			<div class="listFooter">
+				<span>186****5567 · 5分钟前</span>
+				<span class="left">50个评论</span>
+				<span class="right z-right">参与</span>
+			</div>
+		</li>
 	</ul>
 </div>
 </template>
@@ -119,8 +136,36 @@ export default {
 	},
 }
 </script>
-
+<style lang='less'>
+@import './forum/forum.less';
+</style>
 <style scoped lang="less">
+
+.z-title {
+	box-sizing: border-box;
+	padding:12px 0 5px 15px;
+	width: 100%;
+	line-height: 20px;
+	color: #666;
+	font-size:14px;
+	font-weight:500;
+	overflow: hidden;
+	border-top: 8px #F3F3F3 solid;
+	span{
+		padding-right: 20px; 
+	}
+	.active{
+		color: #FF6D0E;
+	}
+}
+.commonList li .listFooter .z-right{
+	width:54px;
+	height:24px;
+	background:rgba(255,151,56,1);
+	border-radius:12px;
+	line-height: 24px;
+	color: #fff;
+}
 .index{
 	.banner{
 		position: relative;

@@ -23,7 +23,7 @@
 
     </div>
 	<div class="content" style="padding-top: 171px;">
-		<ul class="themeList">
+		<ul class="commonList">
 			<li>
 				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
 				<ul class="imgGroup">
@@ -110,6 +110,7 @@
 </template>
 
 <script>
+
 	export default {
 		name: "index",
 		data(){
@@ -124,7 +125,9 @@
 		}
 	}
 </script>
-
+<style lang='less'>
+@import './forum.less';
+</style>
 <style scoped lang='less'>
 .add-button{
 	width:48px;
