@@ -25,8 +25,6 @@
 					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
 					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
 					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-
-					<li style="background: url(/img/bank-01.png) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
 				</ul>
 				<div class="listFooter">
 					<span>186****5567 · 5分钟前</span>
