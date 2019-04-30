@@ -129,6 +129,71 @@
 @import './forum.less';
 </style>
 <style scoped lang='less'>
+.boardList {
+  background-color: #fff;
+  height: 100vh;
+  overflow: auto;
+  width: 100%;
+  box-sizing: border-box;
+  .search {
+    width: 100%;
+    background: #fff;
+	position: fixed;
+	top:0px;
+	left:0px;
+	box-sizing: border-box;
+	z-index:20;
+    .z-search{
+		padding: 5px 15px;
+	}
+	.title {
+		box-sizing: border-box;
+		padding:12px 0 5px 15px;
+		width: 100%;
+		line-height: 20px;
+		color: #666;
+		font-size:14px;
+		font-weight:500;
+		overflow: hidden;
+		border-top: 8px #F3F3F3 solid;
+		span{
+			padding-right: 20px; 
+		}
+		.active{
+			color: #FF6D0E;
+		}
+	}
+  .button{
+		padding:7px 0 0 7px;
+    overflow: auto;
+    white-space:nowrap;
+		li{
+			padding: 0 8px;
+			display: inline-block;
+			text-align: center;
+      overflow: hidden;
+			margin-bottom: 14px;
+			img{
+				width: 100%;
+				max-width: 38px;
+			}
+			p{
+				color: #333333;
+        padding-top: 6px;
+				font-size: 12px;
+        line-height: 17px;
+			}
+		}
+	}
+
+  }
+  .content{
+	  background: #fff;
+	  box-sizing: border-box;
+	  padding-top: 85px;
+
+}
+}
 .add-button{
 	width:48px;
 	height:48px;
