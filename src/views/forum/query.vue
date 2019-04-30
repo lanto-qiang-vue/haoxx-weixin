@@ -56,7 +56,9 @@ export default {
 	}
 }
 </script>
-
+<style lang='less'>
+@import './forum.less';
+</style>
 <style scoped lang='less'>
 .queryList {
   background-color: #fff;
