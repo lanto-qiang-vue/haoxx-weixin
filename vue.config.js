@@ -23,6 +23,13 @@ module.exports = {
                 pathRewrite: {'^/hxx-proxy': ''},
                 secure: false
 			},
+			'/hxx-api-proxy': {
+				// target: 'http://api.hoxiuxiu.com/',
+				// target: 'http://api.test.hoxiuxiu.com/',
+				target: 'http://192.168.169.114:8871/',
+				pathRewrite: {'^/hxx-api-proxy': ''},
+				secure: false
+			},
 			'/qixiu-proxy': {
 				target: 'http://192.168.169.231:8888/',
 				// target: 'https://www.test.shanghaiqixiu.org/proxy/',

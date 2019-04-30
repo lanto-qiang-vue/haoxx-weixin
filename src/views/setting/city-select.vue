@@ -66,8 +66,16 @@ export default {
 				}
 			}
 		})
+		this.getData()
 	},
 	methods:{
+		getData(){
+			this.axiosHxx.get('/common/method/getRegionList',{baseURL: '/hxx-api-proxy'}).then(res=>{
+				if(res.data.success){
+					this.reservationNum= res.data.total
+				}
+			})
+		},
 		selectCity(item){
 			this.$store.dispatch('setCity', item);
 		},
