@@ -236,4 +236,13 @@ routes: [
 		},
 		component: () => import('@/views/forum/board.vue')
 	},
+	{
+		path: '/forum-index',
+		name: 'forum-index',
+		meta: {
+			tourist: true,
+			footer: true,
+		},
+		component: () => import('@/views/forum/index.vue')
+	},
 ]})

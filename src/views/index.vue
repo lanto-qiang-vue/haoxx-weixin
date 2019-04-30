@@ -13,7 +13,7 @@
 						<img :src="item.imageUrl"></router-link>
 				</ul>
 			</swiper-slide>
-			<div class="swiper-pagination"  slot="pagination"></div>
+			<div class="swiper-pagination" slot="pagination"></div>
 		</swiper>
 	</div>
 	<ul class="button">

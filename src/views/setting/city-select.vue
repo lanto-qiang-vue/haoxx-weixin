@@ -3,7 +3,7 @@
 	<mt-index-list>
 		<div class="above">
 			<div class="query">
-				<div class="now">当前：<span>上海</span></div>
+				<div class="now">当前：<span>{{location.city|| '请选择'}}</span></div>
 				<form action="javascript:;" class="common-search">
 					<i class="fa fa-search icon"></i>
 					<input type="search" ref="input" v-model="search" placeholder="城市名/拼音"/>
@@ -13,9 +13,8 @@
 			<div class="tag">
 				<p>定位/最近访问</p>
 				<ul>
-					<li><i class="fa fa-map-marker"></i>上海</li>
-					<li>济南</li>
-					<li>济南</li>
+					<li v-show="location.city"><i class="fa fa-map-marker"></i>{{location.city}}</li>
+					<li v-for="(item, key) in cityHistory" :key="key">{{item.city}}</li>
 				</ul>
 			</div>
 		</div>
@@ -27,6 +26,7 @@
 </template>
 
 <script>
+import { getLocation } from '@/util.js'
 export default {
 	name: "city-select",
 	data(){
@@ -47,7 +47,30 @@ export default {
 			}
 		}
 	},
+	computed:{
+		nowCity(){
+			return this.$store.state.app.city
+		},
+		location(){
+			return this.$store.state.app.location
+		},
+		cityHistory(){
+			return this.$store.state.app.cityHistory
+		}
+	},
+	mounted(){
+		getLocation().then((success)=> {
+			if(!this.nowCity.citycode){
+				if(success){
+					this.selectCity( this.location)
+				}
+			}
+		})
+	},
 	methods:{
+		selectCity(item){
+			this.$store.dispatch('setCity', item);
+		},
 		close(){},
 		clickItem(){},
 	}
