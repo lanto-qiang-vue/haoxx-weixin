@@ -6,7 +6,7 @@
 	</ul>
 	<mt-tab-container v-model="active" :swipeable=true>
 		<mt-tab-container-item id="1">
-			
+
 				<ul class="commonList">
 				<li>
 					<p>今日头条新闻今日头条新闻今日头条新闻???</p>
@@ -39,7 +39,7 @@
 					</div>
 				</li>
 			</ul>
-			
+
 		</mt-tab-container-item>
 		<mt-tab-container-item id="2">
 			<ul class="commonList">
@@ -71,12 +71,8 @@ import { TabContainer, TabContainerItem, Navbar, TabItem } from 'mint-ui';
 		}
 	}
 </script>
-<style lang='less'>
-@import './forum.less';
-
-
-</style>
 <style scoped lang='less'>
+@import './forum.less';
 .commonList li .listFooter .z-left{
 right: 15px;
 }
@@ -91,7 +87,7 @@ right: 15px;
 			text-align: center;
 			font-size: 16px;
 			color: #333333;
-			
+
 			span{
 				width:70px;
 				display: inline-block;

@@ -8,7 +8,7 @@
 				<i class="fa fa-times-circle close" v-show="search" @click="close"></i>
 			</form>
 		</div>
-		
+
 		<div class="title">
 			<span class="active">热聊话题</span>
 			<span>最新话题</span>
@@ -32,10 +32,10 @@
 					<span class="right">去参与</span>
 				</div>
 			</li>
-			
+
 		</ul>
 	</div>
-	
+	<div class="add-button"></div>
 </div>
 </template>
 
@@ -54,10 +54,9 @@ export default {
 	}
 }
 </script>
-<style lang='less'>
-@import './forum.less';
-</style>
+
 <style scoped lang='less'>
+	@import './forum.less';
 .boardList {
   background-color: #fff;
   height: 100vh;
@@ -86,7 +85,7 @@ export default {
 		overflow: hidden;
 		border-top: 8px #F3F3F3 solid;
 		span{
-			padding-right: 20px; 
+			padding-right: 20px;
 		}
 		.active{
 			color: #FF6D0E;

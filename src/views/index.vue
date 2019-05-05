@@ -152,7 +152,7 @@ export default {
 	overflow: hidden;
 	border-top: 8px #F3F3F3 solid;
 	span{
-		padding-right: 20px; 
+		padding-right: 20px;
 	}
 	.active{
 		color: #FF6D0E;
@@ -167,6 +167,8 @@ export default {
 	color: #fff;
 }
 .index{
+	height: 100%;
+	overflow: auto;
 	.banner{
 		position: relative;
 		.banner-swiper{

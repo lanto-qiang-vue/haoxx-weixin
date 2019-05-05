@@ -61,13 +61,13 @@ export default {
 		}
 	},
 	computed:{
-		index(){
-			let arr=[]
-			for(let i =65; i<91; i++){
-				arr.push(String.fromCharCode(i))
-			}
-			return arr
-		},
+		// index(){
+		// 	let arr=[]
+		// 	for(let i =65; i<91; i++){
+		// 		arr.push(String.fromCharCode(i))
+		// 	}
+		// 	return arr
+		// },
 		showList(){
 			let obj= {}, search= this.search.trim()
 			if(search){
@@ -295,9 +295,6 @@ export default {
 			}
 		}
 	}
-	.mint-indexlist{
-		padding-top: 50px;
-	}
 	.list-head{
 		line-height: 40px;
 		text-align: center;
@@ -329,8 +326,14 @@ export default {
 	height: 100vh;
 	left: 0;
 	top: 0;
-	.mint-indexlist-nav{
-		z-index: 2;
+	.mint-indexlist{
+		.mint-indexlist-content{
+			padding-top: 50px;
+		}
+		.mint-indexlist-nav{
+			z-index: 2;
+			max-height: 100vh;
+		}
 	}
 }
 </style>
