@@ -67,42 +67,50 @@ export default {
 	data(){
 		return{
 			active:'1',
-			list: [],
-			page: 1,
-			total: 0,
-			allLoaded: false
+			post:{
+				list: [],
+				page: 1,
+				total: 0,
+				allLoaded: false
+			},
+			reply:{
+				list: [],
+				page: 1,
+				total: 0,
+				allLoaded: false
+			},
+
 		}
 	},
 	mounted() {
-		this.getList()
+		this.getPostList()
 	},
 	methods:{
-		getList(flag){
+		getPostList(flag){
 			this.axiosHxx.post('', {
 
 			}).then( (res) => {
-				if(flag) this.$refs.loadmore.onBottomLoaded()
-				else this.list=[]
-				this.total= res.data.total
+				if(flag) this.$refs.postLoadmore.onBottomLoaded()
+				else this.post.list=[]
+				this.post.total= res.data.total
 				if(res.data.items&&res.data.items.length){
 					let arr= res.data.items
-					this.list=this.list.concat(arr)
+					this.post.list=this.post.list.concat(arr)
 
-					if(this.list.length>=res.data.total){
-						this.allLoaded=true
+					if(this.post.list.length>=res.data.total){
+						this.post.allLoaded=true
 					}else{
-						this.allLoaded=false
+						this.post.allLoaded=false
 					}
 
 				}else{
-					this.allLoaded=true
+					this.post.allLoaded=true
 				}
 			})
 		},
 
-		// 上拉加载更多
-		loadBottom() {
-			this.page++
+		postLoadBottom() {
+			this.post.page++
 			this.getList(true)
 		},
 	}
