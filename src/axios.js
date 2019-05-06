@@ -9,7 +9,7 @@ let axiosHxx= axios.create({
 	timeout: 6000,
 	headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
 	transformRequest: [function (data) {
-		let ret = '',hashxxtoken= false, token= store.state.user.hxxtoken;
+		let ret = '',hashxxtoken= false, token= "store.state.user.hxxtoken";
 		for (let key in data) {
 			let item= data[key]
 			if(ret) ret += '&';

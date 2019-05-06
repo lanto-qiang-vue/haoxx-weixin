@@ -6,40 +6,19 @@
 	</ul>
 	<mt-tab-container v-model="active" :swipeable=true>
 		<mt-tab-container-item id="1">
-
+				<mt-loadmore :bottom-method="postLoadBottom" :bottom-all-loaded="post.allLoaded" :autoFill="false"
+	             bottomPullText="加载更多"   ref="postLoadmore">
 				<ul class="commonList">
-				<li>
-					<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-					<div class="list-content">
-						日常养护
-					</div>
-					<div class="listFooter">
-						<span>186****5567 · 5分钟前</span>
-						<span class="left z-left">50个评论</span>
-					</div>
-				</li>
-				<li>
-					<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-					<div class="list-content">
-						日常养护
-					</div>
-					<div class="listFooter">
-						<span>186****5567 · 5分钟前</span>
-						<span class="left z-left">50个评论</span>
-					</div>
-				</li>
-				<li>
-					<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-					<div class="list-content">
-						日常养护
-					</div>
-					<div class="listFooter">
-						<span>186****5567 · 5分钟前</span>
-						<span class="left z-left">50个评论</span>
-					</div>
-				</li>
-			</ul>
-
+					<li v-for="(item,index) in post.list" :key="index">
+						<p>{{item.title}}</p>
+						<div class="list-content">{{item.bbsTopicName}}</div>
+						<div class="listFooter">
+							<span>{{item.nickname}} · {{item.createDate}}</span>
+							<span class="left z-left">{{item.number}}个评论</span>
+						</div>
+					</li>
+				</ul>
+			</mt-loadmore>
 		</mt-tab-container-item>
 		<mt-tab-container-item id="2">
 			<ul class="commonList">
@@ -87,14 +66,15 @@ export default {
 	},
 	methods:{
 		getPostList(flag){
-			this.axiosHxx.post('', {
-
-			}).then( (res) => {
+			this.axiosHxx.post('/cartalk/mycarcircles/myrelease', {
+				page: this.post.page,
+				limit:10,
+			},{baseURL: '/hxx-api-proxy'}).then( (res) => {
 				if(flag) this.$refs.postLoadmore.onBottomLoaded()
 				else this.post.list=[]
 				this.post.total= res.data.total
-				if(res.data.items&&res.data.items.length){
-					let arr= res.data.items
+				if(res.data.data&&res.data.data.length){
+					let arr= res.data.data
 					this.post.list=this.post.list.concat(arr)
 
 					if(this.post.list.length>=res.data.total){
@@ -111,7 +91,7 @@ export default {
 
 		postLoadBottom() {
 			this.post.page++
-			this.getList(true)
+			this.getPostList(true)
 		},
 	}
 }
