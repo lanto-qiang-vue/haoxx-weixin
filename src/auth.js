@@ -6,7 +6,7 @@ getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
 
 router.beforeEach((to, from, next) => {
 	Indicator.close()
-	let title= to.meta.title|| '好修修车生活'
+	let title= to.meta.title|| '好修修'
 	document.title = title
 	// console.log('from, to',  from, to)
 

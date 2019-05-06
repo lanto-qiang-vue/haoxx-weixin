@@ -237,8 +237,8 @@ routes: [
 		component: () => import('@/views/forum/board.vue')
 	},
 	{
-		path: '/forum-index',
-		name: 'forum-index',
+		path: '/forum',
+		name: 'forum',
 		meta: {
 			tourist: true,
 			footer: true,

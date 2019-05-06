@@ -1,5 +1,8 @@
 <template>
 <div class="index">
+	<router-link tag="div" to="/city-select" class="area">
+		{{appstore.city.regionName|| '请选择城市'}}<i class="fa fa-angle-down"></i>
+	</router-link>
 	<div class="banner" v-if="showSwiper">
 		<swiper :options="swiperOption" ref="mySwiper" class="banner-swiper" >
 			<swiper-slide v-for="(item, index) in banners" :key="index">
@@ -82,6 +85,9 @@ export default {
 		qixiutoken(){
 			return this.$store.state.user.qixiutoken
 		},
+		appstore(){
+			return this.$store.state.app
+		}
 	},
 	mounted(){
 		this.getBanner()
@@ -169,6 +175,18 @@ export default {
 .index{
 	height: 100%;
 	overflow: auto;
+	.area{
+		line-height: 30px;
+		padding: 0 15px;
+		display: inline-block;
+		font-size: 14px;
+		i{
+			margin-left: 5px;
+			font-size: 20px;
+			vertical-align: top;
+			line-height: 28px;
+		}
+	}
 	.banner{
 		position: relative;
 		.banner-swiper{

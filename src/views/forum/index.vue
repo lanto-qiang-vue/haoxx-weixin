@@ -27,11 +27,12 @@
 			<li>
 				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
 				<ul class="imgGroup">
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center;background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
+					<img src="/img/maintain/shqxw.jpg">
+					<img src="/img/maintain/shqxw.jpg">
+					<img src="/img/maintain/shqxw.jpg">
+					<img src="/img/maintain/shqxw.jpg">
+					<img src="/img/maintain/shqxw.jpg">
+					<img src="/img/maintain/shqxw.jpg">
 				</ul>
 				<div class="list-content">
 					日常养护
@@ -44,13 +45,7 @@
 			</li>
 			<li>
 				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-				<ul class="imgGroup">
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center;background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-				</ul>
+
 				<div class="list-content">
 					日常养护
 				</div>
@@ -62,13 +57,7 @@
 			</li>
 			<li>
 				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-				<ul class="imgGroup">
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center;background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-				</ul>
+
 				<div class="list-content">
 					日常养护
 				</div>
@@ -80,13 +69,6 @@
 			</li>
 			<li>
 				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-				<ul class="imgGroup">
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center;background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-				</ul>
 				<div class="list-content">
 					日常养护
 				</div>

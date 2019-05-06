@@ -62,14 +62,51 @@
 
 <script>
 import { TabContainer, TabContainerItem, Navbar, TabItem } from 'mint-ui';
-	export default {
-		name: "my-post",
-		data(){
-			return{
-				active:'1',
-			}
+export default {
+	name: "my-post",
+	data(){
+		return{
+			active:'1',
+			list: [],
+			page: 1,
+			total: 0,
+			allLoaded: false
 		}
+	},
+	mounted() {
+		this.getList()
+	},
+	methods:{
+		getList(flag){
+			this.axiosHxx.post('', {
+
+			}).then( (res) => {
+				if(flag) this.$refs.loadmore.onBottomLoaded()
+				else this.list=[]
+				this.total= res.data.total
+				if(res.data.items&&res.data.items.length){
+					let arr= res.data.items
+					this.list=this.list.concat(arr)
+
+					if(this.list.length>=res.data.total){
+						this.allLoaded=true
+					}else{
+						this.allLoaded=false
+					}
+
+				}else{
+					this.allLoaded=true
+				}
+			})
+		},
+
+		// 上拉加载更多
+		loadBottom() {
+			this.page++
+			this.getList(true)
+		},
 	}
+}
 </script>
 <style scoped lang='less'>
 @import './forum.less';

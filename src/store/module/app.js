@@ -54,7 +54,7 @@ export default {
 		setCityHistory(state, item){
 			let list= state.cityHistory, have= false, length= 0
 			for( let i in list){
-				if(list[i].citycode== item.citycode) have= true
+				if(list[i].regionId== item.regionId) have= true
 			}
 			if(!have){
 				length= list.unshift(item)

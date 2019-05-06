@@ -360,7 +360,7 @@ export const getLocation= ()=>{
 				});
 				geolocation.getCurrentPosition();
 				AMap.event.addListener(geolocation, 'complete', (res)=>{
-					// console.log('getLocation.res', JSON.stringify(res) )
+					console.log('getLocation.res', JSON.stringify(res) )
 					store.commit('setLocation', {
 						success: true,
 						lng: res.position.lng,

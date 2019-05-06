@@ -2,7 +2,7 @@
 <div class="city-select">
 	<div class="above">
 		<div class="query">
-			<div class="now" v-if="location.city">当前：<span>{{location.city}}</span></div>
+			<div class="now" v-if="nowCity.regionId">当前：<span>{{nowCity.regionName}}</span></div>
 			<div class="now" v-else><span>请选择</span></div>
 			<form action="javascript:;" class="common-search">
 				<i class="fa fa-search icon"></i>
@@ -13,15 +13,15 @@
 		<div class="tag">
 			<p>定位/最近访问</p>
 			<ul>
-				<li v-show="location.city"><i class="fa fa-map-marker"></i>{{location.city}}</li>
-				<li v-for="(item, key) in cityHistory" :key="key">{{item.city}}</li>
+				<li v-show="location.adcode" @click="selectLocation"><i class="fa fa-map-marker"></i>
+					{{location.city || location.province}}</li>
+				<li v-for="(item, key) in cityHistory" :key="key" @click="selectCity(item)">{{item.regionName}}</li>
 			</ul>
 		</div>
 	</div>
 	<mt-index-list>
 		<mt-index-section v-for="(item, key) in area" :index="key" :key="key">
-			<li v-for="(item2, key2) in item" :key="key2" @click="clickItem(2, item2)">{{item2.regionName}}</li>
-			<!--<mt-cell v-for="(item2, key2) in item" :key="key2"  :title="item2.regionName" @click.native="clickItem(2, item2)"></mt-cell>-->
+			<li v-for="(item2, key2) in item" :key="key2" @click="selectCity(item2)">{{item2.regionName}}</li>
 		</mt-index-section>
 	</mt-index-list>
 </div>
@@ -52,13 +52,6 @@ export default {
 		}
 	},
 	mounted(){
-		getLocation().then((success)=> {
-			if(!this.nowCity.citycode){
-				if(success){
-					this.selectCity( this.location)
-				}
-			}
-		})
 		this.getData()
 	},
 	methods:{
@@ -69,12 +62,13 @@ export default {
 				this.show= true
 				console.log(this.area)
 			} else
-			this.axiosHxx.get('/common/method/getRegionList',{baseURL: '/hxx-api-proxy'}).then(res=>{
+			this.axiosHxx.get('/common/method/getRegionList',
+				{baseURL: '/hxx-api-proxy'}
+				).then(res=>{
 				if(res.data.success){
 					localStorage.setItem('allcity', JSON.stringify(res.data.data))
 				}
 			})
-
 		},
 		getIndexList(arr){
 			let resObj= {}
@@ -101,11 +95,29 @@ export default {
 			}
 			return resObj
 		},
+		close(){
+
+		},
+		selectLocation(){
+			this.$store.dispatch('setCity', {
+				regionId: this.location.adcode,
+				regionName: this.location.city ||this.location.province,
+			});
+			this.goBackUrl()
+		},
 		selectCity(item){
 			this.$store.dispatch('setCity', item);
+			this.goBackUrl()
 		},
-		close(){},
-		clickItem(){},
+		goBackUrl(){
+			if(this.$route.query.redirect){
+				this.$router.replace({
+					path: this.$route.query.redirect
+				})
+			}else{
+				// this.$router.go(-1)
+			}
+		},
 	}
 }
 </script>
@@ -131,7 +143,7 @@ export default {
 		.query{
 			width:100%;
 			position: relative;
-			padding-left: 80px;
+			padding-left: 90px;
 			z-index: 1;
 			background-color: white;
 			.now{
@@ -155,6 +167,7 @@ export default {
 				color: #666666;
 			}
 			ul{
+				white-space: nowrap;
 				margin-top: 5px;
 				overflow: hidden;
 				li{
@@ -167,7 +180,8 @@ export default {
 					font-size: 14px;
 					color: #333333;
 					text-align: center;
-					margin-right: 10px;
+					margin-right: 8px;
+					overflow: hidden;
 					i{
 						color: #FF6633;
 					}

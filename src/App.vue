@@ -10,8 +10,8 @@
 			<p>首页</p>
 		</router-link>
 		<router-link to="/forum-index" tag="li">
-			<img src="~@/assets/img/index/forum.png" v-show="active('/forum-index')">
-			<img src="~@/assets/img/index/forum-off.png" v-show="!active('/forum-index')">
+			<img src="~@/assets/img/index/forum.png" v-show="active('/forum')">
+			<img src="~@/assets/img/index/forum-off.png" v-show="!active('/forum')">
 			<p>车谈</p>
 		</router-link>
 		<router-link to="/my" tag="li">
@@ -38,10 +38,22 @@ export default {
 		},
 		cache(){
 			return this.$route.meta.cache
+		},
+		appstore(){
+			return this.$store.state.app
 		}
 	},
 	mounted(){
-		getLocation()
+		getLocation().then(( success)=>{
+			if(success){
+				if(!this.appstore.city.regionId){
+					this.$store.dispatch('setCity', {
+						regionId: this.appstore.location.adcode,
+						regionName: this.appstore.location.city ||this.appstore.location.province,
+					});
+				}
+			}
+		})
 
 		getWeixinId()
 

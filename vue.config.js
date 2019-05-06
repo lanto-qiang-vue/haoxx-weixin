@@ -16,17 +16,18 @@ module.exports = {
 		port: 7777,
 		proxy: {
 			'/hxx-proxy': {
-				// target: 'http://192.168.169.116:8761',
+				target: 'http://192.168.169.134:8761',
 				// target: 'https://hxx.test.hoxiuxiu.com/',
 				// target: 'http://developer.hxx.hoxiuxiu.com/',
-				target: 'http://192.168.169.231:10032/hxx-proxy/',
+				// target: 'http://mendian.dev.hoxiuxiu.com/',
+				// target: 'http://192.168.169.231:10032/hxx-proxy/',
                 pathRewrite: {'^/hxx-proxy': ''},
                 secure: false
 			},
 			'/hxx-api-proxy': {
 				// target: 'http://api.hoxiuxiu.com/',
 				// target: 'http://api.test.hoxiuxiu.com/',
-				target: 'http://192.168.169.114:8871/',
+				target: 'http://192.168.169.134:8871/',
 				pathRewrite: {'^/hxx-api-proxy': ''},
 				secure: false
 			},
