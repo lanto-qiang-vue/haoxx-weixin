@@ -27,7 +27,7 @@ module.exports = {
 			'/hxx-api-proxy': {
 				// target: 'http://api.hoxiuxiu.com/',
 				// target: 'http://api.test.hoxiuxiu.com/',
-				target: 'http://192.168.169.134:8871/',
+				target: 'http://192.168.169.120:8872/',
 				pathRewrite: {'^/hxx-api-proxy': ''},
 				secure: false
 			},
