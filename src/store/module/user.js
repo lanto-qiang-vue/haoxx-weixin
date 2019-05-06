@@ -6,7 +6,7 @@ let unit = localStorage.getItem('unit') || ''
 export default {
 	state: {
 		hxxtoken: hxxtoken,
-		qixiutoken: qixiutoken? JSON.parse(qixiutoken): '',
+		qixiutoken: qixiutoken? JSON.parse(qixiutoken): {},
 		userinfo: userinfo? JSON.parse(userinfo): '',
 		// dict:dict ? JSON.parse(dict) : '',
 		unit:unit ? JSON.parse(unit) : ''
@@ -20,11 +20,12 @@ export default {
 			state.hxxtoken = token;
 		},
 		setQixiuToken(state, token){
-			if(token)
-			for(let key in token){
-				state.qixiutoken[key]= token[key]
+			if(token){
+				for(let key in token){
+					state.qixiutoken[key]= token[key]
+				}
+				localStorage.setItem('QIXIUTOKEN',  JSON.stringify(state.qixiutoken) )
 			}
-			localStorage.setItem('QIXIUTOKEN', token ? JSON.stringify(state.qixiutoken): '')
 		},
 		setUserInfo(state, info){
 			localStorage.setItem('USERINFO', info? JSON.stringify(info): '')

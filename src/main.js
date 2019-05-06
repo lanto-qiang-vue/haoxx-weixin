@@ -13,11 +13,13 @@ import '@/assets/common.less'
 import '@/fliters.js'
 import '@/auth.js'
 import { Input, Form, FormItem } from 'iview';
+import config from '~/config.js'
 
 Vue.config.productionTip = false
 Vue.use(MintUI)
 Vue.use(VueImg);
 Vue.prototype.axiosHxx = axios.axiosHxx;
+Vue.prototype.$config= config;
 Vue.prototype.axiosQixiu = axios.axiosQixiu;
 Vue.component('Input', Input);
 Vue.component('Form', Form);
