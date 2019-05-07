@@ -1,7 +1,7 @@
 import router from './router'
 import {Toast, Indicator} from 'mint-ui'
 import store from './store'
-import {getwxticket, cityIsSupport} from '@/util.js'
+import {getwxticket, cityIsSupport, getCityToken} from '@/util.js'
 getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
 
 router.beforeEach((to, from, next) => {
@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
 			if (to.meta.requiresQixiu){
 				if(hasCity){
 					if(cityIsSupport()){
-						if (!store.state.user.qixiutoken) {
+						if (!getCityToken()) {
 							Toast('请绑定汽修平台账号')
 							next({path: '/accredit-bind', query: { redirect: to.fullPath}})
 						} else {

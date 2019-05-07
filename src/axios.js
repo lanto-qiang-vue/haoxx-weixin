@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from './router'
 import store from './store'
 import { Toast, Indicator, Popup } from 'mint-ui'
-import { isWeixn} from './util'
+import { isWeixn, getCityToken} from './util'
 let toast= null
 let axiosHxx= axios.create({
 	baseURL: '/hxx-proxy/',
@@ -148,8 +148,9 @@ axiosHxx.interceptors.response.use(response => {
 
 
 axiosQixiu.interceptors.request.use(config => {
-	let token= store.state.user.qixiutoken
-	if(token) {
+	// console.log('config', config)
+	let token= getCityToken()
+	if(token && !config.noLogin) {
 		config.headers.token= token
 	}
 	Indicator.close()
