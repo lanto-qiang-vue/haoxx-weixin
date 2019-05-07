@@ -381,3 +381,16 @@ export const getLocation= ()=>{
 		}
 	});
 }
+
+export const cityIsSupport= ()=>{
+	let hasCity= false, thisCityCode= store.state.app.city.regionId, confList= config.location
+	if(thisCityCode){
+		let code= thisCityCode.toString().substring(0, 3)
+		for(let i in confList){
+			if(confList[i].adcode.toString().substring(0, 3)==code) {
+				hasCity= true
+			}
+		}
+	}
+	return hasCity
+}

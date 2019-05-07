@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getLocation } from '@/util.js'
+import { getLocation, cityIsSupport} from '@/util.js'
 import pinying from '~/public/lib/pinying.js'
 // import { deepClone } from '@/util.js'
 export default {
@@ -110,12 +110,14 @@ export default {
 			this.goBackUrl()
 		},
 		goBackUrl(){
-			if(this.$route.query.redirect){
-				this.$router.replace({
-					path: this.$route.query.redirect
-				})
-			}else{
-				// this.$router.go(-1)
+			if(cityIsSupport()){
+				if(this.$route.query.redirect){
+					this.$router.replace({
+						path: this.$route.query.redirect
+					})
+				}else{
+					this.$router.go(-1)
+				}
 			}
 		},
 	}

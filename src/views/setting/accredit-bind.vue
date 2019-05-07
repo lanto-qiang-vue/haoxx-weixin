@@ -29,7 +29,7 @@
 <script>
 import Countdown from '@/components/countdown-button.vue'
 import SelectRadio from '@/components/select-radio.vue'
-import { reg} from '@/util.js'
+import { reg, cityIsSupport} from '@/util.js'
 export default {
 	name: "accredit",
 	components: {Countdown ,SelectRadio },
@@ -41,10 +41,6 @@ export default {
 				telcode: '',
 				telSession: '',
 			},
-			areaList: [
-				{label: '上海汽修平台', value: '310'},
-				{label: '山东汽修平台', value: '370'},
-			],
 			showQR: false
 		}
 	},
@@ -55,9 +51,27 @@ export default {
 				status= true
 			}
 			return status
-		}
+		},
+		areaList(){
+			let confList= this.$config.location, list=[]
+			for(let i in confList){
+				list.push({
+					label: confList[i].province+'汽修平台',
+					value: confList[i].adcode.toString().substring(0, 3)
+				})
+			}
+			return list
+		},
+		nowCity(){
+			return this.$store.state.app.city
+		},
 	},
 	mounted(){
+		if(cityIsSupport()){
+			this.form.area_code= this.nowCity.regionId.toString().substring(0, 3)
+		}else {
+			this.$toast('暂不支持您的区域');
+		}
 		this.form.telphone= this.$store.state.user.userinfo.telphone
 	},
 	methods:{
@@ -70,17 +84,9 @@ export default {
 		},
 		bindSuccess(data){
 			if(data.success){
-				switch( this.form.area_code){
-					case '310':{
-						this.$store.commit('setQixiuToken', data.data.qxToken);
-						break
-					}
-					case '370':{
-						this.$store.commit('setQixiuToken', data.data.qxToken);
-						break
-					}
-				}
-
+				let qixiutoken={}
+				qixiutoken[this.form.area_code+'qxToken']= data.data.qxToken
+				this.$store.commit('setQixiuToken', qixiutoken);
 				this.$toast('绑定成功');
 				this.goBackUrl()
 			}else{

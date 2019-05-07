@@ -283,7 +283,7 @@ export default {
 		},
 		loginSuccess(data){
 			if(data.success){
-				if(data.data.qxtoken) this.$store.commit('setQixiuToken',data.data.qxtoken);
+				if(data.data.qxtoken) this.$store.commit('setQixiuToken', data.data.qxtoken);
 				if(data.data.isBindNewphone== 1){
 					this.setStore(data)
 					this.$toast('登录成功');
