@@ -38,6 +38,7 @@
 					日常养护
 				</div>
 				<div class="listFooter">
+					<span class="center">日常养护</span>
 					<span>186****5567 · 5分钟前</span>
 					<span class="left">50个评论</span>
 					<span class="right">去参与</span>
@@ -97,7 +98,17 @@
 				search:'',
 			}
 		},
+		mounted(){
+			this.getCarTalk();
+		},
 		methods:{
+			getCarTalk(){
+				this.axiosHxx.post('/cartalk/plate/selectTopicPlate', {
+					
+				},{baseURL: '/qixiu-proxy'}).then( (res) => {
+					
+				})
+			},
 			close(){
 
 			}

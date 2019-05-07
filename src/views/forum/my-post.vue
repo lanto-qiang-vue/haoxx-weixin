@@ -11,7 +11,7 @@
 				<ul class="commonList">
 					<li v-for="(item,index) in post.list" :key="index">
 						<p>{{item.title}}</p>
-						<div class="list-content">{{item.bbsTopicName}}</div>
+						<div class="list-content" :style="{ color: item.colour}">{{item.bbsTopicName}}</div>
 						<div class="listFooter">
 							<span>{{item.nickname}} · {{item.createDate}}</span>
 							<span class="left z-left">{{item.number}}个评论</span>

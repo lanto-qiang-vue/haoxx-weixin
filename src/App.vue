@@ -9,7 +9,7 @@
 			<img src="~@/assets/img/index/home-off.png" v-show="!active('/')">
 			<p>首页</p>
 		</router-link>
-		<router-link to="/forum-index" tag="li">
+		<router-link to="/forum" tag="li">
 			<img src="~@/assets/img/index/forum.png" v-show="active('/forum')">
 			<img src="~@/assets/img/index/forum-off.png" v-show="!active('/forum')">
 			<p>车谈</p>
