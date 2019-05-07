@@ -1,5 +1,8 @@
 <template>
 <div class="index">
+	<router-link tag="div" to="/city-select" class="area">
+		{{appstore.city.regionName|| '请选择城市'}}<i class="fa fa-angle-down"></i>
+	</router-link>
 	<div class="banner" v-if="showSwiper">
 		<swiper :options="swiperOption" ref="mySwiper" class="banner-swiper" >
 			<swiper-slide v-for="(item, index) in banners" :key="index">
@@ -13,7 +16,7 @@
 						<img :src="item.imageUrl"></router-link>
 				</ul>
 			</swiper-slide>
-			<div class="swiper-pagination"  slot="pagination"></div>
+			<div class="swiper-pagination" slot="pagination"></div>
 		</swiper>
 	</div>
 	<ul class="button">
@@ -21,7 +24,34 @@
 		<router-link tag="li" :to="recordPath"><img src="~@/assets/img/index/维修记录.png"/><p>维修记录</p></router-link>
 		<router-link tag="li" to="/remark-map"><img src="~@/assets/img/index/维修点评.png"/><p>维修点评</p></router-link>
 		<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>
-		<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>
+		<!--<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>-->
+	</ul>
+	<ul class="coupons">
+		<p class="title">车主权益<span @click="goCoupons">查看更多</span></p>
+		<li @click="goCoupons">洗车券<span>查看可用券</span></li>&thinsp;
+		<li @click="goCoupons">保养券<span>查看可用券</span></li>&thinsp;
+		<li @click="goCoupons">油漆券<span>查看可用券</span></li>
+	</ul>
+	<div class="z-title">
+		<span>最新话题</span>
+	</div>
+	<ul class="commonList">
+		<li>
+			<p>今日头条新闻今日头条新闻今日头条新闻???</p>
+			<div class="listFooter">
+				<span>186****5567 · 5分钟前</span>
+				<span class="left">50个评论</span>
+				<span class="right z-right">参与</span>
+			</div>
+		</li>
+		<li>
+			<p>今日头条新闻今日头条新闻今日头条新闻???</p>
+			<div class="listFooter">
+				<span>186****5567 · 5分钟前</span>
+				<span class="left">50个评论</span>
+				<span class="right z-right">参与</span>
+			</div>
+		</li>
 	</ul>
 </div>
 </template>
@@ -34,9 +64,7 @@ export default {
 	components: {swiper, swiperSlide},
 	data(){
 		return{
-			banners:[
-				{createTime: "", id: 0, imageUrl: "http://download.image.lanto.com/2019/03/12/1552379660547.png", linkTarget: "", linkUrl: "#", place: 9, seq: 0, show: false, terminal: null, title: "石墨烯", updateTime: ""}
-				],
+			banners:[],
 			swiperOption: {
 				centeredSlides : true,
 				loop : true,
@@ -57,6 +85,9 @@ export default {
 		qixiutoken(){
 			return this.$store.state.user.qixiutoken
 		},
+		appstore(){
+			return this.$store.state.app
+		}
 	},
 	mounted(){
 		this.getBanner()
@@ -105,12 +136,57 @@ export default {
 			}
 			return obj
 		},
+		goCoupons(){
+			this.$router.push('/coupons-type')
+		}
 	},
 }
 </script>
-
+<style lang='less'>
+@import './forum/forum.less';
+</style>
 <style scoped lang="less">
+
+.z-title {
+	box-sizing: border-box;
+	padding:12px 0 5px 15px;
+	width: 100%;
+	line-height: 20px;
+	color: #666;
+	font-size:14px;
+	font-weight:500;
+	overflow: hidden;
+	border-top: 8px #F3F3F3 solid;
+	span{
+		padding-right: 20px;
+	}
+	.active{
+		color: #FF6D0E;
+	}
+}
+.commonList li .listFooter .z-right{
+	width:54px;
+	height:24px;
+	background:rgba(255,151,56,1);
+	border-radius:12px;
+	line-height: 24px;
+	color: #fff;
+}
 .index{
+	height: 100%;
+	overflow: auto;
+	.area{
+		line-height: 30px;
+		padding: 0 15px;
+		display: inline-block;
+		font-size: 14px;
+		i{
+			margin-left: 5px;
+			font-size: 20px;
+			vertical-align: top;
+			line-height: 28px;
+		}
+	}
 	.banner{
 		position: relative;
 		.banner-swiper{
@@ -149,7 +225,8 @@ export default {
 		}
 	}
 	.button{
-		margin-top: 20px;
+		margin-top: 10px;
+		overflow: hidden;
 		li{
 			padding: 0 10px;
 			width: 25%;
@@ -166,6 +243,74 @@ export default {
 				font-size: 14px;
 			}
 		}
+	}
+	.coupons{
+		border-top: 10px solid #F3F3F3;
+		text-align: justify;
+		padding: 0 10px;
+		height: 105px;
+		.title{
+			color: #333333;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 36px;
+			span{
+				float: right;
+				font-size: 12px;
+			}
+		}
+		&:after{
+			content: '';
+			display: inline-block;
+			width: 100%;
+		}
+		li{
+			display: inline-block;
+			overflow: hidden;
+			height: 50px;
+			min-width: 95px;
+			width: 30%;
+			/*max-width: 100px;*/
+			text-align: center;
+			background:linear-gradient(180deg, #fff2da, #FFB45F);
+			box-shadow:0px 1px 2px 0px rgba(144,138,138,0.5);
+			border-radius:3px;
+			position: relative;
+			color: #F70813;
+			font-size: 16px;
+			line-height: 28px;
+			font-weight: 500;
+			span{
+				display: block;
+				font-size: 12px;
+				color: #8A0A0A;
+				line-height: 20px;
+			}
+			&:before{
+				content: '';
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				border:2px dashed #FA5E54;
+			}
+			&:after{
+				content: '';
+				display: block;
+				position: absolute;
+				left: 0;
+				bottom: 22px;
+				width: 100%;
+				height: 1px;
+				border-top:1px dotted #E48E69;
+				opacity: .5;
+			}
+		}
+	}
+	.forum{
+		border-top: 10px solid #F3F3F3;
 	}
 }
 </style>

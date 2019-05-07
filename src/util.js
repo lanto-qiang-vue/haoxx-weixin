@@ -1,6 +1,6 @@
 import axios from './axios.js'
 import store from './store'
-// import config from '~/config.js'
+import config from '~/config.js'
 
 /**
  * @param {String} url
@@ -299,7 +299,6 @@ export const getUrlParam= (name)=> {
 	return null;
 }
 
-export const weixinappid= process.env.NODE_ENV=='development'? 'wx71b3e2a11334e62d': 'wx6b11ffb51b409ac3'
 
 export const getWeixinId=()=>{
 	if(isWeixn()){
@@ -307,7 +306,7 @@ export const getWeixinId=()=>{
 		let state= getUrlParam('state')
 		let URL = encodeURIComponent(window.location.href)
 		if( !unionid &&!state){
-			let appId = weixinappid
+			let appId = config.appid
 			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${URL}&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect`
 		}
 		if(!unionid && state=='snsapi_base'){
@@ -341,7 +340,7 @@ export const getwxticket= (jsApiList, callback) => {
 		// axios.get('/weixin/qixiu/ticket/jsapi?url='+('http://192.168.169.121:8888?code=0716QWVV0hJ0b22adjVV0QF6WV06QWVe&state=snsapi_base')).then(res=>{
 		wx.config({
 			debug: false,
-			appId: weixinappid,
+			appId: config.appid,
 			timestamp: res.data.timeStamp,
 			nonceStr: res.data.uuid,
 			signature: res.data.signature,
@@ -351,9 +350,8 @@ export const getwxticket= (jsApiList, callback) => {
 }
 
 export const getLocation= ()=>{
-
 	return new Promise((resolve, reject) => {
-		if(store.state.app.location.lng){
+		if(store.state.app.location.success){
 			resolve(true)
 		}else{
 			AMap.plugin('AMap.Geolocation', () => {
@@ -361,11 +359,17 @@ export const getLocation= ()=>{
 					// timeout: 2000,
 				});
 				geolocation.getCurrentPosition();
-				AMap.event.addListener(geolocation, 'complete', (result)=>{
-					// console.log('result', result)
+				AMap.event.addListener(geolocation, 'complete', (res)=>{
+					console.log('getLocation.res', JSON.stringify(res) )
 					store.commit('setLocation', {
-						lng: result.position.lng,
-						lat: result.position.lat
+						success: true,
+						lng: res.position.lng,
+						lat: res.position.lat,
+						address: res.formattedAddress,
+						citycode: res.addressComponent.citycode,
+						adcode: res.addressComponent.adcode,
+						province: res.addressComponent.province,
+						city: res.addressComponent.city,
 					})
 					resolve(true)
 				});
@@ -376,5 +380,17 @@ export const getLocation= ()=>{
 			});
 		}
 	});
+}
 
+export const cityIsSupport= ()=>{
+	let hasCity= false, thisCityCode= store.state.app.city.regionId, confList= config.location
+	if(thisCityCode){
+		let code= thisCityCode.toString().substring(0, 3)
+		for(let i in confList){
+			if(confList[i].adcode.toString().substring(0, 3)==code) {
+				hasCity= true
+			}
+		}
+	}
+	return hasCity
 }

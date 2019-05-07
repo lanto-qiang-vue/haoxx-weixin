@@ -1,14 +1,22 @@
-//打包编译环境配置
-const prodConfig={
-	appid: 'wxc0fa34909c77eaa5'
+const conf={
+	appid: process.env.NODE_ENV=='development'? 'wx71b3e2a11334e62d': 'wx6b11ffb51b409ac3',
+	location: [
+		{
+			province: '上海市',
+			adcode:"310000",
+			lng: 121.480236,
+			lat: 31.236301,
+		},
+		{
+			province: '山东省',
+			adcode:"370000",
+			lng: 117.120098,
+			lat: 36.6512,
+		},
+	],
 }
 
 
-//开发测试环境配置
-const devConfig={
-	appid: 'wx963d76dadc29b2e6'
-}
-
-export default process.env.NODE_ENV==='development'? devConfig: prodConfig
+export default conf
 
 

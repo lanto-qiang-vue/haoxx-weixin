@@ -68,9 +68,13 @@ export default {
 
 <style scoped lang="less">
 .select-radio{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
 	label{
 		display: inline-block;
 		width: 100%;
+		min-height: 20px;
 	}
 }
 </style>

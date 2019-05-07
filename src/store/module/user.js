@@ -1,14 +1,14 @@
 let hxxtoken= localStorage.getItem('HXXTOKEN')||''
 let qixiutoken= localStorage.getItem('QIXIUTOKEN')||''
 let userinfo= localStorage.getItem('USERINFO')||''
-let dict = localStorage.getItem('dict') || ''
+// let dict = localStorage.getItem('dict') || ''
 let unit = localStorage.getItem('unit') || ''
 export default {
 	state: {
 		hxxtoken: hxxtoken,
-		qixiutoken: qixiutoken,
+		qixiutoken: qixiutoken? JSON.parse(qixiutoken): {},
 		userinfo: userinfo? JSON.parse(userinfo): '',
-		dict:dict ? JSON.parse(dict) : '',
+		// dict:dict ? JSON.parse(dict) : '',
 		unit:unit ? JSON.parse(unit) : ''
 	},
 	getters: {
@@ -20,19 +20,23 @@ export default {
 			state.hxxtoken = token;
 		},
 		setQixiuToken(state, token){
-			localStorage.setItem('QIXIUTOKEN', token || '')
-			state.qixiutoken = token;
+			if(token){
+				for(let key in token){
+					state.qixiutoken[key]= token[key]
+				}
+				localStorage.setItem('QIXIUTOKEN',  JSON.stringify(state.qixiutoken) )
+			}
 		},
 		setUserInfo(state, info){
 			localStorage.setItem('USERINFO', info? JSON.stringify(info): '')
 			state.userinfo = info;
 		},
-		setDict(state,dict){
-            localStorage.setItem('dict', dict ? JSON.stringify(dict): '')
-			state.dict = dict;
-		},
+		// setDict(state,dict){
+         //    localStorage.setItem('dict', dict ? JSON.stringify(dict): '')
+		// 	state.dict = dict;
+		// },
 		setUnit(state,unit){
-            localStorage.setItem('unit', dict ? JSON.stringify(unit): '')
+            localStorage.setItem('unit', unit ? JSON.stringify(unit): '')
             state.unit = unit;
 		},
 		logout(state){
@@ -49,18 +53,18 @@ export default {
 		}
 	},
 	actions:{
-		dictInit(context,dict){
-           let newObj = {};
-           let unitObj = {};
-           for(let i in dict){
-           	if(!newObj[dict[i].group]){
-           		newObj[dict[i].group] = [];
+		dictInit(context, dict){
+			let newObj = {};
+			let unitObj = {};
+			for(let i in dict){
+				if(!newObj[dict[i].group]){
+					newObj[dict[i].group] = [];
+				}
+				unitObj[dict[i].code] = dict[i].name;
+				newObj[dict[i].group].push({label:dict[i].name,value:dict[i].code});
 			}
-			   unitObj[dict[i].code] = dict[i].name;
-               newObj[dict[i].group].push({label:dict[i].name,value:dict[i].code});
-		   }
-            // coxntext.commit('setDict',newObj);
-            context.commit('setUnit',unitObj);
+			// coxntext.commit('setDict',newObj);
+			context.commit('setUnit',unitObj);
 		},
 	},
 }

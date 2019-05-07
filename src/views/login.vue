@@ -283,7 +283,7 @@ export default {
 		},
 		loginSuccess(data){
 			if(data.success){
-				if(data.data.qxtoken) this.$store.commit('setQixiuToken',data.data.qxtoken);
+				if(data.data.qxtoken) this.$store.commit('setQixiuToken', data.data.qxtoken);
 				if(data.data.isBindNewphone== 1){
 					this.setStore(data)
 					this.$toast('登录成功');
@@ -297,8 +297,8 @@ export default {
 			}
 		},
 		setStore(data){
-			this.$store.commit('setHxxToken',data.data.tokenStr);
-			this.$store.dispatch('dictInit',data.data.dict);
+			this.$store.commit('setHxxToken', data.data.tokenStr);
+			this.$store.dispatch('dictInit', data.data.dict);
 			delete data.data.dict
 			this.$store.commit('setUserInfo',data.data);
 		},

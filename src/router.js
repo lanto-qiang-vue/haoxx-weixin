@@ -44,14 +44,22 @@ routes: [
 		name: 'setting',
 		meta: {
 		},
-		component: () => import('@/views/setting.vue')
+		component: () => import('@/views/setting/setting.vue')
 	},
 	{
 		path: '/accredit-bind',
 		name: 'accredit-bind',
 		meta: {
 		},
-		component: () => import('@/views/accredit-bind.vue')
+		component: () => import('@/views/setting/accredit-bind.vue')
+	},
+	{
+		path: '/city-select',
+		name: 'city-select',
+		meta: {
+			tourist: true
+		},
+		component: () => import('@/views/setting/city-select.vue')
 	},
 	{
 		path: '/my-reservation',
@@ -211,5 +219,38 @@ routes: [
 			tourist: true,
 		},
 		component: () => import('@/views/article/article-detail.vue')
+	},
+	{
+		path: '/forum-query',
+		name: 'forum-query',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/query.vue')
+	},
+	{
+		path: '/forum-board',
+		name: 'forum-board',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/board.vue')
+	},
+	{
+		path: '/forum',
+		name: 'forum',
+		meta: {
+			tourist: true,
+			footer: true,
+		},
+		component: () => import('@/views/forum/index.vue')
+	},
+	{
+		path: '/my-forum',
+		name: 'my-forum',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/my-post.vue')
 	},
 ]})

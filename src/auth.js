@@ -1,14 +1,15 @@
 import router from './router'
 import {Toast, Indicator} from 'mint-ui'
 import store from './store'
-import {getwxticket} from '@/util.js'
+import {getwxticket, cityIsSupport} from '@/util.js'
 getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
 
 router.beforeEach((to, from, next) => {
 	Indicator.close()
-	let title= to.meta.title|| '好修修车生活'
+	let title= to.meta.title|| '好修修'
 	document.title = title
 	// console.log('from, to',  from, to)
+	let hasCity= store.state.app.city.regionId
 
 	if (!to.meta.tourist) {
 		if (!store.state.user.hxxtoken) {
@@ -16,11 +17,21 @@ router.beforeEach((to, from, next) => {
 			next({path: '/login', query: { redirect: to.fullPath }})
 		} else {
 			if (to.meta.requiresQixiu){
-				if (!store.state.user.qixiutoken) {
-					Toast('请绑定汽修平台账号')
-					next({path: '/accredit-bind', query: { redirect: to.fullPath}})
-				} else {
-					next()
+				if(hasCity){
+					if(cityIsSupport()){
+						if (!store.state.user.qixiutoken) {
+							Toast('请绑定汽修平台账号')
+							next({path: '/accredit-bind', query: { redirect: to.fullPath}})
+						} else {
+							next()
+						}
+					}else{
+						next(false)
+						Toast('暂不支持您的区域')
+					}
+				}else{
+					Toast('请选择您的城市')
+					next({path: '/city-select', query: { redirect: to.fullPath}})
 				}
 			} else next()
 		}

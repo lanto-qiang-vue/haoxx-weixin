@@ -9,6 +9,11 @@
 			<img src="~@/assets/img/index/home-off.png" v-show="!active('/')">
 			<p>首页</p>
 		</router-link>
+		<router-link to="/forum" tag="li">
+			<img src="~@/assets/img/index/forum.png" v-show="active('/forum')">
+			<img src="~@/assets/img/index/forum-off.png" v-show="!active('/forum')">
+			<p>车谈</p>
+		</router-link>
 		<router-link to="/my" tag="li">
 			<img src="~@/assets/img/index/my.png" v-show="active('/my')">
 			<img src="~@/assets/img/index/my-off.png" v-show="!active('/my')">
@@ -19,7 +24,7 @@
 </template>
 
 <script>
-import { getWeixinId } from '@/util.js'
+import { getWeixinId, getLocation } from '@/util.js'
 export default {
 	name: "app-body",
 	computed:{
@@ -33,15 +38,22 @@ export default {
 		},
 		cache(){
 			return this.$route.meta.cache
+		},
+		appstore(){
+			return this.$store.state.app
 		}
 	},
 	mounted(){
-		// console.log('process.env.NODE_ENV', process.env.NODE_ENV)
-		// let state= this.getUrlParam('state')
-		// let appId= 'wx71b3e2a11334e62d', URL= encodeURIComponent(window.location.href)
-		// if(this.isWeixn() && !state){
-		// 	window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${URL}&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect`
-		// }
+		getLocation().then(( success)=>{
+			if(success){
+				if(!this.appstore.city.regionId){
+					this.$store.dispatch('setCity', {
+						regionId: this.appstore.location.adcode,
+						regionName: this.appstore.location.city ||this.appstore.location.province,
+					});
+				}
+			}
+		})
 
 		getWeixinId()
 
@@ -74,7 +86,7 @@ export default {
 		-webkit-transform: translateZ(0);
 		li{
 			height: 100%;
-			width: 100px;
+			width: 90px;
 			display: inline-block;
 			vertical-align: top;
 			padding-top: 8px;
