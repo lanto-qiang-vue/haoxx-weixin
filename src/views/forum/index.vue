@@ -83,7 +83,7 @@
 		</ul>
 	</div>
 
-	<div class="add-button"></div>
+	<router-link tag="div" to="/forum-post" class="add-button"></router-link>
 
 </div>
 
@@ -104,9 +104,9 @@
 		methods:{
 			getCarTalk(){
 				this.axiosHxx.post('/cartalk/plate/selectTopicPlate', {
-					
+
 				},{baseURL: '/qixiu-proxy'}).then( (res) => {
-					
+
 				})
 			},
 			close(){

@@ -246,6 +246,13 @@ routes: [
 		component: () => import('@/views/forum/index.vue')
 	},
 	{
+		path: '/forum-post',
+		name: 'forum-post',
+		meta: {
+		},
+		component: () => import('@/views/forum/post.vue')
+	},
+	{
 		path: '/my-forum',
 		name: 'my-forum',
 		meta: {

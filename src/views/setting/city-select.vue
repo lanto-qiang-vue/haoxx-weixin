@@ -56,7 +56,7 @@ export default {
 	methods:{
 		getData(){
 			this.axiosHxx.get('/common/method/getRegionList',
-				{baseURL: '/hxx-api-proxy'}
+				{baseURL: '/hxx-gateway-proxy'}
 				).then(res=>{
 				if(res.data.success){
 					this.area= this.getIndexList(res.data.data)

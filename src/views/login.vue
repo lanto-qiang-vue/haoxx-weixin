@@ -333,6 +333,7 @@ export default {
 .login{
 	padding: 0 30px;
 	transition: all .5s;
+	min-height: 500px;
 	height: 100vh;
 	position: relative;
 	overflow: hidden;

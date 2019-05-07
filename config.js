@@ -6,12 +6,14 @@ const conf={
 			adcode:"310000",
 			lng: 121.480236,
 			lat: 31.236301,
+			postfix: '',
 		},
 		{
 			province: '山东省',
 			adcode:"370000",
 			lng: 117.120098,
 			lat: 36.6512,
+			postfix: 'shandong',
 		},
 	],
 	versions: 2.0
