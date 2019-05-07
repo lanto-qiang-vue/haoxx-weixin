@@ -59,6 +59,7 @@
 <script>
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import { getCityToken} from '@/util'
 export default {
 	name: "index",
 	components: {swiper, swiperSlide},
@@ -83,7 +84,7 @@ export default {
 	},
 	computed:{
 		qixiutoken(){
-			return this.$store.state.user.qixiutoken
+			return getCityToken()
 		},
 		appstore(){
 			return this.$store.state.app
@@ -110,7 +111,7 @@ export default {
 			this.axiosQixiu.post('/banner/query', {
 				terminal: 'W',
 				useSystem: 2,
-			}).then( (res) => {
+			},{noLogin: true}).then( (res) => {
 				if(res.data.code=='0'){
 					this.banners= res.data.items
 					this.showSwiper= true

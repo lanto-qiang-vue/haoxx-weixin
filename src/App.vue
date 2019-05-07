@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { getWeixinId, getLocation } from '@/util.js'
+// import { getWeixinId, getLocation } from '@/util.js'
 export default {
 	name: "app-body",
 	computed:{
@@ -39,23 +39,12 @@ export default {
 		cache(){
 			return this.$route.meta.cache
 		},
-		appstore(){
-			return this.$store.state.app
-		}
+		// appstore(){
+		// 	return this.$store.state.app
+		// }
 	},
 	mounted(){
-		getLocation().then(( success)=>{
-			if(success){
-				if(!this.appstore.city.regionId){
-					this.$store.dispatch('setCity', {
-						regionId: this.appstore.location.adcode,
-						regionName: this.appstore.location.city ||this.appstore.location.province,
-					});
-				}
-			}
-		})
 
-		getWeixinId()
 
 		$('body').on('blur', 'input, textarea', ()=>{
 			// console.log('blur')

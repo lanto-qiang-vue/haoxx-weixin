@@ -14,6 +14,7 @@ const conf={
 			lat: 36.6512,
 		},
 	],
+	versions: 2.0
 }
 
 

@@ -1,5 +1,5 @@
 let hxxtoken= localStorage.getItem('HXXTOKEN')||''
-let qixiutoken= localStorage.getItem('QIXIUTOKEN')||''
+let qixiutoken= localStorage.getItem('QIXIUTOKEN')
 let userinfo= localStorage.getItem('USERINFO')||''
 // let dict = localStorage.getItem('dict') || ''
 let unit = localStorage.getItem('unit') || ''
@@ -31,6 +31,10 @@ export default {
 			localStorage.setItem('USERINFO', info? JSON.stringify(info): '')
 			state.userinfo = info;
 		},
+		setNickName(state, name){
+			state.userinfo.nickName = name;
+			localStorage.setItem('USERINFO', JSON.stringify(state.userinfo))
+		},
 		// setDict(state,dict){
          //    localStorage.setItem('dict', dict ? JSON.stringify(dict): '')
 		// 	state.dict = dict;
@@ -44,7 +48,7 @@ export default {
 			localStorage.removeItem('QIXIUTOKEN')
 			localStorage.removeItem('USERINFO')
 			state.hxxtoken = ''
-			state.qixiutoken = ''
+			state.qixiutoken = {}
 			state.userinfo = ''
 		},
 		changePassSuccess(state){

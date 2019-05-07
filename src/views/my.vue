@@ -51,7 +51,7 @@ export default {
 					}
 				}
 			})
-			this.axiosHxx.post('/operate/order/list ',{page: 1, limit: 1,}).then(res=>{
+			this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
 				if(res.data.success){
 					this.reservationNum= res.data.total
 				}
@@ -60,6 +60,13 @@ export default {
 		nickName(){
 			this.$refs.popupInput.popup({title: '修改昵称', value: this.userinfo.nickName}).then(({status, value})=>{
 				console.log(status, value)
+				if(status){
+					this.axiosHxx.post('/operate/account/updateNickName',{newName: value}).then(res=>{
+						if(res.data.success){
+							this.$store.commit('setNickName', value);
+						}
+					})
+				}
 			})
 		},
 		logout(){
