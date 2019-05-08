@@ -36,20 +36,22 @@
 		<span>最新话题</span>
 	</div>
 	<ul class="commonList">
-		<li>
-			<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-			<div class="listFooter">
-				<span>186****5567 · 5分钟前</span>
-				<span class="left">50个评论</span>
-				<span class="right z-right">参与</span>
+		<li v-for="item in comments">
+			<div class="common-header">
+				<img src="/img/head.png" alt="">
+				<span>{{item.nickname}}</span>
 			</div>
-		</li>
-		<li>
-			<p>今日头条新闻今日头条新闻今日头条新闻???</p>
+			<p>{{item.content}}</p>
+
+			<div class="imgGroup" v-if="item.paths.length>0">
+				<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
+			</div>
+
 			<div class="listFooter">
-				<span>186****5567 · 5分钟前</span>
-				<span class="left">50个评论</span>
-				<span class="right z-right">参与</span>
+				<span class="center">{{item.topicContent}}</span>
+				<span>{{item.pastTime}}</span>
+				<span class="left">{{item.number}}个评论</span>
+				<span class="right">去参与</span>
 			</div>
 		</li>
 	</ul>
@@ -79,7 +81,8 @@ export default {
 				},
 			},
 			showSwiper: false,
-			recordPath: '/my-car-list'
+			recordPath: '/my-car-list',
+			comments:[],
 		}
 	},
 	computed:{
@@ -93,6 +96,7 @@ export default {
 	mounted(){
 		this.getBanner()
 		this.init()
+		this.getNewTopic()
 	},
 	methods:{
 		init(){
@@ -136,6 +140,23 @@ export default {
 				}
 			}
 			return obj
+		},
+		getNewTopic(){
+			this.axiosHxx.post('/cartalk/plate/selectTopicContentByTime', {
+			},{baseURL: '/qixiu-proxy'}).then( (res) => {
+				console.log(res);
+				if(res.status=='200'){
+					for(let i in res.data.data){
+						if(res.data.data[i]['path']){
+							res.data.data[i]['paths']=res.data.data[i]['path'].split(',');
+						}else{
+							res.data.data[i]['paths']=[];
+						}
+					}
+					this.comments=res.data.data;
+					console.log(this.comments);
+				}
+			})
 		},
 		goCoupons(){
 			this.$router.push('/coupons-type')

@@ -253,4 +253,12 @@ routes: [
 		},
 		component: () => import('@/views/forum/my-post.vue')
 	},
+	{
+		path: '/forum-detail',
+		name: 'forum-detail',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/detail.vue')
+	},
 ]})

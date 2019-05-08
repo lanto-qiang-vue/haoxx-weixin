@@ -2,12 +2,30 @@
 .commonList {
     box-sizing: border-box;
     padding-left:15px;
+    
     li {
         box-sizing: border-box;
         border-bottom: 1px solid #D9D9D9;
         padding: 10px 0;
         font-size: 14px;
         width: 100%;
+        .common-header{
+            padding-bottom:11px;
+            line-height:18px;
+            img{
+                width:18px;
+                height:18px;
+                border-radius: 18px;
+            }
+            span{
+                padding-left: 10px;
+                font-size:12px;
+                font-family:PingFangTC-Regular;
+                font-weight:400;
+                color:rgba(102,102,102,1);
+                line-height:17px;
+            }
+        }
         p{
             color:#333;
             line-height: 20px;
@@ -23,21 +41,22 @@
             overflow: auto;
             padding: 5px 0;
             white-space:nowrap;
-          img{
+          .imgBox{
             width:60px;
             height:60px;
             border-radius:3px;
             margin-right:5px;
             display:inline-block;
-            object-fit: cover;
+            background: no-repeat center center;
+            background-size:cover;
           }
         }
-    .list-content{
-    font-size: 12px;
-    line-height: 17px;
-    color: #FE8636;
-    font-weight: 400;
-    }
+        .list-content{
+            font-size: 12px;
+            line-height: 17px;
+            color: #FE8636;
+            font-weight: 400;
+        }
         .listFooter{
             position: relative;
             padding: 5px 0;
@@ -55,7 +74,7 @@
                 line-height: 22px;
                 position: absolute;
                 top: 5px;
-                right: 85px;
+                right: 78px;
                 color: #666;
 
             }
