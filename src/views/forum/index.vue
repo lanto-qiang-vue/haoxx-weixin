@@ -24,62 +24,22 @@
     </div>
 	<div class="content" style="padding-top: 171px;">
 		<ul class="commonList">
-			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-				<ul class="imgGroup">
-					<img src="/img/maintain/shqxw.jpg">
-					<img src="/img/maintain/shqxw.jpg">
-					<img src="/img/maintain/shqxw.jpg">
-					<img src="/img/maintain/shqxw.jpg">
-					<img src="/img/maintain/shqxw.jpg">
-					<img src="/img/maintain/shqxw.jpg">
-				</ul>
-				<div class="list-content">
-					日常养护
+			<li v-for="item in comments">
+				<div class="common-header">
+					<img src="/img/head.png" alt="">
+					<span>{{item.nickname}}</span>
+				</div>
+				<p>{{item.content}}</p>
+				<div class="imgGroup" v-if="item.paths.length>0">
+					<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
 				</div>
 				<div class="listFooter">
-					<span class="center">日常养护</span>
-					<span>186****5567 · 5分钟前</span>
-					<span class="left">50个评论</span>
+					<span class="center">{{item.topicContent}}</span>
+					<span>{{item.pastTime}}</span>
+					<span class="left">{{item.number}}个评论</span>
 					<span class="right">去参与</span>
 				</div>
 			</li>
-			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-
-				<div class="list-content">
-					日常养护
-				</div>
-				<div class="listFooter">
-					<span>186****5567 · 5分钟前</span>
-					<span class="left">50个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
-			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-
-				<div class="list-content">
-					日常养护
-				</div>
-				<div class="listFooter">
-					<span>186****5567 · 5分钟前</span>
-					<span class="left">50个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
-			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-				<div class="list-content">
-					日常养护
-				</div>
-				<div class="listFooter">
-					<span>186****5567 · 5分钟前</span>
-					<span class="left">50个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
-
 		</ul>
 	</div>
 
@@ -96,10 +56,12 @@
 		data(){
 			return{
 				search:'',
+				comments:[],
 			}
 		},
 		mounted(){
 			this.getCarTalk();
+			this.getNewTopic()
 		},
 		methods:{
 			getCarTalk(){
@@ -107,6 +69,23 @@
 
 				},{baseURL: '/qixiu-proxy'}).then( (res) => {
 
+				})
+			},
+			getNewTopic(){
+				this.axiosHxx.post('/cartalk/plate/selectTopicContentByHot', {
+				},{baseURL: '/qixiu-proxy'}).then( (res) => {
+					console.log(res);
+					if(res.status=='200'){
+						for(let i in res.data.data){
+							if(res.data.data[i]['path']){
+								res.data.data[i]['paths']=res.data.data[i]['path'].split(',');
+							}else{
+								res.data.data[i]['paths']=[];
+							}
+						}
+						this.comments=res.data.data;
+						console.log(this.comments);
+					}
 				})
 			},
 			close(){

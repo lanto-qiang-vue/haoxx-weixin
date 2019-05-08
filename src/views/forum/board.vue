@@ -10,44 +10,95 @@
 		</div>
 
 		<div class="title">
-			<span class="active">热聊话题</span>
-			<span>最新话题</span>
+			<span :class="{active: active=='1'}" @click="active='1'">热聊话题</span>
+			<span :class="{active: active=='2'}" @click="active='2'">最新话题</span>
 		</div>
 
     </div>
 	<div class="content">
-		<ul class="commonList">
-			<li>
-				<p>今日头条新闻今日头条新闻今日头条新闻???</p>
-				<ul class="imgGroup">
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center;background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-					<li style="background: url(/img/maintain/shqxw.jpg) no-repeat center center; background-size:cover;"><img src="/img/bank-01.png"></li>
-				</ul>
-				<div class="listFooter">
-					<span>186****5567 · 5分钟前</span>
-					<span class="left">50个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
+		<mt-tab-container v-model="active" :swipeable=true>
+			<mt-tab-container-item id="1">
+					
+						<ul class="commonList">
+							<li v-for="item in comments">
+								<div class="common-header">
+									<img src="/img/head.png" alt="">
+									<span>{{item.nickname}}</span>
+								</div>
+								<p>{{item.content}}</p>
+								<div class="imgGroup" v-if="item.paths.length>0">
+									<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
+								</div>
+								<div class="listFooter">
+									<span class="center">{{item.topicContent}}</span>
+									<span>{{item.pastTime}}</span>
+									<span class="left">{{item.number}}个评论</span>
+									<span class="right">去参与</span>
+								</div>
+							</li>
+						</ul>
+				
+			</mt-tab-container-item>
+			<mt-tab-container-item id="2">
+						<ul class="commonList">
+							<li v-for="item in comments">
+								<div class="common-header">
+									<img src="/img/head.png" alt="">
+									<span>{{item.nickname}}</span>
+								</div>
+								<p>{{item.content}}</p>
+								<div class="imgGroup" v-if="item.paths.length>0">
+									<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
+								</div>
+								<div class="listFooter">
+									<span class="center">{{item.topicContent}}</span>
+									<span>{{item.pastTime}}</span>
+									<span class="left">{{item.number}}个评论</span>
+									<span class="right">去参与</span>
+								</div>
+							</li>
+						</ul>
+			</mt-tab-container-item>
 
-		</ul>
+		</mt-tab-container>
+		
 	</div>
 	<div class="add-button"></div>
 </div>
 </template>
 
 <script>
+import { TabContainer, TabContainerItem, Navbar, TabItem } from 'mint-ui';
 export default {
 	name: "board",
 	data(){
 		return{
 			search:'',
+			active:'1',
+			comments:[],
 		}
 	},
+	mounted(){
+		this.getNewTopic()
+	},
 	methods:{
+		getNewTopic(){
+				this.axiosHxx.post('/cartalk/plate/selectTopicContentByHot', {
+				},{baseURL: '/qixiu-proxy'}).then( (res) => {
+					console.log(res);
+					if(res.status=='200'){
+						for(let i in res.data.data){
+							if(res.data.data[i]['path']){
+								res.data.data[i]['paths']=res.data.data[i]['path'].split(',');
+							}else{
+								res.data.data[i]['paths']=[];
+							}
+						}
+						this.comments=res.data.data;
+						console.log(this.comments);
+					}
+				})
+			},
 		close(){
 
 		}
