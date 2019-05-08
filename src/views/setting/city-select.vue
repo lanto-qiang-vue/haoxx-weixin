@@ -37,7 +37,6 @@ export default {
 		return {
 			search: '',
 			area: {},
-			show: false
 		}
 	},
 	computed:{
@@ -56,17 +55,11 @@ export default {
 	},
 	methods:{
 		getData(){
-			let city= localStorage.getItem('allcity')
-			if(city){
-				this.area= this.getIndexList(JSON.parse(city))
-				this.show= true
-				console.log(this.area)
-			} else
 			this.axiosHxx.get('/common/method/getRegionList',
-				{baseURL: '/hxx-api-proxy'}
+				{baseURL: '/hxx-gateway-proxy'}
 				).then(res=>{
 				if(res.data.success){
-					localStorage.setItem('allcity', JSON.stringify(res.data.data))
+					this.area= this.getIndexList(res.data.data)
 				}
 			})
 		},

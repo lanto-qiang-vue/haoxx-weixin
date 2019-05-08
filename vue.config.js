@@ -24,11 +24,12 @@ module.exports = {
                 pathRewrite: {'^/hxx-proxy': ''},
                 secure: false
 			},
-			'/hxx-api-proxy': {
-				// target: 'http://api.hoxiuxiu.com/',
+			'/hxx-gateway-proxy': {
+				target: 'http://192.168.169.231:8888',
 				// target: 'http://api.test.hoxiuxiu.com/',
 				target: 'http://192.168.169.120:8872/',
 				pathRewrite: {'^/hxx-api-proxy': ''},
+
 				secure: false
 			},
 			'/qixiu-proxy': {
@@ -38,10 +39,24 @@ module.exports = {
 				pathRewrite: {'^/qixiu-proxy': ''},
 				secure: false
 			},
+
 			'/repair-proxy': {
 				target: 'http://192.168.169.230:7210/',
 				// target: 'https://www.shanghaiqixiu.org/repair/',
 				pathRewrite: {'^/repair-proxy': ''},
+				secure: false
+			},
+			'/qixiu-proxy-shandong': {
+				target: 'http://192.168.169.208:8888',
+				// target: 'https://www.test.shanghaiqixiu.org/proxy/',
+				// target: 'https://www.shanghaiqixiu.org/proxy/',
+				pathRewrite: {'^/qixiu-proxy-shandong': ''},
+				secure: false
+			},
+			'/repair-proxy-shandong': {
+				target: 'http://192.168.169.211:7210',
+				// target: 'https://www.shanghaiqixiu.org/repair/',
+				pathRewrite: {'^/repair-proxy-shandong': ''},
 				secure: false
 			},
 		}

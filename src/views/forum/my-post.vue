@@ -69,7 +69,7 @@ export default {
 			this.axiosHxx.post('/cartalk/mycarcircles/myrelease', {
 				page: this.post.page,
 				limit:10,
-			},{baseURL: '/hxx-api-proxy'}).then( (res) => {
+			},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
 				if(flag) this.$refs.postLoadmore.onBottomLoaded()
 				else this.post.list=[]
 				this.post.total= res.data.total
