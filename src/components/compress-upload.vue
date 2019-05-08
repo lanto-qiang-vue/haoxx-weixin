@@ -51,13 +51,13 @@ export default {
 	    clickStop(){
 	    	return
 	    },
-			clickBox(){
-				if(isIos()){
-					this.$refs.file2.click()
-				}else{
-					this.sheetVisible= true
-				}
-			},
+		clickBox(){
+			if(isIos()){
+				this.$refs.file2.click()
+			}else{
+				this.sheetVisible= true
+			}
+		},
       getImg(fileName){
         let file= this.$refs[fileName].files[0]
         // console.log(file)

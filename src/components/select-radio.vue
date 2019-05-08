@@ -1,12 +1,16 @@
 <template>
 <span class="select-radio">
 	<label @click="click">{{label}}</label>
-	<mt-popup v-model="showRadio" style="width: 90%">
+	<mt-popup v-model="showRadio"
+	          position="bottom"
+	          style="width: 100%"
+	          pop-transition="popup-fade" >
 		<div class="popupBlock">
 			<mt-radio
-					@click.native="showRadio= false"
+					@click.native=""
 					align="right"
 					v-model="val"
+
 					:options="options">
 			</mt-radio>
 		</div>
@@ -57,6 +61,11 @@ export default {
 			}
 		}
 	},
+	watch:{
+		val(){
+			this.showRadio= false
+		}
+	},
 	methods:{
 		click(){
 			console.log('click')
@@ -75,6 +84,8 @@ export default {
 		display: inline-block;
 		width: 100%;
 		min-height: 20px;
+		line-height: 20px;
+		vertical-align: top;
 	}
 }
 </style>
