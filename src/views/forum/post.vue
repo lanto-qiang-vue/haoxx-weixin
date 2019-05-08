@@ -24,7 +24,7 @@
 		</ul>
 		<div class="common-submit" @click="submit"><a>发布</a></div>
 	</div>
-	<upload ref="upload" @done="getImg"></upload>
+	<upload ref="upload" backend="hxx" @done="getImg"></upload>
 </div>
 </template>
 
@@ -77,7 +77,7 @@ export default {
 
 		},
 		submit(){
-			console.log('content', JSON.stringify(this.form.content) )
+			// console.log('content', JSON.stringify(this.form.content) )
 			this.axiosHxx.post('/cartalk/topic/release', this.form,
 				{baseURL: '/hxx-gateway-proxy'}
 			).then(res=>{

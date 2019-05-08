@@ -9,17 +9,31 @@ let axiosHxx= axios.create({
 	timeout: 6000,
 	headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
 	transformRequest: [function (data) {
-		let ret = '',hashxxtoken= false, token= store.state.user.hxxtoken;
-		for (let key in data) {
-			let item= data[key]
-			if(ret) ret += '&';
-			if(key=='access_token' ){
-				if(item) hashxxtoken= true;
-				else continue
+		// console.log('data', Object.prototype.toString.call(data))
+		let ret = '',hashxxtoken= false, token= store.state.user.hxxtoken, dataType=Object.prototype.toString.call(data);
+		switch(dataType){
+			case '[object Object]': {
+				for (let key in data) {
+					let item = data[key]
+					if (ret) ret += '&';
+					if (key == 'access_token') {
+						if (item) hashxxtoken = true;
+						else continue
+					}
+					ret += (encodeURIComponent(key) + '=' + encodeURIComponent(typeof item == 'object' ? JSON.stringify(item) : item))
+				}
+				if (!hashxxtoken && token) ret += ('&' + encodeURIComponent('access_token') + '=' + encodeURIComponent(token))
+				break
 			}
-			ret += (encodeURIComponent(key) + '=' + encodeURIComponent(typeof item=='object'? JSON.stringify( item): item))
+			case '[object FormData]':{
+				if(!data.has('access_token')){
+					data.append('access_token' , token);
+				}
+				ret= data
+				break
+			}
 		}
-		if(!hashxxtoken && token) ret += ('&'+ encodeURIComponent('access_token') + '=' + encodeURIComponent(token))
+
 		return ret
 	}]
 });
