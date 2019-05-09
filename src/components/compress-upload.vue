@@ -16,14 +16,17 @@ import { Actionsheet } from 'mint-ui';
 export default {
 		name: "compress-upload",
     props: {
-      'operate': {
-        type: String,
-        default: 'upLoad'
-      },
-      'accept': {
-        type: String,
-        default: 'image/jpg,image/png,image/bmp'
-      }
+		'operate': {
+			type: String,
+			default: 'upLoad'
+		},
+		'accept': {
+			type: String,
+			default: 'image/jpg,image/png,image/bmp'
+		},
+	    'backend': {
+		    default: 'qixiu'
+	    }
     },
 	data(){
 		let _this = this
@@ -51,13 +54,13 @@ export default {
 	    clickStop(){
 	    	return
 	    },
-			clickBox(){
-				if(isIos()){
-					this.$refs.file2.click()
-				}else{
-					this.sheetVisible= true
-				}
-			},
+		clickBox(){
+			if(isIos()){
+				this.$refs.file2.click()
+			}else{
+				this.sheetVisible= true
+			}
+		},
       getImg(fileName){
         let file= this.$refs[fileName].files[0]
         // console.log(file)
@@ -69,18 +72,42 @@ export default {
 		        let formdata = new FormData();
 		        formdata.append('file' , base64ToBlob(base64), name);
 		        // console.log(base64ToBlob(base64))
-		        this.axios({
-			        method: 'post',
-			        url: '/file/image/add',
-			        headers: {'Content-Type': 'multipart/form-data'},
-			        data: formdata
-		        }).then( (res) => {
-			        // console.log(res.data)
-			        this.$emit('done', res.data);
-		        })
+		        switch(this.backend){
+			        case 'qixiu':{
+				        this.axiosQixiu({
+					        method: 'post',
+					        url: '/file/image/add',
+					        headers: {'Content-Type': 'multipart/form-data'},
+					        data: formdata
+				        }).then( (res) => {
+					        // console.log(res.data)
+					        if(res.data.success){
+						        this.$emit('done', {data:res.data, url:res.data.item.path, base64});
+					        }
+				        })
+				        break
+			        }
+			        case 'hxx':{
+				        this.axiosHxx.post('/cartalk/pic/savePicture?access_token='+ this.$store.state.user.hxxtoken
+					        , formdata, {
+				            baseURL: '/hxx-gateway-proxy',
+					        headers: {'Content-Type': 'multipart/form-data'},
+				        }).then(res=>{
+					        if(res.data.success){
+						        this.$emit('done', {data: res.data, url:res.data.data.picUrl, base64});
+					        }
+				        })
+				        break
+			        }
+		        }
 	        }
+	        this.upback()
         })
-      }
+      },
+	    upback(){
+		    this.$refs.file.value=null;
+		    this.$refs.file2.value=null;
+	    }
     }
 }
 </script>

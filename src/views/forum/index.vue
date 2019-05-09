@@ -120,7 +120,7 @@
 	}
 </script>
 <style scoped lang='less'>
-	@import './forum.less';
+@import './forum.less';
 .boardList {
   background-color: #fff;
   height: 100vh;
