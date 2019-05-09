@@ -121,7 +121,7 @@ axiosHxx.interceptors.response.use(response => {
 				// console.log(data.Exception.message);
 				Toast( data.Exception.message || data.title);
 			}else{
-				Toast(data.title);
+				Toast(data.title || data.message);
 			}
 		}
 	}

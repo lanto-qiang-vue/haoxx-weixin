@@ -15,14 +15,17 @@
 	</Form>
 	<div class="bottom">
 		<ul class="imgs">
-			<li v-for="(item, index) in form.picFilePaths"><img :src="item" v-img="{group: 'post-img'}"/>
+			<li v-for="(item, index) in form.picFilePaths">
+				<img :src="imgDatas['img-'+item] || item" v-img="{group: 'post-img'}"/>
 				<i class="fa fa-times-circle" @click="del(index)"></i></li>
 			<li class="add" v-show="form.picFilePaths.length<9" @click="upImg">
 				<span>+</span>
 				<p>图片</p>
 			</li>
 		</ul>
-		<div class="common-submit" @click="submit"><a>发布</a></div>
+		<div class="common-submit">
+			<submit-button :rules="rules" :datas="form" :feedback="true" @click="submit">发布</submit-button>
+		</div>
 	</div>
 	<upload ref="upload" backend="hxx" @done="getImg"></upload>
 </div>
@@ -31,24 +34,29 @@
 <script>
 import SelectRadio from '@/components/select-radio.vue'
 import Upload from '@/components/compress-upload.vue'
+import SubmitButton from '@/components/submit-button.vue'
 export default {
 	name: "forum-post",
-	components: {SelectRadio, Upload},
+	components: {SelectRadio, Upload, SubmitButton},
 	data(){
 		return{
 			form:{
 				topicId: '',
 				title: '',
 				content: '',
-				picFilePaths: [
-					'/img/maintain/shqxw.jpg',
-					'/img/maintain/shqxw.jpg',
-					'/img/maintain/shqxw.jpg',
-					'/img/maintain/shqxw.jpg',
-					'/img/maintain/shqxw.jpg',
-				]
+				picFilePaths: []
 			},
-			typeList: []
+			typeList: [],
+			imgDatas: {},
+		}
+	},
+	computed:{
+		rules(){
+			return {
+				topicId: { required: true, message:'请选择发布圈子'},
+				title: { required: true, message:'请填写标题'},
+				content: { required: true, message:'请填写内容'},
+			}
 		}
 	},
 	mounted(){
@@ -73,12 +81,13 @@ export default {
 		upImg(){
 			this.$refs.upload.clickBox()
 		},
-		getImg(){
-
+		getImg({url, base64}){
+			this.form.picFilePaths.push(url)
+			this.imgDatas['img-'+url]= base64
 		},
-		submit(){
-			// console.log('content', JSON.stringify(this.form.content) )
-			this.axiosHxx.post('/cartalk/topic/release', this.form,
+		submit(data){
+			// console.log('data', data )
+			this.axiosHxx.post('/cartalk/topic/release',{data: this.form},
 				{baseURL: '/hxx-gateway-proxy'}
 			).then(res=>{
 				if(res.data.success){
@@ -88,7 +97,17 @@ export default {
 			})
 		},
 		del(index){
-			console.log('del(index)', index)
+			// console.log('del(index)', index)
+			let url= (this.form.picFilePaths[index]&& this.form.picFilePaths[index].indexOf('url=')>=0)?
+				this.form.picFilePaths[index].split('url=')[1]: ''
+			this.form.picFilePaths.splice(index, 1)
+			if(url){
+				this.axiosHxx.post('/cartalk/pic/delPicture', {url: url},
+					{baseURL: '/hxx-gateway-proxy'}
+				).then(res=>{
+					if(res.data.success){}
+				})
+			}
 		},
 	}
 }
@@ -139,11 +158,12 @@ export default {
 					top: -8px;
 					right: -8px;
 					font-size: 20px;
+					line-height: 18px;
 					border: 2px solid white;
 					border-radius: 100%;
 					background-color: white;
-					width: 22px;
-					height: 22px;
+					width: 21px;
+					height: 21px;
 					color: #999999;
 				}
 			}

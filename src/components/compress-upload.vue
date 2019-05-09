@@ -82,27 +82,26 @@ export default {
 				        }).then( (res) => {
 					        // console.log(res.data)
 					        if(res.data.success){
-						        this.$emit('done', res.data);
+						        this.$emit('done', {data:res.data, url:res.data.item.path, base64});
 					        }
-					        this.upback()
 				        })
 				        break
 			        }
 			        case 'hxx':{
-				        this.axiosHxx.post('/cartalk/pic/savePicture', formdata, {
+				        this.axiosHxx.post('/cartalk/pic/savePicture?access_token='+ this.$store.state.user.hxxtoken
+					        , formdata, {
 				            baseURL: '/hxx-gateway-proxy',
 					        headers: {'Content-Type': 'multipart/form-data'},
 				        }).then(res=>{
 					        if(res.data.success){
-						        this.$emit('done', res.data);
+						        this.$emit('done', {data: res.data, url:res.data.data.picUrl, base64});
 					        }
-					        this.upback()
 				        })
 				        break
 			        }
 		        }
-
 	        }
+	        this.upback()
         })
       },
 	    upback(){
