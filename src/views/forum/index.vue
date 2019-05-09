@@ -23,24 +23,27 @@
 
     </div>
 	<div class="content" style="padding-top: 171px;">
-		<ul class="commonList">
-			<li v-for="item in comments">
-				<div class="common-header">
-					<img src="/img/head.png" alt="">
-					<span>{{item.nickname}}</span>
-				</div>
-				<p>{{item.content}}</p>
-				<div class="imgGroup" v-if="item.paths.length>0">
-					<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
-				</div>
-				<div class="listFooter">
-					<span class="center">{{item.topicContent}}</span>
-					<span>{{item.pastTime}}</span>
-					<span class="left">{{item.number}}个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
-		</ul>
+		<mt-loadmore :bottom-method="hotLoadBottom" :bottom-all-loaded="comments.allLoaded" :autoFill="false"
+	             bottomPullText="加载更多"   ref="hotLoadmore">
+			<ul class="commonList">
+				<li v-for="item in comments.list">
+					<div class="common-header">
+						<img src="/img/head.png" alt="">
+						<span>{{item.nickname}}</span>
+					</div>
+					<p>{{item.content}}</p>
+					<div class="imgGroup" v-if="item.paths.length>0">
+						<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
+					</div>
+					<div class="listFooter">
+						<span class="center" :style="{ color: item.colour}">{{item.topicContent}}</span>
+						<span>{{item.pastTime}}</span>
+						<span class="left">{{item.number}}个评论</span>
+						<span class="right">去参与</span>
+					</div>
+				</li>
+			</ul>
+		</mt-loadmore>
 	</div>
 
 	<router-link tag="div" to="/forum-post" class="add-button"></router-link>
@@ -56,12 +59,17 @@
 		data(){
 			return{
 				search:'',
-				comments:[],
+				comments:{
+					list: [],
+					page: 1,
+					total: 0,
+					allLoaded: false
+				},
 			}
 		},
 		mounted(){
 			this.getCarTalk();
-			this.getNewTopic()
+			this.getHotTopic();
 		},
 		methods:{
 			getCarTalk(){
@@ -71,11 +79,15 @@
 
 				})
 			},
-			getNewTopic(){
+			getHotTopic(flag){
 				this.axiosHxx.post('/cartalk/plate/selectTopicContentByHot', {
+					page: this.comments.page,
+					limit:1,
 				},{baseURL: '/qixiu-proxy'}).then( (res) => {
-					console.log(res);
-					if(res.status=='200'){
+					if(flag) this.$refs.hotLoadmore.onBottomLoaded()
+					else this.comments.list=[]
+					this.comments.total= res.data.total
+					if(res.data.data&&res.data.data.length){
 						for(let i in res.data.data){
 							if(res.data.data[i]['path']){
 								res.data.data[i]['paths']=res.data.data[i]['path'].split(',');
@@ -83,10 +95,23 @@
 								res.data.data[i]['paths']=[];
 							}
 						}
-						this.comments=res.data.data;
-						console.log(this.comments);
+						let arr= res.data.data
+						this.comments.list=this.comments.list.concat(arr)
+
+						if(this.comments.list.length>=res.data.total){
+							this.comments.allLoaded=true
+						}else{
+							this.comments.allLoaded=false
+						}
+
+					}else{
+						this.comments.allLoaded=true
 					}
 				})
+			},
+			hotLoadBottom() {
+				this.comments.page++
+				this.getHotTopic(true)
 			},
 			close(){
 

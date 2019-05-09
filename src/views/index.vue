@@ -35,26 +35,30 @@
 	<div class="z-title">
 		<span>最新话题</span>
 	</div>
-	<ul class="commonList">
-		<li v-for="item in comments">
-			<div class="common-header">
-				<img src="/img/head.png" alt="">
-				<span>{{item.nickname}}</span>
-			</div>
-			<p>{{item.content}}</p>
+	<mt-loadmore :bottom-method="postLoadBottom" :bottom-all-loaded="comments.allLoaded" :autoFill="false"
+	             bottomPullText="加载更多"   ref="postLoadmore">
+		<ul class="commonList">
+			<li v-for="item in comments.list">
+				<div class="common-header">
+					<img src="/img/head.png" alt="">
+					<span>{{item.nickname}}</span>
+				</div>
+				<p>{{item.content}}</p>
 
-			<div class="imgGroup" v-if="item.paths.length>0">
-				<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
-			</div>
+				<div class="imgGroup" v-if="item.paths.length>0">
+					<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
+				</div>
 
-			<div class="listFooter">
-				<span class="center">{{item.topicContent}}</span>
-				<span>{{item.pastTime}}</span>
-				<span class="left">{{item.number}}个评论</span>
-				<span class="right">去参与</span>
-			</div>
-		</li>
-	</ul>
+				<div class="listFooter">
+					<span class="center" :style="{ color: item.colour}">{{item.topicContent}}</span>
+					<span>{{item.pastTime}}</span>
+					<span class="left">{{item.number}}个评论</span>
+					<span class="right">去参与</span>
+				</div>
+			</li>
+		</ul>
+	</mt-loadmore>
+	
 </div>
 </template>
 
@@ -82,7 +86,12 @@ export default {
 			},
 			showSwiper: false,
 			recordPath: '/my-car-list',
-			comments:[],
+			comments:{
+				list: [],
+				page: 1,
+				total: 0,
+				allLoaded: false
+			},
 		}
 	},
 	computed:{
@@ -141,11 +150,15 @@ export default {
 			}
 			return obj
 		},
-		getNewTopic(){
+		getNewTopic(flag){
 			this.axiosHxx.post('/cartalk/plate/selectTopicContentByTime', {
+				page: this.comments.page,
+				limit:1,
 			},{baseURL: '/qixiu-proxy'}).then( (res) => {
-				console.log(res);
-				if(res.status=='200'){
+				if(flag) this.$refs.postLoadmore.onBottomLoaded()
+				else this.comments.list=[]
+				this.comments.total= res.data.total
+				if(res.data.data&&res.data.data.length){
 					for(let i in res.data.data){
 						if(res.data.data[i]['path']){
 							res.data.data[i]['paths']=res.data.data[i]['path'].split(',');
@@ -153,10 +166,23 @@ export default {
 							res.data.data[i]['paths']=[];
 						}
 					}
-					this.comments=res.data.data;
-					console.log(this.comments);
+					let arr= res.data.data
+					this.comments.list=this.comments.list.concat(arr)
+
+					if(this.comments.list.length>=res.data.total){
+						this.comments.allLoaded=true
+					}else{
+						this.comments.allLoaded=false
+					}
+
+				}else{
+					this.comments.allLoaded=true
 				}
 			})
+		},
+		postLoadBottom() {
+			this.comments.page++
+			this.getNewTopic(true)
 		},
 		goCoupons(){
 			this.$router.push('/coupons-type')

@@ -25,10 +25,10 @@ module.exports = {
                 secure: false
 			},
 			'/hxx-gateway-proxy': {
-				target: 'http://192.168.169.231:8888',
+				// target: 'http://192.168.169.231:8888',
 				// target: 'http://api.test.hoxiuxiu.com/',
-				target: 'http://192.168.169.120:8872/',
-				pathRewrite: {'^/hxx-api-proxy': ''},
+				target: 'http://192.168.169.120:8872',
+				pathRewrite: {'^/hxx-gateway-proxy': ''},
 
 				secure: false
 			},

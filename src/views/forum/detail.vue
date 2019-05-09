@@ -2,9 +2,9 @@
 	<div class="detail">
 		<div style="height: 100%;overflow: auto;">
 			<div class="detail-header">
-			<h1>自家车到底要不要去汽车4S店保养？</h1>
+			<h1>{{listDetail.title}}</h1>
 			<div class="header-left">
-				<p>查看全部163个评论<span>></span></p>
+				<p>查看全部{{listDetail.number}}个评论<span>></span></p>
 			</div>
 			<div class="header-right">
 				<i class="fa fa-pencil-square-o"></i>
@@ -15,10 +15,10 @@
 		<div class="detail-menu">
 			<div class="menu-header">
 				<img src="/img/head.png" alt="">
-				<span>186****5567</span>
+				<span>{{listDetail.nickname}}</span>
 			</div>
 			<div class="menu-content">
-				我就说几件4孙子店的事情吧。 1、被公交车撞了，去维修，因为我出差，是老婆拿回来的，不知道看一下，等我回来一看。钣金不到位，车漆有磨砂感，是清漆喷的不到位，然后过了一段时间，车漆居然起泡了，路边店都没有这么烂的水平。后来有人告诉我，4孙子店的修车工，基本都是实习生。 2、给小姨子的车去保养，矿物油卖全合成的价，车子是1.4L发动机，一般情况下只要加3L油就够了，4孙子店故意拿出4L装的，用多的一升不会主动给你，直到我反复催促，大声喝骂，才不情愿的给我。而我小姨子不懂车，从来不知道拿回来。另外，4孙子店居然2万公里就给她的车换刹车片，4万公里就要求换变速箱油，而且还是重力置换3L，要价2000.老子一样的变速箱，外面循环置换12L才1200.再补充一件事情，小姨子的车要换轮胎，4孙子店两个米其林开价2000，
+				{{listDetail.content}}
 			</div>
 		</div>
 		<div class="detail-comments">
@@ -35,6 +35,62 @@
 				<div class="comments-center">
 					给小姨子的车去保养，矿物油卖全合成的价，车子是1.4L发动机，一般情况下只要加3L油就够了
 				</div>
+				<div class="stores-menu">
+					<div class="stores-li">
+						<div class="store-li-menu">
+							<div class="stores-left-menu">
+								<div class="menu-img">
+									<img src="/img/head.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="stores-li">
+						<div class="store-li-menu">
+							<div class="stores-left-menu">
+								<div class="menu-img">
+									<img src="/img/head.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="stores-li">
+						<div class="store-li-menu">
+							<div class="stores-left-menu">
+								<div class="menu-img">
+									<img src="/img/head.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="stores-li">
+						<div class="store-li-menu">
+							<div class="stores-left-menu">
+								<div class="menu-img">
+									<img src="/img/head.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="stores-li">
+						<div class="store-li-menu">
+							<div class="stores-left-menu">
+								<div class="menu-img">
+									<img src="/img/head.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="stores-li">
+						<div class="store-li-menu">
+							<div class="stores-left-menu">
+								<div class="menu-img">
+									<img src="/img/head.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				
 			</div>
 		</div>
@@ -44,11 +100,11 @@
 		<div class="footer">
 			<div class="footer-left">
 				<i class="fa fa-thumbs-o-up"></i>
-				<span >123</span>
+				<span >{{listDetail.praise}}</span>
 			</div>
 			<div class="footer-right">
 				<i class="fa fa-commenting-o "></i>
-				<span >123</span>
+				<span >{{listDetail.number}}</span>
 			</div>
 		</div>
 	</div>
@@ -60,7 +116,7 @@
 		data(){
 			return{
 				search:'',
-				comments:[],
+				listDetail:[],
 			}
 		},
 		mounted(){
@@ -70,10 +126,11 @@
 		methods:{
 			getNewTopic(){
 				this.axiosHxx.post('/cartalk/mycarcircles/releasedetail', {
-					access_token:'f7ff5ee7985d31ebde226c66ca4f17af5908f43cdba7997e46dfe202b48c8e810605f19147d09ea713638ced39f39649d07561542460a8bc5c3a0368ca3c068fccf7dabbc48e26da683404d1313fc6ec6ed99776e058bb8ba4c950abdbdbe948ff6e94736eee3728',
+					
 					contentId:'1'
-				},{baseURL: '/hxx-api-proxy'}).then( (res) => {
+				},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
 					console.log(res);
+					this.listDetail=res.data.data;
 					
 				})
 			},
@@ -82,7 +139,48 @@
 </script>
 
 <style scoped lang="less">
-
+.stores-menu{
+            overflow: hidden;
+            .stores-li{
+                padding: 5px;
+                width:33%;
+                display:inline-block;
+                /*float: left;*/
+                .store-li-menu{
+                    border:1px solid rgba(0,0,0,0.3);
+                    position: relative;
+                    overflow: hidden;
+                    .stores-left-menu{
+                        width: 100%;
+                        position: absolute;
+                        top: 50%;
+                        left:50%;
+                        -webkit-transform: translateX(-50%) translateY(-50%);
+                        -webkit-transform: translateX(-50%) translateY(-50%);
+                        -moz-transform: translateX(-50%) translateY(-50%);
+                        -ms-transform: translateX(-50%) translateY(-50%);
+                        transform: translateX(-50%) translateY(-50%);
+                        .menu-img{
+                            width: 100%;
+                            height: 100%;
+                            img{
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
+                    &:before{
+                        content: '';
+                        width: 100%;
+                        margin-top: 100%;
+                        display: block;
+                    }
+                }
+                
+                
+            }
+            
+        }
 .detail{
 	height: 100vh;
 	padding-bottom: 44px;
@@ -216,7 +314,7 @@
 				font-weight:400;
 				color:rgba(51,51,51,1);
 				line-height:21px;
-				padding-left: 35px;
+				    padding-top: 7px;
 			}
 			
 		}

@@ -15,15 +15,10 @@
 			热聊话题
 		</div>
 		<ul class="themeList">
-			<li>
-				今日头条新闻
+			<li v-for="item in comments">
+				{{item.title}}
 			</li>
-			<li>
-				今日头条新闻
-			</li>
-			<li>
-				今日头条新闻
-			</li>
+			
 		</ul>
 		<div class="title z-title">
 			搜索记录
@@ -47,9 +42,24 @@ export default {
 	data(){
 		return{
 			search:'',
+			comments:[]
 		}
 	},
+	mounted(){
+		this.getHotTopic();
+	},
 	methods:{
+		getHotTopic(){
+			this.axiosHxx.post('/cartalk/plate/selectTopicContentByHot', {
+				page: 1,
+				limit:5,
+			},{baseURL: '/qixiu-proxy'}).then( (res) => {
+
+				if(res.data.data&&res.data.data.length){
+					this.comments=res.data.data;
+				}
+			})
+		},
 		close(){
 
 		}
