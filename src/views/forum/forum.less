@@ -2,7 +2,7 @@
 .commonList {
     box-sizing: border-box;
     padding-left:15px;
-    
+
     li {
         box-sizing: border-box;
         border-bottom: 1px solid #D9D9D9;
@@ -122,5 +122,51 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+}
+
+.forum-comments{
+  li{
+    padding-top: 10px;
+    padding-left: 45px;
+    position: relative;
+    border-bottom: 1px solid #D9D9D9;
+    &:last-child{
+      border-bottom: 0;
+    }
+    .head{
+      width: 34px;
+      height: 34px;
+      position: absolute;
+      top: 10px;
+      left: 0;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+    .body{
+      padding: 0;
+      .name{
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .content{
+        font-size: 14px;
+        color: #333333;
+        line-height: 24px;
+        word-break: break-all;
+      }
+      .info{
+        color: #999999;
+        font-size: 13px;
+        line-height: 30px;
+        &>*{
+          margin-right: 3px;
+          i{
+            font-size: 14px;
+            margin-right: 2px;
+          }
+        }
+      }
+    }
   }
 }

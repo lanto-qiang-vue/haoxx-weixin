@@ -20,17 +20,15 @@ module.exports = {
 				// target: 'https://hxx.test.hoxiuxiu.com/',
 				// target: 'http://developer.hxx.hoxiuxiu.com/',
 				// target: 'http://mendian.dev.hoxiuxiu.com/',
-				target: 'http://192.168.169.231:10032/hxx-proxy/',
+				target: 'http://192.168.169.231:10032/hxx-proxy',
                 pathRewrite: {'^/hxx-proxy': ''},
                 secure: false
 			},
 			'/hxx-gateway-proxy': {
-				// target: 'http://192.168.169.231:8888',
+				target: 'http://192.168.169.231:8888',
 				// target: 'http://api.test.hoxiuxiu.com/',
-				target: 'http://192.168.169.120:8872',
-
+				// target: 'http://192.168.169.120:8872',
 				pathRewrite: {'^/hxx-gateway-proxy': ''},
-
 				secure: false
 			},
 			'/qixiu-proxy': {
