@@ -66,7 +66,7 @@ export default {
 	},
 	methods:{
 		getPostList(flag){
-			this.axiosHxx.post('/cartalk/mycarcircles/myrelease', {
+			this.axiosHxx.post('/cartalk/topic/myrelease', {
 				page: this.post.page,
 				limit:10,
 			},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {

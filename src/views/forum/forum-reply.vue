@@ -1,17 +1,17 @@
 <template>
 <div class="all-reply">
 	<ul class="forum-comments">
-		<li>
+		<li v-for="(item, index) in list" :key="index">
 			<img class="head" src="/img/head.png">
 			<div class="body">
-				<p class="name">186****5567</p>
-				<div class="content">给小姨子的车去保养，矿物油卖全合成的价，车子是1.4L发动机，一般情况下只要加3L油就够了</div>
+				<p class="name">{{item.nickname}}</p>
+				<div class="content" v-html="item.commentContent.replace(/\n/g,'</br>')"></div>
 				<div class="info">
-					<span class="support"><i class="fa fa-thumbs-o-up"></i>13</span>·
+					<span class="support"><i class="fa fa-thumbs-o-up"></i>{{item.praise}}</span>·
 					<span>回复</span>·
-					<span>04/19</span>
+					<span>{{item.createDate}}</span>
 				</div>
-				<reply-item></reply-item>
+				<reply-item :data="item.replys" :total="item.number"></reply-item>
 			</div>
 		</li>
 	</ul>
@@ -36,14 +36,27 @@ export default {
 	},
 	data(){
 		return{
-
+			list:[],
+			page: 1,
+			total: 0
 		}
 	},
 	mounted(){
-
+		this.getList()
 	},
 	methods: {
-
+		getList(){
+			this.axiosHxx.post('/topic/carcircles/comment', {
+				contentId: this.id,
+				page: this.page,
+				limit: 10,
+			},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
+				if(res.data.success){
+					this.list= res.data.data
+					this.total= res.data.total
+				}
+			})
+		}
 	},
 }
 </script>

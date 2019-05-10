@@ -1,14 +1,14 @@
 <template>
 <ul class="forum-reply forum-comments">
-	<li>
+	<li v-for="(item, index) in showList" :key="index">
 		<img class="head" src="/img/head.png">
 		<div class="body">
-			<p class="name">段军 <i class="fa fa-angle-right"></i> 186****5567</p>
-			<div class="content">给小姨子的车去保养，矿物油卖全合成的价，车子是1.4L发动机，一般情况下只要加3L油就够了</div>
+			<p class="name">{{item.replyname}} <i class="fa fa-angle-right"></i> {{item.replytousername}}</p>
+			<div class="content" v-html="item.content.replace(/\n/g,'</br>')"></div>
 			<div class="info">
-				<span class="support"><i class="fa fa-thumbs-o-up"></i>13</span>·
+				<span class="support"><i class="fa fa-thumbs-o-up"></i>{{item.praise}}</span>·
 				<span>回复</span>·
-				<span>04/19</span>
+				<span>{{item.createDate}}</span>
 			</div>
 		</div>
 	</li>
@@ -19,7 +19,24 @@
 <script>
 export default {
 	name: "forum-reply",
-
+	props: {
+		'data': {
+			default: ()=> []
+		},
+		'total': {
+			default: 0
+		},
+	},
+	data(){
+		return{
+			list: []
+		}
+	},
+	computed:{
+		showList(){
+			return this.data.concat(this.list)
+		}
+	}
 }
 </script>
 

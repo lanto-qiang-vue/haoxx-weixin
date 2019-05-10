@@ -3,9 +3,9 @@
 	<div class="header">
 		<h1>{{detail.title}}</h1>
 		<div class="review">
-			<router-link tag="p" to="/forum-reply" class="left">
+			<router-link tag="p" :to="'/forum-reply?id='+ $route.query.id" class="left">
 				查看全部{{detail.number}}个评论 <i class="fa fa-angle-right"></i></router-link>
-			<div class="right">
+			<div class="right"  @click="clickComment">
 				<i class="fa fa-pencil-square-o"></i>
 				<span>评论</span>
 			</div>
@@ -17,14 +17,14 @@
 			<img src="/img/head.png">
 			<span>{{detail.nickname}}</span>
 		</div>
-		<div class="content" v-html="detail.content"></div>
+		<div class="content" v-html="detail.content && detail.content.replace(/\n/g,'</br>')"></div>
 		<ul class="imgs">
 			<li v-for="(item, index) in detail.items" :key="index"><img :src="item.path" v-img="{group: 'img'}"/></li>
 		</ul>
 	</div>
 	<div class="comments">
 		<h1>评论</h1>
-		<forum-reply :hide-input="true"></forum-reply>
+		<forum-reply :hide-input="true" :id="$route.query.id" ref="reply"></forum-reply>
 	</div>
 
 	<div class="bottom">
@@ -37,43 +37,75 @@
 			<span >{{detail.number}}</span>
 		</div>
 	</div>
+
+	<mt-popup :value="showComment" position="bottom" class="popup">
+		<Input v-model.trim="comment" placeholder="填写评论内容" type="textarea" class="comment-input"
+		       :autosize="{ minRows: 10}" wrap="hard" ref="input"></Input>
+		<div class="common-submit">
+			<submit-button :rules="{comment: { required: true}}" :datas="{comment}" @click="submit">发布</submit-button>
+		</div>
+	</mt-popup>
 </div>
 </template>
 
 <script>
 import ForumReply from './forum-reply.vue'
+import SubmitButton from '@/components/submit-button.vue'
 export default {
 	name: "forum-detail",
-	components: {ForumReply },
+	components: {ForumReply, SubmitButton},
 	data(){
 		return{
 			detail: {},
-			imgs: [
-				"/img/head.png",
-				"/img/head.png",
-				"/img/head.png",
-				"/img/head.png",
-				"/img/head.png",
-				"/img/head.png",
-				"/img/head.png",
-			]
+			showComment: false,
+			comment: '',
 		}
 	},
+	watch:{
+		'$route'(to){
+			this.showBlock()
+		},
+	},
 	mounted(){
-
 		this.getNewTopic()
+		this.showBlock()
 	},
 	methods:{
-		getNewTopic(){
-			this.axiosHxx.post('/cartalk/mycarcircles/releasedetail', {
+		showBlock(){
+			this.showComment= !!this.$route.query.showComment
+		},
+		clickComment(){
+			let route= this.$route
+			this.$router.push({path: route.path, query: {...route.query, showComment: true}})
+			setTimeout(()=>{
+				this.$refs.input.focus()
+			},500)
 
-				contentId:'1'
+		},
+		getNewTopic(){
+			this.axiosHxx.post('/topic/carcircles/releasedetail', {
+				contentId: this.$route.query.id
 			},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
 				console.log(res);
 				this.detail=res.data.data;
-
 			})
 		},
+		submit(){
+			this.axiosHxx.post('/cartalk/topic/comment',{data: {
+					contentId: this.$route.query.id,
+					content: this.comment,
+					businessId: 1,
+					commentUserId: this.$store.state.user.userinfo.userId,
+					receiveUserId: this.detail.userId
+			}}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+				if(res.data.success){
+					this.$toast('发布成功')
+					this.$refs.reply.getList()
+					this.$router.go(-1)
+
+				}
+			})
+		}
 	}
 }
 </script>
@@ -220,6 +252,25 @@ export default {
 				line-height: 10px;
 				vertical-align: text-top;
 			}
+		}
+	}
+
+	.popup{
+		height: 100vh;
+		width: 100%;
+		overflow: auto;
+	}
+}
+</style>
+<style lang="less">
+.forum-detail{
+	.popup{
+		.comment-input textarea{
+			max-height: 100vh!important;
+			overflow-y: auto!important;
+			border: 0;
+			box-shadow: none;
+			padding: 15px 15px 60px;
 		}
 	}
 }

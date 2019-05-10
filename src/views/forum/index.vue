@@ -26,7 +26,7 @@
 		<mt-loadmore :bottom-method="hotLoadBottom" :bottom-all-loaded="comments.allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="hotLoadmore">
 			<ul class="commonList">
-				<li v-for="item in comments.list">
+				<router-link tag="li" :to="'/forum-detail?id='+ item.id" v-for="item in comments.list">
 					<div class="common-header">
 						<img src="/img/head.png" alt="">
 						<span>{{item.nickname}}</span>
@@ -41,7 +41,7 @@
 						<span class="left">{{item.number}}个评论</span>
 						<span class="right">去参与</span>
 					</div>
-				</li>
+				</router-link>
 			</ul>
 		</mt-loadmore>
 	</div>
@@ -82,7 +82,7 @@
 			getHotTopic(flag){
 				this.axiosHxx.post('/cartalk/plate/selectTopicContentByHot', {
 					page: this.comments.page,
-					limit:1,
+					limit:10,
 				},{baseURL: '/qixiu-proxy'}).then( (res) => {
 					if(flag) this.$refs.hotLoadmore.onBottomLoaded()
 					else this.comments.list=[]
