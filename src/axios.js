@@ -97,10 +97,12 @@ axiosHxx.interceptors.request.use(config => {
 	// 	config.headers.token= token
 	// }
 	Indicator.close()
-    Indicator.open({
-		text: '请稍候...',
-		spinnerType: 'snake'
-    });
+	if(!config.noIndicator){
+		Indicator.open({
+			text: '请稍候...',
+			spinnerType: 'snake'
+		});
+	}
     return config
 }, error => {
     return Promise.reject(error);
@@ -168,10 +170,12 @@ axiosQixiu.interceptors.request.use(config => {
 		config.headers.token= token
 	}
 	Indicator.close()
-	Indicator.open({
-		text: '请稍候...',
-		spinnerType: 'snake'
-	});
+	if(!config.noIndicator){
+		Indicator.open({
+			text: '请稍候...',
+			spinnerType: 'snake'
+		});
+	}
 	return config
 }, error => {
 	Indicator.close()

@@ -6,6 +6,7 @@ import store from './store'
 import axios from './axios.js'
 import MintUI from 'mint-ui'
 import VueImg from 'v-img'
+import '@/assets/material-design-iconic-font/css/material-design-iconic-font.min.css'
 import '@/assets/font-awesome/css/font-awesome.min.css'
 import 'iview/dist/styles/iview.css';
 import 'mint-ui/lib/style.css'

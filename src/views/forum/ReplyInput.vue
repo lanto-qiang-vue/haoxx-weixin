@@ -1,17 +1,17 @@
 <template>
-<div class="reply-input" v-show="!hideInput">
-	<div class="mask" v-show="showMask"></div>
+<div class="reply-input" v-show="show">
+	<div class="mask" v-show="showMask" @click="close"></div>
 	<div class="bottom">
-		<div class="target">
-			正在回复·186****5567
+		<div class="target" v-show="type==2">
+			正在回复·{{item.replytousername || item.nickname}}
 		</div>
-		<div :class="['reply',{on: content}]">
+		<div :class="['reply', {on: content}]">
 			<Input v-model.trim="content" placeholder="请输入您的评论" type="textarea"
 			       :autosize="{ minRows: 1}" wrap="hard"
 			       @on-focus="showMask=true"
-			       @on-blur="showMask=false"
+			       ref="input"
 			></Input>
-			<div class="post" v-show="content">发布</div>
+			<div class="post" v-show="content" @click="submit">发布</div>
 		</div>
 	</div>
 </div>
@@ -21,14 +21,44 @@
 export default {
 	name: "reply-input",
 	props: {
-		'hideInput': {
+		'initShow': {
 			default: false
 		},
 	},
 	data(){
 		return{
 			content: '',
-			showMask: false
+			showMask: false,
+			show: false,
+			type: 1,
+			item: {},
+		}
+	},
+	mounted(){
+		this.close()
+	},
+	methods: {
+		open(type, item){
+			this.show= true
+			this.type= type
+			this.item= item
+			setTimeout(()=>{
+				this.$refs.input.focus()
+			},50)
+		},
+		close(){
+			this.type= 1
+			this.item= {}
+			this.content= ''
+			this.showMask= false
+			this.show= this.initShow
+		},
+		submit(){
+			if(!this.content){
+				this.$toast('请输入评论内容');
+			}else{
+				this.$emit('reply', this.type, this.item, this.content);
+			}
 		}
 	}
 }

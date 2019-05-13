@@ -9,12 +9,13 @@
 			</form>
 		</div>
 		<ul class="button">
-			<router-link tag="li" to="/forum-board"><img src="/img/forum/icon-everyday.png"/><p>查选维修</p></router-link>
-			<li><img src="/img/forum/icon-beautify.png"/><p>爱车美容</p></li>
-			<li><img src="/img/forum/icon-maintenance.png"/><p>车辆维修</p></li>
-			<li><img src="/img/forum/icon-refit.png"/><p>汽车改装</p></li>
-			<li><img src="/img/forum/icon-doctor.png"/><p>车大夫</p></li>
-			<li><img src="/img/forum/icon-speak.png"/><p>汽车杂谈</p></li>
+			<router-link tag="li" to="/forum-board?name=全部圈子">
+				<img src="/img/forum/icon-all-board.png"/><p>全部圈子</p></router-link>
+			<router-link tag="li"
+			             :to="`/forum-board?id=${item.id}&name=${item.content}`"
+			             v-for="(item, index) in boardList" :key="index">
+				<img :src="item.icon"/><p>{{item.content}}</p>
+			</router-link>
 		</ul>
 
 		<div class="title">
@@ -59,6 +60,7 @@
 		data(){
 			return{
 				search:'',
+				boardList: [],
 				comments:{
 					list: [],
 					page: 1,
@@ -73,10 +75,10 @@
 		},
 		methods:{
 			getCarTalk(){
-				this.axiosHxx.post('/cartalk/plate/selectTopicPlate', {
-
-				},{baseURL: '/qixiu-proxy'}).then( (res) => {
-
+				this.axiosHxx.post('/cartalk/plate/selectTopicPlate', {},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
+					if(res.data.success){
+						this.boardList= res.data.data
+					}
 				})
 			},
 			getHotTopic(flag){

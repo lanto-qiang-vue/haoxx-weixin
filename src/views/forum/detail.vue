@@ -3,8 +3,8 @@
 	<div class="header">
 		<h1>{{detail.title}}</h1>
 		<div class="review">
-			<router-link tag="p" :to="'/forum-reply?id='+ $route.query.id" class="left">
-				查看全部{{detail.number}}个评论 <i class="fa fa-angle-right"></i></router-link>
+			<p class="left" @click="gotoReply">
+				查看全部{{detail.number}}个评论 <i class="fa fa-angle-right"></i></p>
 			<div class="right"  @click="clickComment">
 				<i class="fa fa-pencil-square-o"></i>
 				<span>评论</span>
@@ -17,23 +17,25 @@
 			<img src="/img/head.png">
 			<span>{{detail.nickname}}</span>
 		</div>
-		<div class="content" v-html="detail.content && detail.content.replace(/\n/g,'</br>')"></div>
+		<div class="content" v-html="detail.content && detail.content.replace(/\n/g,'<br/>')"></div>
 		<ul class="imgs">
 			<li v-for="(item, index) in detail.items" :key="index"><img :src="item.path" v-img="{group: 'img'}"/></li>
 		</ul>
 	</div>
 	<div class="comments">
 		<h1>评论</h1>
-		<forum-reply :hide-input="true" :id="$route.query.id" ref="reply"></forum-reply>
+		<forum-reply :init-show-input="false" :id="$route.query.id" ref="reply" :userid="detail.userId"></forum-reply>
 	</div>
 
 	<div class="bottom">
-		<div class="left">
-			<i class="fa fa-thumbs-o-up"></i>
-			<span >{{detail.praise}}</span>
-		</div>
-		<div class="right">
-			<i class="fa fa-commenting-o "></i>
+		<thumb-up :num="detail.praise"></thumb-up>
+		<!--<div class="left">-->
+			<!--<i class="fa fa-thumbs-o-up"></i>-->
+			<!--<span >{{detail.praise}}</span>-->
+		<!--</div>-->
+		<div class="right" @click="gotoReply">
+			<i class="zmdi zmdi-comment-alt-text"></i>
+			<!--<i class="fa fa-commenting-o "></i>-->
 			<span >{{detail.number}}</span>
 		</div>
 	</div>
@@ -50,10 +52,11 @@
 
 <script>
 import ForumReply from './forum-reply.vue'
+import ThumbUp from './ThumbUp.vue'
 import SubmitButton from '@/components/submit-button.vue'
 export default {
 	name: "forum-detail",
-	components: {ForumReply, SubmitButton},
+	components: {ForumReply, SubmitButton, ThumbUp},
 	data(){
 		return{
 			detail: {},
@@ -80,7 +83,6 @@ export default {
 			setTimeout(()=>{
 				this.$refs.input.focus()
 			},500)
-
 		},
 		getNewTopic(){
 			this.axiosHxx.post('/topic/carcircles/releasedetail', {
@@ -105,6 +107,9 @@ export default {
 
 				}
 			})
+		},
+		gotoReply(){
+			this.$router.push({path: '/forum-reply', query:{id: this.$route.query.id, userid: this.detail.userId}})
 		}
 	}
 }
@@ -185,7 +190,7 @@ export default {
 				width: 33%;
 				border-style: solid;
 				border-color: transparent;
-				border-width: 0 6px 6px 0;
+				border-width: 6px 6px 0 0;
 				float: left;
 				position: relative;
 				display: inline-block;
@@ -233,15 +238,7 @@ export default {
 		font-size:20px;
 		line-height: 44px;
 		color: #999999;
-		.left{
-			display: inline-block;
-			padding-left: 20px;
-			span{
-				font-size:10px;
-				line-height: 10px;
-				vertical-align: text-top;
-			}
-		}
+
 		.right{
 			float: right;
 			display: inline-block;
@@ -251,6 +248,7 @@ export default {
 				font-size:10px;
 				line-height: 10px;
 				vertical-align: text-top;
+				margin-left: 5px;
 			}
 		}
 	}
@@ -264,6 +262,17 @@ export default {
 </style>
 <style lang="less">
 .forum-detail{
+	.bottom{
+		.thumb-up{
+			display: inline-block;
+			padding-left: 15px;
+			span{
+				font-size:10px;
+				line-height: 10px;
+				vertical-align: text-top;
+			}
+		}
+	}
 	.popup{
 		.comment-input textarea{
 			max-height: 100vh!important;
