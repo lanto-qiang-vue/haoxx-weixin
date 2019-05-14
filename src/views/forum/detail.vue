@@ -24,7 +24,8 @@
 	</div>
 	<div class="comments">
 		<h1>评论</h1>
-		<forum-reply :init-show-input="false" :id="$route.query.id" ref="reply" :userid="detail.userId"></forum-reply>
+		<forum-reply :init-show-input="false" :id="$route.query.id" ref="reply" :userid="detail.userId"
+		:isIndex="true" :limit="3"></forum-reply>
 	</div>
 
 	<div class="bottom">

@@ -400,3 +400,31 @@ export const getCityToken= ()=>{
 	let useToken= nowCode? qixiutoken[nowCode+ 'qxToken'] : false
 	return useToken
 }
+
+export const getTimeAgo = (time_str)=>{
+	var now = new Date();
+	var date = new Date(time_str.replace(/-/g,'/'));
+//计算时间间隔，单位为分钟
+	var inter = parseInt((now.getTime() - date.getTime())/1000/60);
+	if(inter == 0){
+		return "刚刚";
+	}
+//多少分钟前
+	else if(inter < 60){
+		return inter.toString() + "分钟前";
+	}
+//多少小时前
+	else if(inter < 60*24){
+		return parseInt(inter/60).toString() + "小时前";
+	}
+//本年度内，日期不同，取日期+时间  格式如  06-13 22:11
+	else if(now.getFullYear() == date.getFullYear()){
+		return ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate()+1)).slice(-2)
+			// + " " + date.getHours() + ":" + date.getMinutes();
+	}
+	else{
+		return date.getFullYear().toString().substring(2, 3)
+			+ "-" + ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate()+1)).slice(-2)
+			// + " " + date.getHours() + ":" + date.getMinutes();
+	}
+}

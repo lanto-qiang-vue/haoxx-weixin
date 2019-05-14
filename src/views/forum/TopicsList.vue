@@ -1,13 +1,173 @@
 <template>
-
+<div class="topics-list">
+	<div class="title">
+		<span :class="{active: active=='hottest'}" @click="active='hottest'" v-if="hottestShow">热聊话题</span>
+		<span :class="{active: active=='latest'}" @click="active='latest'" v-if="latestShow">最新话题</span>
+	</div>
+	<mt-tab-container v-model="active" :swipeable="true" class="body" :style="`padding-top: ${top}px`">
+		<mt-tab-container-item id="hottest" v-if="hottestShow">
+			<ul class="list"
+			    v-infinite-scroll="loadMoreHottest"
+			    infinite-scroll-disabled="hottestAllLoaded"
+			    infinite-scroll-distance="30">
+				<topics-item v-for="(item, key) in hottest.list" :key="key" :item="item"></topics-item>
+			</ul>
+		</mt-tab-container-item>
+		<mt-tab-container-item id="latest" v-if="latestShow">
+			<ul class="list"
+			    v-infinite-scroll="loadMoreLatest"
+			    infinite-scroll-disabled="latestAllLoaded"
+			    infinite-scroll-distance="30">
+				<topics-item v-for="(item, key) in latest.list" :key="key" :item="item"></topics-item>
+				<!--<li v-for="item in latest.list">-->
+					<!--<div class="common-header">-->
+						<!--<img src="/img/head.png" alt="">-->
+						<!--<span>{{item.nickname}}</span>-->
+					<!--</div>-->
+					<!--<p>{{item.content}}</p>-->
+					<!--<div class="imgGroup" v-if="item.paths">-->
+						<!--<div v-for="img in item.paths.split(',')"-->
+						     <!--class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>-->
+					<!--</div>-->
+					<!--<div class="listFooter">-->
+						<!--<span class="center" :style="{ color: item.colour}">{{item.topicContent}}</span>-->
+						<!--<span>{{item.pastTime | TimeAgo}}</span>-->
+						<!--<span class="left">{{item.number}}个评论</span>-->
+						<!--<span class="right">去参与</span>-->
+					<!--</div>-->
+				<!--</li>-->
+			</ul>
+		</mt-tab-container-item>
+	</mt-tab-container>
+</div>
 </template>
 
 <script>
+import TopicsItem from './TopicsItem.vue'
 export default {
-	name: "topics-list"
+	name: "topics-list",
+	components: {TopicsItem },
+	props: {
+		id: {
+			default: ''
+		},
+		top: {
+			default: 0
+		},
+		limit: {
+			default: 10
+		},
+		hottestShow: {
+			default: true
+		},
+		latestShow: {
+			default: true
+		},
+		isIndex: {
+			default: false
+		},
+	},
+	data(){
+		return{
+			active:'hottest',
+			hottest:{
+				list: [],
+				page: 0,
+				total: 0,
+				// allLoaded: false
+			},
+			latest:{
+				list: [],
+				page: 0,
+				total: 0,
+				// allLoaded: false
+			},
+			hottestAllLoaded: false,
+			latestAllLoaded: false,
+		}
+	},
+	mounted(){
+		if(!this.hottestShow) this.active= 'latest'
+	},
+	methods:{
+		loadMoreHottest(){
+			this.hottest.page++
+			this.getList('hottest', true)
+		},
+		loadMoreLatest(){
+			this.latest.page++
+			this.getList('latest', true)
+		},
+		getList(listType, flag){
+			let url= '', thisList= this[listType]
+			switch (listType){
+				case 'hottest':{
+					url= '/cartalk/plate/selectTopicContentByHot'
+					break
+				}
+				case 'latest':{
+					url= '/cartalk/plate/selectTopicContentByTime'
+					break
+				}
+			}
+			this.axiosHxx.post(url, {
+				page: thisList.page,
+				bbsTopicId: this.id,
+				limit: this.limit,
+			},{baseURL: '/hxx-gateway-proxy', noIndicator: true}).then( (res) => {
+				if(res.data.success){
+					let datas= res.data.data
+					if(!flag) thisList.list=[]
+					thisList.total= res.data.total
+					if(datas && datas.length){
+						thisList.list= thisList.list.concat(datas)
+						if(thisList.list.length>=res.data.total || this.isIndex){
+							this[listType+ 'AllLoaded']= true
+						}else{
+							this[listType+ 'AllLoaded']= false
+						}
+					}else{
+						this[listType+ 'AllLoaded']= true
+					}
+				}
+			})
+		}
+	}
 }
 </script>
 
 <style scoped lang="less">
-
+/*@import './forum.less';*/
+.topics-list{
+	position: relative;
+	.title {
+		margin-bottom: 5px;
+		padding: 10px 0 0 15px;
+		width: 100%;
+		line-height: 20px;
+		color: #666;
+		font-size:14px;
+		font-weight:500;
+		overflow: hidden;
+		border-top: 10px #F3F3F3 solid;
+		position: relative;
+		z-index: 1;
+		span{
+			padding-right: 20px;
+			transition: color .3s;
+			&.active{
+				color: #FF6D0E;
+			}
+		}
+	}
+	.body{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		.list{
+			padding-left:15px;
+		}
+	}
+}
 </style>

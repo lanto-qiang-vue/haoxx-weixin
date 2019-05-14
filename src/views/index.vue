@@ -32,33 +32,9 @@
 		<li @click="goCoupons">保养券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons">油漆券<span>查看可用券</span></li>
 	</ul>
-	<div class="z-title">
-		<span>最新话题</span>
-	</div>
-	<mt-loadmore :bottom-method="postLoadBottom" :bottom-all-loaded="comments.allLoaded" :autoFill="false"
-	             bottomPullText="加载更多"   ref="postLoadmore">
-		<ul class="commonList">
-			<li v-for="item in comments.list">
-				<div class="common-header">
-					<img src="/img/head.png" alt="">
-					<span>{{item.nickname}}</span>
-				</div>
-				<p>{{item.content}}</p>
 
-				<div class="imgGroup" v-if="item.paths.length>0">
-					<div v-for="img in item.paths" class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>
-				</div>
+	<topics-list :top="40" :hottestShow="false" :isIndex="true"></topics-list>
 
-				<div class="listFooter">
-					<span class="center" :style="{ color: item.colour}">{{item.topicContent}}</span>
-					<span>{{item.pastTime}}</span>
-					<span class="left">{{item.number}}个评论</span>
-					<span class="right">去参与</span>
-				</div>
-			</li>
-		</ul>
-	</mt-loadmore>
-	
 </div>
 </template>
 
@@ -66,9 +42,10 @@
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import { getCityToken} from '@/util'
+import TopicsList from '@/views/forum/TopicsList.vue'
 export default {
 	name: "index",
-	components: {swiper, swiperSlide},
+	components: {swiper, swiperSlide, TopicsList},
 	data(){
 		return{
 			banners:[],
@@ -105,7 +82,6 @@ export default {
 	mounted(){
 		this.getBanner()
 		this.init()
-		this.getNewTopic()
 	},
 	methods:{
 		init(){
@@ -150,76 +126,14 @@ export default {
 			}
 			return obj
 		},
-		getNewTopic(flag){
-			this.axiosHxx.post('/cartalk/plate/selectTopicContentByTime', {
-				page: this.comments.page,
-				limit:1,
-			},{baseURL: '/qixiu-proxy'}).then( (res) => {
-				if(flag) this.$refs.postLoadmore.onBottomLoaded()
-				else this.comments.list=[]
-				this.comments.total= res.data.total
-				if(res.data.data&&res.data.data.length){
-					for(let i in res.data.data){
-						if(res.data.data[i]['path']){
-							res.data.data[i]['paths']=res.data.data[i]['path'].split(',');
-						}else{
-							res.data.data[i]['paths']=[];
-						}
-					}
-					let arr= res.data.data
-					this.comments.list=this.comments.list.concat(arr)
-
-					if(this.comments.list.length>=res.data.total){
-						this.comments.allLoaded=true
-					}else{
-						this.comments.allLoaded=false
-					}
-
-				}else{
-					this.comments.allLoaded=true
-				}
-			})
-		},
-		postLoadBottom() {
-			this.comments.page++
-			this.getNewTopic(true)
-		},
 		goCoupons(){
 			this.$router.push('/coupons-type')
 		}
 	},
 }
 </script>
-<style lang='less'>
-@import './forum/forum.less';
-</style>
-<style scoped lang="less">
 
-.z-title {
-	box-sizing: border-box;
-	padding:12px 0 5px 15px;
-	width: 100%;
-	line-height: 20px;
-	color: #666;
-	font-size:14px;
-	font-weight:500;
-	overflow: hidden;
-	border-top: 8px #F3F3F3 solid;
-	span{
-		padding-right: 20px;
-	}
-	.active{
-		color: #FF6D0E;
-	}
-}
-.commonList li .listFooter .z-right{
-	width:54px;
-	height:24px;
-	background:rgba(255,151,56,1);
-	border-radius:12px;
-	line-height: 24px;
-	color: #fff;
-}
+<style scoped lang="less">
 .index{
 	height: 100%;
 	overflow: auto;

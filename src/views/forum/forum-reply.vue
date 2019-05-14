@@ -2,7 +2,7 @@
 <div class="all-reply">
 	<ul class="forum-comments"
 		v-infinite-scroll="loadMore"
-		infinite-scroll-disabled="disableload"
+		infinite-scroll-disabled="allLoaded"
 		infinite-scroll-distance="30">
 		<li v-for="(item, index) in list" :key="index">
 			<img class="head" src="/img/head.png">
@@ -13,29 +13,12 @@
 					<!--<span class="support"><i class="fa fa-thumbs-o-up"></i>{{item.praise}}</span>·-->
 					<thumb-up class="support" :num="item.praise"></thumb-up>·
 					<span @click="reply(item)">回复</span>·
-					<span>{{item.createDate}}</span>
+					<span>{{item.createDate | TimeAgo}}</span>
 				</div>
 				<reply-item :data="item.replys" :num="item.number" :id="item.id" @onreply="reply"></reply-item>
 			</div>
 		</li>
 	</ul>
-
-	<!--<ul class="forum-comments">-->
-		<!--<li v-for="(item, index) in list" :key="index">-->
-			<!--<img class="head" src="/img/head.png">-->
-			<!--<div class="body">-->
-				<!--<p class="name">{{item.nickname}}</p>-->
-				<!--<div class="content" v-html="item.commentContent.replace(/\n/g,'<br/>')"></div>-->
-				<!--<div class="info">-->
-					<!--&lt;!&ndash;<span class="support"><i class="fa fa-thumbs-o-up"></i>{{item.praise}}</span>·&ndash;&gt;-->
-					<!--<thumb-up class="support" :num="item.praise"></thumb-up>·-->
-					<!--<span @click="reply(item)">回复</span>·-->
-					<!--<span>{{item.createDate}}</span>-->
-				<!--</div>-->
-				<!--<reply-item :data="item.replys" :num="item.number" :id="item.id" @onreply="reply"></reply-item>-->
-			<!--</div>-->
-		<!--</li>-->
-	<!--</ul>-->
 
 	<reply-input :init-show="initShowInput" ref="reply" @reply="replySubmit"></reply-input>
 </div>
@@ -58,24 +41,30 @@ export default {
 		'userid': {
 			default: ''
 		},
+		isIndex: {
+			default: false
+		},
+		limit: {
+			default: 10
+		},
 	},
 	data(){
 		return{
 			list:[],
-			page: 1,
+			page: 0,
 			total: 0,
-			disableload: false
+			allLoaded: false
 		}
 	},
 	mounted(){
-		this.getList()
+		// this.getList()
 	},
 	methods: {
 		getList(flag){
 			this.axiosHxx.post('/topic/carcircles/comment', {
 				contentId: this.id,
 				page: this.page,
-				limit: 1,
+				limit: this.limit,
 			},{baseURL: '/hxx-gateway-proxy', noIndicator: true}).then( (res) => {
 				if(res.data.success){
 					let datas= res.data.data
@@ -83,13 +72,13 @@ export default {
 					this.total= res.data.total
 					if(datas && datas.length){
 						this.list=this.list.concat(datas)
-						if(this.list.length>=res.data.total){
-							this.disableload= true
+						if(this.list.length>=res.data.total  || this.isIndex){
+							this.allLoaded= true
 						}else{
-							this.disableload= false
+							this.allLoaded= false
 						}
 					}else{
-						this.disableload= true
+						this.allLoaded= true
 					}
 				}
 			})
@@ -107,7 +96,6 @@ export default {
 				content: content,
 				businessId: type,
 				commentUserId: this.$store.state.user.userinfo.userId,
-
 			}
 			switch(type){
 				case 1:{

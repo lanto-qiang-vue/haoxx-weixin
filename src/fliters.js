@@ -1,5 +1,5 @@
 import Vue from "vue"
-import { formatDate} from "./util"
+import { formatDate, getTimeAgo} from "./util"
 
 //格式化日期
 Vue.filter("FormatDate", function (value, format) {
@@ -40,4 +40,9 @@ Vue.filter("FormatArticle", function (value, title) {
   // console.log(value)
 	let text= value? value.replace(/<\/?.+?>/g,"").replace(/\ +/g,"").replace(/[ ]/g,"").replace(/[\r\n]/g,"").replace(/&nbsp;/ig, "").replace(/&ldquo;/ig, "“").replace(/&rdquo;/ig, "”") :'';
   return text|| title
+})
+
+//格式化多久之前
+Vue.filter("TimeAgo", function (value) {
+	return value? getTimeAgo(value) : ''
 })

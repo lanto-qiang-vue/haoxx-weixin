@@ -8,7 +8,7 @@
 			<div class="info">
 				<thumb-up class="support" :num="item.praise"></thumb-up>·
 				<span @click="toReply(item)">回复</span>·
-				<span>{{item.createDate}}</span>
+				<span>{{item.createDate | TimeAgo}}</span>
 			</div>
 		</div>
 	</li>
