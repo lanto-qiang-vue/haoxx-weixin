@@ -10,7 +10,7 @@
 
 	<topics-list :top="40" :id="$route.query.id"></topics-list>
 
-	<topic-add></topic-add>
+	<topic-add :id="$route.query.id"></topic-add>
 </div>
 </template>
 

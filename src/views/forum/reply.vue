@@ -12,7 +12,7 @@
 				<div class="info">
 					<!--<span class="support"><i class="fa fa-thumbs-o-up"></i>{{item.praise}}</span>·-->
 					<thumb-up class="support" :num="item.praise"></thumb-up>·
-					<span @click="reply(item)">回复</span>·
+					<span @click="reply(item, true)">回复</span>·
 					<span>{{item.createDate | TimeAgo}}</span>
 				</div>
 				<reply-item :data="item.replys" :num="item.number" :id="item.id" @onreply="reply"></reply-item>
@@ -20,7 +20,7 @@
 		</li>
 	</ul>
 
-	<reply-input :init-show="initShowInput" ref="reply" @reply="replySubmit"></reply-input>
+	<reply-input :init-show="initShowInput" ref="reply" @reply="setComment"></reply-input>
 </div>
 </template>
 
@@ -62,7 +62,7 @@ export default {
 	methods: {
 		getList(flag){
 			this.axiosHxx.post('/topic/carcircles/comment', {
-				contentId: this.id,
+				contentId: this.id || this.$route.query.id,
 				page: this.page,
 				limit: this.limit,
 			},{baseURL: '/hxx-gateway-proxy', noIndicator: true}).then( (res) => {
@@ -87,34 +87,55 @@ export default {
 			this.page++
 			this.getList(true)
 		},
-		reply(item){
-			this.$refs.reply.open(2, item)
+		reply(item, toComment){
+			this.$refs.reply.open(toComment?item.nickname: item.replytousername).then((val)=>{
+				
+				this.axiosHxx.post('/cartalk/topic/reply',{ comment: {
+						contentId: this.$route.query.id,
+						content: val,
+					}}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+					if(res.data.success){
+						this.$toast('评论成功')
+						this.$refs.reply.close()
+					}
+				})
+			})
 		},
-		replySubmit(type, item, content){
-			console.log('type, item, content', type, item, content)
-			let data= {
-				content: content,
-				businessId: type,
-				commentUserId: this.$store.state.user.userinfo.userId,
-			}
-			switch(type){
-				case 1:{
-					data.contentId= this.id|| this.$route.query.id
-					data.receiveUserId= this.userid || this.$route.query.userid
-					break
-				}
-				case 2:{
-					data.commentId= item.id
-					data.receiveUserId= item.replyid || item.userId
-					break
-				}
-			}
-			this.axiosHxx.post('/cartalk/topic/comment',{data: data}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+		setComment( val){
+			this.axiosHxx.post('/cartalk/topic/comment',{ comment: {
+					contentId: this.$route.query.id,
+					content: val,
+				}}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
 				if(res.data.success){
 					this.$toast('评论成功')
 					this.$refs.reply.close()
 				}
 			})
+			//
+			// console.log('type, item, content', type, item, content)
+			// let data= {
+			// 	content: content,
+			// 	businessId: type,
+			// 	commentUserId: this.$store.state.user.userinfo.userId,
+			// }
+			// switch(type){
+			// 	case 1:{
+			// 		data.contentId= this.id|| this.$route.query.id
+			// 		data.receiveUserId= this.userid || this.$route.query.userid
+			// 		break
+			// 	}
+			// 	case 2:{
+			// 		data.commentId= item.id
+			// 		data.receiveUserId= item.replyid || item.userId
+			// 		break
+			// 	}
+			// }
+			// this.axiosHxx.post('/cartalk/topic/comment',{data: data}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+			// 	if(res.data.success){
+			// 		this.$toast('评论成功')
+			// 		this.$refs.reply.close()
+			// 	}
+			// })
 
 		}
 	},

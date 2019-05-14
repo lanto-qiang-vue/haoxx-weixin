@@ -1,10 +1,11 @@
 <template>
-	<router-link tag="div" to="/forum-post" class="topic-add"></router-link>
+	<router-link tag="div" :to="{path: '/forum-post', query:{ id}}" class="topic-add"></router-link>
 </template>
 
 <script>
 export default {
-	name: "topic-add"
+	name: "topic-add",
+	props: ['id']
 }
 </script>
 

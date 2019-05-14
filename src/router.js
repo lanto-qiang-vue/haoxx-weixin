@@ -274,6 +274,6 @@ routes: [
 		meta: {
 			tourist: true,
 		},
-		component: () => import('@/views/forum/forum-reply.vue')
+		component: () => import('@/views/forum/reply.vue')
 	},
 ]})

@@ -42,17 +42,17 @@
 	</div>
 
 	<mt-popup :value="showComment" position="bottom" class="popup">
-		<Input v-model.trim="comment" placeholder="填写评论内容" type="textarea" class="comment-input"
+		<Input v-model.trim="content" placeholder="填写评论内容" type="textarea" class="comment-input"
 		       :autosize="{ minRows: 10}" wrap="hard" ref="input"></Input>
 		<div class="common-submit">
-			<submit-button :rules="{comment: { required: true}}" :datas="{comment}" @click="submit">发布</submit-button>
+			<submit-button :rules="{content: { required: true}}" :datas="{content}" @click="submit">发布</submit-button>
 		</div>
 	</mt-popup>
 </div>
 </template>
 
 <script>
-import ForumReply from './forum-reply.vue'
+import ForumReply from './reply.vue'
 import ThumbUp from './ThumbUp.vue'
 import SubmitButton from '@/components/submit-button.vue'
 export default {
@@ -62,7 +62,7 @@ export default {
 		return{
 			detail: {},
 			showComment: false,
-			comment: '',
+			content: '',
 		}
 	},
 	watch:{
@@ -94,12 +94,9 @@ export default {
 			})
 		},
 		submit(){
-			this.axiosHxx.post('/cartalk/topic/comment',{data: {
+			this.axiosHxx.post('/cartalk/topic/comment',{ comment: {
 					contentId: this.$route.query.id,
-					content: this.comment,
-					businessId: 1,
-					commentUserId: this.$store.state.user.userinfo.userId,
-					receiveUserId: this.detail.userId
+					content: this.content,
 			}}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
 				if(res.data.success){
 					this.$toast('发布成功')
@@ -110,7 +107,7 @@ export default {
 			})
 		},
 		gotoReply(){
-			this.$router.push({path: '/forum-reply', query:{id: this.$route.query.id, userid: this.detail.userId}})
+			this.$router.push({path: '/forum-reply', query:{id: this.$route.query.id}})
 		}
 	}
 }

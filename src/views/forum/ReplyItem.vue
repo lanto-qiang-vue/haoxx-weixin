@@ -1,5 +1,5 @@
 <template>
-<ul class="forum-reply forum-comments">
+<ul class="reply-item forum-comments">
 	<li v-for="(item, index) in showList" :key="index">
 		<img class="head" src="/img/head.png">
 		<div class="body">
@@ -20,7 +20,7 @@
 import ThumbUp from './ThumbUp.vue'
 
 export default {
-	name: "forum-reply",
+	name: "reply-item",
 	components: { ThumbUp},
 	props: {
 		'data': {
@@ -74,7 +74,7 @@ export default {
 
 <style scoped lang="less">
 @import './forum.less';
-.forum-reply{
+.reply-item{
 	overflow: hidden;
 	li{
 		border-top: 1px solid #D9D9D9;
@@ -94,7 +94,7 @@ export default {
 }
 </style>
 <style lang="less">
-.forum-reply{
+.reply-item{
 	.support i{
 		margin-right: 2px;
 	}

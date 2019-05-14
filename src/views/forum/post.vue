@@ -61,6 +61,7 @@ export default {
 	},
 	mounted(){
 		this.getTypeList()
+		this.form.topicId= this.$route.query.id
 	},
 	methods:{
 		getTypeList(){

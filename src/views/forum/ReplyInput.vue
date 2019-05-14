@@ -2,8 +2,8 @@
 <div class="reply-input" v-show="show">
 	<div class="mask" v-show="showMask" @click="close"></div>
 	<div class="bottom">
-		<div class="target" v-show="type==2">
-			正在回复·{{item.replytousername || item.nickname}}
+		<div class="target" v-show="replyName">
+			正在回复·{{ replyName}}
 		</div>
 		<div :class="['reply', {on: content}]">
 			<Input v-model.trim="content" placeholder="请输入您的评论" type="textarea"
@@ -30,34 +30,38 @@ export default {
 			content: '',
 			showMask: false,
 			show: false,
-			type: 1,
-			item: {},
+			resolve: null,
+			replyName: ''
 		}
 	},
 	mounted(){
 		this.close()
 	},
 	methods: {
-		open(type, item){
+		open( name){
+			this.replyName= name
 			this.show= true
-			this.type= type
-			this.item= item
 			setTimeout(()=>{
 				this.$refs.input.focus()
 			},50)
+			return new Promise((resolve, reject) => {
+				this.resolve= resolve
+			});
 		},
 		close(){
-			this.type= 1
-			this.item= {}
 			this.content= ''
 			this.showMask= false
 			this.show= this.initShow
 		},
 		submit(){
 			if(!this.content){
-				this.$toast('请输入评论内容');
+				this.$toast('请输入内容');
 			}else{
-				this.$emit('reply', this.type, this.item, this.content);
+				this.$emit('reply', this.content);
+				if(this.resolve){
+					this.resolve(this.content )
+					this.resolve= null
+				}
 			}
 		}
 	}
@@ -84,6 +88,7 @@ export default {
 		max-height: 100vh;
 		overflow: hidden;
 		width: 100%;
+		border-top: 1px solid #EEEEEE;
 		.target{
 			padding: 0 15px;
 			height: 40px;
