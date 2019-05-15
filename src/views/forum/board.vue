@@ -1,11 +1,8 @@
 <template>
 <div class="boardList">
     <div class='search'>
-		<form action="javascript:;" class="common-search ">
-			<i class="fa fa-search icon"></i>
-			<input type="search" ref="input" v-model="search" placeholder="搜索话题"/>
-			<i class="fa fa-times-circle close" v-show="search" @click="close"></i>
-		</form>
+	    <search placeholder="搜索话题" :readonly="true"
+	            @click="$router.push(`/forum-query?id=${$route.query.id}`)"></search>
 	</div>
 
 	<topics-list :top="40" :id="$route.query.id"></topics-list>
@@ -15,11 +12,12 @@
 </template>
 
 <script>
-import TopicsList from './TopicsList.vue'
-import TopicAdd from './TopicAdd.vue'
+import TopicsList from './part/TopicsList.vue'
+import TopicAdd from './part/TopicAdd.vue'
+import Search from '@/components/common-search.vue'
 export default {
 	name: "board",
-	components: {TopicsList, TopicAdd},
+	components: {TopicsList, TopicAdd, Search},
 	data(){
 		return{
 			search:'',
@@ -37,7 +35,7 @@ export default {
 </script>
 
 <style scoped lang='less'>
-@import './forum.less';
+/*@import './forum.less';*/
 .boardList {
 	background-color: #fff;
 	height: 100vh;

@@ -97,7 +97,7 @@ export default {
 }
 </script>
 <style scoped lang='less'>
-@import './forum.less';
+/*@import './forum.less';*/
 .commonList li .listFooter .z-left{
 right: 15px;
 }

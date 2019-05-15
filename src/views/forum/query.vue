@@ -4,15 +4,19 @@
 		<search placeholder="搜索话题" @enter="enter" v-model="search" ref="search"></search>
     </div>
 	<div class="content">
-		<div class="title">热聊话题</div>
-		<ul class="list">
-			<li v-for="item in comments">{{item.title}}</li>
+		<div class="title">{{hasQuery? '搜索结果': '热聊话题'}}</div>
+		<ul class="list" v-show="!hasQuery">
+			<li v-for="item in hottest" @click="goTopic(item)">{{item.title}}</li>
+		</ul>
+		<ul class="list" v-show="hasQuery">
+			<li v-for="item in queryList" @click="goTopic(item)">{{item.title}}</li>
 		</ul>
 		<div class="title">
-			搜索记录<div class="clear">清空</div>
+			搜索记录<div class="clear" @click="del(false)">清空</div>
 		</div>
 		<ul class="list">
-			<li>今日头条新闻<i class="fa fa-times z-fa"></i></li>
+			<li v-for="(item, key) in historyList" :key="key" @click="query(item)">{{item}}
+				<i class="fa fa-times" @click="del(key)"></i></li>
 		</ul>
 	</div>
 </div>
@@ -26,27 +30,86 @@ export default {
 	data(){
 		return{
 			search:'',
-			comments:[]
+			hottest:[],
+			queryList: [],
+			historyList: [],
+		}
+	},
+	computed:{
+		hasQuery(){
+			return !!this.queryList.length
 		}
 	},
 	mounted(){
-		this.getHotTopic();
+		this.getHotTopic(5);
 		this.$refs.search.focus()
+		this.historyList= this.getHistory()
 	},
 	methods:{
-		getHotTopic(){
+		getHotTopic(limit, query){
 			this.axiosHxx.post('/cartalk/plate/selectTopicContentByHot', {
+				bbsTopicId: this.$route.query.id ||'',
 				page: 1,
-				limit:5,
-			},{baseURL: '/qixiu-proxy'}).then( (res) => {
-				if(res.data.data&&res.data.data.length){
-					this.comments=res.data.data;
+				limit: limit,
+				keyWord: query ||''
+			},{baseURL: '/hxx-gateway-proxy', noIndicator: query? false: true}).then( (res) => {
+				if( res.data.success){
+					if(query){
+						this.queryList=res.data.data;
+						if(res.data.data.length){
+							this.setHistory(query)
+						}else{
+							this.$toast('未搜到相关话题')
+						}
+					}else{
+						this.hottest=res.data.data;
+					}
 				}
 			})
 		},
 		enter(val){
-			console.log('enter(val)', val)
-			console.log('search', this.search)
+			if(val){
+				this.getHotTopic(10, val);
+			}else{
+				this.queryList= []
+			}
+		},
+		setHistory(val){
+			let list= this.getHistory() , have= false, length= 0
+			for( let i in list){
+				if(list[i]== val) have= true
+			}
+			if(!have){
+				length= list.unshift(val)
+				if(length>5) list.pop()
+			}
+			this.historyList= list
+			localStorage.setItem('forumQueryHistory', JSON.stringify(list))
+		},
+		getHistory(){
+			let storage= localStorage.getItem('forumQueryHistory')
+			let list= storage? JSON.parse(storage): []
+			return list
+		},
+		del(index){
+			if(index){
+				let list= this.getHistory()
+				if(list.length){
+					list.splice(index, 1)
+					this.historyList= list
+					localStorage.setItem('forumQueryHistory', JSON.stringify(list))
+				}
+			}else{
+				this.historyList= []
+				localStorage.removeItem('forumQueryHistory')
+			}
+		},
+		query(val){
+			this.search= val
+			this.$refs.search.enter()
+		},
+		goTopic(item){
+			this.$router.push('/topic?id='+ item.id)
 		}
 	}
 }
@@ -100,6 +163,7 @@ export default {
 		}
 		.list {
 			margin-bottom: 10px;
+			min-height: 45px;
 			li {
 				box-sizing: border-box;
 				border-bottom: 1px solid #D9D9D9;
@@ -109,7 +173,11 @@ export default {
 				width: 100%;
 				color:#666666;
 				position: relative;
-				.z-fa{
+				white-space: nowrap;
+				padding-right: 10px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				i{
 					position: absolute;
 					right: 15px;
 					top: 14px;

@@ -57,10 +57,11 @@ export default {
 			if(!this.content){
 				this.$toast('请输入内容');
 			}else{
-				this.$emit('reply', this.content);
 				if(this.resolve){
 					this.resolve(this.content )
 					this.resolve= null
+				}else{
+					this.$emit('reply', this.content);
 				}
 			}
 		}

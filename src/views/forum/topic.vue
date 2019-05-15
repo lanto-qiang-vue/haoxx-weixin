@@ -29,7 +29,7 @@
 	</div>
 
 	<div class="bottom">
-		<thumb-up :num="detail.praise"></thumb-up>
+		<thumb-up :num="detail.praise" :self="!!detail.ispraise"></thumb-up>
 		<!--<div class="left">-->
 			<!--<i class="fa fa-thumbs-o-up"></i>-->
 			<!--<span >{{detail.praise}}</span>-->
@@ -53,7 +53,7 @@
 
 <script>
 import ForumReply from './reply.vue'
-import ThumbUp from './ThumbUp.vue'
+import ThumbUp from './part/ThumbUp.vue'
 import SubmitButton from '@/components/submit-button.vue'
 export default {
 	name: "forum-detail",
@@ -114,7 +114,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import './forum.less';
+/*@import './forum.less';*/
 .forum-detail{
 	/*padding-bottom: 45px;*/
 	.header{

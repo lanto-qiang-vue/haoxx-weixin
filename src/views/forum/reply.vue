@@ -11,7 +11,7 @@
 				<div class="content" v-html="item.commentContent.replace(/\n/g,'<br/>')"></div>
 				<div class="info">
 					<!--<span class="support"><i class="fa fa-thumbs-o-up"></i>{{item.praise}}</span>·-->
-					<thumb-up class="support" :num="item.praise"></thumb-up>·
+					<thumb-up class="support" :num="item.praise" :self="!!item.ispraise"></thumb-up>·
 					<span @click="reply(item, true)">回复</span>·
 					<span>{{item.createDate | TimeAgo}}</span>
 				</div>
@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import ThumbUp from './ThumbUp.vue'
-import ReplyItem from './ReplyItem.vue'
-import ReplyInput from './ReplyInput.vue'
+import ThumbUp from './part/ThumbUp.vue'
+import ReplyItem from './part/ReplyItem.vue'
+import ReplyInput from './part/ReplyInput.vue'
 export default {
 	name: "forum-reply",
 	components: {ReplyItem, ReplyInput, ThumbUp},
@@ -89,13 +89,13 @@ export default {
 		},
 		reply(item, toComment){
 			this.$refs.reply.open(toComment?item.nickname: item.replytousername).then((val)=>{
-				
-				this.axiosHxx.post('/cartalk/topic/reply',{ comment: {
-						contentId: this.$route.query.id,
+				this.axiosHxx.post('/cartalk/topic/reply',{ reply: {
+						replyId: item.id,
 						content: val,
+						businessflag: toComment?4 :3
 					}}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
 					if(res.data.success){
-						this.$toast('评论成功')
+						this.$toast('回复成功')
 						this.$refs.reply.close()
 					}
 				})
@@ -143,7 +143,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import './forum.less';
+@import './part/forum.less';
 .all-reply{
 	padding: 0 0 50px 15px;
 	position: relative;

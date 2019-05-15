@@ -52,8 +52,11 @@ export default {
 		},
 		key(e){
 			if (e.keyCode == 13 ) {
-				this.$emit('enter', this.search);
+				this.enter()
 			}
+		},
+		enter(){
+			this.$emit('enter', this.search);
 		},
 		clear(){
 			this.search= ''
