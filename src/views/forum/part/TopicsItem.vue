@@ -10,9 +10,9 @@
 	</div>
 	<div class="foot">
 		<span class="center" :style="{ color: item.colour}">{{item.topicContent}}</span>
-		<span>{{item.pastTime | TimeAgo}}</span>
+		<span>{{item.createDate | TimeAgo}}</span>
 		<span class="left">{{item.number}}个评论</span>
-		<router-link tag="span" class="right" :to="`/forum-detail?id=${item.id}`">去参与</router-link>
+		<router-link tag="span" class="right" :to="`/topic?id=${item.id}`">去参与</router-link>
 	</div>
 </li>
 </template>

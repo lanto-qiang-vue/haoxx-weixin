@@ -11,7 +11,8 @@
 					<a v-if="bannerLink(item).outside" class="banner-body" :href="bannerLink(item).to"
 					   :target="bannerLink(item).target" :style="'cursor:'+ bannerLink(item).cursor">
 						<img :src="item.imageUrl"></a>
-					<router-link v-else tag="a" :to="bannerLink(item).to" class="banner-body" :target="bannerLink(item).target"
+					<router-link v-else tag="a" :to="bannerLink(item).to" class="banner-body"
+					             :target="bannerLink(item).target"
 					           :style="'cursor:'+ bannerLink(item).cursor">
 						<img :src="item.imageUrl"></router-link>
 				</ul>
@@ -32,9 +33,7 @@
 		<li @click="goCoupons">保养券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons">油漆券<span>查看可用券</span></li>
 	</ul>
-
 	<topics-list :top="40" :hottestShow="false" :isIndex="true"></topics-list>
-
 </div>
 </template>
 
@@ -42,7 +41,7 @@
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import { getCityToken} from '@/util'
-import TopicsList from '@/views/forum/TopicsList.vue'
+import TopicsList from '@/views/forum/part/TopicsList.vue'
 export default {
 	name: "index",
 	components: {swiper, swiperSlide, TopicsList},
@@ -82,6 +81,12 @@ export default {
 	mounted(){
 		this.getBanner()
 		this.init()
+		// setTimeout(()=>{
+		// 	this.$indicator.open({
+		// 		text: '请稍候...',
+		// 		spinnerType: 'snake'
+		// 	});
+		// },1000)
 	},
 	methods:{
 		init(){

@@ -30,10 +30,6 @@
 
 	<div class="bottom">
 		<thumb-up :num="detail.praise" :self="!!detail.ispraise"></thumb-up>
-		<!--<div class="left">-->
-			<!--<i class="fa fa-thumbs-o-up"></i>-->
-			<!--<span >{{detail.praise}}</span>-->
-		<!--</div>-->
 		<div class="right" @click="gotoReply">
 			<i class="zmdi zmdi-comment-alt-text"></i>
 			<!--<i class="fa fa-commenting-o "></i>-->
@@ -102,7 +98,6 @@ export default {
 					this.$toast('发布成功')
 					this.$refs.reply.getList()
 					this.$router.go(-1)
-
 				}
 			})
 		},
@@ -157,7 +152,6 @@ export default {
 		}
 
 	}
-
 	.body{
 		padding: 10px 10px 10px 15px;
 		.head{
@@ -250,7 +244,6 @@ export default {
 			}
 		}
 	}
-
 	.popup{
 		height: 100vh;
 		width: 100%;

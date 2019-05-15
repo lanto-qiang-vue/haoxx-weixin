@@ -2,11 +2,9 @@
 <div class="boardList">
     <div class='search'>
 	    <search placeholder="搜索话题" :readonly="true"
-	            @click="$router.push(`/forum-query?id=${$route.query.id}`)"></search>
+	            @click="$router.push({path: '/forum-query', query: {id: $route.query.id}})"></search>
 	</div>
-
 	<topics-list :top="40" :id="$route.query.id"></topics-list>
-
 	<topic-add :id="$route.query.id"></topic-add>
 </div>
 </template>

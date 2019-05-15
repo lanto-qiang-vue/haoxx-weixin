@@ -102,6 +102,9 @@ export default {
 				/*border: 2px solid white;*/
 				margin-right: 10px;
 			}
+			i{
+				font-size: 16px;
+			}
 		}
 		.button{
 			margin-top: 30px;
