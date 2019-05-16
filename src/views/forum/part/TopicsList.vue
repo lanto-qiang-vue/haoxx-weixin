@@ -1,10 +1,12 @@
 <template>
-<div class="topics-list">
+<div class="topics-list" :style="top? {height: '100%', overflow: 'hidden'}: {}">
 	<div class="title">
 		<span :class="{active: active=='hottest'}" @click="active='hottest'" v-if="hottestShow">热聊话题</span>
 		<span :class="{active: active=='latest'}" @click="active='latest'" v-if="latestShow">最新话题</span>
+		<router-link to="/forum" class="more" v-show="isIndex">查看更多</router-link>
 	</div>
-	<mt-tab-container v-model="active" :swipeable="true" class="body" :style="`padding-top: ${top}px`">
+	<div class="body" :style="top?{'top': `-${top}px`, paddingTop: `${top+40}px`, overflow: 'auto',height: '100%'}:{}">
+	<mt-tab-container v-model="active" :swipeable="true">
 		<mt-tab-container-item id="hottest" v-if="hottestShow">
 			<ul class="list"
 			    v-infinite-scroll="loadMoreHottest"
@@ -19,26 +21,10 @@
 			    infinite-scroll-disabled="latestAllLoaded"
 			    infinite-scroll-distance="30">
 				<topics-item v-for="(item, key) in latest.list" :key="key" :item="item"></topics-item>
-				<!--<li v-for="item in latest.list">-->
-					<!--<div class="common-header">-->
-						<!--<img src="/img/head.png" alt="">-->
-						<!--<span>{{item.nickname}}</span>-->
-					<!--</div>-->
-					<!--<p>{{item.content}}</p>-->
-					<!--<div class="imgGroup" v-if="item.paths">-->
-						<!--<div v-for="img in item.paths.split(',')"-->
-						     <!--class="imgBox" :style="{backgroundImage:'url(' + img + ')'}"></div>-->
-					<!--</div>-->
-					<!--<div class="listFooter">-->
-						<!--<span class="center" :style="{ color: item.colour}">{{item.topicContent}}</span>-->
-						<!--<span>{{item.pastTime | TimeAgo}}</span>-->
-						<!--<span class="left">{{item.number}}个评论</span>-->
-						<!--<span class="right">去参与</span>-->
-					<!--</div>-->
-				<!--</li>-->
 			</ul>
 		</mt-tab-container-item>
 	</mt-tab-container>
+	</div>
 </div>
 </template>
 
@@ -137,7 +123,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-/*@import './forum.less';*/
 .topics-list{
 	position: relative;
 	.title {
@@ -152,12 +137,20 @@ export default {
 		border-top: 10px #F3F3F3 solid;
 		position: relative;
 		z-index: 1;
+		background-color: white;
 		span{
-			padding-right: 20px;
+			margin-right: 20px;
 			transition: color .3s;
 			&.active{
 				color: #FF6D0E;
 			}
+		}
+		.more{
+			color: #333333;
+			font-size: 12px;
+			font-weight: 500;
+			float: right;
+			margin-right: 10px;
 		}
 	}
 	.body{
@@ -165,6 +158,9 @@ export default {
 		left: 0;
 		top: 0;
 		width: 100%;
+		height: auto;
+		overflow: hidden;
+		padding-top: 40px;
 		.list{
 			padding-left:15px;
 		}

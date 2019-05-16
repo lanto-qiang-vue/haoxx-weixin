@@ -11,11 +11,18 @@ router.beforeEach((to, from, next) => {
 	// console.log('from, to',  from, to)
 	let hasCity= store.state.app.city.regionId
 
+	/*
+	* 1判断是否需要登录
+	* 2判断是否需要区域
+	* 3判断是否是指定区域
+	* 4判断是否绑定汽修平台
+	* */
 	if (!to.meta.tourist) {
 		if (!store.state.user.hxxtoken) {
 			Toast('请登录')
 			next({path: '/login', query: { redirect: to.fullPath }})
 		} else {
+
 			if (to.meta.requiresQixiu){
 				if(hasCity){
 					if(cityIsSupport()){

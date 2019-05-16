@@ -6,6 +6,7 @@
 	</ul>
 	<mt-tab-container v-model="active" :swipeable=true>
 		<mt-tab-container-item id="1">
+			<div class="load-more">
 				<mt-loadmore :bottom-method="postLoadBottom" :bottom-all-loaded="post.allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="postLoadmore">
 				<ul class="list">
@@ -19,21 +20,24 @@
 						</div>
 					</router-link>
 				</ul>
-			</mt-loadmore>
+				</mt-loadmore>
+			</div>
 		</mt-tab-container-item>
 		<mt-tab-container-item id="2">
+			<div class="load-more">
 			<mt-loadmore :bottom-method="replyLoadBottom" :bottom-all-loaded="reply.allLoaded" :autoFill="false"
 			             bottomPullText="加载更多"   ref="replyLoadmore">
 			<ul class="list">
-				<li>
-					<p class="head">今日头条新闻今日头条新闻今日头条新闻???</p>
-					<div class="content">日常养护</div>
+				<li tag="li" v-for="(item,index) in reply.list" :key="index">
+					<p class="head">{{item.title}}</p>
+					<div class="content" :style="{ color: item.colour}">{{item.topicName}}</div>
 					<div class="foot">
-						<span>评论于：5分钟前</span>
+						<span>评论于：{{item.createDate | TimeAgo}}</span>
 					</div>
 				</li>
 			</ul>
 			</mt-loadmore>
+			</div>
 		</mt-tab-container-item>
 
 	</mt-tab-container>
@@ -123,6 +127,12 @@ export default {
 		overflow: hidden;
 		border-bottom: 10px #F7F7F7 solid;
 		text-align: center;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: white;
 		li{
 			width: 120px;
 			display: inline-block;
@@ -140,6 +150,11 @@ export default {
 			color: #FF6D0E;
 			border-bottom: 2px solid  #FF6D0E;
 		}
+	}
+	.load-more{
+		height: 100vh;
+		padding-top: 50px;
+		overflow: auto;
 	}
 	.list{
 		padding-left: 15px;

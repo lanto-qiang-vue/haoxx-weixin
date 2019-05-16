@@ -13,7 +13,7 @@
 		</router-link>
 	</ul>
 
-	<topics-list :top="40" :latestShow="false"></topics-list>
+	<topics-list :top="130" :latestShow="false"></topics-list>
 	<topic-add></topic-add>
 </div>
 </template>
@@ -53,7 +53,7 @@ export default {
 .forum-index {
 	background-color: #fff;
 	height: 100%;
-	overflow: auto;
+	overflow: hidden;
 	width: 100%;
 	box-sizing: border-box;
 	.search {

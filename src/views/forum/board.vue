@@ -37,7 +37,7 @@ export default {
 .boardList {
 	background-color: #fff;
 	height: 100vh;
-	overflow: auto;
+	overflow: hidden;
 	width: 100%;
 	box-sizing: border-box;
 	.search {

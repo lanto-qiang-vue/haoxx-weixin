@@ -13,7 +13,7 @@
 						<img :src="item.imageUrl"></a>
 					<router-link v-else tag="a" :to="bannerLink(item).to" class="banner-body"
 					             :target="bannerLink(item).target"
-					           :style="'cursor:'+ bannerLink(item).cursor">
+					             :style="'cursor:'+ bannerLink(item).cursor">
 						<img :src="item.imageUrl"></router-link>
 				</ul>
 			</swiper-slide>
@@ -33,7 +33,7 @@
 		<li @click="goCoupons">保养券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons">油漆券<span>查看可用券</span></li>
 	</ul>
-	<topics-list :top="40" :hottestShow="false" :isIndex="true"></topics-list>
+	<topics-list :top="0" :hottestShow="false" :isIndex="true"></topics-list>
 </div>
 </template>
 

@@ -121,6 +121,7 @@ export default {
 			font-weight:500;
 			color: #333333;
 			line-height:22px;
+			word-break: break-all;
 		}
 		.review{
 			margin-top: 10px;

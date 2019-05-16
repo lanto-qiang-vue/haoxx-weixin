@@ -6,11 +6,11 @@
 			<select-radio class="ivu-input select" v-model="form.topicId" :options="typeList"></select-radio>
 		</FormItem>
 		<FormItem prop="title">
-			<Input v-model.trim="form.title" placeholder="标题"></Input>
+			<Input v-model.trim="form.title" placeholder="标题" :maxlength="100"></Input>
 		</FormItem>
 		<FormItem prop="content" style="border: 0">
 			<Input v-model.trim="form.content" placeholder="分享您的想法或提出您的疑问" type="textarea"
-			       :autosize="{ minRows: 8}" wrap="hard"></Input>
+			       :autosize="{ minRows: 8}" wrap="hard" :maxlength="1000"></Input>
 		</FormItem>
 	</Form>
 	<div class="bottom">
