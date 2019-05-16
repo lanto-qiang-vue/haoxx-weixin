@@ -119,7 +119,7 @@ export default {
 			this.getPostList('reply', true)
 		},
 		goReply(item){
-			this.$router.push({path: '/forum-reply', query:{id: item.topicId}})
+			this.$router.push({path: '/forum-reply', query:{id: item.contentId}})
 		}
 	}
 }

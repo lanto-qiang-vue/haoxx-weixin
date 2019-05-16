@@ -80,7 +80,8 @@ routes: [
 		name: 'maintain',
 		meta:{
 			tourist: true,
-			cache: true
+			cache: true,
+			needArea: true
 		},
 		component: () => import('@/views/service-map/maintain.vue')
 	},
@@ -96,7 +97,7 @@ routes: [
 		path: '/my-car-list',
 		name: 'my-car-list',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/my-car-list.vue')
 	},
@@ -104,7 +105,7 @@ routes: [
 		path: '/bind-my-car',
 		name: 'bind-my-car',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/bind-my-car.vue')
 	},
@@ -112,7 +113,7 @@ routes: [
 		path: '/bind-my-car-com',
 		name: 'bind-my-car-com',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/bind-my-car.vue')
 	},
@@ -120,7 +121,7 @@ routes: [
 		path: '/bind-other-car',
 		name: 'bind-other-car',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/bind-other-car.vue')
 	},
@@ -128,7 +129,7 @@ routes: [
 		path: '/record-list',
 		name: 'record-list',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/record-list.vue')
 	},
@@ -136,7 +137,7 @@ routes: [
 		path: '/record-detail',
 		name: 'record-detail',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/record-detail.vue')
 	},
@@ -144,7 +145,7 @@ routes: [
 		path: '/reservation-detail',
 		name: 'reservation-detail',
 		meta: {
-			requiresQixiu: false,
+			needQixiu: false,
 		},
 		component: () => import('@/views/reservation/reservation-detail.vue')
 	},
@@ -152,7 +153,7 @@ routes: [
 		path: '/remark-map',
 		name: 'remark-map',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/remark/remark-map.vue')
 	},
@@ -160,7 +161,7 @@ routes: [
 		path: '/my-remark',
 		name: 'my-remark',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/remark/my-remark.vue')
 	},
@@ -168,7 +169,7 @@ routes: [
 		path: '/remark-detail',
 		name: 'remark-detail',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/remark/remark-detail.vue')
 	},
@@ -176,7 +177,7 @@ routes: [
 		path: '/remark-match',
 		name: 'remark-match',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/remark/match.vue')
 	},

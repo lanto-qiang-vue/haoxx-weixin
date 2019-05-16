@@ -17,21 +17,23 @@ router.beforeEach((to, from, next) => {
 	* 3判断是否是指定区域
 	* 4判断是否绑定汽修平台
 	* */
+	let needArea= to.meta.needArea|| to.meta.needQixiu
 	if (!to.meta.tourist) {
 		if (!store.state.user.hxxtoken) {
 			Toast('请登录')
 			next({path: '/login', query: { redirect: to.fullPath }})
 		} else {
-
-			if (to.meta.requiresQixiu){
+			if(needArea){
 				if(hasCity){
 					if(cityIsSupport()){
-						if (!getCityToken()) {
-							Toast('请绑定汽修平台账号')
-							next({path: '/accredit-bind', query: { redirect: to.fullPath}})
-						} else {
-							next()
-						}
+						if (to.meta.needQixiu){
+							if (!getCityToken()) {
+								Toast('请绑定汽修平台账号')
+								next({path: '/accredit-bind', query: { redirect: to.fullPath}})
+							} else {
+								next()
+							}
+						}else next()
 					}else{
 						next(false)
 						Toast('暂不支持您的区域')
@@ -40,10 +42,10 @@ router.beforeEach((to, from, next) => {
 					Toast('请选择您的城市')
 					next({path: '/city-select', query: { redirect: to.fullPath}})
 				}
-			} else next()
+			}else next()
 		}
 	} else {
-		next() // 确保一定要调用 next()
+		next()
 	}
 })
 

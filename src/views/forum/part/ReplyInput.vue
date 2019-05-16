@@ -50,6 +50,7 @@ export default {
 		},
 		close(){
 			this.content= ''
+			this.replyName= ''
 			this.showMask= false
 			this.show= this.initShow
 		},

@@ -4,7 +4,7 @@
 		<img src="/img/head.png"/>
 		<span>{{item.nickname}}</span>
 	</div>
-	<p class="content">{{item.content}}</p>
+	<p class="content">{{item.title}}</p>
 	<div class="img-group" v-if="item.paths">
 		<img v-for="(img, key) in item.paths.split(',')" :src="img" :key="key"/>
 	</div>

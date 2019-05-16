@@ -4,11 +4,7 @@
 		<div class="query">
 			<div class="now" v-if="nowCity.regionId">当前：<span>{{nowCity.regionName}}</span></div>
 			<div class="now" v-else><span>请选择</span></div>
-			<form action="javascript:;" class="common-search">
-				<i class="fa fa-search icon"></i>
-				<input type="search" ref="input" v-model="search" placeholder="城市名/拼音"/>
-				<i class="fa fa-times-circle close" v-show="search" @click="close"></i>
-			</form>
+			<search placeholder="城市名/拼音" @enter="enter" v-model="search" ref="search"></search>
 		</div>
 		<div class="tag">
 			<p>定位/最近访问</p>
@@ -30,9 +26,11 @@
 <script>
 import { getLocation, cityIsSupport} from '@/util.js'
 import pinying from '~/public/lib/pinying.js'
+import Search from '@/components/common-search.vue'
 // import { deepClone } from '@/util.js'
 export default {
 	name: "city-select",
+	components: { Search},
 	data(){
 		return {
 			search: '',
@@ -87,6 +85,9 @@ export default {
 				}
 			}
 			return resObj
+		},
+		enter(){
+
 		},
 		close(){
 

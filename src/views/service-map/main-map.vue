@@ -1,5 +1,5 @@
 <template>
-<div class="allmap" >
+<div class="allmap">
 	<div class='search'>
 	    <div class="fixGuide" v-show="showCenter=='simple'">
 		    <img class="point" src="/img/maintain/center-point.png"/>
@@ -10,12 +10,9 @@
 				<img src="~@/assets/img/maintain/fix-point.png" style="width: 20px"/>
 				<div class="fixGuideClick" @click="goLatePoint">{{centerName}}</div>
 			</div>
-
 		</div>
-
 		<div id="container"></div>
-	 </div>
-
+	</div>
 	<maintain-list v-if="hasList" ref="maintainList" :nowLnglat="nowLnglat" :type="type"
 	               @renderMap="renderMap" @goMap="goMap"></maintain-list>
 	<maintain-detail v-if="type=='maintain'" ref="maintainDetail" @goMap="goMap"></maintain-detail>
