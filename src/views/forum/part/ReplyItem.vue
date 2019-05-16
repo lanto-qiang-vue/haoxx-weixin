@@ -6,7 +6,8 @@
 			<p class="name">{{item.replyname}} <i class="fa fa-angle-right"></i> {{item.replytousername}}</p>
 			<div class="content" v-html="item.content.replace(/\n/g,'<br/>')"></div>
 			<div class="info">
-				<thumb-up class="support" :num="item.praise" :self="!!item.ispraise"></thumb-up>·
+				<thumb-up class="support" :num="item.praise" :self="!!item.ispraise"
+				          :id="item.id" type="2"></thumb-up>·
 				<span @click="toReply(item)">回复</span>·
 				<span>{{item.createDate | TimeAgo}}</span>
 			</div>

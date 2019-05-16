@@ -29,7 +29,7 @@
 	</div>
 
 	<div class="bottom">
-		<thumb-up :num="detail.praise" :self="!!detail.ispraise"></thumb-up>
+		<thumb-up :num="detail.praise" :self="!!detail.ispraise" :id="detail.contentId" type="0"></thumb-up>
 		<div class="right" @click="gotoReply">
 			<i class="zmdi zmdi-comment-alt-text"></i>
 			<!--<i class="fa fa-commenting-o "></i>-->

@@ -28,7 +28,7 @@
 			<mt-loadmore :bottom-method="replyLoadBottom" :bottom-all-loaded="reply.allLoaded" :autoFill="false"
 			             bottomPullText="加载更多"   ref="replyLoadmore">
 			<ul class="list">
-				<li tag="li" v-for="(item,index) in reply.list" :key="index">
+				<li tag="li" v-for="(item,index) in reply.list" :key="index" @click="goReply(item)">
 					<p class="head">{{item.title}}</p>
 					<div class="content" :style="{ color: item.colour}">{{item.topicName}}</div>
 					<div class="foot">
@@ -118,6 +118,9 @@ export default {
 			this.reply.page++
 			this.getPostList('reply', true)
 		},
+		goReply(item){
+			this.$router.push({path: '/forum-reply', query:{id: item.topicId}})
+		}
 	}
 }
 </script>

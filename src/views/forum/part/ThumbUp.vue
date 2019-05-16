@@ -14,6 +14,9 @@ export default {
 		'id': {
 			default: ''
 		},
+		'type': {
+			default: ''
+		},
 		self:{
 			default: false
 		},
@@ -37,14 +40,41 @@ export default {
 			activity: false
 		}
 	},
+	watch:{
+		self(val){
+			this.activity= val
+		}
+	},
 	mounted(){
 		this.activity= this.self
 	},
 	methods:{
 		click(){
-
+			let on= this.activity, url= ''
+			switch (on){
+				case true:{
+					url= '/cartalk/praise/cancel'
+					break
+				}
+				case false:{
+					url= '/cartalk/praise/add'
+				}
+			}
+			this.axiosHxx.post(url, {
+					businessId: this.type,
+					primaryKey: this.id,
+				}, {baseURL: '/hxx-gateway-proxy', noIndicator: true}).then(res=>{
+				if(res.data.success){
+					this.activity= !on
+				}
+			})
 		}
 	}
 }
 </script>
 
+<style lang="less">
+.thumb-up.on{
+	color: #FF6D0E;
+}
+</style>

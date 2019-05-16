@@ -11,7 +11,8 @@
 				<div class="content" v-html="item.commentContent.replace(/\n/g,'<br/>')"></div>
 				<div class="info">
 					<!--<span class="support"><i class="fa fa-thumbs-o-up"></i>{{item.praise}}</span>·-->
-					<thumb-up class="support" :num="item.praise" :self="!!item.ispraise"></thumb-up>·
+					<thumb-up class="support" :num="item.praise" :self="!!item.ispraise"
+					          :id="item.id" type="1"></thumb-up>·
 					<span @click="reply(item, true)">回复</span>·
 					<span>{{item.createDate | TimeAgo}}</span>
 				</div>
@@ -111,32 +112,6 @@ export default {
 					this.$refs.reply.close()
 				}
 			})
-			//
-			// console.log('type, item, content', type, item, content)
-			// let data= {
-			// 	content: content,
-			// 	businessId: type,
-			// 	commentUserId: this.$store.state.user.userinfo.userId,
-			// }
-			// switch(type){
-			// 	case 1:{
-			// 		data.contentId= this.id|| this.$route.query.id
-			// 		data.receiveUserId= this.userid || this.$route.query.userid
-			// 		break
-			// 	}
-			// 	case 2:{
-			// 		data.commentId= item.id
-			// 		data.receiveUserId= item.replyid || item.userId
-			// 		break
-			// 	}
-			// }
-			// this.axiosHxx.post('/cartalk/topic/comment',{data: data}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
-			// 	if(res.data.success){
-			// 		this.$toast('评论成功')
-			// 		this.$refs.reply.close()
-			// 	}
-			// })
-
 		}
 	},
 }
