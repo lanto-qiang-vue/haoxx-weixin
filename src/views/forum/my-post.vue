@@ -11,7 +11,7 @@
 	             bottomPullText="加载更多"   ref="postLoadmore">
 				<ul class="list">
 					<router-link tag="li" v-for="(item,index) in post.list" :key="index"
-						:to="'/topic?id='+ item.bbsTopicId">
+						:to="'/topic?id='+ item.contentId">
 						<p class="head">{{item.title}}</p>
 						<div class="content" :style="{ color: item.colour}">{{item.bbsTopicName}}</div>
 						<div class="foot">
