@@ -108,6 +108,7 @@ export const imgUrlToBase64 = (url, callBack) => {
 export const imgToBase64 = (thisfile, callBack) => {
   // var file= $(domName).get(0).files[0]
   var file= thisfile
+	console.log('size', file.size)
   var reader = new FileReader();
   reader.readAsDataURL(file)
   reader.onload = function (e) {

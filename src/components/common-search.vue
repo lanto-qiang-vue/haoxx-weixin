@@ -43,6 +43,11 @@ export default {
 			}
 		}
 	},
+	watch:{
+		search(val){
+			this.$emit('change', val);
+		}
+	},
 	mounted(){
 
 	},

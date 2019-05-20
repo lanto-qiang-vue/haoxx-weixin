@@ -4,7 +4,7 @@
 		<div class="query">
 			<div class="now" v-if="nowCity.regionId">当前：<span>{{nowCity.regionName}}</span></div>
 			<div class="now" v-else><span>请选择</span></div>
-			<search placeholder="城市名/拼音" @enter="enter" v-model="search" ref="search"></search>
+			<search placeholder="城市名/拼音" @enter="enter" v-model="search" ref="search" @change="change"></search>
 		</div>
 		<div class="tag">
 			<p>定位/最近访问</p>
@@ -16,7 +16,7 @@
 		</div>
 	</div>
 	<mt-index-list>
-		<mt-index-section v-for="(item, key) in area" :index="key" :key="key">
+		<mt-index-section v-for="(item, key) in showList" :index="key" :key="key">
 			<li v-for="(item2, key2) in item" :key="key2" @click="selectCity(item2)">{{item2.regionName}}</li>
 		</mt-index-section>
 	</mt-index-list>
@@ -34,7 +34,7 @@ export default {
 	data(){
 		return {
 			search: '',
-			area: {},
+			indexList: {},
 		}
 	},
 	computed:{
@@ -46,7 +46,27 @@ export default {
 		},
 		cityHistory(){
 			return this.$store.state.app.cityHistory
-		}
+		},
+		showList(){
+			let obj= {}, search= this.search.trim()
+			if(search){
+				for(let key in this.indexList){
+					let match= false, arr=[]
+					for(let i in this.indexList[key]){
+						if(this.indexList[key][i].regionName.toUpperCase().indexOf(search.toUpperCase())>=0){
+							// obj[key]=  this.indexList[key]
+							match= true
+							arr.push(this.indexList[key][i])
+						}else if(pinying(this.indexList[key][i].regionName[0])[0]== search.toUpperCase()){
+							match= true
+							arr.push(this.indexList[key][i])
+						}
+					}
+					if(match) obj[key]= arr
+				}
+				return obj
+			}else return this.indexList
+		},
 	},
 	mounted(){
 		this.getData()
@@ -57,7 +77,7 @@ export default {
 				{baseURL: '/hxx-gateway-proxy'}
 				).then(res=>{
 				if(res.data.success){
-					this.area= this.getIndexList(res.data.data)
+					this.indexList= this.getIndexList(res.data.data)
 				}
 			})
 		},
@@ -88,6 +108,9 @@ export default {
 		},
 		enter(){
 
+		},
+		change(val){
+			console.log('change(val)', val)
 		},
 		close(){
 
