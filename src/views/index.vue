@@ -29,9 +29,9 @@
 	</ul>
 	<ul class="coupons">
 		<p class="title">车主权益<span @click="goCoupons">查看更多</span></p>
-		<li @click="goCoupons">洗车券<span>查看可用券</span></li>&thinsp;
-		<li @click="goCoupons">保养券<span>查看可用券</span></li>&thinsp;
-		<li @click="goCoupons">油漆券<span>查看可用券</span></li>
+		<li @click="goCoupons('洗车')">洗车券<span>查看可用券</span></li>&thinsp;
+		<li @click="goCoupons('保养')">保养券<span>查看可用券</span></li>&thinsp;
+		<li @click="goCoupons('油漆')">油漆券<span>查看可用券</span></li>
 	</ul>
 	<topics-list :top="0" :hottestShow="false" :isIndex="true"></topics-list>
 </div>
@@ -68,6 +68,7 @@ export default {
 				total: 0,
 				allLoaded: false
 			},
+			couponsType: []
 		}
 	},
 	computed:{
@@ -76,6 +77,9 @@ export default {
 		},
 		appstore(){
 			return this.$store.state.app
+		},
+		isLogin(){
+			return this.$store.state.user.hxxtoken
 		}
 	},
 	mounted(){
@@ -91,11 +95,22 @@ export default {
 	methods:{
 		init(){
 			if(this.qixiutoken){
-				this.axiosQixiu.post('/vehicle/owner/queryVehicelist', {"page": 1, "pageSize": 1,}).then( (res) => {
+				this.axiosQixiu.post('/vehicle/owner/queryVehicelist',
+					{"page": 1, "pageSize": 1,}).then( (res) => {
 					if(res.data.code=='0'){
 						if(res.data.total==1){
 							let item= res.data.items[0]
 							this.recordPath= `/record-list?id=${item.vin}&vehicleplatenumber=${item.vehicleplatenumber}`
+						}
+					}
+				})
+			}
+			if(this.isLogin){
+				this.axiosHxx.post('/operate/coupon/mycoupons',
+					{USER_ID:this.$store.state.user.userinfo.userId}).then(res => {
+					if(res.data.success){
+						if(res.data.data &&res.data.data.length){
+							this.couponsType = res.data.data;
 						}
 					}
 				})
@@ -105,7 +120,7 @@ export default {
 			this.axiosQixiu.post('/banner/query', {
 				terminal: 'W',
 				useSystem: 2,
-			},{noLogin: true}).then( (res) => {
+			},{noLogin: true,  constBaseUrl: true}).then( (res) => {
 				if(res.data.code=='0'){
 					this.banners= res.data.items
 					this.showSwiper= true
@@ -131,8 +146,23 @@ export default {
 			}
 			return obj
 		},
-		goCoupons(){
-			this.$router.push('/coupons-type')
+		goCoupons(name){
+			if(this.isLogin){
+				let arr= this.couponsType, type= '', canuse= ''
+				for( let i in arr){
+					if(arr[i].name.indexOf(name) >= 0){
+						type= arr[i].type
+						canuse= arr[i].canuse
+					}
+				}
+				if(type){
+					this.$router.push( '/coupons?type='+ type+'&canuse='+ canuse)
+				}else{
+					this.$toast('暂无优惠券')
+				}
+			}else{
+				this.$router.push('/coupons-type')
+			}
 		}
 	},
 }

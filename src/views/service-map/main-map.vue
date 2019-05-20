@@ -21,8 +21,10 @@
 
 <script>
 import { Toast,  Actionsheet, Indicator } from 'mint-ui'
+import { getLocation, cityIsSupport} from '@/util.js'
 import maintainDetail from '@/views/service-map/maintainDetail.vue'
 import maintainList from '@/views/service-map/maintainList'
+import config from '~/config.js'
 export default {
 name: 'maintain-map',
 components: {maintainDetail,  maintainList },
@@ -36,12 +38,12 @@ data() {
 		markers: [],
 
 		defaultLnglat:{
-			lng: '121.480236',
-			lat: '31.236301'
+			lng: '',
+			lat: ''
 		},
 		nowLnglat:{
-		  lng: '121.480236',
-		  lat: '31.236301'
+		  lng: '',
+		  lat: ''
 		},
 	}
 },
@@ -113,10 +115,21 @@ computed: {
 	    return need
     },
 },
+
 mounted(){
     // console.log('maintain.mounted')
     this.bodyNoScoll()
-    this.init()
+
+
+	let location= cityIsSupport(true)
+	if(location){
+    	this.defaultLnglat.lng= location.lng
+    	this.defaultLnglat.lat= location.lat
+    	this.nowLnglat.lng= location.lng
+    	this.nowLnglat.lat= location.lat
+	}
+
+	this.init()
 },
 
 methods: {

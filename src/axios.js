@@ -2,10 +2,10 @@ import axios from 'axios'
 import router from './router'
 import store from './store'
 import { Toast, Indicator, Popup } from 'mint-ui'
-import { isWeixn, getCityToken} from './util'
+import { isWeixn, getCityToken, cityIsSupport} from './util'
 let toast= null
 let axiosHxx= axios.create({
-	baseURL: '/hxx-proxy/',
+	baseURL: '/hxx-proxy',
 	timeout: 6000,
 	headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
 	transformRequest: [function (data) {
@@ -39,7 +39,7 @@ let axiosHxx= axios.create({
 });
 
 let axiosQixiu= axios.create({
-	baseURL: '/qixiu-proxy/',
+	baseURL: '/qixiu-proxy',
 	timeout: 6000,
 	headers: {'Content-Type': 'application/json;charset=UTF-8'}
 });
@@ -164,10 +164,16 @@ axiosHxx.interceptors.response.use(response => {
 
 
 axiosQixiu.interceptors.request.use(config => {
-	// console.log('config', config)
+	console.log('axiosQixiu.config', config)
 	let token= getCityToken()
 	if(token && !config.noLogin) {
 		config.headers.token= token
+	}
+	if(!config.constBaseUrl){
+		let location= cityIsSupport(true)
+		if(location && location.postfix){
+			config.baseURL= config.baseURL+ '-'+ location.postfix
+		}
 	}
 	Indicator.close()
 	if(!config.noIndicator){

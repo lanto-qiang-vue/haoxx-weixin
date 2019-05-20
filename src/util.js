@@ -337,7 +337,8 @@ export const getWeixinId=()=>{
 }
 
 export const getwxticket= (jsApiList, callback) => {
-	axios.axiosQixiu.get('/weixin/hxx/ticket/jsapi?url='+ (window.location.href.split('#')[0])).then(res=>{
+	axios.axiosQixiu.get('/weixin/hxx/ticket/jsapi?url='+ (window.location.href.split('#')[0]),
+		{constBaseUrl: true}).then(res=>{
 		// axios.get('/weixin/qixiu/ticket/jsapi?url='+('http://192.168.169.121:8888?code=0716QWVV0hJ0b22adjVV0QF6WV06QWVe&state=snsapi_base')).then(res=>{
 		wx.config({
 			debug: false,
@@ -383,13 +384,13 @@ export const getLocation= ()=>{
 	});
 }
 
-export const cityIsSupport= ()=>{
+export const cityIsSupport= (getItem)=>{
 	let hasCity= false, thisCityCode= store.state.app.city.regionId, confList= config.location
 	if(thisCityCode){
 		let code= thisCityCode.toString().substring(0, 3)
 		for(let i in confList){
 			if(confList[i].adcode.toString().substring(0, 3)==code) {
-				hasCity= code
+				hasCity= getItem? confList[i]: code
 			}
 		}
 	}
