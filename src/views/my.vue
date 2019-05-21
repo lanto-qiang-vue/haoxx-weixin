@@ -13,7 +13,7 @@
 	<ul class="list">
 		<router-link tag="li" to="/my-car-list">我的爱车 <i></i></router-link>
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
-		<router-link tag="li" to="/my-remark">我的点评 <i></i></router-link>
+		<!--<router-link tag="li" to="/my-remark">我的点评 <i></i></router-link>-->
 		<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
 		<li @click="logout">退出</li>

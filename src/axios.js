@@ -127,6 +127,18 @@ axiosHxx.interceptors.response.use(response => {
 			}
 		}
 	}
+
+	if (response.data.code){
+		let content= ''
+		if(response.data.status) content+= response.data.status
+		if(response.data.message) content+= ' '+response.data.message
+		if(response.data.msg) content+= ' '+response.data.msg
+		if(response.data.code &&content){
+			if(toast) toast.close()
+			toast = Toast(content)
+		}
+	}
+
 	return response;
 }, error => {
 	// for(let key in error){

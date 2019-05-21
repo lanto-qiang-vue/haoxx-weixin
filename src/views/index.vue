@@ -22,8 +22,8 @@
 	</div>
 	<ul class="button">
 		<router-link tag="li" to="/maintain"><img src="~@/assets/img/index/查选维修.png"/><p>查选维修</p></router-link>
-		<router-link tag="li" :to="recordPath"><img src="~@/assets/img/index/维修记录.png"/><p>维修记录</p></router-link>
-		<router-link tag="li" to="/remark-map"><img src="~@/assets/img/index/维修点评.png"/><p>维修点评</p></router-link>
+		<!--<router-link tag="li" :to="recordPath"><img src="~@/assets/img/index/维修记录.png"/><p>维修记录</p></router-link>-->
+		<!--<router-link tag="li" to="/remark-map"><img src="~@/assets/img/index/维修点评.png"/><p>维修点评</p></router-link>-->
 		<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>
 		<!--<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>-->
 	</ul>
@@ -147,7 +147,7 @@ export default {
 			return obj
 		},
 		goCoupons(name){
-			if(this.isLogin){
+			if(this.isLogin && name){
 				let arr= this.couponsType, type= '', canuse= ''
 				for( let i in arr){
 					if(arr[i].name.indexOf(name) >= 0){

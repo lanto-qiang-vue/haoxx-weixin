@@ -93,7 +93,8 @@ export default {
 			).then(res=>{
 				if(res.data.success){
 					this.$toast('发布成功')
-					this.$router.go(-1)
+					// this.$router.go(-1)
+					this.$router.replace('/topic?id='+ res.data.data.contentId)
 				}
 			})
 		},
