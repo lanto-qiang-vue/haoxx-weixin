@@ -16,7 +16,7 @@ const conf={
 			postfix: 'shandong',
 		},
 	],
-	versions: 2.0
+	versions: 3
 }
 
 

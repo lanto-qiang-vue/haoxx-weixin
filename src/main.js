@@ -1,3 +1,4 @@
+import './init.js'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -15,7 +16,7 @@ import '@/fliters.js'
 import '@/auth.js'
 import { Input, Form, FormItem } from 'iview';
 import config from '~/config.js'
-import './init.js'
+
 
 Vue.config.productionTip = false
 Vue.use(MintUI)

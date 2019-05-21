@@ -277,4 +277,12 @@ routes: [
 		},
 		component: () => import('@/views/forum/reply.vue')
 	},
+	{
+		path: '/history-vin',
+		name: 'history-vin',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/query-vin.vue')
+	},
 ]})
