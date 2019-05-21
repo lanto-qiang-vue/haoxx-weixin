@@ -158,8 +158,8 @@ export const _compress = (path, obj, name, callBack) => {
       quality = obj.quality;
     }
     // quality值越小，所绘制出的图像越模糊
-    // var base64 = canvas.toDataURL(obj.type|| 'image/png', quality);
-    var base64 = canvas.toDataURL('image/png', quality);
+    var base64 = canvas.toDataURL(obj.type|| 'image/png', quality);
+    // var base64 = canvas.toDataURL('image/png', quality);
     // console.log(base64)
     // 返回base64的值
     callBack(base64, name )
