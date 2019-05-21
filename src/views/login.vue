@@ -193,7 +193,7 @@ export default {
 	watch:{
 		'$route'(){
 			this.showBlock()
-			this.goBackAll()
+			// this.goBackAll()
 		},
 	},
 	mounted(){

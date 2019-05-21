@@ -50,6 +50,10 @@ export default {
 	},
 	methods:{
 		click(){
+			if(!this.$store.state.user.hxxtoken){
+				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
+				return
+			}
 			let on= this.activity, url= ''
 			switch (on){
 				case true:{

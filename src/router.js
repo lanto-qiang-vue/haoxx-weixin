@@ -19,7 +19,6 @@ routes: [
 		meta:{
 			footer: true,
 			tourist: true,
-			cache: true
 		},
 		component: () => import('@/views/index.vue')
 	},
@@ -258,6 +257,7 @@ routes: [
 		name: 'my-forum',
 		meta: {
 			tourist: true,
+			cache: true
 		},
 		component: () => import('@/views/forum/my-post.vue')
 	},

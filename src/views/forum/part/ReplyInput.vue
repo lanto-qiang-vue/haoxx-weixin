@@ -8,7 +8,7 @@
 		<div :class="['reply', {on: content}]">
 			<Input v-model.trim="content" placeholder="请输入您的评论" type="textarea"
 			       :autosize="{ minRows: 1}" wrap="hard"
-			       @on-focus="showMask=true"
+			       @on-focus="focus"
 			       ref="input"
 			></Input>
 			<div class="post" v-show="content" @click="submit">发布</div>
@@ -39,6 +39,10 @@ export default {
 	},
 	methods: {
 		open( name){
+			if(!this.$store.state.user.hxxtoken){
+				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
+				return
+			}
 			this.replyName= name
 			this.show= true
 			setTimeout(()=>{
@@ -48,9 +52,17 @@ export default {
 				this.resolve= resolve
 			});
 		},
+		focus(){
+			if(!this.$store.state.user.hxxtoken){
+				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
+				return
+			}
+			this.showMask=true
+		},
 		close(){
 			this.content= ''
 			this.replyName= ''
+			this.resolve= null
 			this.showMask= false
 			this.show= this.initShow
 		},

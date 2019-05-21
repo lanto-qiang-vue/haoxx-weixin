@@ -75,6 +75,10 @@ export default {
 			this.showComment= !!this.$route.query.showComment
 		},
 		clickComment(){
+			if(!this.$store.state.user.hxxtoken){
+				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
+				return
+			}
 			let route= this.$route
 			this.$router.push({path: route.path, query: {...route.query, showComment: true}})
 			setTimeout(()=>{

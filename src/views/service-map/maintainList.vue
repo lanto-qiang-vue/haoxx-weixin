@@ -496,7 +496,7 @@ export default {
 			    method= 'post'
 			    data.areaName= location.postfix
 		    }
-		    this.axiosQixiu.post(url, data).then( (res) => {
+		    this.axiosQixiu[method](url, data).then( (res) => {
 		    	if(location.postfix){
 		    		let arr= res.data.items
 				    for(let i in arr){

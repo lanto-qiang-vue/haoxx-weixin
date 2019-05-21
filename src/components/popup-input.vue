@@ -52,7 +52,7 @@ export default {
 		},
 		click(status){
 			if(this.resolve){
-				this.resolve({status, value: this.value})
+				this.resolve({status, value: this.value.trim()})
 				this.resolve= null
 			}
 			this.show= false

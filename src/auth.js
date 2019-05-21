@@ -18,36 +18,48 @@ router.beforeEach((to, from, next) => {
 	* 4判断是否绑定汽修平台
 	* */
 	let needArea= to.meta.needArea|| to.meta.needQixiu
+	let urlredirect= to.query.redirect, redirect= to.fullPath
+	if(urlredirect){
+		redirect= urlredirect
+		if(urlredirect.indexOf('redirect=')>=0){
+			redirect= urlredirect.split('redirect=')[1]
+		}
+	}
+	console.log('redirect', redirect)
 
 	if(needArea){
 		if(hasCity){
 			if(cityIsSupport()){
-				if (to.meta.tourist) {
-					next()
-				} else {
-					if (store.state.user.hxxtoken) {
-						if (to.meta.needQixiu){
-							if (!getCityToken()) {
-								Toast('请绑定汽修平台账号')
-								next({path: '/accredit-bind', query: { redirect: to.fullPath}})
-							} else {
-								next()
-							}
-						}else next()
-					} else {
-						Toast('请登录')
-						next({path: '/login', query: { redirect: to.fullPath }})
-					}
-				}
+				auth()
 			}else{
 				next(false)
 				Toast('暂不支持您的区域')
 			}
 		}else{
 			Toast('请选择您的城市')
-			next({path: '/city-select', query: { redirect: to.fullPath}})
+			next({path: '/city-select', query: { redirect: redirect}})
 		}
-	}else next()
+	}else auth()
+
+	function auth() {
+		if (to.meta.tourist) {
+			next()
+		} else {
+			if (store.state.user.hxxtoken) {
+				if (to.meta.needQixiu){
+					if (!getCityToken()) {
+						Toast('请绑定汽修平台账号')
+						next({path: '/accredit-bind', query: { redirect: redirect}})
+					} else {
+						next()
+					}
+				}else next()
+			} else {
+				Toast('请登录')
+				next({path: '/login', query: { redirect: redirect }})
+			}
+		}
+	}
 })
 
 router.afterEach((to, from) => {

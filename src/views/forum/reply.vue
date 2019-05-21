@@ -16,7 +16,8 @@
 					<span @click="reply(item, true)">回复</span>·
 					<span>{{item.createDate | TimeAgo}}</span>
 				</div>
-				<reply-item :data="item.replys" :num="item.number" :id="item.id" @onreply="reply"></reply-item>
+				<reply-item :data="item.replys" :num="item.number" :id="item.id" @onreply="reply"
+					:ref="`replyitem${item.id}`" :class="'replyitem'+item.id"></reply-item>
 			</div>
 		</li>
 	</ul>
@@ -98,6 +99,11 @@ export default {
 					if(res.data.success){
 						this.$toast('回复成功')
 						this.$refs.reply.close()
+						console.log('this.$refs.replyitem', this.$refs)
+						console.log('res', res)
+						console.log('this.$refs[`replyitem${res.data.data.commentId}`]',
+							this.$refs[`replyitem${res.data.data.commentId}`])
+						this.$refs[`replyitem${res.data.data.commentId}`][0].pushList(res.data.data)
 					}
 				})
 			})
@@ -110,6 +116,7 @@ export default {
 				if(res.data.success){
 					this.$toast('评论成功')
 					this.$refs.reply.close()
+					this.list.push(res.data.data)
 				}
 			})
 		}

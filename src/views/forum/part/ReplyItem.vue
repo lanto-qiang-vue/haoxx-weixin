@@ -37,16 +37,22 @@ export default {
 	data(){
 		return{
 			list: [],
-			page: 0
+			addList: [],
+			page: 0,
+			total: 0
 		}
 	},
 	computed:{
 		showList(){
-			return this.data.concat(this.list)
+			return this.list.length? this.list: this.addList.concat(this.data)
+			// return this.data.concat(this.list)
 		},
 		leftNum(){
-			return this.num- this.showList.length
+			return this.total- this.showList.length
 		}
+	},
+	mounted(){
+		this.total= this.num
 	},
 	methods:{
 		toReply(item){
@@ -56,6 +62,10 @@ export default {
 			this.page++
 			this.getList()
 		},
+		pushList(item){
+			this.total++
+			this.addList.push(item)
+		},
 		getList(){
 			this.axiosHxx.post('/topic/carcircles/allreply', {
 				page: this.page,
@@ -63,6 +73,7 @@ export default {
 				limit:10,
 			},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
 				if(res.data.success && res.data.data&&res.data.data.length){
+					this.total= res.data.total
 					let arr= res.data.data
 					this.list=this.list.concat(arr)
 				}

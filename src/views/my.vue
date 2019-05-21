@@ -61,11 +61,15 @@ export default {
 			this.$refs.popupInput.popup({title: '修改昵称', value: this.userinfo.nickName}).then(({status, value})=>{
 				console.log(status, value)
 				if(status){
-					this.axiosHxx.post('/operate/account/updateNickName',{newName: value}).then(res=>{
-						if(res.data.success){
-							this.$store.commit('setNickName', value);
-						}
-					})
+					if(value){
+						this.axiosHxx.post('/operate/account/updateNickName',{newName: value}).then(res=>{
+							if(res.data.success){
+								this.$store.commit('setNickName', value);
+							}
+						})
+					}else{
+						this.$toast('请输入内容');
+					}
 				}
 			})
 		},
