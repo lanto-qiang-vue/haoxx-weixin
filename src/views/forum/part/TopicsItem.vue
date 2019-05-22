@@ -5,8 +5,8 @@
 		<span>{{item.nickname}}</span>
 	</div>
 	<p class="content">{{item.title}}</p>
-	<div class="img-group" v-if="item.paths">
-		<img v-for="(img, key) in item.paths.split(',')" :src="img" :key="key"/>
+	<div class="img-group" v-if="item.path">
+		<img v-for="(img, key) in item.path.split(',')" :src="img" :key="key" v-img="{group: `img-${type}-${item.id}`}"/>
 	</div>
 	<div class="foot">
 		<span class="center" :style="{ color: item.colour}">{{item.topicContent}}</span>
@@ -20,7 +20,7 @@
 <script>
 export default {
 	name: "topics-item",
-	props: ['item'],
+	props: ['item', 'type'],
 }
 </script>
 

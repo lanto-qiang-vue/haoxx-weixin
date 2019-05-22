@@ -6,13 +6,13 @@
 		<router-link to="/forum" class="more" v-show="isIndex">查看更多</router-link>
 	</div>
 	<div class="body" :style="top?{'top': `-${top}px`, paddingTop: `${top+40}px`, overflow: 'auto',height: '100%'}:{}">
-	<mt-tab-container v-model="active" :swipeable="true">
+	<mt-tab-container v-model="active" :swipeable="false">
 		<mt-tab-container-item id="hottest" v-if="hottestShow">
 			<ul class="list"
 			    v-infinite-scroll="loadMoreHottest"
 			    infinite-scroll-disabled="hottestAllLoaded"
 			    infinite-scroll-distance="30">
-				<topics-item v-for="(item, key) in hottest.list" :key="key" :item="item"></topics-item>
+				<topics-item v-for="(item, key) in hottest.list" :key="key" :item="item" type="hottest"></topics-item>
 			</ul>
 		</mt-tab-container-item>
 		<mt-tab-container-item id="latest" v-if="latestShow">
@@ -20,7 +20,7 @@
 			    v-infinite-scroll="loadMoreLatest"
 			    infinite-scroll-disabled="latestAllLoaded"
 			    infinite-scroll-distance="30">
-				<topics-item v-for="(item, key) in latest.list" :key="key" :item="item"></topics-item>
+				<topics-item v-for="(item, key) in latest.list" :key="key" :item="item" type="latest"></topics-item>
 			</ul>
 		</mt-tab-container-item>
 	</mt-tab-container>
