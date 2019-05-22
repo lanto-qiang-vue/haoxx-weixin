@@ -62,8 +62,8 @@ p {
     margin-bottom: 0;
     position: relative;
     border-bottom: 1px solid #EEEEEE;
-    &:last-child{
-      //border-bottom: none;
+    &.noborder{
+      border-bottom: none;
     }
     .ivu-form-item-label{
       color: #333333;
@@ -72,8 +72,9 @@ p {
       padding: 0;
       position: absolute;
       left: 0;
-      top: 50%;
-      transform: translateY(-50%);
+      //top: 50%;
+      //transform: translateY(-50%);
+      line-height: 40px;
     }
     .ivu-form-item-content{
       min-height: 39px;

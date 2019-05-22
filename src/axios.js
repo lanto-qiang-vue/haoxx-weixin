@@ -176,7 +176,7 @@ axiosHxx.interceptors.response.use(response => {
 
 
 axiosQixiu.interceptors.request.use(config => {
-	console.log('axiosQixiu.config', config)
+	// console.log('axiosQixiu.config', config)
 	let token= getCityToken()
 	if(token && !config.noLogin) {
 		config.headers.token= token

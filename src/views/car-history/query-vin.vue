@@ -73,6 +73,9 @@ export default {
 		height:36px;
 		border-radius:20px;
 		border:1px solid #D6D6D6;
+		color: #4A4A4A;
+		font-size: 14px;
+		margin: 70px auto 0;
 	}
 }
 </style>

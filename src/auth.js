@@ -11,6 +11,9 @@ router.beforeEach((to, from, next) => {
 	// console.log('from, to',  from, to)
 	let hasCity= store.state.app.city.regionId
 
+	let imgs= document.querySelector('.fullscreen-v-img .buttons-v-img span')
+	if(imgs) imgs.click()
+
 	/*
 	* 1判断是否需要区域
 	* 2判断是否是指定区域
@@ -25,7 +28,7 @@ router.beforeEach((to, from, next) => {
 			redirect= urlredirect.split('redirect=')[1]
 		}
 	}
-	console.log('redirect', redirect)
+	// console.log('redirect', redirect)
 
 	if(needArea){
 		if(hasCity){

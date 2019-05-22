@@ -1,11 +1,10 @@
 <template>
 <div class="topics-list" :style="top? {height: '100%', overflow: 'hidden'}: {}">
-	<div class="title">
+	<div class="title" v-show="!isIndex">
 		<span :class="{active: active=='hottest'}" @click="active='hottest'" v-if="hottestShow">热聊话题</span>
 		<span :class="{active: active=='latest'}" @click="active='latest'" v-if="latestShow">最新话题</span>
-		<router-link to="/forum" class="more" v-show="isIndex">查看更多</router-link>
 	</div>
-	<div class="body" :style="top?{'top': `-${top}px`, paddingTop: `${top+40}px`, overflow: 'auto',height: '100%'}:{}">
+	<div class="body" :style="isIndex? {paddingTop: 0}: (top?{'top': `-${top}px`, paddingTop: `${top+40}px`, overflow: 'auto',height: '100%'}:{})">
 	<mt-tab-container v-model="active" :swipeable="false">
 		<mt-tab-container-item id="hottest" v-if="hottestShow">
 			<ul class="list"

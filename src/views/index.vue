@@ -3,6 +3,7 @@
 	<router-link tag="div" to="/city-select" class="area">
 		{{appstore.city.regionName|| '请选择城市'}}<i class="fa fa-angle-down"></i>
 	</router-link>
+	<router-link  to="/maintain"><i class="fa fa-search icon"></i>查选维修</router-link>
 	<div class="banner" v-if="showSwiper">
 		<swiper :options="swiperOption" ref="mySwiper" class="banner-swiper" >
 			<swiper-slide v-for="(item, index) in banners" :key="index">
@@ -20,20 +21,32 @@
 			<div class="swiper-pagination" slot="pagination"></div>
 		</swiper>
 	</div>
-	<ul class="button">
-		<router-link tag="li" to="/maintain"><img src="~@/assets/img/index/查选维修.png"/><p>查选维修</p></router-link>
+	<!--<ul class="button">-->
+		<!--<router-link tag="li" to="/maintain"><img src="~@/assets/img/index/查选维修.png"/><p>查选维修</p></router-link>-->
 		<!--<router-link tag="li" :to="recordPath"><img src="~@/assets/img/index/维修记录.png"/><p>维修记录</p></router-link>-->
 		<!--<router-link tag="li" to="/remark-map"><img src="~@/assets/img/index/维修点评.png"/><p>维修点评</p></router-link>-->
-		<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>
+		<!--<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>-->
 		<!--<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>-->
+	<!--</ul>-->
+	<ul class="my-cars block" style="border: 0">
+		<p class="title">我的爱车</p>
+		<router-link tag="li" to="/my-car-list">
+			<img src="~@/assets/img/history/添加爱车.png"/>
+			<p><i class="zmdi zmdi-plus-circle-o"></i>添加爱车</p>
+		</router-link>
 	</ul>
-	<ul class="coupons">
+	<ul class="coupons block">
 		<p class="title">车主权益<span @click="goCoupons">查看更多</span></p>
 		<li @click="goCoupons('洗车')">洗车券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons('保养')">保养券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons('油漆')">油漆券<span>查看可用券</span></li>
 	</ul>
-	<topics-list :top="0" :hottestShow="false" :isIndex="true"></topics-list>
+	<ul class="block">
+		<p class="title">车谈话题
+			<router-link tag="span" to="/forum" class="more">查看更多</router-link>
+		</p>
+	</ul>
+	<topics-list :top="0" :hottestShow="false" :isIndex="true" class="topics-list"></topics-list>
 </div>
 </template>
 
@@ -241,11 +254,9 @@ export default {
 			}
 		}
 	}
-	.coupons{
-		border-top: 10px solid #F3F3F3;
-		text-align: justify;
+	.block{
+		border-top: 5px solid #F3F3F3;
 		padding: 0 10px;
-		height: 105px;
 		.title{
 			color: #333333;
 			font-size: 14px;
@@ -256,6 +267,44 @@ export default {
 				font-size: 12px;
 			}
 		}
+	}
+	.my-cars{
+		text-align: center;
+		overflow: hidden;
+		p{
+			text-align: left;
+		}
+		li{
+			width: 32%;
+			display: inline-block;
+			position: relative;
+			margin-bottom: 10px;
+			&:nth-child(2){
+				float: left;
+			}
+			&:nth-child(4){
+				float: right;
+			}
+			img{
+				width: 100%;
+			}
+			p{
+				position: absolute;
+				right: 10px;
+				bottom: 5px;
+				color: white;
+				font-size: 12px;
+				i{
+					font-size: 16px;
+					vertical-align: text-bottom;
+					margin-right: 5px;
+				}
+			}
+		}
+	}
+	.coupons{
+		text-align: justify;
+		height: 105px;
 		&:after{
 			content: '';
 			display: inline-block;
@@ -306,8 +355,11 @@ export default {
 			}
 		}
 	}
-	.forum{
-		border-top: 10px solid #F3F3F3;
+	/*.forum{*/
+		/*border-top: 10px solid #F3F3F3;*/
+	/*}*/
+	.topics-list{
+		top: -10px;
 	}
 }
 </style>

@@ -4,7 +4,7 @@
 		<img src="/img/head.png"/>
 		<span>{{item.nickname}}</span>
 	</div>
-	<p class="content">{{item.title}}</p>
+	<p class="title">{{item.title}}</p>
 	<div class="img-group" v-if="item.path">
 		<img v-for="(img, key) in item.path.split(',')" :src="img" :key="key" v-img="{group: `img-${type}-${item.id}`}"/>
 	</div>
@@ -46,11 +46,12 @@ export default {
 			/*line-height:17px;*/
 		}
 	}
-	.content{
+	.title{
 		color:#333333;
 		line-height: 20px;
-		word-break: break-all;
-		/*font-weight: 500;*/
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		margin-bottom:5px;
 	}
 	.img-group{

@@ -285,4 +285,28 @@ routes: [
 		},
 		component: () => import('@/views/car-history/query-vin.vue')
 	},
+	{
+		path: '/history/pay',
+		name: 'history-pay',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/pay-history.vue')
+	},
+	{
+		path: '/my/car-history',
+		name: 'my-car-history',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/my-car-history.vue')
+	},
+	{
+		path: '/history/simple',
+		name: 'history-simple',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/history-simple.vue')
+	},
 ]})
