@@ -67,7 +67,7 @@ export default {
         imgToBase64(file, (base64, name ) => {
           // console.log(base64, name )
 	        if(this.operate=='base64'){
-		        this.$emit('done', base64);
+		        this.$emit('done', {base64});
 	        }else{
 		        let formdata = new FormData();
 		        formdata.append('file' , base64ToBlob(base64), name);
