@@ -1,3 +1,12 @@
+const toJson= (str)=>{
+	try {
+		if (typeof JSON.parse(str) == "object") {
+			return JSON.parse(str);
+		}
+	} catch(e) {
+	}
+	return false;
+}
 let hxxtoken= localStorage.getItem('HXXTOKEN')||''
 let qixiutoken= localStorage.getItem('QIXIUTOKEN')
 let userinfo= localStorage.getItem('USERINFO')||''
@@ -6,10 +15,10 @@ let unit = localStorage.getItem('unit') || ''
 export default {
 	state: {
 		hxxtoken: hxxtoken,
-		qixiutoken: qixiutoken? JSON.parse(qixiutoken): {},
-		userinfo: userinfo? JSON.parse(userinfo): '',
+		qixiutoken: toJson(qixiutoken) || {},
+		userinfo: toJson(userinfo)|| '',
 		// dict:dict ? JSON.parse(dict) : '',
-		unit:unit ? JSON.parse(unit) : ''
+		unit: toJson(unit)||  ''
 	},
 	getters: {
 

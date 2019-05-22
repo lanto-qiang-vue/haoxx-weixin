@@ -278,8 +278,8 @@ routes: [
 		component: () => import('@/views/forum/reply.vue')
 	},
 	{
-		path: '/history-vin',
-		name: 'history-vin',
+		path: '/history/query-vin',
+		name: 'history-query-vin',
 		meta: {
 
 		},

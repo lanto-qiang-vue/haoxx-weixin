@@ -1,14 +1,23 @@
+const toJson= (str)=>{
+	try {
+		if (typeof JSON.parse(str) == "object") {
+			return JSON.parse(str);
+		}
+	} catch(e) {
+	}
+	return false;
+}
 const maintainListHistory = () => {
 	const val = localStorage.getItem('maintainListHistory')
-	return val ? JSON.parse(val) : []
+	return toJson(val) || []
 }
 const setCity= () => {
 	const val = localStorage.getItem('setCity')
-	return val ? JSON.parse(val) : {}
+	return toJson(val) ||  {}
 }
 const setCityHistory= () => {
 	const val = localStorage.getItem('cityHistory')
-	return val ? JSON.parse(val) : []
+	return toJson(val) ||  []
 }
 
 export default {
