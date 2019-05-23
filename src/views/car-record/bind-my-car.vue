@@ -529,11 +529,11 @@ export default{
 		identifyDriveLicense(base64){
 			this.axiosQixiu({
 				url: '/scan/newDriverLicense',
-				method: 'post',
-				data: {
-				accuracy: '',
-				detect_direction: true,
-				image: base64.split(',')[1],
+                    method: 'post',
+                    data: {
+                        accuracy: '',
+                        detect_direction: true,
+                        image: base64.split(',')[1],
 			}}).then(res=>{
 				if(res.data.code==='0'){
 					this.drivePic= base64

@@ -19,9 +19,14 @@ module.exports = {
 				// target: 'http://192.168.169.112:8761',
 				// target: 'https://hxx.test.hoxiuxiu.com/',
 				// target: 'http://developer.hxx.hoxiuxiu.com/',
+<<<<<<< HEAD
+				target: 'http://192.168.169.231:10032/hxx-proxy/',
+                pathRewrite: {'^/hxx-proxy': ''},
+=======
 				// target: 'http://mendian.dev.hoxiuxiu.com/',
 				target: 'http://192.168.169.231:10032/hxx-proxy/',
                 pathRewrite: {'^/hxx-proxy/': ''},
+>>>>>>> 321e878f64694827798236b94e141ddfe3fdd6f4
                 secure: false
 			},
 			'/hxx-gateway-proxy/': {
