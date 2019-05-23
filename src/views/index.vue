@@ -3,7 +3,7 @@
 	<router-link tag="div" to="/city-select" class="area">
 		{{appstore.city.regionName|| '请选择城市'}}<i class="fa fa-angle-down"></i>
 	</router-link>
-	<router-link  to="/maintain"><i class="fa fa-search icon"></i>查选维修</router-link>
+	<router-link  to="/maintain" class="maintain"><i class="fa fa-search icon"></i>查选维修</router-link>
 	<div class="banner" v-if="showSwiper">
 		<swiper :options="swiperOption" ref="mySwiper" class="banner-swiper" >
 			<swiper-slide v-for="(item, index) in banners" :key="index">
@@ -195,6 +195,16 @@ export default {
 			font-size: 20px;
 			vertical-align: top;
 			line-height: 28px;
+		}
+	}
+	.maintain{
+		font-size: 14px;
+		color: #FF6D0E;
+		float: right;
+		line-height: 30px;
+		margin-right: 15px;
+		i{
+			margin-right: 5px;
 		}
 	}
 	.banner{
