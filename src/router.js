@@ -309,4 +309,12 @@ routes: [
 		},
 		component: () => import('@/views/car-history/history-simple.vue')
 	},
+	{
+		path: '/history/detail',
+		name: 'history-detail',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/history-detail.vue')
+	},
 ]})

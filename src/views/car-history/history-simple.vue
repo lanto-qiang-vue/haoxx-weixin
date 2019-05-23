@@ -14,11 +14,56 @@
 		<div class="title">车史报告</div>
 		<ul class="tags">
 			<li>
-				<img />
+				<img src="~@/assets/img/history/正常保养.png"/>
 				<p>正常保养</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
+			<li>
+				<img src="~@/assets/img/history/非火烧.png"/>
+				<p>非火烧</p>
+				<i class="zmdi zmdi-check-circle"></i>
+				<i class="zmdi zmdi-alert-circle"></i>
+			</li>
+			<li>
+				<img src="~@/assets/img/history/非泡水.png"/>
+				<p>非泡水</p>
+				<i class="zmdi zmdi-check-circle"></i>
+				<i class="zmdi zmdi-alert-circle"></i>
+			</li>
+			<li class="err">
+				<img src="~@/assets/img/history/里程数.png"/>
+				<p>里程数</p>
+				<i class="zmdi zmdi-check-circle"></i>
+				<i class="zmdi zmdi-alert-circle"></i>
+			</li>
+			<li>
+				<img src="~@/assets/img/history/安全气囊无弹开.png"/>
+				<p>安全气囊无弹开</p>
+				<i class="zmdi zmdi-check-circle"></i>
+				<i class="zmdi zmdi-alert-circle"></i>
+			</li>
+			<li>
+				<img src="~@/assets/img/history/无发动机维修.png"/>
+				<p>无发动机维修</p>
+				<i class="zmdi zmdi-check-circle"></i>
+				<i class="zmdi zmdi-alert-circle"></i>
+			</li>
+			<li>
+				<img src="~@/assets/img/history/无变速箱维修.png"/>
+				<p>无变速箱维修</p>
+				<i class="zmdi zmdi-check-circle"></i>
+				<i class="zmdi zmdi-alert-circle"></i>
+			</li>
+		</ul>
+	</div>
+	<div class="block">
+		<div class="title">车主爱惜度</div>
+		<ul class="form-list">
+			<li><label>最后一次保养时间</label><p>2019-03-23</p></li>
+			<li><label>最后一次保养时间</label><p>2019-03-23</p></li>
+			<li><label>最后一次保养时间</label><p>2019-03-23</p></li>
+			<li><label>最后一次保养时间</label><p>2019-03-23</p></li>
 		</ul>
 	</div>
 </div>
@@ -32,67 +77,45 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "./history.less";
 .history-simple{
-	.block{
-		border-bottom: 10px solid #F3F3F3;
-		padding: 10px 0 0 15px;
-		.title{
-			padding-left: 8px;
+	.tags{
+		padding-top: 20px;
+		padding-right: 15px;
+		overflow: hidden;
+		li{
+			width: 25%;
+			float: left;
+			text-align: center;
+			color: #666666;
+			margin-bottom: 20px;
 			position: relative;
-			height: 20px;
-			line-height: 20px;
-			font-size: 16px;
-			color: #333333;
-			&:before{
-				content: '';
-				width: 4px;
-				height: 18px;
-				background-color: #FE8636;
-				border-radius: 4px;
-				position: absolute;
-				left: 0;
-				top: 1px;
+			padding: 0 5px;
+			img{
+				width: 30px;
+				height: 30px;
+				object-fit: contain;
+				margin-bottom: 10px;
 			}
-		}
-		.form-list{
-			li{
-				line-height: 40px;
-				border-bottom: 1px solid #EEEEEE;
-				font-size: 14px;
-				padding-right: 20px;
-				position: relative;
-				&.next:after{
-					content: '';
-					position: absolute;
-					right: 10px;
-					top: 15px;
-					border-right: 1px solid #999999;
-					border-bottom: 1px solid #999999;
-					width: 10px;
-					height: 10px;
-					transform: rotate(-45deg);
+			p{
+				font-size: 12px;
+			}
+			i{
+				font-size: 18px;
+				position: absolute;
+				top: -5px;
+				right: 5px;
+				color: #52C41A;
+				&.zmdi-alert-circle{
+					display: none;
+					color: #FE8636;
 				}
-				&:last-child{
-					border-bottom: none;
-				}
-				label{
-					color: #666666;
-				}
-				p{
-					float: right;
-					margin: 0 5px;
-					color: #999999;
-					i{
-						vertical-align: middle;
-						font-size: 20px;
-						margin-left: 5px;
-					}
-					.fa{
-						color: #52C41A;
-						-webkit-text-stroke: 1px white;
-					}
-					.zmdi{
-						color: #FE8636;
+			}
+			&.err{
+				i{
+					display: none;
+					&.zmdi-alert-circle{
+						display: inline-block;
 					}
 				}
 			}
