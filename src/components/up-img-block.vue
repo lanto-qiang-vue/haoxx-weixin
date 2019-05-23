@@ -23,8 +23,8 @@ export default {
 		toClick(){
 			this.$refs.upload.clickBox()
 		},
-		changeAvatar(res){
-			this.$emit('done', res);
+		changeAvatar(datas){
+			this.$emit('done', datas);
 		}
 	}
 }

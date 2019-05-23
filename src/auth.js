@@ -1,31 +1,67 @@
 import router from './router'
 import {Toast, Indicator} from 'mint-ui'
 import store from './store'
-import {getwxticket} from '@/util.js'
+import {getwxticket, cityIsSupport, getCityToken} from '@/util.js'
 getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
 
 router.beforeEach((to, from, next) => {
 	Indicator.close()
-	let title= to.meta.title|| '好修修车生活'
+	let title= to.meta.title|| '好修修'
 	document.title = title
 	// console.log('from, to',  from, to)
+	let hasCity= store.state.app.city.regionId
 
-	if (!to.meta.tourist) {
-		if (!store.state.user.hxxtoken) {
-			Toast('请登录')
-			next({path: '/login', query: { redirect: to.fullPath }})
-		} else {
-			if (to.meta.requiresQixiu){
-				if (!store.state.user.qixiutoken) {
-					Toast('请绑定汽修平台账号')
-					next({path: '/accredit-bind', query: { redirect: to.fullPath}})
-				} else {
-					next()
-				}
-			} else next()
+	let imgs= document.querySelector('.fullscreen-v-img .buttons-v-img span')
+	if(imgs) imgs.click()
+
+	/*
+	* 1判断是否需要区域
+	* 2判断是否是指定区域
+	* 3判断是否需要登录
+	* 4判断是否绑定汽修平台
+	* */
+	let needArea= to.meta.needArea|| to.meta.needQixiu
+	let urlredirect= to.query.redirect, redirect= to.fullPath
+	if(urlredirect){
+		redirect= urlredirect
+		if(urlredirect.indexOf('redirect=')>=0){
+			redirect= urlredirect.split('redirect=')[1]
 		}
-	} else {
-		next() // 确保一定要调用 next()
+	}
+	// console.log('redirect', redirect)
+
+	if(needArea){
+		if(hasCity){
+			if(cityIsSupport()){
+				auth()
+			}else{
+				next(false)
+				Toast('暂不支持您的区域')
+			}
+		}else{
+			Toast('请选择您的城市')
+			next({path: '/city-select', query: { redirect: redirect}})
+		}
+	}else auth()
+
+	function auth() {
+		if (to.meta.tourist) {
+			next()
+		} else {
+			if (store.state.user.hxxtoken) {
+				if (to.meta.needQixiu){
+					if (!getCityToken()) {
+						Toast('请绑定汽修平台账号')
+						next({path: '/accredit-bind', query: { redirect: redirect}})
+					} else {
+						next()
+					}
+				}else next()
+			} else {
+				Toast('请登录')
+				next({path: '/login', query: { redirect: redirect }})
+			}
+		}
 	}
 })
 

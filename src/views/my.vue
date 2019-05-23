@@ -3,27 +3,30 @@
 	<div class="above">
 		<div class="head">
 			<img :src="'/img/head.png'"/>
-			<span>{{userinfo.nickName}}</span>
+			<span>{{userinfo.nickName}} <i class="fa fa-pencil-square-o" @click="nickName"></i></span>
 		</div>
 		<div class="button">
 			<router-link tag="div" to="/coupons-type"><span>{{couponsNum}}</span><p>我的卡券</p></router-link>
 			<router-link tag="div" to="/my-reservation"><span>{{reservationNum}}</span><p>我的预约</p></router-link>
-			<i></i>
 		</div>
 	</div>
 	<ul class="list">
 		<router-link tag="li" to="/my-car-list">我的爱车 <i></i></router-link>
-		<router-link tag="li" to="/my-remark">我的点评 <i></i></router-link>
+		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
+		<!--<router-link tag="li" to="/my-remark">我的点评 <i></i></router-link>-->
 		<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
 		<li @click="logout">退出</li>
 	</ul>
+	<popup-input ref="popupInput"></popup-input>
 </div>
 </template>
 
 <script>
+import PopupInput from '@/components/popup-input.vue'
 export default {
 	name: "my",
+	components: {PopupInput},
 	data(){
 		return{
 			couponsNum: 0,
@@ -48,9 +51,25 @@ export default {
 					}
 				}
 			})
-			this.axiosHxx.post('/operate/order/list ',{page: 1, limit: 1,}).then(res=>{
+			this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
 				if(res.data.success){
 					this.reservationNum= res.data.total
+				}
+			})
+		},
+		nickName(){
+			this.$refs.popupInput.popup({title: '修改昵称', value: this.userinfo.nickName}).then(({status, value})=>{
+				console.log(status, value)
+				if(status){
+					if(value){
+						this.axiosHxx.post('/operate/account/updateNickName',{newName: value}).then(res=>{
+							if(res.data.success){
+								this.$store.commit('setNickName', value);
+							}
+						})
+					}else{
+						this.$toast('请输入内容');
+					}
 				}
 			})
 		},
@@ -87,6 +106,9 @@ export default {
 				/*border: 2px solid white;*/
 				margin-right: 10px;
 			}
+			i{
+				font-size: 16px;
+			}
 		}
 		.button{
 			margin-top: 30px;
@@ -106,7 +128,8 @@ export default {
 					font-size: 12px;
 				}
 			}
-			i{
+			&:before{
+				content: '';
 				display: block;
 				width: 1px;
 				height: 30px;

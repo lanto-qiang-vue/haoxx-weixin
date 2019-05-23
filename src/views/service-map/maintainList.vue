@@ -152,7 +152,7 @@
 <script>
 import SlideBar from '@/views/service-map/SlideBar'
 import { Indicator} from 'mint-ui'
-import {deepClone} from '@/util.js'
+import {deepClone, cityIsSupport} from '@/util.js'
 let search= {
 		type: '',
 		q: '',
@@ -490,14 +490,29 @@ export default {
 		    })
 	    },
 	    getArea(){
-		    this.axiosQixiu.get('/area/query').then( (res) => {
-			    this.area.push(...res.data.items)
-			    if(this.loading){
-				    Indicator.open({
-					    text: '请稍候...',
-					    spinnerType: 'snake'
-				    });
-			    }
+		    let location= cityIsSupport(true), url= '/area/query', method= 'get', data={}
+		    if(location && location.postfix){
+			    url= '/area/region/list'
+			    method= 'post'
+			    data.areaName= location.postfix
+		    }
+		    this.axiosQixiu[method](url, data).then( (res) => {
+		    	if(location.postfix){
+		    		let arr= res.data.items
+				    for(let i in arr){
+					    this.area.push({
+						    code: arr[i].value,
+						    name: arr[i].shortName,
+					    })
+				    }
+
+			    }else this.area.push(...res.data.items)
+			    // if(this.loading){
+				 //    Indicator.open({
+					//     text: '请稍候...',
+					//     spinnerType: 'snake'
+				 //    });
+			    // }
 		    })
 	    },
 	    getBase(){

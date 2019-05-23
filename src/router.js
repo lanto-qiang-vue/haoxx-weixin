@@ -19,7 +19,6 @@ routes: [
 		meta:{
 			footer: true,
 			tourist: true,
-			cache: true
 		},
 		component: () => import('@/views/index.vue')
 	},
@@ -44,14 +43,22 @@ routes: [
 		name: 'setting',
 		meta: {
 		},
-		component: () => import('@/views/setting.vue')
+		component: () => import('@/views/setting/setting.vue')
 	},
 	{
 		path: '/accredit-bind',
 		name: 'accredit-bind',
 		meta: {
 		},
-		component: () => import('@/views/accredit-bind.vue')
+		component: () => import('@/views/setting/accredit-bind.vue')
+	},
+	{
+		path: '/city-select',
+		name: 'city-select',
+		meta: {
+			tourist: true
+		},
+		component: () => import('@/views/setting/city-select.vue')
 	},
 	{
 		path: '/my-reservation',
@@ -72,7 +79,8 @@ routes: [
 		name: 'maintain',
 		meta:{
 			tourist: true,
-			cache: true
+			cache: true,
+			needArea: true
 		},
 		component: () => import('@/views/service-map/maintain.vue')
 	},
@@ -88,7 +96,7 @@ routes: [
 		path: '/my-car-list',
 		name: 'my-car-list',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/my-car-list.vue')
 	},
@@ -96,7 +104,7 @@ routes: [
 		path: '/bind-my-car',
 		name: 'bind-my-car',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/bind-my-car.vue')
 	},
@@ -104,7 +112,7 @@ routes: [
 		path: '/bind-my-car-com',
 		name: 'bind-my-car-com',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/bind-my-car.vue')
 	},
@@ -112,7 +120,7 @@ routes: [
 		path: '/bind-other-car',
 		name: 'bind-other-car',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/bind-other-car.vue')
 	},
@@ -120,7 +128,7 @@ routes: [
 		path: '/record-list',
 		name: 'record-list',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/record-list.vue')
 	},
@@ -128,7 +136,7 @@ routes: [
 		path: '/record-detail',
 		name: 'record-detail',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/car-record/record-detail.vue')
 	},
@@ -136,7 +144,7 @@ routes: [
 		path: '/reservation-detail',
 		name: 'reservation-detail',
 		meta: {
-			requiresQixiu: false,
+			needQixiu: false,
 		},
 		component: () => import('@/views/reservation/reservation-detail.vue')
 	},
@@ -144,7 +152,7 @@ routes: [
 		path: '/remark-map',
 		name: 'remark-map',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/remark/remark-map.vue')
 	},
@@ -152,7 +160,7 @@ routes: [
 		path: '/my-remark',
 		name: 'my-remark',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/remark/my-remark.vue')
 	},
@@ -160,7 +168,7 @@ routes: [
 		path: '/remark-detail',
 		name: 'remark-detail',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/remark/remark-detail.vue')
 	},
@@ -168,7 +176,7 @@ routes: [
 		path: '/remark-match',
 		name: 'remark-match',
 		meta: {
-			requiresQixiu: true,
+			needQixiu: true,
 		},
 		component: () => import('@/views/remark/match.vue')
 	},
@@ -211,5 +219,118 @@ routes: [
 			tourist: true,
 		},
 		component: () => import('@/views/article/article-detail.vue')
+	},
+	{
+		path: '/forum-query',
+		name: 'forum-query',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/query.vue')
+	},
+	{
+		path: '/forum-board',
+		name: 'forum-board',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/board.vue')
+	},
+	{
+		path: '/forum',
+		name: 'forum',
+		meta: {
+			tourist: true,
+			footer: true,
+		},
+		component: () => import('@/views/forum/index.vue')
+	},
+	{
+		path: '/forum-post',
+		name: 'forum-post',
+		meta: {
+		},
+		component: () => import('@/views/forum/post.vue')
+	},
+	{
+		path: '/my-forum',
+		name: 'my-forum',
+		meta: {
+			tourist: true,
+			cache: true
+		},
+		component: () => import('@/views/forum/my-post.vue')
+	},
+	{
+		path: '/topic',
+		name: 'topic',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/topic.vue')
+	},
+	{
+		path: '/forum-reply',
+		name: 'forum-reply',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/forum/reply.vue')
+	},
+	{
+		path: '/history/query-vin',
+		name: 'history-query-vin',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/query-vin.vue')
+	},
+	{
+		path: '/history/pay',
+		name: 'history-pay',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/pay-history.vue')
+	},
+	{
+		path: '/my/car-history',
+		name: 'my-car-history',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/my-car-history.vue')
+	},
+	{
+		path: '/history/simple',
+		name: 'history-simple',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/history-simple.vue')
+	},
+	{
+		path: '/history/detail',
+		name: 'history-detail',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/history-detail.vue')
+	},
+	{
+		path: '/history/car-list',
+		name: 'history-car-list',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/car-list.vue')
+	},
+	{
+		path: '/bind-car',
+		name: 'bind-car',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/bind-car.vue')
 	},
 ]})

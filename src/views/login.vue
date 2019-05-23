@@ -35,7 +35,7 @@
 	<div :class="['submit',{on: activity}]" @click="submit">登录</div>
 
 	<p class="protocol">新用户登录即完成注册，代表同意
-		<router-link to="/article-detail?infoId=hxx-protocol">《好修修车生活用户协议》</router-link>
+		<router-link to="/article-detail?infoId=hxx-protocol">《好修修用户协议》</router-link>
 	</p>
 
 	<div class="other-way" v-show="unionid">
@@ -193,7 +193,7 @@ export default {
 	watch:{
 		'$route'(){
 			this.showBlock()
-			this.goBackAll()
+			// this.goBackAll()
 		},
 	},
 	mounted(){
@@ -283,7 +283,7 @@ export default {
 		},
 		loginSuccess(data){
 			if(data.success){
-				if(data.data.qxtoken) this.$store.commit('setQixiuToken',data.data.qxtoken);
+				if(data.data.qxtoken) this.$store.commit('setQixiuToken', data.data.qxtoken);
 				if(data.data.isBindNewphone== 1){
 					this.setStore(data)
 					this.$toast('登录成功');
@@ -297,8 +297,8 @@ export default {
 			}
 		},
 		setStore(data){
-			this.$store.commit('setHxxToken',data.data.tokenStr);
-			this.$store.dispatch('dictInit',data.data.dict);
+			this.$store.commit('setHxxToken', data.data.tokenStr);
+			this.$store.dispatch('dictInit', data.data.dict);
 			delete data.data.dict
 			this.$store.commit('setUserInfo',data.data);
 		},
@@ -333,6 +333,7 @@ export default {
 .login{
 	padding: 0 30px;
 	transition: all .5s;
+	min-height: 500px;
 	height: 100vh;
 	position: relative;
 	overflow: hidden;

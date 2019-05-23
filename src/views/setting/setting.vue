@@ -18,7 +18,8 @@
 			</FormItem>
 		</Form>
 
-		<div class="submit" @click="ChangePass">确定</div>
+		<!--<div class="submit" @click="ChangePass">确定</div>-->
+		<submit-button class="submit" :rules="passChangeRule" :datas="passChange" @click="ChangePass">确定</submit-button>
 	</div>
 	<div class="verify-phone" v-show="showVerifyPhone">
 		<Form :model="phoneVerify" class="account-form"
@@ -30,7 +31,8 @@
 				<Input v-model="phoneVerify.pwd" type="password" placeholder="登录密码"></Input>
 			</FormItem>
 		</Form>
-		<div class="submit" @click="next">下一步</div>
+		<!--<div class="submit" @click="next">下一步</div>-->
+		<submit-button class="submit" :rules="phoneVerifyRule" :datas="phoneVerify" @click="next">下一步</submit-button>
 	</div>
 
 	<mt-popup v-model="showChangePhone" position="right" style="height: 100vh;width: 100%">
@@ -47,7 +49,8 @@
 				</FormItem>
 			</Form>
 
-			<div class="submit" @click="submit">确定并重新登录</div>
+			<submit-button class="submit" :rules="phoneChangeRule" :datas="phoneChange" @click="submit">确定并重新登录</submit-button>
+			<!--<div class="submit" @click="submit">确定并重新登录</div>-->
 		</div>
 	</mt-popup>
 </div>
@@ -55,10 +58,12 @@
 
 <script>
 import Countdown from '@/components/countdown-button.vue'
+import SubmitButton from '@/components/submit-button.vue'
 export default {
 	name: "setting",
-	components: {Countdown },
+	components: {Countdown, SubmitButton},
 	data(){
+		let rule= { required: true, message:'必填项不能为空'}
 		return{
 			passChange:{
                 old_pwd: '',
@@ -77,6 +82,20 @@ export default {
 			showChangePass: false,
 			showVerifyPhone: false,
 			showChangePhone: false,
+			passChangeRule:{
+				old_pwd: rule,
+				new_pwd: rule,
+				new_pwd_cp: rule,
+			},
+			phoneVerifyRule:{
+				telphone: rule,
+				pwd: rule,
+			},
+			phoneChangeRule:{
+				telphone: rule,
+				telcode: rule,
+				telSession: rule,
+			}
 		}
 	},
 	computed:{

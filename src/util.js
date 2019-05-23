@@ -1,6 +1,6 @@
 import axios from './axios.js'
 import store from './store'
-// import config from '~/config.js'
+import config from '~/config.js'
 
 /**
  * @param {String} url
@@ -108,6 +108,7 @@ export const imgUrlToBase64 = (url, callBack) => {
 export const imgToBase64 = (thisfile, callBack) => {
   // var file= $(domName).get(0).files[0]
   var file= thisfile
+	console.log('size', file.size)
   var reader = new FileReader();
   reader.readAsDataURL(file)
   reader.onload = function (e) {
@@ -158,6 +159,7 @@ export const _compress = (path, obj, name, callBack) => {
     }
     // quality值越小，所绘制出的图像越模糊
     var base64 = canvas.toDataURL(obj.type|| 'image/png', quality);
+    // var base64 = canvas.toDataURL('image/png', quality);
     // console.log(base64)
     // 返回base64的值
     callBack(base64, name )
@@ -299,7 +301,6 @@ export const getUrlParam= (name)=> {
 	return null;
 }
 
-export const weixinappid= process.env.NODE_ENV=='development'? 'wx71b3e2a11334e62d': 'wx6b11ffb51b409ac3'
 
 export const getWeixinId=()=>{
 	if(isWeixn()){
@@ -307,7 +308,7 @@ export const getWeixinId=()=>{
 		let state= getUrlParam('state')
 		let URL = encodeURIComponent(window.location.href)
 		if( !unionid &&!state){
-			let appId = weixinappid
+			let appId = config.appid
 			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${URL}&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect`
 		}
 		if(!unionid && state=='snsapi_base'){
@@ -337,11 +338,12 @@ export const getWeixinId=()=>{
 }
 
 export const getwxticket= (jsApiList, callback) => {
-	axios.axiosQixiu.get('/weixin/hxx/ticket/jsapi?url='+ (window.location.href.split('#')[0])).then(res=>{
+	axios.axiosQixiu.get('/weixin/hxx/ticket/jsapi?url='+ (window.location.href.split('#')[0]),
+		{constBaseUrl: true}).then(res=>{
 		// axios.get('/weixin/qixiu/ticket/jsapi?url='+('http://192.168.169.121:8888?code=0716QWVV0hJ0b22adjVV0QF6WV06QWVe&state=snsapi_base')).then(res=>{
 		wx.config({
 			debug: false,
-			appId: weixinappid,
+			appId: config.appid,
 			timestamp: res.data.timeStamp,
 			nonceStr: res.data.uuid,
 			signature: res.data.signature,
@@ -351,9 +353,8 @@ export const getwxticket= (jsApiList, callback) => {
 }
 
 export const getLocation= ()=>{
-
 	return new Promise((resolve, reject) => {
-		if(store.state.app.location.lng){
+		if(store.state.app.location.success){
 			resolve(true)
 		}else{
 			AMap.plugin('AMap.Geolocation', () => {
@@ -361,11 +362,17 @@ export const getLocation= ()=>{
 					// timeout: 2000,
 				});
 				geolocation.getCurrentPosition();
-				AMap.event.addListener(geolocation, 'complete', (result)=>{
-					// console.log('result', result)
+				AMap.event.addListener(geolocation, 'complete', (res)=>{
+					console.log('getLocation.res', JSON.stringify(res) )
 					store.commit('setLocation', {
-						lng: result.position.lng,
-						lat: result.position.lat
+						success: true,
+						lng: res.position.lng,
+						lat: res.position.lat,
+						address: res.formattedAddress,
+						citycode: res.addressComponent.citycode,
+						adcode: res.addressComponent.adcode,
+						province: res.addressComponent.province,
+						city: res.addressComponent.city,
 					})
 					resolve(true)
 				});
@@ -376,5 +383,51 @@ export const getLocation= ()=>{
 			});
 		}
 	});
+}
 
+export const cityIsSupport= (getItem)=>{
+	let hasCity= false, thisCityCode= store.state.app.city.regionId, confList= config.location
+	if(thisCityCode){
+		let code= thisCityCode.toString().substring(0, 3)
+		for(let i in confList){
+			if(confList[i].adcode.toString().substring(0, 3)==code) {
+				hasCity= getItem? confList[i]: code
+			}
+		}
+	}
+	return hasCity
+}
+
+export const getCityToken= ()=>{
+	let qixiutoken= store.state.user.qixiutoken, nowCode= cityIsSupport()
+	let useToken= nowCode? qixiutoken[nowCode+ 'qxToken'] : false
+	return useToken
+}
+
+export const getTimeAgo = (time_str)=>{
+	var now = new Date();
+	var date = new Date(time_str.replace(/-/g,'/'));
+//计算时间间隔，单位为分钟
+	var inter = parseInt((now.getTime() - date.getTime())/1000/60);
+	if(inter == 0){
+		return "刚刚";
+	}
+//多少分钟前
+	else if(inter < 60){
+		return inter.toString() + "分钟前";
+	}
+//多少小时前
+	else if(inter < 60*24){
+		return parseInt(inter/60).toString() + "小时前";
+	}
+//本年度内，日期不同，取日期+时间  格式如  06-13 22:11
+	else if(now.getFullYear() == date.getFullYear()){
+		return ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate()+1)).slice(-2)
+			// + " " + date.getHours() + ":" + date.getMinutes();
+	}
+	else{
+		return date.getFullYear().toString().substring(2, 3)
+			+ "-" + ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate()+1)).slice(-2)
+			// + " " + date.getHours() + ":" + date.getMinutes();
+	}
 }

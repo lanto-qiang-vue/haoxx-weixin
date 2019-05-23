@@ -5,6 +5,9 @@
 	</div>
 	<Form :model="form" class="common-form"
 	      :label-width="100" label-position="left" ref="form">
+		<FormItem label="选择汽修平台" prop="area_code">
+			<select-radio class="ivu-input select" v-model="form.area_code" :options="areaList"></select-radio>
+		</FormItem>
 		<FormItem label="汽修平台账号" prop="telphone">
 			<Input v-model="form.telphone" :maxlength="11" placeholder="请输入汽修平台账号"></Input>
 		</FormItem>
@@ -16,25 +19,27 @@
 	</Form>
 	<div :class="['submit',{on: activity}]" @click="bind">同意授权</div>
 
-	<div class="qr" v-show="showQR">
-		<p>请识别下方二维码，关注并注册上海汽修平台</p>
-		<img src="/img/shanghai-qrcode.jpg"/>
-	</div>
+	<!--<div class="qr" v-show="showQR">-->
+		<!--<p>请识别下方二维码，关注并注册上海汽修平台</p>-->
+		<!--<img src="/img/shanghai-qrcode.jpg"/>-->
+	<!--</div>-->
 </div>
 </template>
 
 <script>
 import Countdown from '@/components/countdown-button.vue'
-import { reg} from '@/util.js'
+import SelectRadio from '@/components/select-radio.vue'
+import { reg, cityIsSupport} from '@/util.js'
 export default {
 	name: "accredit",
-	components: {Countdown },
+	components: {Countdown ,SelectRadio },
 	data(){
 		return{
 			form: {
+				area_code: '',
 				telphone: '',
 				telcode: '',
-				telSession: ''
+				telSession: '',
 			},
 			showQR: false
 		}
@@ -42,13 +47,31 @@ export default {
 	computed:{
 		activity(){
 			let status= false
-				if(reg.mobile.test(this.form.telphone) && this.form.telcode){
-					status= true
-				}
+			if(reg.mobile.test(this.form.telphone) && this.form.telcode){
+				status= true
+			}
 			return status
-		}
+		},
+		areaList(){
+			let confList= this.$config.location, list=[]
+			for(let i in confList){
+				list.push({
+					label: confList[i].province+'汽修平台',
+					value: confList[i].adcode.toString().substring(0, 3)
+				})
+			}
+			return list
+		},
+		nowCity(){
+			return this.$store.state.app.city
+		},
 	},
 	mounted(){
+		if(cityIsSupport()){
+			this.form.area_code= this.nowCity.regionId.toString().substring(0, 3)
+		}else {
+			this.$toast('暂不支持您的区域');
+		}
 		this.form.telphone= this.$store.state.user.userinfo.telphone
 	},
 	methods:{
@@ -61,7 +84,9 @@ export default {
 		},
 		bindSuccess(data){
 			if(data.success){
-				this.$store.commit('setQixiuToken', data.data.qxToken);
+				let qixiutoken={}
+				qixiutoken[this.form.area_code+'qxToken']= data.data.qxToken
+				this.$store.commit('setQixiuToken', qixiutoken);
 				this.$toast('绑定成功');
 				this.goBackUrl()
 			}else{

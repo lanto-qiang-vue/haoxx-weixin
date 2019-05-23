@@ -476,16 +476,16 @@ export default{
 			    this.$refs[ref].clickBox()
 		    }
 		},
-		upTravelLicense(base64){
+		upTravelLicense({base64}){
 			this.identifyDriveLicense(base64)
 		},
 
-		upIdCard(base64){
+		upIdCard({base64}){
 			// this.idPic= base64
 			this.identifyCard(base64, 1)
 		},
 
-		upBusiness(base64){
+		upBusiness({base64}){
 			// this.businessPic= base64
 			this.identifyCard(base64, 3)
 		},

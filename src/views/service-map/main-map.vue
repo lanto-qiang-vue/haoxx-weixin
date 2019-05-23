@@ -1,5 +1,5 @@
 <template>
-<div class="allmap" >
+<div class="allmap">
 	<div class='search'>
 	    <div class="fixGuide" v-show="showCenter=='simple'">
 		    <img class="point" src="/img/maintain/center-point.png"/>
@@ -10,12 +10,9 @@
 				<img src="~@/assets/img/maintain/fix-point.png" style="width: 20px"/>
 				<div class="fixGuideClick" @click="goLatePoint">{{centerName}}</div>
 			</div>
-
 		</div>
-
 		<div id="container"></div>
-	 </div>
-
+	</div>
 	<maintain-list v-if="hasList" ref="maintainList" :nowLnglat="nowLnglat" :type="type"
 	               @renderMap="renderMap" @goMap="goMap"></maintain-list>
 	<maintain-detail v-if="type=='maintain'" ref="maintainDetail" @goMap="goMap"></maintain-detail>
@@ -24,8 +21,10 @@
 
 <script>
 import { Toast,  Actionsheet, Indicator } from 'mint-ui'
+import { getLocation, cityIsSupport} from '@/util.js'
 import maintainDetail from '@/views/service-map/maintainDetail.vue'
 import maintainList from '@/views/service-map/maintainList'
+import config from '~/config.js'
 export default {
 name: 'maintain-map',
 components: {maintainDetail,  maintainList },
@@ -39,12 +38,12 @@ data() {
 		markers: [],
 
 		defaultLnglat:{
-			lng: '121.480236',
-			lat: '31.236301'
+			lng: '',
+			lat: ''
 		},
 		nowLnglat:{
-		  lng: '121.480236',
-		  lat: '31.236301'
+		  lng: '',
+		  lat: ''
 		},
 	}
 },
@@ -116,10 +115,21 @@ computed: {
 	    return need
     },
 },
+
 mounted(){
     // console.log('maintain.mounted')
     this.bodyNoScoll()
-    this.init()
+
+
+	let location= cityIsSupport(true)
+	if(location){
+    	this.defaultLnglat.lng= location.lng
+    	this.defaultLnglat.lat= location.lat
+    	this.nowLnglat.lng= location.lng
+    	this.nowLnglat.lat= location.lat
+	}
+
+	this.init()
 },
 
 methods: {

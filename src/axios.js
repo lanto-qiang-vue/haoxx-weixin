@@ -2,30 +2,44 @@ import axios from 'axios'
 import router from './router'
 import store from './store'
 import { Toast, Indicator, Popup } from 'mint-ui'
-import { isWeixn} from './util'
+import { isWeixn, getCityToken, cityIsSupport} from './util'
 let toast= null
 let axiosHxx= axios.create({
-	baseURL: '/hxx-proxy/',
+	baseURL: '/hxx-proxy',
 	timeout: 6000,
 	headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
 	transformRequest: [function (data) {
-		let ret = '',hashxxtoken= false, token= store.state.user.hxxtoken;
-		for (let key in data) {
-			let item= data[key]
-			if(ret) ret += '&';
-			if(key=='access_token' ){
-				if(item) hashxxtoken= true;
-				else continue
+		// console.log('data', Object.prototype.toString.call(data))
+		let ret = '',hashxxtoken= false, token= store.state.user.hxxtoken, dataType=Object.prototype.toString.call(data);
+		switch(dataType){
+			case '[object Object]': {
+				for (let key in data) {
+					let item = data[key]
+					if (ret) ret += '&';
+					if (key == 'access_token') {
+						if (item) hashxxtoken = true;
+						else continue
+					}
+					ret += (encodeURIComponent(key) + '=' + encodeURIComponent(typeof item == 'object' ? JSON.stringify(item) : item))
+				}
+				if (!hashxxtoken && token) ret += ('&' + encodeURIComponent('access_token') + '=' + encodeURIComponent(token))
+				break
 			}
-			ret += (encodeURIComponent(key) + '=' + encodeURIComponent(typeof item=='object'? JSON.stringify( item): item))
+			case '[object FormData]':{
+				if(!data.has('access_token')){
+					data.append('access_token' , token);
+				}
+				ret= data
+				break
+			}
 		}
-		if(!hashxxtoken && token) ret += ('&'+ encodeURIComponent('access_token') + '=' + encodeURIComponent(token))
+
 		return ret
 	}]
 });
 
 let axiosQixiu= axios.create({
-	baseURL: '/qixiu-proxy/',
+	baseURL: '/qixiu-proxy',
 	timeout: 6000,
 	headers: {'Content-Type': 'application/json;charset=UTF-8'}
 });
@@ -38,7 +52,7 @@ let weixinLogin= ()=> {
 		axiosHxx.post('/operate/controller/loginByWx', {unionid}).then(res => {
 			if(res.data.success){
 				let data= res.data.data
-				if(data.qxtoken) store.commit('setQixiuToken',data.qxtoken);
+				if(data.qxtoken) store.commit('setQixiuToken', data.qxtoken);
 				store.commit('setHxxToken',data.tokenStr);
 				store.dispatch('dictInit',data.dict);
 				delete data.dict
@@ -83,10 +97,12 @@ axiosHxx.interceptors.request.use(config => {
 	// 	config.headers.token= token
 	// }
 	Indicator.close()
-    Indicator.open({
-		text: '请稍候...',
-		spinnerType: 'snake'
-    });
+	if(!config.noIndicator){
+		Indicator.open({
+			text: '请稍候...',
+			spinnerType: 'snake'
+		});
+	}
     return config
 }, error => {
     return Promise.reject(error);
@@ -107,10 +123,22 @@ axiosHxx.interceptors.response.use(response => {
 				// console.log(data.Exception.message);
 				Toast( data.Exception.message || data.title);
 			}else{
-				Toast(data.title);
+				Toast(data.title || data.message);
 			}
 		}
 	}
+
+	if (response.data.code){
+		let content= ''
+		if(response.data.status) content+= response.data.status
+		if(response.data.message) content+= ' '+response.data.message
+		if(response.data.msg) content+= ' '+response.data.msg
+		if(response.data.code &&content){
+			if(toast) toast.close()
+			toast = Toast(content)
+		}
+	}
+
 	return response;
 }, error => {
 	// for(let key in error){
@@ -148,15 +176,24 @@ axiosHxx.interceptors.response.use(response => {
 
 
 axiosQixiu.interceptors.request.use(config => {
-	let token= store.state.user.qixiutoken
-	if(token) {
+	// console.log('axiosQixiu.config', config)
+	let token= getCityToken()
+	if(token && !config.noLogin) {
 		config.headers.token= token
 	}
+	if(!config.constBaseUrl){
+		let location= cityIsSupport(true)
+		if(location && location.postfix){
+			config.baseURL= config.baseURL+ '-'+ location.postfix
+		}
+	}
 	Indicator.close()
-	Indicator.open({
-		text: '请稍候...',
-		spinnerType: 'snake'
-	});
+	if(!config.noIndicator){
+		Indicator.open({
+			text: '请稍候...',
+			spinnerType: 'snake'
+		});
+	}
 	return config
 }, error => {
 	Indicator.close()
