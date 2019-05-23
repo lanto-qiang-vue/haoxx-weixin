@@ -1,8 +1,10 @@
 <template>
 <form action="javascript:;" class="common-search">
 	<i class="fa fa-search icon"></i>
-	<input type="search" ref="input" v-model="search" :placeholder="placeholder"  @keydown="key"
-	:disabled="disabled" :readonly="readonly" @click="$emit('click')"/>
+	<input type="search" ref="input" v-model="search" :placeholder="placeholder"
+	:disabled="disabled" :readonly="readonly"
+	       @click="$emit('click')" @keydown="key"
+	       @focus="$emit('focus')" @blur="$emit('blur')"/>
 	<i class="fa fa-times-circle close" v-show="search" @click="clear"></i>
 </form>
 </template>
@@ -26,16 +28,20 @@ export default {
 		feedback:{
 			default: false
 		},
+		timing:{
+			default: false
+		},
 	},
 	data(){
 		return{
-			val: ''
+			val: '',
+			timer: null
 		}
 	},
 	computed:{
 		search: {
 			get(){
-				return this.value || this.val
+				return this.val
 			},
 			set(val){
 				this.val= val
@@ -45,7 +51,15 @@ export default {
 	},
 	watch:{
 		search(val){
-			this.$emit('change', val);
+			if(this.timing){
+				clearTimeout(this.timer)
+				this.timer= setTimeout(()=>{
+					this.$emit('change', val);
+				},300)
+			}else{
+				this.$emit('change', val);
+			}
+
 		}
 	},
 	mounted(){
@@ -65,6 +79,7 @@ export default {
 		},
 		clear(){
 			this.search= ''
+			// this.$emit('input', '');
 			this.$emit('clear');
 		}
 	}

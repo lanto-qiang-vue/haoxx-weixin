@@ -19,10 +19,11 @@
     <div class="search-input">
     <!--<div class="left" :class="{on: !isFocus&& !search.q}">-->
     <div class="left on">
-      <input v-model="search.q" type="search" :placeholder='inputPlaceholder'
-             @focus="focus" @blur="isFocus=false" @keydown="key($event)" ref="searchInput"/>
-      <!--<div class="query"  @click="toQuery(true)"></div>-->
-      <img class="close" v-show="search.q" @click="search.q='';toQuery(true)" src="~@/assets/img/maintain/关闭.png" />
+      <!--<input v-model="search.q" type="search" :placeholder='inputPlaceholder' @focus="focus" @blur="isFocus=false" @keydown="key($event)" ref="searchInput"/>-->
+	    <search-input :placeholder='inputPlaceholder' v-model="search.q" :timing="true"
+	                  @focus="focus" @blur="isFocus=false" @enter="key" @change="key"
+	                  ref="searchInput"></search-input>
+      <!--<img class="close" v-show="search.q" @click="search.q='';toQuery(true)" src="~@/assets/img/maintain/关闭.png" />-->
     </div>
     <!--<span @click="cancel" v-show="isFocus || search.q">取消</span>-->
     </div>
@@ -151,6 +152,7 @@
 
 <script>
 import SlideBar from '@/views/service-map/SlideBar'
+import SearchInput from '@/components/common-search.vue'
 import { Indicator} from 'mint-ui'
 import {deepClone, cityIsSupport} from '@/util.js'
 let search= {
@@ -166,7 +168,7 @@ let search= {
 	}
 export default {
 	name: "maintain-list",
-	components: { SlideBar},
+	components: { SlideBar, SearchInput},
 	props: [ 'blur', 'nowLnglat', 'type'],
     data(){
 		let sotrName= ''
@@ -544,10 +546,8 @@ export default {
 			    }
 		    }
 	    },
-      key(e) {
-        if ( e.keyCode == 13 || e=='search') {
+      key() {
          this.toQuery(true)
-        }
       },
       cancel(){
 			// console.log('cancel')
