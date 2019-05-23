@@ -16,6 +16,9 @@ import { Actionsheet } from 'mint-ui';
 export default {
 		name: "compress-upload",
     props: {
+	    'mode': {
+		    default: ''
+	    },
 		'operate': {
 			type: String,
 			default: 'upLoad'
@@ -55,11 +58,23 @@ export default {
 	    	return
 	    },
 		clickBox(){
-			if(isIos()){
-				this.$refs.file2.click()
-			}else{
-				this.sheetVisible= true
-			}
+	    	switch( this.mode){
+			    case 'camera':{
+				    this.$refs.file.click()
+				    break;
+			    }
+			    case 'file':{
+				    this.$refs.file2.click()
+				    break;
+			    }
+			    default :{
+				    if(isIos()){
+					    this.$refs.file2.click()
+				    }else{
+					    this.sheetVisible= true
+				    }
+			    }
+		    }
 		},
       getImg(fileName){
         let file= this.$refs[fileName].files[0]

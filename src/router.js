@@ -317,4 +317,20 @@ routes: [
 		},
 		component: () => import('@/views/car-history/history-detail.vue')
 	},
+	{
+		path: '/history/car-list',
+		name: 'history-car-list',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/car-list.vue')
+	},
+	{
+		path: '/bind-car',
+		name: 'bind-car',
+		meta: {
+
+		},
+		component: () => import('@/views/car-history/bind-car.vue')
+	},
 ]})

@@ -92,8 +92,8 @@ export default {
 			position: relative;
 			padding: 0 5px;
 			img{
-				width: 30px;
-				height: 30px;
+				width: 36px;
+				height: 36px;
 				object-fit: contain;
 				margin-bottom: 10px;
 			}
