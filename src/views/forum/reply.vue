@@ -85,6 +85,12 @@ export default {
 				}
 			})
 		},
+		reList(){
+			this.page= 1
+			this.total= 0
+			this.list=[]
+			this.getList()
+		},
 		loadMore(){
 			this.page++
 			this.getList(true)

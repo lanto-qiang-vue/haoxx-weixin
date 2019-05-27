@@ -35,7 +35,8 @@
 			<p><i class="zmdi zmdi-plus-circle-o"></i>我的爱车</p>
 		</router-link>
 		<router-link tag="li" to="/remark-map" v-show="isShanghai">
-			<img src="~@/assets/img/index/维修点评2.png"/><p>维修点评</p>
+			<img src="~@/assets/img/index/维修点评2.png"/>
+			<p><i class="fa fa-thumbs-o-up"></i>维修点评</p>
 		</router-link>
 		<li></li>
 	</ul>
@@ -47,10 +48,12 @@
 	</ul>
 	<ul class="block">
 		<p class="title">车谈话题
-			<router-link tag="span" to="/forum" class="more">查看更多</router-link>
 		</p>
 	</ul>
 	<topics-list :top="0" :hottestShow="false" :isIndex="true" class="topics-list"></topics-list>
+	<p class="coupons-more">
+		<router-link tag="span" to="/forum" class="more">查看更多</router-link>
+	</p>
 </div>
 </template>
 
@@ -207,11 +210,12 @@ export default {
 	}
 	.maintain{
 		font-size: 14px;
-		color: #FF6D0E;
+		color: #666666;
 		float: right;
 		line-height: 30px;
 		margin-right: 15px;
 		i{
+			color: #FF6D0E;
 			margin-right: 5px;
 		}
 	}
@@ -278,10 +282,10 @@ export default {
 		.title{
 			color: #333333;
 			font-size: 14px;
-			font-weight: 500;
+			font-weight: 600;
 			line-height: 36px;
 			span{
-				color: #333333;
+				color: #666666;
 				float: right;
 				font-size: 12px;
 				font-weight: 400;
@@ -299,8 +303,14 @@ export default {
 			display: inline-block;
 			position: relative;
 			margin-bottom: 10px;
+			border-radius: 4px;
+			overflow: hidden;
 			&:nth-child(1){
 				float: left;
+				box-shadow:0 1px 2px 0 #208BF1;
+			}
+			&:nth-child(2){
+				box-shadow:0 1px 2px 0 #F07315;
 			}
 			&:nth-child(3){
 				float: right;
@@ -325,6 +335,7 @@ export default {
 	.coupons{
 		text-align: justify;
 		height: 105px;
+		font-size: 0;
 		&:after{
 			content: '';
 			display: inline-block;
@@ -335,7 +346,7 @@ export default {
 			overflow: hidden;
 			height: 50px;
 			min-width: 95px;
-			width: 30%;
+			width: 32%;
 			/*max-width: 100px;*/
 			text-align: center;
 			background:linear-gradient(180deg, #fff2da, #FFB45F);
@@ -343,16 +354,17 @@ export default {
 			border-radius:3px;
 			position: relative;
 			color: #F70813;
-			font-size: 14px;
-			line-height: 28px;
-			font-weight: 500;
+			font-size: 16px;
+			line-height: 32px;
+			font-weight: 600;
 			span{
 				font-weight: 400;
 				display: block;
 				font-size: 12px;
 				color: #8A0A0A;
-				line-height: 20px;
+				line-height: 14px;
 				transform: scale(.8);
+				opacity: .7;
 			}
 			&:before{
 				content: '';
@@ -362,7 +374,7 @@ export default {
 				top: 0;
 				width: 100%;
 				height: 100%;
-				border:2px dashed #FA5E54;
+				border: 2px dashed #FA5E54;
 			}
 			&:after{
 				content: '';
@@ -381,8 +393,16 @@ export default {
 	/*.forum{*/
 		/*border-top: 10px solid #F3F3F3;*/
 	/*}*/
-	.topics-list{
-		top: -10px;
+	.coupons-more{
+		text-align: center;
+		position: relative;
+		line-height: 60px;
+		span{
+			line-height: 20px;
+			color: #666666;
+			font-size: 12px;
+			font-weight: 400;
+		}
 	}
 }
 </style>
@@ -398,6 +418,9 @@ export default {
 	.banner .content .mint-swipe-indicator.is-active{
 		background-color: white;
 		opacity: 1;
+	}
+	.topics-list .body .list li:first-child{
+		padding-top: 0;
 	}
 }
 </style>

@@ -4,7 +4,7 @@
 		<img src="/img/head.png"/>
 		<span>{{item.nickname}}</span>
 	</div>
-	<p class="title">{{item.title}}</p>
+	<p class="title" @click="topic(item.id)">{{item.title}}</p>
 	<div class="img-group" v-if="item.path">
 		<img v-for="(img, key) in item.path.split(',')" :src="img" :key="key" v-img="{group: `img-${type}-${item.id}`}"/>
 	</div>
@@ -12,7 +12,7 @@
 		<span class="center" :style="{ color: item.colour}">{{item.topicContent}}</span>
 		<span>{{item.createDate | TimeAgo}}</span>
 		<span class="left">{{item.number}}个评论</span>
-		<router-link tag="span" class="right" :to="`/topic?id=${item.id}`">去参与</router-link>
+		<span class="right" @click="topic(item.id)">去参与</span>
 	</div>
 </li>
 </template>
@@ -21,6 +21,11 @@
 export default {
 	name: "topics-item",
 	props: ['item', 'type'],
+	methods:{
+		topic(id){
+			this.$router.push(`/topic?id=${id}`)
+		}
+	}
 }
 </script>
 
@@ -40,7 +45,7 @@ export default {
 			vertical-align: middle;
 		}
 		span{
-			padding-left: 10px;
+			padding-left: 5px;
 			font-size:12px;
 			color: #666666;
 			/*line-height:17px;*/
@@ -53,6 +58,7 @@ export default {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		margin-bottom:5px;
+		font-weight: 600;
 	}
 	.img-group{
 		overflow: auto;
@@ -78,7 +84,8 @@ export default {
 		}
 		.center{
 			/*line-height: 17px;*/
-			color: #FE8636;
+			/*color: #FE8636;*/
+			color: #666666;
 			padding-right: 10px;
 		}
 		.left{

@@ -318,8 +318,8 @@ routes: [
 		component: () => import('@/views/car-history/history-detail.vue')
 	},
 	{
-		path: '/history/car-list',
-		name: 'history-car-list',
+		path: '/car-list',
+		name: 'car-list',
 		meta: {
 
 		},

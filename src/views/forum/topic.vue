@@ -75,6 +75,7 @@ export default {
 			this.showComment= !!this.$route.query.showComment
 		},
 		clickComment(){
+			this.content= ''
 			if(!this.$store.state.user.hxxtoken){
 				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
 				return
@@ -100,7 +101,8 @@ export default {
 			}}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
 				if(res.data.success){
 					this.$toast('发布成功')
-					this.$refs.reply.getList()
+					this.$refs.reply.reList()
+					this.detail.number++
 					this.$router.go(-1)
 				}
 			})

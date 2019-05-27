@@ -4,7 +4,7 @@
 	    <search placeholder="搜索话题" :readonly="true" @click="$router.push('/forum-query')"></search>
     </div>
 	<ul class="button">
-		<router-link tag="li" to="/forum-board?name=全部圈子">
+		<router-link tag="li" to="/forum-board?name=全部话题">
 			<img src="/img/forum/icon-all-board.png"/><p>全部圈子</p></router-link>
 		<router-link tag="li"
 		             :to="`/forum-board?id=${item.id}&name=${item.content}`"

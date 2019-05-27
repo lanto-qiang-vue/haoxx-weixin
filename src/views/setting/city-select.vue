@@ -127,14 +127,16 @@ export default {
 			this.goBackUrl()
 		},
 		goBackUrl(){
-			if(cityIsSupport()){
-				if(this.$route.query.redirect){
-					this.$router.replace({
-						path: this.$route.query.redirect
-					})
-				}else{
-					this.$router.go(-1)
-				}
+			if(cityIsSupport() &&this.$route.query.redirect){
+				// if(this.$route.query.redirect){
+				this.$router.replace({
+					path: this.$route.query.redirect
+				})
+				// }else{
+				// 	this.$router.go(-1)
+				// }
+			}else{
+				this.$router.go(-1)
 			}
 		},
 	}

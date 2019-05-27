@@ -62,7 +62,7 @@ export default {
 			})
 		},
 		nickName(){
-			this.$refs.popupInput.popup({title: '修改昵称', value: this.userinfo.nickName}).then(({status, value})=>{
+			this.$refs.popupInput.popup({title: '修改昵称', value: this.userinfo.nickName, maxlength: 10}).then(({status, value})=>{
 				console.log(status, value)
 				if(status){
 					if(value){

@@ -10,7 +10,7 @@
 	<div class="popup-input">
 		<div class="content">
 			<h5 v-show="title">{{title}}</h5>
-			<Input v-model="value" :placeholder="placeholder" clearable class="input"/>
+			<Input v-model="value" :placeholder="placeholder" clearable class="input" :maxlength="maxlength"/>
 		</div>
 		<div class="btns">
 			<p :class="'popup-input-cancel '+ cancelClass" @click="click(false)">{{cancelText}}</p>
@@ -37,6 +37,7 @@ export default {
 			confirmText: '确定',
 			cancelClass: '',
 			confirmClass: '',
+			maxlength: null,
 			resolve: null,
 		}
 	},

@@ -4,17 +4,17 @@
 	<keep-alive><router-view v-if="cache"></router-view></keep-alive>
 
 	<ul class="footer" v-show="showFooter">
-		<router-link to="/" tag="li">
+		<router-link to="/" tag="li" :class="{on: active('/')}">
 			<img src="~@/assets/img/index/home.png" v-show="active('/')">
 			<img src="~@/assets/img/index/home-off.png" v-show="!active('/')">
 			<p>首页</p>
 		</router-link>
-		<router-link to="/forum" tag="li">
+		<router-link to="/forum" tag="li" :class="{on: active('/forum')}">
 			<img src="~@/assets/img/index/forum.png" v-show="active('/forum')">
 			<img src="~@/assets/img/index/forum-off.png" v-show="!active('/forum')">
 			<p>车谈</p>
 		</router-link>
-		<router-link to="/my" tag="li">
+		<router-link to="/my" tag="li" :class="{on: active('/my')}">
 			<img src="~@/assets/img/index/my.png" v-show="active('/my')">
 			<img src="~@/assets/img/index/my-off.png" v-show="!active('/my')">
 			<p>我的</p>
@@ -90,10 +90,15 @@ export default {
 			padding-top: 8px;
 			img{
 				height: 20px;
+				margin-bottom: 2px;
 			}
 			p{
 				font-size: 12px;
-				color: #333333;
+				color: #666666;
+				/*transform: scale(0.8);*/
+			}
+			&.on p{
+				color: #FF6D0E;
 			}
 		}
 	}

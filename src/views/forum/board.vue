@@ -22,7 +22,7 @@ export default {
 		}
 	},
 	mounted(){
-
+		document.title = this.$route.query.name
 	},
 	methods:{
 		close(){
