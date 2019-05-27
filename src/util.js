@@ -290,6 +290,7 @@ export const reg={
 	idcard: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
 	vehicle: /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4,5}[A-Z0-9挂学警港澳]{1}$/,
 	vin: /^[A-Z0-9]{17}$/,
+	name:/^[\u4E00-\u9FA5]{2,5}$/,
 	mobile: /^1[3456789]\d{9}$/,
 }
 
@@ -430,4 +431,64 @@ export const getTimeAgo = (time_str)=>{
 			+ "-" + ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate()+1)).slice(-2)
 			// + " " + date.getHours() + ":" + date.getMinutes();
 	}
+}
+//车架号校验码校验
+export  const checkVin = (str)=>{
+    if(str.length != 17){
+        return false;
+    }
+    var vin = {
+        "0":0,
+        "1":1,
+        "2":2,
+        "3":3,
+        "4":4,
+        "5":5,
+        "6":6,
+        "7":7,
+        "8":8,
+        "9":9,
+        "A":1,
+        "B":2,
+        "C":3,
+        "D":4,
+        "E":5,
+        "F":6,
+        "G":7,
+        "H":8,
+        "J":1,
+        "K":2,
+        "L":3,
+        "M":4,
+        "N":5,
+        "P":7,
+        "R":9,
+        "S":2,
+        "T":3,
+        "U":4,
+        "V":5,
+        "W":6,
+        "X":7,
+        "Y":8,
+        "Z":9,
+    }
+    var power = [8,7,6,5,4,3,2,10,0,9,8,7,6,5,4,3,2];
+    var value = 0;
+    for(let i =0;i<str.length;i++){
+        if(!vin[str[i]] && str[i] != 0){
+            return false;
+        }else{
+            value += vin[str[i]] * power[i];
+        }
+    }
+    var y =  value % 11;
+    //转X为10
+    var x = 0;
+    if(str[8] == "X") x = 10
+    else x = str[8];
+    if(y == x){
+        return true;
+    }else{
+        return false;
+    }
 }

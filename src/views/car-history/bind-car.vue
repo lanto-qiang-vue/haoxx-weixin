@@ -47,6 +47,10 @@
 				  <span>{{license.issueDate}}</span>
 			  </li>
 			  <li>
+				  <label>注册日期</label>
+				  <span>{{license.issueDate}}</span>
+			  </li>
+			  <li>
 				  <label>发动机号</label>
 				  <span>{{license.engineNo}}</span>
 			  </li>
@@ -126,11 +130,12 @@ export default{
 	methods: {
 		clickImg(ref, img){
 			if(!img){
-				this.$refs[ref].clickBox()
-			}
+                this.$refs[ref].clickBox()
+            }
 		},
 		upLicense({base64}){
-
+		    //调用上传接口;
+            this.drivePic = base64;
 		},
 		upIdCard({base64}){
 
