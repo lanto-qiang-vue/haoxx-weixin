@@ -911,7 +911,6 @@ export default {
         margin-left: 80px;
         position: relative;
         >span{
-          font-weight: 300;
           font-size: 12px;
           line-height: 19px;
           padding: 0 4px;
