@@ -34,6 +34,10 @@
 			<img src="~@/assets/img/history/添加爱车.png"/>
 			<p><i class="zmdi zmdi-plus-circle-o"></i>添加爱车</p>
 		</router-link>
+		<router-link tag="li" to="/remark-map" v-show="isShanghai">
+			<img src="~@/assets/img/index/维修点评2.png"/><p>维修点评</p>
+		</router-link>
+		<li></li>
 	</ul>
 	<ul class="coupons block">
 		<p class="title">车主权益<span @click="goCoupons">查看更多</span></p>
@@ -93,6 +97,10 @@ export default {
 		},
 		isLogin(){
 			return this.$store.state.user.hxxtoken
+		},
+		isShanghai(){
+			return this.$store.state.app.city && this.$store.state.app.city.regionId
+			&& this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
 		}
 	},
 	mounted(){

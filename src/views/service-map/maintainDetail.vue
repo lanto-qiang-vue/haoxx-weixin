@@ -22,7 +22,7 @@
     <!--<router-link tag="div" :to="{path: '/carOwner-centre/visitService', query: {id: id} }">-->
       <!--<span class="shangmeng">上门服务</span></router-link>-->
     <router-link tag="div" :to="{ path : '/remark-match', query: { corpId: this.compId }}">
-      <span class="dianping">点评</span></router-link>
+      <span class="dianping" v-show="isShanghai">点评</span></router-link>
     <div v-show="all.tel" ><a class="lianxi" :href="'tel:'+ all.tel">联系</a></div>
     <div v-show="!all.tel"><a class="lianxi" @click="noTal">联系</a></div>
   </div>
@@ -174,6 +174,10 @@ export default {
 		  if(sTime <= now && now<= eTime) return true
 		  else return false
 	  },
+	  isShanghai(){
+		  return this.$store.state.app.city && this.$store.state.app.city.regionId
+			  && this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
+	  }
   },
 	watch: {
 		compId(id){

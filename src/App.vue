@@ -43,18 +43,27 @@ export default {
 		// 	return this.$store.state.app
 		// }
 	},
+	watch:{
+		showFooter(show){
+			if(show){
+				document.body.addEventListener('touchend', this.bodyScrollTop, { passive: false });
+			}else{
+				document.body.removeEventListener('touchend', this.bodyScrollTop,false)
+			}
+		}
+	},
 	mounted(){
-
 
 		$('body').on('blur', 'input, textarea', ()=>{
 			// console.log('blur')
 			if($('body').scrollTop()!= 0 ) $('body').scrollTop(0)
 		})
 
-
 	},
 	methods:{
-
+		bodyScrollTop(){
+			if(document.body.scrollTop!=0) window.scrollTo(0,0);
+		},
 	}
 }
 </script>
