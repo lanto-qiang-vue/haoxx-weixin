@@ -28,11 +28,11 @@
 		<!--<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>-->
 		<!--<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>-->
 	<!--</ul>-->
-	<ul class="my-cars block" style="border: 0">
-		<p class="title">我的爱车</p>
+	<ul class="my-cars block" style="border: 0;padding-top: 10px">
+		<!--<p class="title">我的爱车</p>-->
 		<router-link tag="li" to="/my-car-list">
-			<img src="~@/assets/img/history/添加爱车.png"/>
-			<p><i class="zmdi zmdi-plus-circle-o"></i>添加爱车</p>
+			<img src="~@/assets/img/index/我的爱车2.png"/>
+			<p><i class="zmdi zmdi-plus-circle-o"></i>我的爱车</p>
 		</router-link>
 		<router-link tag="li" to="/remark-map" v-show="isShanghai">
 			<img src="~@/assets/img/index/维修点评2.png"/><p>维修点评</p>
@@ -219,7 +219,7 @@ export default {
 		position: relative;
 		.banner-swiper{
 			.dummy{
-				margin-top: 45%;
+				margin-top: 35%;
 			}
 			.content {
 				position: absolute;
@@ -281,8 +281,10 @@ export default {
 			font-weight: 500;
 			line-height: 36px;
 			span{
+				color: #333333;
 				float: right;
 				font-size: 12px;
+				font-weight: 400;
 			}
 		}
 	}
@@ -297,10 +299,10 @@ export default {
 			display: inline-block;
 			position: relative;
 			margin-bottom: 10px;
-			&:nth-child(2){
+			&:nth-child(1){
 				float: left;
 			}
-			&:nth-child(4){
+			&:nth-child(3){
 				float: right;
 			}
 			img{
@@ -341,14 +343,16 @@ export default {
 			border-radius:3px;
 			position: relative;
 			color: #F70813;
-			font-size: 16px;
+			font-size: 14px;
 			line-height: 28px;
 			font-weight: 500;
 			span{
+				font-weight: 400;
 				display: block;
 				font-size: 12px;
 				color: #8A0A0A;
 				line-height: 20px;
+				transform: scale(.8);
 			}
 			&:before{
 				content: '';
@@ -364,9 +368,10 @@ export default {
 				content: '';
 				display: block;
 				position: absolute;
-				left: 0;
+				left: 50%;
+				transform: translateX(-50%);
 				bottom: 22px;
-				width: 100%;
+				width: 90%;
 				height: 1px;
 				border-top:1px dotted #E48E69;
 				opacity: .5;

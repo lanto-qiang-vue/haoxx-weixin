@@ -37,9 +37,9 @@ export default {
 	},
 	methods:{
 		getList(flag){
-			this.axiosHxx.post( '', {
+			this.axiosHxx.post( '/hxxdc/vehicle/bind/list', {
 				page: this.page,
-				limit: 10,
+				offset: 10,
 			},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
 				if(flag) this.$refs.loadmore.onBottomLoaded()
 				else this.list=[]
