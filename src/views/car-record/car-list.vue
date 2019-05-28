@@ -7,36 +7,23 @@
             <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :autoFill="false"
                          bottomPullText="加载更多" ref="loadmore">
                 <ul class="list">
-                    <li>
+                    <li v-for="(item, key) in list" :key="key" @click="$emit('select', item)">
                         <div class="head">
-                            沪A12345<span class="status">审核通过</span>
+                            {{item.vehiclePlateNumber}}
+	                        <!--<span class="status">审核通过</span>-->
                         </div>
                         <p>
-	                        <label>车架号：</label>LGS37123456HG8876
-                            <a class="unbind">解绑</a>
+	                        <label>车架号：</label>{{item.vin}}
+                            <a class="unbind" @click="unbind(item, key)">解绑</a>
                         </p>
                         <p>
-	                        <label>所有人：</label>张三
-	                        <a :class="['button']">
-		                        设为本人车辆<i class="zmdi zmdi-check-circle"></i>
+	                        <label>所有人：</label>{{item.ownerName}}
+	                        <a class="button on" v-show="item.self" @click="self(item, key)">
+		                        本人车辆<i class="zmdi zmdi-check-circle"></i>
 	                        </a>
+	                        <a class="button" v-show="!item.self" @click="self(item, key)">设为本人车辆</a>
                         </p>
                     </li>
-	                <li>
-		                <div class="head">
-			                沪A12345<span class="status">审核通过</span>
-		                </div>
-		                <p>
-			                <label>车架号：</label>LGS37123456HG8876
-			                <a class="unbind">解绑</a>
-		                </p>
-		                <p>
-			                <label>所有人：</label>张三
-			                <a :class="['button','on']">
-				                本人车辆<i class="zmdi zmdi-check-circle"></i>
-			                </a>
-		                </p>
-	                </li>
                 </ul>
             </mt-loadmore>
         </div>
@@ -54,32 +41,59 @@ export default {
 	data(){
 		return{
 			vehicle: '',
-			list: [
-			],
+			list: [],
 			page: 1,
 			total: 0,
 			allLoaded: false
 		}
 	},
+	mounted(){
+		this.getList()
+	},
 	methods:{
 		getList(flag){
-			this.axiosHxx.post( '/hxxdc/vehicle/bind/list', {
+			this.axiosQixiu.post( '/hxxdc/vehicle/bind/list', {
+				vehiclePlateNumber: this.vehicle,
 				pageNo: this.page,
 				pageSize: 10,
-			},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
-				if(flag) this.$refs.loadmore.onBottomLoaded()
-				else this.list=[]
-				this.total= res.data.total
-				if(res.data.data&&res.data.data.length){
-					let arr= res.data.data
-					this.list= this.list.concat(arr)
-					if(this.list.length>=res.data.total){
-						this.allLoaded=true
+			},{hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					if(flag) this.$refs.loadmore.onBottomLoaded()
+					else this.list=[]
+					this.total= res.data.total
+					if(res.data.items&&res.data.items.length){
+						let arr= res.data.items
+						this.list= this.list.concat(arr)
+						if(this.list.length>=res.data.total){
+							this.allLoaded=true
+						}else{
+							this.allLoaded=false
+						}
 					}else{
-						this.allLoaded=false
+						this.allLoaded=true
 					}
-				}else{
-					this.allLoaded=true
+				}
+			})
+		},
+		unbind(item, key){
+			this.$messagebox.confirm('确定解绑?').then(action => {
+				// console.log('action', action)
+				this.axiosQixiu.post( '/hxxdc/vehicle/remove/bind/'+ item.id, {},{hxxtoken: true}).then( (res) => {
+					if(res.data.code=='0'){
+						this.list.splice(key, 1)
+						// this.getList()
+					}
+				})
+			});
+		},
+		self(item, key){
+			let status= !item.self
+			this.axiosQixiu.post( '/hxxdc/vehicle/self', {
+				id: item.id,
+				self: status
+			},{hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					this.list[key].self= status
 				}
 			})
 		},

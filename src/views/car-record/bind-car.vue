@@ -9,7 +9,7 @@
 			  </div>
 			  <p @click.stop.prevent="$refs.upLicense.clickBox()">拍摄正面</p>
 		  </div>
-		  <upload operate='base64' mode="camera" @done="upLicense" ref="upLicense"></upload>
+		  <upload mode="camera" @done="upLicense" ref="upLicense" backend="hxx"></upload>
 	  </div>
 
 	<div class="upBlock id" v-show="needId || idCard.id">
@@ -22,7 +22,7 @@
 			</div>
 			<p @click.stop.prevent="$refs.upIdCard.clickBox()" >拍摄正面</p>
 		</div>
-		<upload operate='base64' mode="camera" @done="upIdCard" ref="upIdCard"></upload>
+		<upload mode="camera" @done="upIdCard" ref="upIdCard" backend="hxx"></upload>
 	</div>
 
 	  <div class="info" v-show="license.id">
@@ -98,8 +98,8 @@
 	  </div>
 
 	  <div class="common-submit">
-		  <!--<submit-button :rules="rules" :datas="form" :feedback="true" @click="Bind">提交绑定</submit-button>-->
-		  <a class="on" @click="bind">提交绑定</a>
+		  <submit-button :rules="rules" :datas="form" :feedback="true" @click="bind">提交绑定</submit-button>
+		  <!--<a class="on" @click="bind">提交绑定</a>-->
 	  </div>
 
   </div>
@@ -122,7 +122,30 @@ export default{
 		}
     },
 	computed:{
-
+		rules(){
+			return {
+				licenseId: { required: true, message:'请上传行驶证'},
+				needId: { validator: (rule, value, callback) => {
+					let flag= false
+						if(value){
+							if(this.idCard.id){
+								flag= true
+							}
+						}else{
+							flag= true
+						}
+						if(flag){
+							callback()
+						} else callback(new Error('请上传身份证'))
+					}},
+			}
+		},
+		form(){
+			return {
+				licenseId: this.license.id,
+				needId: this.needId
+			}
+		}
 	},
 	mounted(){
 
@@ -133,15 +156,44 @@ export default{
                 this.$refs[ref].clickBox()
             }
 		},
-		upLicense({base64}){
-		    //调用上传接口;
-            this.drivePic = base64;
-		},
-		upIdCard({base64}){
+		upLicense({base64, url}){
+			this.axiosQixiu.post( '/hxxdc/travel/license/ocr', {
+				imageUrl: url.split('uri=')[1],
+				detect_direction: true
+			},{hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					this.drivePic = base64;
+					this.license= res.data.item
+				}
+			})
 
+		},
+		upIdCard({base64, url}){
+			this.axiosQixiu.post( '/hxxdc/id/card/ocr', {
+				imageUrl: url.split('uri=')[1],
+				detect_direction: true
+			},{hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					this.idPic = base64;
+					this.idCard= res.data.item
+				}
+			})
 		},
 		bind() {
-
+			this.axiosQixiu.post( '/hxxdc/vehicle/bind', {
+				licenseId: this.license.id,
+				idCardId: this.idCard.id,
+			},{hxxtoken: true}).then( (res) => {
+				switch(res.data.code){
+					case '0':{
+						this.$toast('发布成功')
+						this.$router.go(-1)
+					}
+					case '10002':{
+						this.needId= true
+					}
+				}
+			})
 		}
 	}
 }
@@ -195,6 +247,7 @@ export default{
 			}
 		}
 		>p{
+			text-align: center;
 			font-size: 13px;
 		}
 		.imgBlock{

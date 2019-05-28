@@ -45,6 +45,19 @@ export default {
 		return{
 			vin: 'LSF12345678UHG123',
 			radio: '5',
+			list: []
+		}
+	},
+	mounted(){
+		this.getList()
+	},
+	methods:{
+		getList(){
+			this.axiosQixiu.get('/hxxdc/product/list', {hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					this.list= res.data.items
+				}
+			})
 		}
 	}
 }

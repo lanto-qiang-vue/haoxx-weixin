@@ -141,6 +141,22 @@ routes: [
 		component: () => import('@/views/car-record/record-detail.vue')
 	},
 	{
+		path: '/car-list',
+		name: 'car-list',
+		meta: {
+
+		},
+		component: () => import('@/views/car-record/car-list.vue')
+	},
+	{
+		path: '/bind-car',
+		name: 'bind-car',
+		meta: {
+
+		},
+		component: () => import('@/views/car-record/bind-car.vue')
+	},
+	{
 		path: '/reservation-detail',
 		name: 'reservation-detail',
 		meta: {
@@ -317,20 +333,5 @@ routes: [
 		},
 		component: () => import('@/views/car-history/history-detail.vue')
 	},
-	{
-		path: '/car-list',
-		name: 'car-list',
-		meta: {
 
-		},
-		component: () => import('@/views/car-history/car-list.vue')
-	},
-	{
-		path: '/bind-car',
-		name: 'bind-car',
-		meta: {
-
-		},
-		component: () => import('@/views/car-history/bind-car.vue')
-	},
 ]})

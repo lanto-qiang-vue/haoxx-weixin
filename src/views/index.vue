@@ -28,9 +28,9 @@
 		<!--<router-link tag="li" to="/my-car-list"><img src="~@/assets/img/index/我的爱车.png"/><p>我的爱车</p></router-link>-->
 		<!--<router-link tag="li" to="/coupons-type"><img src="~@/assets/img/index/车主权益.png"/><p>车主权益</p></router-link>-->
 	<!--</ul>-->
-	<ul class="my-cars block" style="border: 0;padding-top: 10px">
+	<ul class="my-cars">
 		<!--<p class="title">我的爱车</p>-->
-		<router-link tag="li" to="/my-car-list">
+		<router-link tag="li" to="/car-list">
 			<img src="~@/assets/img/index/我的爱车2.png"/>
 			<p><i class="zmdi zmdi-plus-circle-o"></i>我的爱车</p>
 		</router-link>
@@ -81,7 +81,7 @@ export default {
 				},
 			},
 			showSwiper: false,
-			recordPath: '/my-car-list',
+			// recordPath: '/my-car-list',
 			comments:{
 				list: [],
 				page: 1,
@@ -118,17 +118,17 @@ export default {
 	},
 	methods:{
 		init(){
-			if(this.qixiutoken){
-				this.axiosQixiu.post('/vehicle/owner/queryVehicelist',
-					{"page": 1, "pageSize": 1,}).then( (res) => {
-					if(res.data.code=='0'){
-						if(res.data.total==1){
-							let item= res.data.items[0]
-							this.recordPath= `/record-list?id=${item.vin}&vehicleplatenumber=${item.vehicleplatenumber}`
-						}
-					}
-				})
-			}
+			// if(this.qixiutoken){
+			// 	this.axiosQixiu.post('/vehicle/owner/queryVehicelist',
+			// 		{"page": 1, "pageSize": 1,}).then( (res) => {
+			// 		if(res.data.code=='0'){
+			// 			if(res.data.total==1){
+			// 				let item= res.data.items[0]
+			// 				this.recordPath= `/record-list?id=${item.vin}&vehicleplatenumber=${item.vehicleplatenumber}`
+			// 			}
+			// 		}
+			// 	})
+			// }
 			if(this.isLogin){
 				this.axiosHxx.post('/operate/coupon/mycoupons',
 					{USER_ID:this.$store.state.user.userinfo.userId}).then(res => {
@@ -293,32 +293,39 @@ export default {
 		}
 	}
 	.my-cars{
-		text-align: center;
 		overflow: hidden;
-		p{
-			text-align: left;
-		}
+		margin: 10px;
+		position: relative;
 		li{
 			width: 32%;
 			display: inline-block;
 			position: relative;
-			margin-bottom: 10px;
-			border-radius: 4px;
 			overflow: hidden;
+			padding: 2px;
+			img{
+				width: 100%;
+				border-radius: 4px;
+			}
 			&:nth-child(1){
 				float: left;
-				box-shadow:0 1px 2px 0 #208BF1;
+				img{
+					box-shadow:0 0 2px 0 #208BF1;
+				}
 			}
 			&:nth-child(2){
-				box-shadow:0 1px 2px 0 #F07315;
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				img{
+					box-shadow: 0 0 2px 0 #F07315;
+				}
 			}
 			&:nth-child(3){
 				float: right;
 			}
-			img{
-				width: 100%;
-			}
+
 			p{
+				text-align: left;
 				position: absolute;
 				right: 10px;
 				bottom: 5px;
