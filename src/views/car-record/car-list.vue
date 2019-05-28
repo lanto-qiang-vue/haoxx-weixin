@@ -3,7 +3,7 @@
         <div class='search'>
             <search placeholder="搜索车牌号码" @enter="enter" v-model="vehicle" ref="search"></search>
         </div>
-        <div class="load-more">
+        <div class="load-more" :style="showButton?{}:{paddingBottom: 0}">
             <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :autoFill="false"
                          bottomPullText="加载更多" ref="loadmore">
                 <ul class="list">
@@ -14,20 +14,20 @@
                         </div>
                         <p>
 	                        <label>车架号：</label>{{item.vin}}
-                            <a class="unbind" @click="unbind(item, key)">解绑</a>
+                            <a class="unbind" @click="unbind(item, key)" v-if="showButton">解绑</a>
                         </p>
                         <p>
 	                        <label>所有人：</label>{{item.ownerName}}
-	                        <a class="button on" v-show="item.self" @click="self(item, key)">
+	                        <a class="button on" v-show="item.self" @click="self(item, key)" v-if="showButton">
 		                        本人车辆<i class="zmdi zmdi-check-circle"></i>
 	                        </a>
-	                        <a class="button" v-show="!item.self" @click="self(item, key)">设为本人车辆</a>
+	                        <a class="button" v-show="!item.self" @click="self(item, key)" v-if="showButton">设为本人车辆</a>
                         </p>
                     </li>
                 </ul>
             </mt-loadmore>
         </div>
-        <div class="common-submit">
+        <div class="common-submit" v-if="showButton">
             <router-link class="on" to="/bind-car">新增绑定车辆</router-link>
         </div>
     </div>
@@ -38,6 +38,11 @@ import Search from '@/components/common-search.vue'
 export default {
 	name: "car-list",
 	components: { Search},
+	props: {
+		'showButton': {
+			default: true
+		},
+	},
 	data(){
 		return{
 			vehicle: '',

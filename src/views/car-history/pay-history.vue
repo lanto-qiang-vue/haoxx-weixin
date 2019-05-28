@@ -8,20 +8,21 @@
 			</FormItem>
 			<FormItem label="版本号" class="noborder">
 				<ul class="radio">
-					<li>
-						<p @click="radio='5'"><span class="mint-radio">
-							<input type="radio" class="mint-radio-input" value="5" :checked="radio=='5'">
+					<li v-for="(item, key) in list" :key="key">
+						<p @click="radio= item"><span class="mint-radio">
+							<input type="radio" class="mint-radio-input" :value="item.code"
+							       :checked="radio.code==item.code">
 							<span class="mint-radio-core"></span>
-						</span>简要版 5.00元</p>
+						</span>{{`${item.name} ${item.price}元`}}</p>
 						<span>查看样例</span>
 					</li>
-					<li>
-						<p @click="radio='10'"><span class="mint-radio">
-							<input type="radio" class="mint-radio-input" value="10" :checked="radio=='10'">
-							<span class="mint-radio-core"></span>
-						</span>详细版 10.00元</p>
-						<span>查看样例</span>
-					</li>
+					<!--<li>-->
+						<!--<p @click="radio='10'"><span class="mint-radio">-->
+							<!--<input type="radio" class="mint-radio-input" value="10" :checked="radio=='10'">-->
+							<!--<span class="mint-radio-core"></span>-->
+						<!--</span>详细版 10.00元</p>-->
+						<!--<span>查看样例</span>-->
+					<!--</li>-->
 				</ul>
 			</FormItem>
 		</Form>
@@ -30,7 +31,7 @@
 		<Form class="common-form"
 		      :label-width="60" label-position="left" ref="form">
 			<FormItem label="支付金额">
-				<Input :value="`¥ ${radio}.00`" readonly class="money"></Input>
+				<Input :value="`¥ ${radio.price}`" readonly class="money"></Input>
 			</FormItem>
 		</Form>
 	</div>
@@ -44,7 +45,7 @@ export default {
 	data(){
 		return{
 			vin: 'LSF12345678UHG123',
-			radio: '5',
+			radio: {},
 			list: []
 		}
 	},
@@ -55,7 +56,11 @@ export default {
 		getList(){
 			this.axiosQixiu.get('/hxxdc/product/list', {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
-					this.list= res.data.items
+					let list= res.data.items
+					if(list && list.length){
+						this.radio= list[0]
+						this.list= res.data.items
+					}
 				}
 			})
 		}
