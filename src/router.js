@@ -294,44 +294,44 @@ routes: [
 		component: () => import('@/views/forum/reply.vue')
 	},
 	{
-		path: '/history/query-vin',
-		name: 'history-query-vin',
+		path: '/report/query-vin',
+		name: 'hreport-query-vin',
 		meta: {
 
 		},
-		component: () => import('@/views/car-history/query-vin.vue')
+		component: () => import('@/views/car-report/query-vin.vue')
 	},
 	{
-		path: '/history/pay',
-		name: 'history-pay',
+		path: '/report/pay',
+		name: 'report-pay',
 		meta: {
 
 		},
-		component: () => import('@/views/car-history/pay-history.vue')
+		component: () => import('@/views/car-report/pay.vue')
 	},
 	{
-		path: '/my/car-history',
-		name: 'my-car-history',
+		path: '/my/car-report',
+		name: 'my-car-report',
 		meta: {
 
 		},
-		component: () => import('@/views/car-history/my-car-history.vue')
+		component: () => import('@/views/car-report/my-report.vue')
 	},
 	{
-		path: '/history/simple',
-		name: 'history-simple',
+		path: '/report/report',
+		name: 'report-detail',
 		meta: {
 
 		},
-		component: () => import('@/views/car-history/history-simple.vue')
+		component: () => import('@/views/car-report/report.vue')
 	},
 	{
-		path: '/history/detail',
-		name: 'history-detail',
+		path: '/report/detail',
+		name: 'report-detail',
 		meta: {
 
 		},
-		component: () => import('@/views/car-history/history-detail.vue')
+		component: () => import('@/views/car-report/history-detail.vue')
 	},
 
 ]})

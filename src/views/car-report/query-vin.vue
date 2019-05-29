@@ -98,7 +98,7 @@ export default {
 				}, {hxxtoken: true}).then( (res) => {
 					if(res.data.code=='0' ){
 						if(res.data.item){
-							this.$router.push('/history/pay?vin='+vin)
+							this.$router.push('/report/pay?vin='+vin)
 						}else{
 							this.$toast('此车辆无报告')
 						}

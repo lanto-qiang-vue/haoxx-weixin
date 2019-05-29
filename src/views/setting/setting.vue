@@ -191,6 +191,7 @@ export default {
 			font-size: 16px;
 			color: white;
 			text-align: center;
+			display: block;
 		}
 		.get-code{
 			color: #333333;

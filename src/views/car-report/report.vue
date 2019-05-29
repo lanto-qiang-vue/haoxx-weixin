@@ -1,5 +1,5 @@
 <template>
-<div class="history-simple">
+<div class="report-detail">
 	<div class="block">
 		<div class="title">车辆档案</div>
 		<ul class="form-list">
@@ -14,43 +14,43 @@
 		<div class="title">车史报告</div>
 		<ul class="tags">
 			<li>
-				<img src="~@/assets/img/history/正常保养.png"/>
+				<img src="~@/assets/img/report/正常保养.png"/>
 				<p>正常保养</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li>
-				<img src="~@/assets/img/history/非火烧.png"/>
+				<img src="~@/assets/img/report/非火烧.png"/>
 				<p>非火烧</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li>
-				<img src="~@/assets/img/history/非泡水.png"/>
+				<img src="~@/assets/img/report/非泡水.png"/>
 				<p>非泡水</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li class="err">
-				<img src="~@/assets/img/history/里程数.png"/>
+				<img src="~@/assets/img/report/里程数.png"/>
 				<p>里程数</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li>
-				<img src="~@/assets/img/history/安全气囊无弹开.png"/>
+				<img src="~@/assets/img/report/安全气囊无弹开.png"/>
 				<p>安全气囊无弹开</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li>
-				<img src="~@/assets/img/history/无发动机维修.png"/>
+				<img src="~@/assets/img/report/无发动机维修.png"/>
 				<p>无发动机维修</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li>
-				<img src="~@/assets/img/history/无变速箱维修.png"/>
+				<img src="~@/assets/img/report/无变速箱维修.png"/>
 				<p>无变速箱维修</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
@@ -71,14 +71,14 @@
 
 <script>
 export default {
-	name: "history-simple",
+	name: "report-detail",
 
 }
 </script>
 
 <style scoped lang="less">
-@import "./history.less";
-.history-simple{
+@import "./report.less";
+.report-detail{
 	.tags{
 		padding-top: 20px;
 		padding-right: 15px;

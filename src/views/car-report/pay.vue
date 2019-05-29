@@ -1,5 +1,5 @@
 <template>
-<div class="pay-history">
+<div class="report-pay">
 	<div class="block">
 		<Form class="common-form"
 		      :label-width="60" label-position="left" ref="form">
@@ -35,21 +35,22 @@
 			</FormItem>
 		</Form>
 	</div>
-	<div class="pay">去支付</div>
+	<div class="pay" @click="create">去支付</div>
 </div>
 </template>
 
 <script>
 export default {
-	name: "pay-history",
+	name: "report-pay",
 	data(){
 		return{
-			vin: 'LSF12345678UHG123',
+			vin: '',
 			radio: {},
 			list: []
 		}
 	},
 	mounted(){
+		this.vin= this.$route.query.vin
 		this.getList()
 	},
 	methods:{
@@ -63,13 +64,59 @@ export default {
 					}
 				}
 			})
+		},
+		create(){
+			this.axiosQixiu.post('/hxxdc/order/create',{
+				type: this.radio.code,
+				vin: this.vin
+			}, {hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					this.pay(res.data.id)
+				}
+			})
+		},
+		pay(id){
+			this.axiosQixiu.get('/hxxdc/order/pay/parameter/'+id, {hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					let data= res.data.item.data
+
+				}
+			})
+		},
+		callon(data){
+			function onBridgeReady(){
+				WeixinJSBridge.invoke(
+					'getBrandWCPayRequest', {
+						"appId": data.appid,
+						"timeStamp": data.timestamp,
+						"nonceStr": data.noncestr,
+						"package": data.package,
+						"signType":"MD5",
+						"paySign": data.sign
+					},
+					function(res){
+						if(res.err_msg == "get_brand_wcpay_request:ok" ){
+
+						}
+					});
+			}
+			if (typeof WeixinJSBridge == "undefined"){
+				if( document.addEventListener ){
+					document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+				}else if (document.attachEvent){
+					document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+					document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+				}
+			}else{
+				onBridgeReady();
+			}
 		}
 	}
 }
 </script>
 
 <style scoped lang="less">
-.pay-history{
+.report-pay{
 .block{
 	border-top: 10px solid #F3F3F3;
 	.radio{
@@ -112,7 +159,7 @@ export default {
 }
 </style>
 <style lang="less">
-.pay-history{
+.report-pay{
 	.money input{
 		color: #FE8636;
 	}

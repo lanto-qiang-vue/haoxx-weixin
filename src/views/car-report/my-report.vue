@@ -1,5 +1,5 @@
 <template>
-<div class="my-car-history">
+<div class="my-report">
 	<div class='search'>
 		<search placeholder="请输入车架号" @enter="enter" v-model="search" ref="search"></search>
 	</div>
@@ -32,7 +32,7 @@
 <script>
 import Search from '@/components/common-search.vue'
 export default {
-	name: "my-car-history",
+	name: "my-report",
 	components: { Search},
 	data(){
 		return{
@@ -86,7 +86,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.my-car-history{
+.my-report{
 	background-color: #fff;
 	height: 100vh;
 	overflow: auto;

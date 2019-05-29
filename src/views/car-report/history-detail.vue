@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "./history.less";
+@import "./report.less";
 .history-detail{
 	.timeline{
 		margin: 10px 0;
