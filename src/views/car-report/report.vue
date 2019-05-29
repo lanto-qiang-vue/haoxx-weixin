@@ -58,7 +58,7 @@
 		</ul>
 	</div>
 
-	<div class="block piece">
+	<div class="block piece" v-show="detailVersion">
 		<div class="title">车身损伤分析</div>
 		<template v-if="detail.results && detail.results.length">
 			<ul class="form-list" v-for="(item, key) in detail.results" :key="key">
@@ -78,13 +78,13 @@
 		<div class="title">车主爱惜度</div>
 		<ul class="form-list">
 			<!--<li><label>最后一次保养时间</label><p>{{detail.aa}}</p></li>-->
-			<li><label>年平均保养次数</label><p>{{detail.repair_count_per_year}}</p></li>
+			<li><label>年平均保养次数</label><p>{{detail.repair_count_per_year}}次/年</p></li>
 			<li><label>最后一次进店时间</label><p>{{detail.last_repair_date}}</p></li>
-			<li><label>年平均行驶里程</label><p>{{detail.mileage_per_year}}</p></li>
+			<li><label>年平均行驶里程</label><p>{{detail.mileage_per_year}}公里/年</p></li>
 		</ul>
 	</div>
 
-	<div class="block piece">
+	<div class="block piece" v-show="detailVersion">
 		<div class="title">维修保养记录明细</div>
 		<ul class="timeline" v-if="detail.records && detail.records.length">
 			<li v-for="(item, key) in detail.records" :key="key">
@@ -136,26 +136,71 @@ export default {
 				"order_id":"",
 				"vin":"LSV**********3753",
 				"create_time":"",
-				"burned":true,
-				"blistered":true,
-				"mileage_anomaly":true,
-				"airbag":true,
-				"engine":true,
-				"gearbox":true,
-				"last_repair_date":"",
-				"repair_count_per_year":0,
-				"mileage_per_year":0,
+				"burned": false,
+				"blistered":false,
+				"mileage_anomaly": true,
+				"airbag":false,
+				"engine":false,
+				"gearbox":false,
+				"last_repair_date":"2019-01-01",
+				"repair_count_per_year": 10,
+				"mileage_per_year": 21718,
 				"version":0,
-				"results":[],
-				"records":[],
+				"results":[
+					{
+						"name":"事故维修排查",
+						"items":[
+							{
+								"name":"排除重大事故",
+								"total": 18,
+								"faults": 0,
+								"items":[
+									{
+										"name":"左前纵梁",
+										"fault": false,
+										"action":""
+									},
+									{
+										"name":"右前纵梁",
+										"fault": false,
+										"action":""
+									}
+								]
+							}
+						]
+					}
+				],
+				"records":[
+					{
+						"repair_date": "2019-03-23",
+						"repair_mileage": 153035,
+						"repair_projects":"A6 3.0 4F80VL机油机滤更换与全面检查",
+						"company_name":"好修修汽车修理厂"
+					},
+					{
+						"repair_date": "2018-08-18",
+						"repair_mileage": 136782,
+						"repair_projects":"照明检查",
+						"company_name":"好修修汽车修理厂"
+					},{
+						"repair_date": "2018-03-17",
+						"repair_mileage": 121800,
+						"repair_projects":"换油保养；技术检查；车窗升降器开关拆卸和",
+						"company_name":"好修修汽车修理厂"
+					}
+				],
 				"detailVersion":false,
 			},
 			popupVisible: false,
-			popupItem: {}
+			popupItem: {},
+			detailVersion: false
 		}
 	},
 	mounted(){
-		this.getData()
+		let det= this.$route.query.detailVersion
+		if(det) this.detailVersion= JSON.parse(det)
+
+		if(this.$route.query.id) this.getData()
 	},
 	methods:{
 		getData(){

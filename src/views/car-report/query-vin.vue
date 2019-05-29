@@ -24,7 +24,7 @@
 			v-model="showCarList"
 			position="right"
 			popup-transition="popup-fade">
-		<car-list style="width: 100vw" @select="getCar" :show-button="false"></car-list>
+		<car-list style="width: 90vw" @select="getCar" :show-button="false"></car-list>
 	</mt-popup>
 </div>
 </template>
@@ -47,18 +47,19 @@ export default {
 	computed:{
 		actions() {
 			let self= this
-			return [{
+			return [
+				{
+					name: '拍行驶证',
+					method(){
+						self.getCamera().then((base64)=>{
+							self.toOcr(1, base64)
+						})
+					}
+				},{
 				name: '拍车架号',
 				method(){
 					self.getCamera().then((base64)=>{
 						self.toOcr(0, base64)
-					})
-				}
-			}, {
-				name: '拍行驶证',
-				method(){
-					self.getCamera().then((base64)=>{
-						self.toOcr(1, base64)
 					})
 				}
 			}]

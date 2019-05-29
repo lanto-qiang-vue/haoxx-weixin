@@ -14,7 +14,9 @@
 							       :checked="radio.code==item.code">
 							<span class="mint-radio-core"></span>
 						</span>{{`${item.name} ${item.price}元`}}</p>
-						<span>查看样例</span>
+						<router-link :to="{path: '/report/report',
+						query:{detailVersion: item.detailVersion, id:'1'}}"
+						             tag="span" >查看样例</router-link>
 					</li>
 					<!--<li>-->
 						<!--<p @click="radio='10'"><span class="mint-radio">-->
