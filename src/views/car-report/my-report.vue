@@ -13,13 +13,13 @@
 						<Input :value="item.vin" readonly></Input>
 					</FormItem>
 					<FormItem label="查询时间">
-						<Input :value="item.vin" readonly></Input>
+						<Input :value="item.createTime" readonly></Input>
 					</FormItem>
 					<FormItem label="支付金额">
-						<Input :value="item.vin" readonly></Input>
+						<Input :value="item.amount" readonly></Input>
 					</FormItem>
 					<FormItem label="报告版本" class="noborder">
-						<Input :value="item.vin" readonly></Input>
+						<Input :value="item.type" readonly></Input>
 						<a class="look" @click="look(item)">查看详情</a>
 					</FormItem>
 				</Form>
@@ -37,28 +37,27 @@ export default {
 	data(){
 		return{
 			search: '',
-			list: [
-				{vin: 'LSF12345678UHG123'}
-			],
+			list: [],
 			page: 1,
 			total: 0,
 			allLoaded: false
 		}
 	},
 	mounted(){
-		// this.getList()
+		this.getList()
 	},
 	methods:{
 		getList(flag){
-			this.axiosHxx.post( '', {
-				page: this.page,
-				limit: 10,
-			},{baseURL: '/hxx-gateway-proxy'}).then( (res) => {
+			this.axiosQixiu.post( '/hxxdc/order/list', {
+				pageNo: this.page,
+				pageSize: 10,
+				vin: this.search,
+			},{hxxtoken: true}).then( (res) => {
 				if(flag) this.$refs.loadmore.onBottomLoaded()
 				else this.list=[]
 				this.total= res.data.total
-				if(res.data.data&&res.data.data.length){
-					let arr= res.data.data
+				if(res.data.items&&res.data.items.length){
+					let arr= res.data.items
 					this.list= this.list.concat(arr)
 					if(this.list.length>=res.data.total){
 						this.allLoaded=true
@@ -79,7 +78,7 @@ export default {
 			this.getList(true)
 		},
 		look(item){
-
+			this.$router.push('/report/report?id='+ item.id)
 		}
 	}
 }
