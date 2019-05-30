@@ -174,6 +174,7 @@ export default {
 	                line-height: 30px;
                     color: #666666;
 	                padding-right: 15px;
+	                overflow: hidden;
                     label {
                         color: #999999;
                     }

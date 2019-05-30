@@ -141,14 +141,14 @@ export default {
 			    })
 			    return
 		    }
-		    if (item.vin) {
-			    this.$router.push({
-				    path: '/record-list',
-				    query: {id: item.vin, vehicleplatenumber: item.vehicleplatenumber}
-			    })
-		    } else {
-			    Toast('该车暂无维修记录')
-		    }
+		    // if (item.vin) {
+			 //    this.$router.push({
+				//     path: '/record-list',
+				//     query: {id: item.vin, vehicleplatenumber: item.vehicleplatenumber}
+			 //    })
+		    // } else {
+			 //    Toast('该车暂无维修记录')
+		    // }
 	    }else{
     	    // console.log(JSON.stringify(item));
 			this.$emit('select', item)

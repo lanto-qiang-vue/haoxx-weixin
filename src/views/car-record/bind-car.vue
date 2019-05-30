@@ -55,6 +55,7 @@
 				  <span>{{license.engineNo}}</span>
 			  </li>
 		  </ul>
+		  <p class="msg">请确认行驶证信息是否正确</p>
 	  </div>
 
 	  <!--<div class="info" v-show="showIDCardUpInfo">-->
@@ -72,12 +73,13 @@
 				  <span>{{idCard.idCardNo}}</span>
 			  </li>
 		  </ul>
+		  <p class="msg">请确认身份证信息是否正确</p>
 	  </div>
 
 	  <div class="upBlock">
 		  <div class="title"><i></i>拍摄证件要求<i></i></div>
 		  <div class="rule">
-			  <p>拍摄时确保证件<span style="color: #fc0;">边框完整，字体清晰，亮度均匀</span></p>
+			  <p>拍摄时确保证件<span>边框完整，字体清晰，亮度均匀</span></p>
 			  <li>
 				  <img src="/img/car-record/身份证_标准@3x.png">
 				  <p>标准</p>
@@ -98,7 +100,7 @@
 	  </div>
 
 	  <div class="common-submit">
-		  <submit-button :rules="rules" :datas="form" :feedback="true" @click="bind">提交添加</submit-button>
+		  <submit-button :rules="rules" :datas="form" :feedback="true" @click="bind">确认提交</submit-button>
 		  <!--<a class="on" @click="bind">提交添加</a>-->
 	  </div>
 
@@ -373,6 +375,11 @@ export default{
 					}
 				}
 			}
+		}
+		.msg{
+			text-align: center;
+			padding: 10px;
+			color: #FF9738;
 		}
 	}
 }

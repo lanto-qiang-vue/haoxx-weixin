@@ -97,6 +97,7 @@
 				  <!--<p v-show="showChangeCar('vehicleType')">{{showChangeCar('vehicleType')}}</p>-->
 			  <!--</li>-->
 		  </ul>
+		  <p class="msg">请确认行驶证信息是否正确</p>
 	  </div>
 
 	  <!--<div class="info" v-show="showIDCardUpInfo">-->
@@ -117,6 +118,7 @@
 				  <p v-show="showChangeId('idCardNo')">{{showChangeId('idCardNo')}}</p>
 			  </li>
 		  </ul>
+		  <p class="msg">请确认身份证信息是否正确</p>
 	  </div>
 
 	  <div class="info" v-show="business.businessId || business.id">
@@ -136,12 +138,13 @@
 				  <p v-show="showChangeBus('legalPerson')">{{showChangeBus('legalPerson')}}</p>
 			  </li>
 		  </ul>
+		  <p class="msg">请确认营业执照信息是否正确</p>
 	  </div>
 
 	  <div class="upBlock">
 		  <div class="title"><i></i>拍摄证件要求<i></i></div>
 		  <div class="rule">
-			  <p>拍摄时确保证件<span style="color: #fc0;">边框完整，字体清晰，亮度均匀</span></p>
+			  <p>拍摄时确保证件<span>边框完整，字体清晰，亮度均匀</span></p>
 			  <li>
 				  <img src="/img/car-record/身份证_标准@3x.png">
 				  <p>标准</p>
@@ -161,7 +164,7 @@
 		  </div>
 	  </div>
 
-	<div class="submit" @click="Bind" v-show="editable">提交</div>
+	<div class="submit" @click="Bind" v-show="editable">确认提交</div>
 
     <mt-popup v-model="popupShow" position="right" class="popup">
 	    <Form :class="['common-form']" v-show="popType=='travelLicense'" :model="travelLicenseRevise"
@@ -919,6 +922,11 @@ export default{
 					}
 				}
 			}
+		}
+		.msg{
+			text-align: center;
+			padding: 10px;
+			color: #FF9738;
 		}
 	}
 	.submit{

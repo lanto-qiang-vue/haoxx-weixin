@@ -41,7 +41,7 @@
 		<li></li>
 	</ul>
 	<ul class="coupons block">
-		<p class="title">车主权益<span @click="goCoupons">查看更多</span></p>
+		<p class="title">车主权益<span @click="goCoupons(null)">查看更多</span></p>
 		<li @click="goCoupons('洗车')">洗车券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons('保养')">保养券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons('油漆')">油漆券<span>查看可用券</span></li>
@@ -171,7 +171,8 @@ export default {
 			return obj
 		},
 		goCoupons(name){
-			if(this.isLogin && name){
+			// console.log('name', name)
+			if(this.isLogin){
 				if(name){
 					let arr= this.couponsType, type= '', canuse= ''
 					for( let i in arr){
@@ -188,7 +189,6 @@ export default {
 				}else{
 					this.$router.push('/coupons-type')
 				}
-
 			}else{
 				this.$router.push('/coupons-type')
 			}
