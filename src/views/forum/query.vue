@@ -15,8 +15,8 @@
 			搜索记录<div class="clear" @click="del(false)">清空</div>
 		</div>
 		<ul class="list">
-			<li v-for="(item, key) in historyList" :key="key" @click="query(item)">{{item}}
-				<i class="fa fa-times" @click="del(key)"></i></li>
+			<li v-for="(item, key) in historyList" :key="key" @click.stop="query(item)">{{item}}
+				<i class="fa fa-times" @click.stop="del(key)"></i></li>
 		</ul>
 	</div>
 </div>
@@ -92,7 +92,8 @@ export default {
 			return list
 		},
 		del(index){
-			if(index){
+			// console.log('index', index)
+			if(index != false){
 				let list= this.getHistory()
 				if(list.length){
 					list.splice(index, 1)
@@ -105,8 +106,9 @@ export default {
 			}
 		},
 		query(val){
+			// console.log('query(val)', val)
 			this.search= val
-			this.$refs.search.enter()
+			this.enter(val)
 		},
 		goTopic(item){
 			this.$router.push('/topic?id='+ item.id)

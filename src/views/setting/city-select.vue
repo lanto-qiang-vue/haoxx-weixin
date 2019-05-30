@@ -4,7 +4,7 @@
 		<div class="query">
 			<div class="now" v-if="nowCity.regionId">当前：<span>{{nowCity.regionName}}</span></div>
 			<div class="now" v-else><span>请选择</span></div>
-			<search placeholder="城市名/拼音" @enter="enter" v-model="search" ref="search" @change="change"></search>
+			<search placeholder="城市名/首字母" @enter="enter" v-model="search" ref="search" @change="change"></search>
 		</div>
 		<div class="tag">
 			<p>定位/最近访问</p>

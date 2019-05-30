@@ -59,11 +59,13 @@ export default {
 			}else{
 				this.$emit('change', val);
 			}
-
+		},
+		value(val){
+			this.search= val
 		}
 	},
 	mounted(){
-
+		this.search= this.value
 	},
 	methods:{
 		focus(){
