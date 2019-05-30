@@ -94,8 +94,22 @@ export default {
 		query(){
 			let vin= this.vin
 			if(vin){
-				this.axiosQixiu.post('/hxxdc/order/state/' +vin, {hxxtoken: true}).then( (res) => {
+				this.axiosQixiu.get('/hxxdc/order/state/' +vin, {hxxtoken: true}).then( (res) => {
 					if(res.data.code=='0' ){
+						switch (res.data.item.action){
+							case 'NO_ACTION':{
+								this.$toast('此车辆暂无报告')
+								break
+							}
+							case 'WAIT_BUY':
+							case 'WAIT_PAY':{
+								this.$router.push('/report/pay?vin='+vin)
+								break
+							}
+							default: {
+								this.$router.push('/report/report?id='+ res.data.item.id)
+							}
+						}
 						// if(res.data.item){
 						// 	this.$router.push('/report/pay?vin='+vin)
 						// }else{

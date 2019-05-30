@@ -175,7 +175,7 @@ export default {
 				color: black;
 			}
 		}
-		.content{
+		>.content{
 			padding-right: 5px;
 			font-size:14px;
 			font-weight:400;
@@ -242,7 +242,6 @@ export default {
 		font-size:20px;
 		line-height: 44px;
 		color: #999999;
-
 		.right{
 			float: right;
 			display: inline-block;

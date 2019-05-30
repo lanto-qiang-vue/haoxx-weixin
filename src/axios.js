@@ -210,6 +210,7 @@ axiosQixiu.interceptors.response.use(response => {
 	Indicator.close()
 	switch (response.data.code){
 		case '0': break
+		case '808':
 		case '401':
 		case '2000':
 		case '100':
