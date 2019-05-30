@@ -135,12 +135,16 @@ export default {
 .all-reply{
 	padding: 0 0 50px 15px;
 	position: relative;
+
 }
 </style>
 <style lang="less">
 .all-reply{
 	.support i{
 		margin-right: 2px;
+	}
+	.content img{
+		display: none;
 	}
 }
 </style>
