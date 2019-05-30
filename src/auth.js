@@ -2,7 +2,6 @@ import router from './router'
 import {Toast, Indicator} from 'mint-ui'
 import store from './store'
 import {getwxticket, cityIsSupport, getCityToken} from '@/util.js'
-getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
 
 router.beforeEach((to, from, next) => {
 	Indicator.close()

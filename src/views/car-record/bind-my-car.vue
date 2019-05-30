@@ -16,7 +16,7 @@
 
 	<div class="upBlock id" v-if="isPerson" v-show="needOthers || idCard.id">
 		<div class="title"><i></i>身份证正面照片<i></i></div>
-		<p>若您上传了非本人的身份证, 您将无法绑定您名下的车辆</p>
+		<p>若您上传了非本人的身份证, 您将无法添加您名下的车辆</p>
 
 		<div class="imgBlock" >
 			<div :class="['img',{nobg: idPic}]" @click="clickImg('upIdCard', idPic)">
@@ -161,7 +161,7 @@
 		  </div>
 	  </div>
 
-	<div class="submit" @click="Bind" v-show="editable">提交绑定</div>
+	<div class="submit" @click="Bind" v-show="editable">提交</div>
 
     <mt-popup v-model="popupShow" position="right" class="popup">
 	    <Form :class="['common-form']" v-show="popType=='travelLicense'" :model="travelLicenseRevise"
@@ -708,7 +708,7 @@ export default{
 				method: 'post',
 				data: data}).then(res=>{
 				if(res.data.code==='0'){
-					Toast('绑定成功')
+					Toast('添加成功')
 					this.$router.go(-1)
 				}else if(res.data.code==='10002'){
 					if(this.isPerson){

@@ -164,7 +164,7 @@ export default {
         	if(this.qixiutoken){
 		        this.showCarList= true
 	        }else{
-		        this.$toast('请绑定汽修平台账号')
+		        this.$toast('请添加汽修平台账号')
 		        this.$router.push({path: '/accredit-bind', query: { redirect: this.$route.fullPath }})
 	        }
 	    }

@@ -13,12 +13,12 @@
 	<div class="block">
 		<div class="title">车史报告</div>
 		<ul class="tags">
-			<!--<li :class="{err: detail.aa}">-->
-				<!--<img src="~@/assets/img/report/正常保养.png"/>-->
-				<!--<p>正常保养</p>-->
-				<!--<i class="zmdi zmdi-check-circle"></i>-->
-				<!--<i class="zmdi zmdi-alert-circle"></i>-->
-			<!--</li>-->
+			<li :class="{err: detail.aa}">
+				<img src="~@/assets/img/report/正常保养.png"/>
+				<p>召回排查</p>
+				<i class="zmdi zmdi-check-circle"></i>
+				<i class="zmdi zmdi-alert-circle"></i>
+			</li>
 			<li :class="{err: detail.burned}">
 				<img src="~@/assets/img/report/非火烧.png"/>
 				<p>非火烧</p>

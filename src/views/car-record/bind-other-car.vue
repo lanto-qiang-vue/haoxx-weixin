@@ -19,7 +19,7 @@
             <i style="position: absolute; bottom: -1.5px; left: 0; width: 4px; height: 4px; border-radius: 2px; background-color: #ddd;"></i>
           </div>
         </div>
-        <p style="margin: 0 30px;">绑定非本人车辆时，此车辆必须在本平台上已进行成功绑定，否则您将无法绑定该车辆。信息填写完整后，平台将给车主发送短信验证码，您即可获取并绑定该车辆。</p>
+        <p style="margin: 0 30px;">添加非本人车辆时，此车辆必须在本平台上已进行成功添加，否则您将无法添加该车辆。信息填写完整后，平台将给车主发送短信验证码，您即可获取并添加该车辆。</p>
       </div>
     </div>
     <div class="submit" @click="submit">
@@ -152,7 +152,7 @@
           // console.log(resp);
           if(resp.data.code==='0'){
             this.popupVisible = !this.popupVisible
-            Toast('绑定成功')
+            Toast('添加成功')
             this.$router.push('/my-car-list')
           }else if(resp.data.code==='130506'){
             Toast(resp.data.status)

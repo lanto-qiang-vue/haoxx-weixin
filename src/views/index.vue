@@ -172,18 +172,23 @@ export default {
 		},
 		goCoupons(name){
 			if(this.isLogin && name){
-				let arr= this.couponsType, type= '', canuse= ''
-				for( let i in arr){
-					if(arr[i].name.indexOf(name) >= 0){
-						type= arr[i].type
-						canuse= arr[i].canuse
+				if(name){
+					let arr= this.couponsType, type= '', canuse= ''
+					for( let i in arr){
+						if(arr[i].name.indexOf(name) >= 0){
+							type= arr[i].type
+							canuse= arr[i].canuse
+						}
 					}
-				}
-				if(type){
-					this.$router.push( '/coupons?type='+ type+'&canuse='+ canuse)
+					if(type){
+						this.$router.push( '/coupons?type='+ type+'&canuse='+ canuse)
+					}else{
+						this.$toast('暂无优惠券')
+					}
 				}else{
-					this.$toast('暂无优惠券')
+					this.$router.push('/coupons-type')
 				}
+
 			}else{
 				this.$router.push('/coupons-type')
 			}
@@ -294,7 +299,7 @@ export default {
 	}
 	.my-cars{
 		overflow: hidden;
-		margin: 10px;
+		margin: 5px 10px;
 		position: relative;
 		li{
 			width: 32%;
@@ -341,7 +346,7 @@ export default {
 	}
 	.coupons{
 		text-align: justify;
-		height: 105px;
+		height: 100px;
 		font-size: 0;
 		&:after{
 			content: '';

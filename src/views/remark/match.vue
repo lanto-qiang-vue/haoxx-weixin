@@ -197,8 +197,8 @@
 			if(Boolean(res.data)){
 				this.$router.push({path: '/remark-match', query: { corpId: this.$route.query.corpId, show: 'yes' }})
 			}else{
-				MessageBox({message: '为保证点评真实性，请绑定该车辆后进行点评！', closeOnClickModal: false,
-				   confirmButtonText: '前往绑定', cancelButtonText: '修改车牌', showCancelButton: true}).then(action => {
+				MessageBox({message: '为保证点评真实性，请添加该车辆后进行点评！', closeOnClickModal: false,
+				   confirmButtonText: '前往添加', cancelButtonText: '修改车牌', showCancelButton: true}).then(action => {
 				// console.log('action', action)
 				   switch (action){
 				      case 'confirm':{

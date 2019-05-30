@@ -1,4 +1,4 @@
-import { getWeixinId, getLocation } from '@/util.js'
+import { getWeixinId, getLocation, getwxticket } from '@/util.js'
 import store from '@/store'
 import config from '~/config.js'
 
@@ -26,4 +26,5 @@ getLocation().then(( success)=>{
 	}
 })
 
+getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
 

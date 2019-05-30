@@ -84,7 +84,7 @@ export default {
 		-webkit-transform: translateZ(0);
 		li{
 			height: 100%;
-			width: 90px;
+			width: 33%;
 			display: inline-block;
 			vertical-align: top;
 			padding-top: 8px;

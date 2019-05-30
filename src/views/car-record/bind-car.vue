@@ -7,7 +7,7 @@
 			  <div :class="['img',{nobg: drivePic}]" @click="clickImg('upLicense',drivePic)">
 				  <img v-img v-show="drivePic" :src="drivePic">
 			  </div>
-			  <p @click.stop.prevent="$refs.upLicense.clickBox()">拍摄正面</p>
+			  <p @click.stop.prevent="$refs.upLicense.clickBox()">{{drivePic?'重新拍摄': '拍摄正面'}}</p>
 		  </div>
 		  <upload mode="camera" @done="upLicense" ref="upLicense" backend="hxx"></upload>
 	  </div>
@@ -20,7 +20,7 @@
 			<div :class="['img',{nobg: idPic}]" @click="clickImg('upIdCard', idPic)">
 				<img v-img v-show="idPic" :src="idPic">
 			</div>
-			<p @click.stop.prevent="$refs.upIdCard.clickBox()" >拍摄正面</p>
+			<p @click.stop.prevent="$refs.upIdCard.clickBox()" >{{idPic?'重新拍摄': '拍摄正面'}}</p>
 		</div>
 		<upload mode="camera" @done="upIdCard" ref="upIdCard" backend="hxx"></upload>
 	</div>
@@ -98,8 +98,8 @@
 	  </div>
 
 	  <div class="common-submit">
-		  <submit-button :rules="rules" :datas="form" :feedback="true" @click="bind">提交绑定</submit-button>
-		  <!--<a class="on" @click="bind">提交绑定</a>-->
+		  <submit-button :rules="rules" :datas="form" :feedback="true" @click="bind">提交添加</submit-button>
+		  <!--<a class="on" @click="bind">提交添加</a>-->
 	  </div>
 
   </div>
@@ -186,7 +186,7 @@ export default{
 			},{hxxtoken: true}).then( (res) => {
 				switch(res.data.code){
 					case '0':{
-						this.$toast('绑定成功')
+						this.$toast('添加成功')
 						this.$router.go(-1)
 					}
 					case '10002':{
@@ -219,6 +219,7 @@ export default{
 		background-color: white;
 		.title{
 			text-align: center;
+			font-size: 14px;
 			color: #666666;
 			i{
 				display: inline-block;

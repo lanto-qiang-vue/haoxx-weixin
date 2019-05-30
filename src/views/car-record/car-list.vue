@@ -14,7 +14,7 @@
                         </div>
                         <p>
 	                        <label>车架号：</label>{{item.vin}}
-                            <a class="unbind" @click="unbind(item, key)" v-if="showButton">解绑</a>
+                            <a class="unbind" @click="unbind(item, key)" v-if="showButton">删除</a>
                         </p>
                         <p>
 	                        <label>所有人：</label>{{item.ownerName}}
@@ -28,7 +28,7 @@
             </mt-loadmore>
         </div>
         <div class="common-submit" v-if="showButton">
-            <router-link class="on" to="/bind-car">新增绑定车辆</router-link>
+            <router-link class="on" to="/bind-car">添加爱车</router-link>
         </div>
     </div>
 </template>
@@ -81,7 +81,7 @@ export default {
 			})
 		},
 		unbind(item, key){
-			this.$messagebox.confirm('确定解绑?').then(action => {
+			this.$messagebox.confirm('确定删除?').then(action => {
 				// console.log('action', action)
 				this.axiosQixiu.post( '/hxxdc/vehicle/remove/bind/'+ item.id, {},{hxxtoken: true}).then( (res) => {
 					if(res.data.code=='0'){

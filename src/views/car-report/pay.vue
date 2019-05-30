@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { getwxticket} from '@/util.js'
 export default {
 	name: "report-pay",
 	data(){
@@ -54,6 +55,8 @@ export default {
 	mounted(){
 		this.vin= this.$route.query.vin
 		this.getList()
+
+		getwxticket(['chooseWXPay'])
 	},
 	methods:{
 		getList(){
@@ -86,32 +89,19 @@ export default {
 			})
 		},
 		callon(data){
-			function onBridgeReady(){
-				WeixinJSBridge.invoke(
-					'getBrandWCPayRequest', {
-						"appId": data.appid,
-						"timeStamp": data.timestamp,
-						"nonceStr": data.noncestr,
-						"package": data.package,
-						"signType":"MD5",
-						"paySign": data.sign
-					},
-					function(res){
-						if(res.err_msg == "get_brand_wcpay_request:ok" ){
+			wx.chooseWXPay({
+				timestamp: data.timestamp,
+				nonceStr: data.noncestr,
+				package: data.package,
+				signType: "MD5",
+				paySign: data.sign,
+				success: function (res) {
 
-						}
-					});
-			}
-			if (typeof WeixinJSBridge == "undefined"){
-				if( document.addEventListener ){
-					document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-				}else if (document.attachEvent){
-					document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-					document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+				},
+				cancel: function () {
+
 				}
-			}else{
-				onBridgeReady();
-			}
+			});
 		}
 	}
 }
