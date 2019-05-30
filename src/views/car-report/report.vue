@@ -58,7 +58,7 @@
 		</ul>
 	</div>
 
-	<div class="block piece" v-show="detailVersion">
+	<div class="block piece" v-show="showAll">
 		<div class="title">车身损伤分析</div>
 		<template v-if="detail.results && detail.results.length">
 			<ul class="form-list" v-for="(item, key) in detail.results" :key="key">
@@ -84,7 +84,7 @@
 		</ul>
 	</div>
 
-	<div class="block piece" v-show="detailVersion">
+	<div class="block piece" v-show="showAll">
 		<div class="title">维修保养记录明细</div>
 		<ul class="timeline" v-if="detail.records && detail.records.length">
 			<li v-for="(item, key) in detail.records" :key="key">
@@ -98,6 +98,8 @@
 			</li>
 		</ul>
 	</div>
+
+	<div class="look-all" v-show="!showAll"><a @click="lookAll">查看详细报告</a></div>
 
 	<mt-popup
 			v-model="popupVisible"
@@ -193,7 +195,13 @@ export default {
 			},
 			popupVisible: false,
 			popupItem: {},
-			detailVersion: false
+			detailVersion: false,
+			showDetail: false
+		}
+	},
+	computed:{
+		showAll(){
+			return this.detailVersion && this.showDetail
 		}
 	},
 	mounted(){
@@ -207,12 +215,16 @@ export default {
 			this.axiosQixiu.get( '/hxxdc/order/detail/'+ this.$route.query.id, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
 					this.detail= res.data.item
+					this.detailVersion =res.data.item.detailVersion
 				}
 			})
 		},
 		pop(item){
 			this.popupItem= item
 			this.popupVisible= true
+		},
+		lookAll(){
+
 		}
 	}
 }
@@ -316,7 +328,14 @@ export default {
 			}
 		}
 	}
-
+	.look-all{
+		padding: 15px;
+		text-align: center;
+		a{
+			color: #FE8636;
+			text-decoration: underline;
+		}
+	}
 	.popup-block{
 		height: 100vh;
 		background-color: white;

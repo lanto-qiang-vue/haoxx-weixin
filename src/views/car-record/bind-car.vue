@@ -186,7 +186,7 @@ export default{
 			},{hxxtoken: true}).then( (res) => {
 				switch(res.data.code){
 					case '0':{
-						this.$toast('发布成功')
+						this.$toast('绑定成功')
 						this.$router.go(-1)
 					}
 					case '10002':{
