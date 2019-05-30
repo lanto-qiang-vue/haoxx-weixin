@@ -182,6 +182,11 @@ export default {
 			color: #333333;
 			line-height:24px;
 			word-break: break-all;
+			img{
+				display: none;
+				max-width: 100%;
+				padding: 10px;
+			}
 		}
 		.imgs{
 			overflow: hidden;
@@ -279,6 +284,9 @@ export default {
 			box-shadow: none;
 			padding: 15px 15px 60px;
 		}
+	}
+	.comments .content .img{
+		display: none;
 	}
 }
 </style>

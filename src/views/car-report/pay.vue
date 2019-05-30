@@ -81,7 +81,7 @@ export default {
 			this.axiosQixiu.get('/hxxdc/order/pay/parameter/'+id, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
 					let data= res.data.item.data
-
+					this.callon(data)
 				}
 			})
 		},
