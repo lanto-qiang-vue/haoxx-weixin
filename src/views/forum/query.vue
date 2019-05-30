@@ -93,7 +93,7 @@ export default {
 		},
 		del(index){
 			// console.log('index', index)
-			if(index != false){
+			if(index !== false){
 				let list= this.getHistory()
 				if(list.length){
 					list.splice(index, 1)
