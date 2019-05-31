@@ -144,9 +144,9 @@ export default {
 					pageSize: 1,
 				},{hxxtoken: true}).then( (res) => {
 					if(res.data.code=='0' &&res.data.total>0){
-						this.myCarPath= '/bind-car'
-					}else{
 						this.myCarPath= '/car-list'
+					}else{
+						this.myCarPath= '/bind-car'
 					}
 				})
 			}
