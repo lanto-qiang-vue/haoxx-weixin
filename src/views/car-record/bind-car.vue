@@ -1,6 +1,6 @@
 <template>
   <div class="bind-car">
-	  <div class="nocar" v-show="nocar">请拍摄行驶证照片用于添加爱车</div>
+	  <div class="nocar">请拍摄行驶证照片用于添加爱车</div>
 	  <div class="upBlock drive">
 		  <div class="title"><i></i>行驶证正面照片<i></i></div>
 
@@ -122,7 +122,6 @@ export default{
 		    license: {},
 		    idCard: {},
 		    needId: false,
-		    nocar: true
 		}
     },
 	computed:{
@@ -152,9 +151,7 @@ export default{
 		}
 	},
 	mounted(){
-		if(this.$route.query.nocar){
-			this.nocar= true
-		}
+
 	},
 	methods: {
 		clickImg(ref, img){

@@ -146,7 +146,7 @@ export default {
 					if(res.data.code=='0' &&res.data.total>0){
 						this.myCarPath= '/car-list'
 					}else{
-						this.myCarPath= '/bind-car?nocar=true'
+						this.myCarPath= '/bind-car'
 					}
 				})
 			}
@@ -316,7 +316,7 @@ export default {
 			width: 32%;
 			display: inline-block;
 			position: relative;
-			overflow: hidden;
+			overflow: visible;
 			padding: 2px;
 			img{
 				width: 100%;
@@ -325,7 +325,7 @@ export default {
 			&:nth-child(1){
 				float: left;
 				img{
-					box-shadow:0 0 2px 0 #208BF1;
+					box-shadow:0 1px 1px 0 #208BF1;
 				}
 			}
 			&:nth-child(2){
@@ -333,7 +333,7 @@ export default {
 				left: 50%;
 				transform: translateX(-50%);
 				img{
-					box-shadow: 0 0 2px 0 #F07315;
+					box-shadow: 0 1px 1px 0 #F07315;
 				}
 			}
 			&:nth-child(3){

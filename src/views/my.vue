@@ -69,7 +69,7 @@ export default {
 				if(res.data.code=='0' &&res.data.total>0){
 					this.myCarPath= '/car-list'
 				}else{
-					this.myCarPath= '/bind-car?nocar=true'
+					this.myCarPath= '/bind-car'
 				}
 			})
 		},
