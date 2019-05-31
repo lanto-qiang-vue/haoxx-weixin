@@ -11,7 +11,7 @@
 		<div class="look" @click="showCarList= true">查看</div>
 	</div>
 
-	<router-link tag="div" class="button" to="/my/car-history">我的报告</router-link>
+	<router-link tag="div" class="button" to="/my/car-report">我的报告</router-link>
 
 	<upload mode="camera" @done="getVin" ref="upload" operate="base64"></upload>
 
