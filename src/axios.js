@@ -188,7 +188,7 @@ axiosQixiu.interceptors.request.use(config => {
 
 	if(!config.constBaseUrl){
 		let location= cityIsSupport(true)
-		if(location && location.postfix){
+		if(location && location.postfix && !config.hxxtoken){
 			config.baseURL= config.baseURL+ '-'+ location.postfix
 		}
 	}
