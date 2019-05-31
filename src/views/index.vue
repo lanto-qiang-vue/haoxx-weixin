@@ -34,6 +34,10 @@
 			<img src="~@/assets/img/index/我的爱车2.png"/>
 			<p><i class="zmdi zmdi-plus-circle-o"></i>我的爱车</p>
 		</router-link>
+		<router-link tag="li" to="/report/query-vin">
+			<img src="~@/assets/img/index/车史报告.png"/>
+			<p>车史报告</p>
+		</router-link>
 		<router-link tag="li" to="/remark-map" v-show="isShanghai">
 			<img src="~@/assets/img/index/维修点评2.png"/>
 			<p><i class="fa fa-thumbs-o-up"></i>维修点评</p>
@@ -332,12 +336,12 @@ export default {
 				position: absolute;
 				left: 50%;
 				transform: translateX(-50%);
-				img{
-					box-shadow: 0 1px 1px 0 #F07315;
-				}
 			}
 			&:nth-child(3){
 				float: right;
+				img{
+					box-shadow: 0 1px 1px 0 #F07315;
+				}
 			}
 
 			p{
