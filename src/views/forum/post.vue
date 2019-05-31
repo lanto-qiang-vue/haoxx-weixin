@@ -10,7 +10,7 @@
 		</FormItem>
 		<FormItem prop="content" style="border: 0">
 			<Input v-model.trim="form.content" placeholder="分享您的想法或提出您的疑问" type="textarea"
-			       :autosize="{ minRows: 8}" wrap="hard" :maxlength="1000"></Input>
+			       :autosize="{ minRows: 8}" wrap="hard" :maxlength="30000"></Input>
 		</FormItem>
 	</Form>
 	<div class="bottom">

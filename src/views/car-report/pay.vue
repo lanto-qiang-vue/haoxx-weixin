@@ -96,10 +96,13 @@ export default {
 				signType: "MD5",
 				paySign: data.sign,
 				success: function (res) {
-
+					alert(JSON.stringify(res))
 				},
-				cancel: function () {
-
+				fail(err){
+					alert(JSON.stringify(err))
+				},
+				cancel: function (res) {
+					alert(JSON.stringify(res))
 				}
 			});
 		}

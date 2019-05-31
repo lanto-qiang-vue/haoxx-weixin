@@ -11,24 +11,23 @@
             <li @click="goRecordList(item)" class="block mui-table-view-cell mui-transitioning" v-for='(item, index) in carList' :key='index'>
               <!--<div class="mui-slider-right mui-disabled">-->
                 <!--<a class="mui-btn mui-btn-red" style="transform: translate(0px, 0px);" v-if="item.binds&&item.binds.length" @click.stop.prevent="removeAuthorize(item.binds)">解除授权</a>-->
-                <!--<a class="mui-btn mui-btn-yellow" style="transform: translate(0px, 0px);" @click.stop="deleteVehicle(item.vehicleId)">解绑车辆</a>-->
+                <!--<a class="mui-btn mui-btn-yellow" style="transform: translate(0px, 0px);" @click.stop="deleteVehicle(item.vehicleId)">删除车辆</a>-->
               <!--</div>-->
               <div class="mui-slider-handle" style="transform: translate(0px, 0px);">
                 <div class="title">
                   <img style="width: 15px; height: 15px;" src="/img/car-record/list.png"/>
                   <span>{{ item.vehicleplatenumber }}</span>
-	                <span class="status" :style="'color:'+showStatus(item.status).color">
-	                    {{ showStatus(item.status).text}}</span>
+	                <!--<span class="status" :style="'color:'+showStatus(item.status).color">{{ showStatus(item.status).text}}</span>-->
                 </div>
                 <div class="info">
                   <p>
-                    <!--<mt-button size="small" @click.stop="deleteVehicle(item.vehicleId)" type="danger" style="height: 24px; right: 0; top: 3px; font-size: 10px; position: absolute; width: 50px;">解绑</mt-button>-->
+                    <!--<mt-button size="small" @click.stop="deleteVehicle(item.vehicleId)" type="danger" style="height: 24px; right: 0; top: 3px; font-size: 10px; position: absolute; width: 50px;">删除</mt-button>-->
                     <span class="text-one-cut" style="display: block; margin-right: 30px;">车架号(VIN)：{{ item.vin }}</span>
                   </p>
                 </div>
               </div>
 	            <div class="remove">
-		            <div class="button" @click.stop.prevent="deleteVehicle(item.id)" v-show="showButton">解绑</div>
+		            <div class="button" @click.stop.prevent="deleteVehicle(item.id)" v-show="showButton">删除</div>
 		            <div class="button" v-if="item.self &&item.binds && item.binds.length"
 		                 @click.stop.prevent="removeAuthorize(item.binds, item.vehicleplatenumber)" v-show="showButton">解除授权</div>
 	            </div>
@@ -223,13 +222,13 @@ export default {
     // 输入车牌号进行搜索
 
     deleteVehicle(id) {
-      MessageBox.confirm('确定解绑?').then(action => {
+      MessageBox.confirm('确定删除?').then(action => {
         this.axiosQixiu({
           method: 'post',
           url: '/vehicle/carfile/remove-bind/'+ id,
         }).then(res => {
             if(res.data.code === '0') {
-              Toast('解绑成功!');
+              Toast('删除成功!');
 	            this.page=1
 	            this.carList=[]
 	            this.getData()

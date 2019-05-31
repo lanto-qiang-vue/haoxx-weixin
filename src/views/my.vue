@@ -11,7 +11,7 @@
 		</div>
 	</div>
 	<ul class="list">
-		<router-link tag="li" to="/car-list">我的爱车 <i></i></router-link>
+		<router-link tag="li" :to="myCarPath">我的爱车 <i></i></router-link>
 		<!--<router-link tag="li" to="/my/car-report">我的车史报告 <i></i></router-link>-->
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
 		<router-link tag="li" to="/my-remark" v-show="isShanghai">我的点评 <i></i></router-link>
@@ -32,6 +32,7 @@ export default {
 		return{
 			couponsNum: 0,
 			reservationNum: 0,
+			myCarPath: '/car-list'
 		}
 	},
 	computed:{
@@ -59,6 +60,16 @@ export default {
 			this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
 				if(res.data.success){
 					this.reservationNum= res.data.total
+				}
+			})
+			this.axiosQixiu.post( '/hxxdc/vehicle/bind/list', {
+				pageNo: 1,
+				pageSize: 1,
+			},{hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0' &&res.data.total>0){
+					this.myCarPath= '/bind-car'
+				}else{
+					this.myCarPath= '/car-list'
 				}
 			})
 		},

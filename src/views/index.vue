@@ -30,7 +30,7 @@
 	<!--</ul>-->
 	<ul class="my-cars">
 		<!--<p class="title">我的爱车</p>-->
-		<router-link tag="li" to="/car-list">
+		<router-link tag="li" :to="myCarPath">
 			<img src="~@/assets/img/index/我的爱车2.png"/>
 			<p><i class="zmdi zmdi-plus-circle-o"></i>我的爱车</p>
 		</router-link>
@@ -88,7 +88,8 @@ export default {
 				total: 0,
 				allLoaded: false
 			},
-			couponsType: []
+			couponsType: [],
+			myCarPath: '/car-list'
 		}
 	},
 	computed:{
@@ -136,6 +137,16 @@ export default {
 						if(res.data.data &&res.data.data.length){
 							this.couponsType = res.data.data;
 						}
+					}
+				})
+				this.axiosQixiu.post( '/hxxdc/vehicle/bind/list', {
+					pageNo: 1,
+					pageSize: 1,
+				},{hxxtoken: true}).then( (res) => {
+					if(res.data.code=='0' &&res.data.total>0){
+						this.myCarPath= '/bind-car'
+					}else{
+						this.myCarPath= '/car-list'
 					}
 				})
 			}
