@@ -137,11 +137,11 @@ export const _compress = (path, obj, name, callBack) => {
       scale = w / h;
     w = obj.width || w;
     h = obj.height || (w / scale);
-    if(w> 1000){
-    	w= 1000
-	    h= 1000/scale
+    if(w> 800){
+    	w= 800
+	    h= 800/scale
     }
-    var quality = 0.7;  // 默认图片质量为0.7
+    var quality = 0.6;  // 默认图片质量为0.7
     //生成canvas
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
