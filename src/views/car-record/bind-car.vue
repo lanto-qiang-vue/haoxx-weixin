@@ -101,7 +101,7 @@
 	  </div>
 
 	  <div class="common-submit">
-		  <submit-button :rules="rules" :datas="form" :feedback="true" @click="bind">确认提交</submit-button>
+		  <submit-button :rules="rules" :datas="form" :feedback="true" @click="bind" ref="submit">确认提交</submit-button>
 		  <!--<a class="on" @click="bind">提交添加</a>-->
 	  </div>
 
@@ -167,6 +167,7 @@ export default{
 				if(res.data.code=='0'){
 					this.drivePic = base64;
 					this.license= res.data.item
+					this.$refs.submit.validator()
 				}
 			})
 
@@ -179,6 +180,7 @@ export default{
 				if(res.data.code=='0'){
 					this.idPic = base64;
 					this.idCard= res.data.item
+					this.$refs.submit.validator()
 				}
 			})
 		},
