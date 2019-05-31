@@ -82,11 +82,7 @@ export default {
 			showChangePass: false,
 			showVerifyPhone: false,
 			showChangePhone: false,
-			passChangeRule:{
-				old_pwd: rule,
-				new_pwd: rule,
-				new_pwd_cp: rule,
-			},
+
 			phoneVerifyRule:{
 				telphone: rule,
 				pwd: rule,
@@ -101,6 +97,24 @@ export default {
 	computed:{
 		isModify(){
 			return this.$store.state.user.userinfo.is_modify
+		},
+		passChangeRule(){
+			let rule= { required: true, message:'必填项不能为空'}
+			return {
+				old_pwd:  { validator: (rule, value, callback) => {
+					let flag= false
+					if(this.isModify!==0){
+						if(!value){
+							flag= true
+						}
+					}
+					if(flag) callback(new Error('请上传身份证'))
+						else callback()
+
+				}},
+				new_pwd: rule,
+				new_pwd_cp: rule,
+			}
 		}
 	},
 	watch:{
@@ -117,6 +131,11 @@ export default {
 	            if(res.data.success){
 		            this.$toast("修改成功");
 		            this.$store.commit('changePassSuccess');
+		            this.passChange={
+			            old_pwd: '',
+			            new_pwd: '',
+			            new_pwd_cp: '',
+		            },
 		            this.$router.go(-1)
 	            }
             })
@@ -132,6 +151,10 @@ export default {
 		next(){
             this.axiosHxx.post('/operate/account/checkUser',this.phoneVerify).then(res => {
                if(res.data.success)  this.showChangePhone= true;
+	            this.phoneVerify={
+		            telphone: '',
+		            pwd: '',
+	            }
             })
 		},
 		getCode(telSession){
