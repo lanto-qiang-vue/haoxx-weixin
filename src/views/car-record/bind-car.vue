@@ -1,5 +1,6 @@
 <template>
   <div class="bind-car">
+	  <div class="nocar" v-show="nocar">请拍摄行驶证照片用于添加爱车</div>
 	  <div class="upBlock drive">
 		  <div class="title"><i></i>行驶证正面照片<i></i></div>
 
@@ -121,6 +122,7 @@ export default{
 		    license: {},
 		    idCard: {},
 		    needId: false,
+		    nocar: true
 		}
     },
 	computed:{
@@ -150,7 +152,9 @@ export default{
 		}
 	},
 	mounted(){
-
+		if(this.$route.query.nocar){
+			this.nocar= true
+		}
 	},
 	methods: {
 		clickImg(ref, img){
@@ -206,6 +210,12 @@ export default{
 	padding-bottom: 40px;
 	background-color: #f8f8f8;
 
+	.nocar{
+		color: #FF9738;
+		padding: 5px;
+		text-align: center;
+		font-size: 14px;
+	}
 	.drive .img{
 		background: #f2f7fd url("/img/car-record/行驶证@3x.png") no-repeat center center;
 	}

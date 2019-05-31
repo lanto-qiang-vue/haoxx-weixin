@@ -152,7 +152,7 @@ routes: [
 		path: '/bind-car',
 		name: 'bind-car',
 		meta: {
-
+			title: '添加爱车'
 		},
 		component: () => import('@/views/car-record/bind-car.vue')
 	},
