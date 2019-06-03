@@ -121,6 +121,9 @@ export default {
 				this.$toast('请输入或拍摄车架号')
 			}
 
+		},
+		lookMyCar(){
+
 		}
 	}
 
