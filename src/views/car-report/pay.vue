@@ -112,7 +112,7 @@ export default {
 						"appId": data.appid,
 						"timeStamp": data.timestamp,
 						"nonceStr": data.noncestr,
-						"package": 'prepay_id='+ data.prepayid,
+						"package": 'prepay_id='+ (data.partnerid|| data.prepayid),
 						"signType":"MD5",
 						"paySign": data.sign,
 					},
