@@ -1,5 +1,5 @@
 import router from './router'
-import {Toast, Indicator} from 'mint-ui'
+import {Toast, Indicator, MessageBox} from 'mint-ui'
 import store from './store'
 import {getwxticket, cityIsSupport, getCityToken} from '@/util.js'
 
@@ -13,6 +13,7 @@ router.beforeEach((to, from, next) => {
 	let imgs= document.querySelector('.fullscreen-v-img .buttons-v-img span')
 	if(imgs) imgs.click()
 
+	MessageBox.close()
 	/*
 	* 1判断是否需要区域
 	* 2判断是否是指定区域

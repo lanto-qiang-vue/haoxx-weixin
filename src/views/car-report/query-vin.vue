@@ -4,11 +4,11 @@
 		<label>车架号</label>
 		<input ref="input" v-model="vin" placeholder="请输入车架号"/>
 		<i class="fa fa-camera" @click="showCamera= true"></i>
-		<div class="look" @click="query">查看</div>
+		<div class="look" @click="query(vin)">查看</div>
 	</div>
 	<div class="row">
 		<label>我的爱车</label>
-		<div class="look" @click="showCarList= true">查看</div>
+		<div class="look" @click="lookMyCar">查看</div>
 	</div>
 
 	<router-link tag="div" class="button" to="/my/car-report">我的报告</router-link>
@@ -24,7 +24,7 @@
 			v-model="showCarList"
 			position="right"
 			popup-transition="popup-fade">
-		<car-list style="width: 90vw" @select="getCar" :show-button="false"></car-list>
+		<car-list ref="carlist" style="width: 90vw" @select="getCar" :show-button="false"></car-list>
 	</mt-popup>
 </div>
 </template>
@@ -91,8 +91,7 @@ export default {
 				}
 			})
 		},
-		query(){
-			let vin= this.vin
+		query(vin){
 			if(vin){
 				this.axiosQixiu.get('/hxxdc/order/state/' +vin, {hxxtoken: true}).then( (res) => {
 					if(res.data.code=='0' ){
@@ -110,11 +109,6 @@ export default {
 								this.$router.push('/report/report?id='+ res.data.item.id)
 							}
 						}
-						// if(res.data.item){
-						// 	this.$router.push('/report/pay?vin='+vin)
-						// }else{
-						// 	this.$toast('此车辆无报告')
-						// }
 					}
 				})
 			}else{
@@ -123,7 +117,32 @@ export default {
 
 		},
 		lookMyCar(){
-
+			let length= this.$refs.carlist.list.length
+			console.log('this.$refs.carlist.list.length', length)
+			switch (length){
+				case 0:{
+					this.$messagebox({message: '请先绑定个人爱车', closeOnClickModal: false,
+						confirmButtonText: '去绑定', cancelButtonText: '取消', showCancelButton: true}).then(action => {
+						// console.log('action', action)
+						switch (action){
+							case 'confirm':{
+								this.$router.push({path: '/bind-car'})
+								break
+							}
+							case 'cancel':{
+							}
+						}
+					})
+					break
+				}
+				case 1:{
+					this.query(this.$refs.carlist.list[0].vin)
+					break
+				}
+				default :{
+					this.showCarList= true
+				}
+			}
 		}
 	}
 
