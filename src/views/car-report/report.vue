@@ -21,13 +21,13 @@
 			</li>
 			<li :class="{err: detail.burned}">
 				<img src="~@/assets/img/report/非火烧.png"/>
-				<p>非火烧</p>
+				<p>火烧排查</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li :class="{err: detail.blistered}">
 				<img src="~@/assets/img/report/非泡水.png"/>
-				<p>非泡水</p>
+				<p>泡水排查</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
@@ -39,19 +39,19 @@
 			</li>
 			<li :class="{err: detail.airbag}">
 				<img src="~@/assets/img/report/安全气囊无弹开.png"/>
-				<p>安全气囊无弹开</p>
+				<p>安全气囊</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li :class="{err: detail.engine}">
 				<img src="~@/assets/img/report/无发动机维修.png"/>
-				<p>无发动机维修</p>
+				<p>发动机</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
 			<li :class="{err: detail.gearbox}">
 				<img src="~@/assets/img/report/无变速箱维修.png"/>
-				<p>无变速箱维修</p>
+				<p>变速箱</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
@@ -66,7 +66,7 @@
 				<template v-if="item.items && item.items.length">
 					<li class="next" v-for="(item2, key2) in item.items" :key="key2" @click="pop(item2)">
 						<label>{{item2.name}}</label>
-						<p>{{item2.total}}项<i class="fa fa-check-circle-o"></i></p>
+						<p>{{item2.total- item2.faults}}项<i class="fa fa-check-circle-o"></i></p>
 						<p>{{item2.faults}}项<i class="zmdi zmdi-alert-circle-o"></i></p>
 					</li>
 				</template>
@@ -78,9 +78,9 @@
 		<div class="title">车主爱惜度</div>
 		<ul class="form-list">
 			<!--<li><label>最后一次保养时间</label><p>{{detail.aa}}</p></li>-->
-			<li><label>年平均保养次数</label><p>{{detail.repair_count_per_year}}次/年</p></li>
-			<li><label>最后一次进店时间</label><p>{{detail.last_repair_date}}</p></li>
-			<li><label>年平均行驶里程</label><p>{{detail.mileage_per_year}}公里/年</p></li>
+			<li><label>年平均保养次数</label><p v-if="detail.repair_count_per_year">{{detail.repair_count_per_year}} 次/年</p><p v-else>无</p></li>
+			<li><label>最后一次进店时间</label><p v-if="detail.last_repair_date">{{detail.last_repair_date}}</p><p v-else>无</p></li>
+			<li><label>年平均行驶里程</label><p v-if="detail.mileage_per_year">{{detail.mileage_per_year || '-'}} 公里/年</p><p v-else>无</p></li>
 		</ul>
 	</div>
 
@@ -91,7 +91,7 @@
 				<div class="head">
 					<p>{{item.repair_date}}</p>
 					{{item.repair_mileage}}公里
-					<span>维修</span>
+					<!--<span>维修</span>-->
 				</div>
 				<p>细节：{{item.repair_projects}}</p>
 				<p>门店：{{item.company_name}}</p>
@@ -109,7 +109,7 @@
 			<ul class="form-list right10">
 				<li class="weight">
 					<label>{{popupItem.name}}</label>
-					<p>{{popupItem.total}}项<i class="fa fa-check-circle-o"></i></p>
+					<p>{{popupItem.total- popupItem.faults}}项<i class="fa fa-check-circle-o"></i></p>
 					<p>{{popupItem.faults}}项<i class="zmdi zmdi-alert-circle-o"></i></p>
 				</li>
 				<template v-if="popupItem.items && popupItem.items.length">
@@ -312,9 +312,10 @@ export default {
 				line-height: 20px;
 				font-size: 14px;
 				color: #333333;
-				text-align: center;
+				text-align: right;
 				p{
 					float: left;
+					text-align: left;
 				}
 				span{
 					float: right;
