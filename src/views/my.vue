@@ -12,7 +12,7 @@
 	</div>
 	<ul class="list">
 		<router-link tag="li" :to="myCarPath">我的爱车 <i></i></router-link>
-		<router-link tag="li" to="/my/car-report">我的车史报告 <i></i></router-link>
+		<!--<router-link tag="li" to="/my/car-report">我的车史报告 <i></i></router-link>-->
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
 		<router-link tag="li" to="/my-remark" v-show="isShanghai">我的点评 <i></i></router-link>
 		<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>
