@@ -423,12 +423,12 @@ export const getTimeAgo = (time_str)=>{
 	}
 //本年度内，日期不同，取日期+时间  格式如  06-13 22:11
 	else if(now.getFullYear() == date.getFullYear()){
-		return ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate()+1)).slice(-2)
+		return ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2)
 			// + " " + date.getHours() + ":" + date.getMinutes();
 	}
 	else{
 		return date.getFullYear().toString().substring(2, 3)
-			+ "-" + ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate()+1)).slice(-2)
+			+ "-" + ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2)
 			// + " " + date.getHours() + ":" + date.getMinutes();
 	}
 }
