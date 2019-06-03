@@ -224,7 +224,7 @@ export default {
 			this.popupVisible= true
 		},
 		lookAll(){
-
+			this.showDetail= true
 		}
 	}
 }

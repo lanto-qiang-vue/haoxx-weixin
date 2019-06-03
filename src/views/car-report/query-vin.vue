@@ -69,6 +69,7 @@ export default {
 		getCar(item){
 			this.vin= item.vin
 			this.showCarList= false
+			this.query(item.vin)
 		},
 		getCamera(){
 			return new Promise((resolve, reject) => {
