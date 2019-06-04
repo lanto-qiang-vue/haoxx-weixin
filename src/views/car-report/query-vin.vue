@@ -103,7 +103,7 @@ export default {
 							}
 							case 'WAIT_BUY':
 							case 'WAIT_PAY':{
-								this.$router.push('/report/pay?vin='+vin)
+								this.$router.push('/report/pay?vin='+vin+ '&id='+ res.data.item.id)
 								break
 							}
 							default: {

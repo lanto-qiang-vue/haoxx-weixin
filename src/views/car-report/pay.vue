@@ -136,9 +136,11 @@ export default {
 						"paySign": data.sign,
 					},
 					function(res){
-						alert(JSON.stringify(res))
+						// alert(JSON.stringify(res))
 						switch (res.err_msg){
 							case 'get_brand_wcpay_request:ok':{
+								this.$toast('购买成功')
+								this.$router.push('/report/report?id='+ this.$route.query.id)
 								break
 							}
 							case 'get_brand_wcpay_request:cancel':{
