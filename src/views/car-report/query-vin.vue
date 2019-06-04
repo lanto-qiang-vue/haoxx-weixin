@@ -2,13 +2,14 @@
 <div class="query-vin">
 	<div class="row">
 		<label>车架号</label>
-		<input ref="input" v-model="vin" placeholder="请输入车架号"/>
+		<input ref="input" v-model="upperCaseVin" placeholder="请输入车架号" maxlength="17"/>
 		<i class="fa fa-camera" @click="showCamera= true"></i>
-		<div class="look" @click="query(vin)">查看</div>
+		<!--<div class="look" @click="query(vin)">查看</div>-->
+		<submit-button class="look" @click="query(vin)" :datas="{vin}" :rules="rule" :feedback="true">查看</submit-button>
 	</div>
 	<div class="row">
 		<label>我的爱车</label>
-		<div class="look" @click="lookMyCar">查看</div>
+		<div class="look on" @click="lookMyCar">查看</div>
 	</div>
 
 	<router-link tag="div" class="button" to="/my/car-report">我的报告</router-link>
@@ -30,12 +31,13 @@
 </template>
 
 <script>
-import { getWeixinId } from '@/util.js'
+import { getWeixinId, reg} from '@/util.js'
 import Upload from '@/components/compress-upload.vue'
 import CarList from '@/views/car-record/car-list.vue'
+import SubmitButton from '@/components/submit-button.vue'
 export default {
 	name: "query-vin",
-	components: { Upload, CarList},
+	components: { Upload, CarList, SubmitButton},
 	data(){
 		return{
 			vin: '',
@@ -63,6 +65,25 @@ export default {
 					})
 				}
 			}]
+		},
+		upperCaseVin: {
+			get(){
+				return this.vin;
+			},
+			set(val){
+				this.vin = val.toUpperCase();
+			}
+		},
+		rule(){
+			return {
+				vin: { validator: (rule, value, callback) => {
+					if(reg.vin.test(value)){
+						callback()
+					}else{
+						callback(new Error('车架号格式不正确'))
+					}
+				}}
+			}
 		}
 	},
 	methods:{
@@ -195,13 +216,16 @@ export default {
 			height: 24px;
 			line-height: 24px;
 			padding: 0 15px;
-			background-color: #FF9738;
+			background-color: #FFCB9C;
 			color: white;
 			border-radius: 18px;
 			position: absolute;
 			top: 50%;
 			right: 15px;
 			transform: translateY(-50%);
+			&.on{
+				background-color: #FF9738;
+			}
 		}
 	}
 	.button{
