@@ -131,7 +131,6 @@ export default {
 			detail: {},
 			popupVisible: false,
 			popupItem: {},
-			detailVersion: false,
 			showDetail: false
 		}
 	},
@@ -172,7 +171,7 @@ export default {
 					// console.log('action', action)
 					switch (action){
 						case 'confirm':{
-							this.$router.push({path: '/bind-car', query:{vin: this.detail.vin, detailVersion: true}})
+							this.$router.push({path: '/report/pay', query:{vin: this.detail.vin, id: this.detail.id}})
 							break
 						}
 						case 'cancel':{

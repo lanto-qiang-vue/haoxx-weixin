@@ -15,7 +15,7 @@
 							<span class="mint-radio-core"></span>
 						</span>{{`${item.name} ${item.price}元`}}</p>
 						<router-link :to="{path: '/report/report',
-						query:{detailVersion: item.detailVersion, id:'1'}}"
+						query:{ id:'1'}}"
 						             tag="span" >查看样例</router-link>
 					</li>
 					<!--<li>-->
