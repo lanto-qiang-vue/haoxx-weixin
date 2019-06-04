@@ -336,6 +336,9 @@ export default {
 				position: absolute;
 				left: 50%;
 				transform: translateX(-50%);
+				img{
+					box-shadow:0 1px 1px 0 #208BF1;
+				}
 			}
 			&:nth-child(3){
 				float: right;

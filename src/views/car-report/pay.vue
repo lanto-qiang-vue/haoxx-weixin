@@ -14,8 +14,7 @@
 							       :checked="radio.code==item.code">
 							<span class="mint-radio-core"></span>
 						</span>{{`${item.name} ${item.price}元`}}</p>
-						<router-link :to="{path: '/report/report',
-						query:{ id:'1'}}"
+						<router-link :to="{path: '/report/report',query:{ id:'1'}}"
 						             tag="span" >查看样例</router-link>
 					</li>
 					<!--<li>-->
@@ -30,27 +29,33 @@
 		</Form>
 	</div>
 	<div class="block">
-		<Form class="common-form"
+		<Form class="common-form" v-show="radio.price"
 		      :label-width="60" label-position="left" ref="form">
 			<FormItem label="支付金额">
 				<Input :value="`¥ ${radio.price}`" readonly class="money"></Input>
 			</FormItem>
 		</Form>
 	</div>
-	<div class="pay" @click="create">去支付</div>
+	<!--<div class="pay" @click="create">去支付</div>-->
+	<submit-button class="pay" :rules="rule" :datas="radio"  @click="create">去支付</submit-button>
 </div>
 </template>
 
 <script>
 import { getwxticket} from '@/util.js'
+import SubmitButton from '@/components/submit-button.vue'
 export default {
 	name: "report-pay",
+	components: { SubmitButton},
 	data(){
 		return{
 			vin: '',
 			radio: {},
 			list: [],
-			detailVersion: false
+			detailVersion: false,
+			rule: {
+				code: { required: true, message:'必填项不能为空'}
+			}
 		}
 	},
 	mounted(){
@@ -72,14 +77,14 @@ export default {
 						if(this.detailVersion){
 							for(let i in list){
 								if(list[i].detailVersion){
-									this.radio= list[i]
+									// this.radio= list[i]
 								}else{
 									list[i].disabled= true
 								}
 								this.list.push(list[i])
 							}
 						}else{
-							this.radio= list[0]
+							// this.radio= list[0]
 							this.list= res.data.items
 						}
 					}
@@ -209,11 +214,15 @@ export default {
 		height: 40px;
 		line-height: 40px;
 		margin: 20px 40px 0;
-		background: #FF9738;
+		background-color: #FFCB9C;
 		border-radius:20px;
 		font-size: 16px;
 		color: white;
 		text-align: center;
+		display: block;
+		&.on{
+			background-color: #FF9738;
+		}
 	}
 }
 </style>
