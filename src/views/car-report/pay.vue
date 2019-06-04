@@ -9,7 +9,7 @@
 			<FormItem label="版本号" class="noborder">
 				<ul class="radio">
 					<li v-for="(item, key) in list" :key="key">
-						<p @click="radio= item"><span class="mint-radio">
+						<p @click="clickRadio(item)" :class="{disabled: item.disabled}"><span class="mint-radio">
 							<input type="radio" class="mint-radio-input" :value="item.code"
 							       :checked="radio.code==item.code">
 							<span class="mint-radio-core"></span>
@@ -49,14 +49,19 @@ export default {
 		return{
 			vin: '',
 			radio: {},
-			list: []
+			list: [],
+			detailVersion: false
 		}
 	},
 	mounted(){
 		this.vin= this.$route.query.vin
 		this.getList()
+		let detailVersion= this.$route.query.detailVersion
+		if(detailVersion){
+			this.detailVersion= JSON.parse(detailVersion)
+		}
 
-		getwxticket(['chooseWXPay'])
+		// getwxticket(['chooseWXPay'])
 	},
 	methods:{
 		getList(){
@@ -64,11 +69,25 @@ export default {
 				if(res.data.code=='0'){
 					let list= res.data.items
 					if(list && list.length){
-						this.radio= list[0]
-						this.list= res.data.items
+						if(this.detailVersion){
+							for(let i in list){
+								if(list[i].detailVersion){
+									this.radio= list[i]
+								}else{
+									list[i].disabled= true
+								}
+								this.list.push(list[i])
+							}
+						}else{
+							this.radio= list[0]
+							this.list= res.data.items
+						}
 					}
 				}
 			})
+		},
+		clickRadio(item){
+			if(!item.disabled) this.radio= item
 		},
 		create(){
 			this.axiosQixiu.post('/hxxdc/order/create',{
@@ -118,6 +137,17 @@ export default {
 					},
 					function(res){
 						alert(JSON.stringify(res))
+						switch (res.err_msg){
+							case 'get_brand_wcpay_request:ok':{
+								break
+							}
+							case 'get_brand_wcpay_request:cancel':{
+								break
+							}
+							case 'get_brand_wcpay_request:fail':{
+								break
+							}
+						}
 						// if(res.err_msg == "get_brand_wcpay_request:ok" ){
 						// 	// 使用以上方式判断前端返回,微信团队郑重提示：
 						// 	//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
@@ -146,11 +176,11 @@ export default {
 	.radio{
 		margin: 0;
 		li{
-			height: 40px;
+			line-height: 40px;
 			padding-left: 10px;
-			&:first-child{
-				height: 41px;
-				border-bottom: 1px solid #EEEEEE;
+			border-bottom: 1px solid #EEEEEE;
+			&:last-child{
+				border: 0;
 			}
 			p{
 				display: inline-block;
@@ -166,6 +196,9 @@ export default {
 				float: right;
 				line-height: 30px;
 				margin: 5px 0;
+			}
+			.disabled .mint-radio .mint-radio-core{
+				background-color: #ececec;
 			}
 		}
 	}

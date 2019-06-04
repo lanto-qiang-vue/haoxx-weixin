@@ -1,19 +1,16 @@
 <template>
-<div class="report-detail">
+<div class="report-detail" v-show="detail.id">
 	<div class="block">
 		<div class="title">车辆档案</div>
 		<ul class="form-list">
 			<li><label>车架号</label><p>{{detail.vin}}</p></li>
-			<!--<li class="next"><label>排除重大事故</label>-->
-				<!--<p>106项<i class="fa fa-check-circle-o"></i></p>-->
-				<!--<p>5项<i class="zmdi zmdi-alert-circle-o"></i></p>-->
-			<!--</li>-->
+			<li><label>查询报告时间</label><p>{{detail.create_time}}</p></li>
 		</ul>
 	</div>
 	<div class="block">
 		<div class="title">车史报告</div>
 		<ul class="tags">
-			<li :class="{err: detail.aa}">
+			<li :class="{err: detail.recall}">
 				<img src="~@/assets/img/report/正常保养.png"/>
 				<p>召回排查</p>
 				<i class="zmdi zmdi-check-circle"></i>
@@ -131,68 +128,7 @@ export default {
 	name: "report-detail",
 	data(){
 		return{
-			detail: {
-				"code":"0",
-				"status":"OK",
-				"id":0,
-				"order_id":"",
-				"vin":"LSV**********3753",
-				"create_time":"",
-				"burned": false,
-				"blistered":false,
-				"mileage_anomaly": true,
-				"airbag":false,
-				"engine":false,
-				"gearbox":false,
-				"last_repair_date":"2019-01-01",
-				"repair_count_per_year": 10,
-				"mileage_per_year": 21718,
-				"version":0,
-				"results":[
-					{
-						"name":"事故维修排查",
-						"items":[
-							{
-								"name":"排除重大事故",
-								"total": 18,
-								"faults": 0,
-								"items":[
-									{
-										"name":"左前纵梁",
-										"fault": false,
-										"action":""
-									},
-									{
-										"name":"右前纵梁",
-										"fault": false,
-										"action":""
-									}
-								]
-							}
-						]
-					}
-				],
-				"records":[
-					{
-						"repair_date": "2019-03-23",
-						"repair_mileage": 153035,
-						"repair_projects":"A6 3.0 4F80VL机油机滤更换与全面检查",
-						"company_name":"好修修汽车修理厂"
-					},
-					{
-						"repair_date": "2018-08-18",
-						"repair_mileage": 136782,
-						"repair_projects":"照明检查",
-						"company_name":"好修修汽车修理厂"
-					},{
-						"repair_date": "2018-03-17",
-						"repair_mileage": 121800,
-						"repair_projects":"换油保养；技术检查；车窗升降器开关拆卸和",
-						"company_name":"好修修汽车修理厂"
-					}
-				],
-				"detailVersion":false,
-			},
+			detail: {},
 			popupVisible: false,
 			popupItem: {},
 			detailVersion: false,
@@ -201,21 +137,24 @@ export default {
 	},
 	computed:{
 		showAll(){
-			return this.detailVersion && this.showDetail
+			return this.detail.detailVersion && this.showDetail
 		}
 	},
 	mounted(){
-		let det= this.$route.query.detailVersion
-		if(det) this.detailVersion= JSON.parse(det)
-
 		if(this.$route.query.id) this.getData()
 	},
 	methods:{
 		getData(){
+			this.axiosQixiu.get( '/hxxdc/order/view/'+ this.$route.query.id, {hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					this.detail= res.data.item
+				}
+			})
+		},
+		getDetail(){
 			this.axiosQixiu.get( '/hxxdc/order/detail/'+ this.$route.query.id, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
 					this.detail= res.data.item
-					this.detailVersion =res.data.item.detailVersion
 				}
 			})
 		},
@@ -224,7 +163,23 @@ export default {
 			this.popupVisible= true
 		},
 		lookAll(){
-			this.showDetail= true
+			if(this.detail.detailVersion){
+				this.getDetail()
+				this.showDetail= true
+			}else{
+				this.$messagebox({title: '您未购买详细报告',message: '是否购买', closeOnClickModal: false,
+					confirmButtonText: '去购买', cancelButtonText: '取消', showCancelButton: true}).then(action => {
+					// console.log('action', action)
+					switch (action){
+						case 'confirm':{
+							this.$router.push({path: '/bind-car', query:{vin: this.detail.vin, detailVersion: true}})
+							break
+						}
+						case 'cancel':{
+						}
+					}
+				})
+			}
 		}
 	}
 }
