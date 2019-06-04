@@ -30,7 +30,7 @@
 </template>
 
 <script>
-
+import { getWeixinId } from '@/util.js'
 import Upload from '@/components/compress-upload.vue'
 import CarList from '@/views/car-record/car-list.vue'
 export default {
@@ -104,6 +104,21 @@ export default {
 							case 'WAIT_BUY':
 							case 'WAIT_PAY':{
 								this.$router.push('/report/pay?vin='+vin+ '&id='+ res.data.item.id)
+								break
+							}
+							case 'NO_OPEN_ID':{
+								this.$messagebox({message: '需要授权微信信息', closeOnClickModal: false,
+									confirmButtonText: '授权', cancelButtonText: '取消', showCancelButton: true}).then(action => {
+									// console.log('action', action)
+									switch (action){
+										case 'confirm':{
+											getWeixinId()
+											break
+										}
+										case 'cancel':{
+										}
+									}
+								})
 								break
 							}
 							default: {
