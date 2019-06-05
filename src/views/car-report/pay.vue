@@ -55,7 +55,8 @@ export default {
 			detailVersion: false,
 			rule: {
 				id: { required: true, message:'必填项不能为空'}
-			}
+			},
+			orderId: ''
 		}
 	},
 	mounted(){
@@ -100,7 +101,14 @@ export default {
 				vin: this.vin
 			}, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
-					this.pay(res.data.item.id)
+					let orderId= res.data.item.id
+					this.orderId= orderId
+					if(res.data.item.action== 'VIEW_REPORT'){
+						this.$router.push('/report/report?id='+ orderId)
+					}else{
+						this.pay(orderId)
+					}
+
 				}
 			})
 		},
@@ -145,7 +153,7 @@ export default {
 						switch (res.err_msg){
 							case 'get_brand_wcpay_request:ok':{
 								this.$toast('购买成功')
-								this.$router.push('/report/report?id='+ this.$route.query.id)
+								this.$router.push('/report/report?id='+ this.orderId)
 								break
 							}
 							case 'get_brand_wcpay_request:cancel':{

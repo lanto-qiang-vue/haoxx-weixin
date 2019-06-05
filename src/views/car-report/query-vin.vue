@@ -124,7 +124,7 @@ export default {
 							}
 							case 'WAIT_BUY':
 							case 'WAIT_PAY':{
-								this.$router.push('/report/pay?vin='+vin+ '&id='+ res.data.item.id)
+								this.$router.push('/report/pay?vin='+vin)
 								break
 							}
 							case 'NO_OPEN_ID':{
@@ -141,9 +141,6 @@ export default {
 									}
 								})
 								break
-							}
-							default: {
-								this.$router.push('/report/report?id='+ res.data.item.id)
 							}
 						}
 					}
