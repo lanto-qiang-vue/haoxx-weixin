@@ -137,6 +137,8 @@ export default {
 			// 		alert(JSON.stringify(res))
 			// 	}
 			// });
+			let orderId= this.orderId
+			let self= this
 
 			function onBridgeReady(){
 				WeixinJSBridge.invoke(
@@ -149,12 +151,12 @@ export default {
 						"paySign": data.sign,
 					},
 					function(res){
-						alert(JSON.stringify(res))
+						// alert(JSON.stringify(res))
 						switch (res.err_msg){
 							case 'get_brand_wcpay_request:ok':{
-								alert('支付成功')
-								this.$toast('购买成功')
-								this.$router.push('/report/report?id='+ this.orderId)
+								// alert('支付成功')
+								self.$toast('购买成功')
+								self.$router.push('/report/report?id='+ orderId)
 								break
 							}
 							case 'get_brand_wcpay_request:cancel':{
