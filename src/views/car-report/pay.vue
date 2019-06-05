@@ -10,8 +10,8 @@
 				<ul class="radio">
 					<li v-for="(item, key) in list" :key="key">
 						<p @click="clickRadio(item)" :class="{disabled: item.disabled}"><span class="mint-radio">
-							<input type="radio" class="mint-radio-input" :value="item.code"
-							       :checked="radio.code==item.code">
+							<input type="radio" class="mint-radio-input" :value="item.id"
+							       :checked="radio.id==item.id">
 							<span class="mint-radio-core"></span>
 						</span>{{`${item.name} ${item.price}元`}}</p>
 						<router-link :to="{path: '/report/report',query:{ id:'1'}}"
@@ -54,7 +54,7 @@ export default {
 			list: [],
 			detailVersion: false,
 			rule: {
-				code: { required: true, message:'必填项不能为空'}
+				id: { required: true, message:'必填项不能为空'}
 			}
 		}
 	},
@@ -70,7 +70,7 @@ export default {
 	},
 	methods:{
 		getList(){
-			this.axiosQixiu.get('/hxxdc/product/list', {hxxtoken: true}).then( (res) => {
+			this.axiosQixiu.get('/hxxdc/product/list?vin='+ this.vin, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
 					let list= res.data.items
 					if(list && list.length){
@@ -96,7 +96,7 @@ export default {
 		},
 		create(){
 			this.axiosQixiu.post('/hxxdc/order/create',{
-				type: this.radio.code,
+				id: this.radio.id,
 				vin: this.vin
 			}, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
