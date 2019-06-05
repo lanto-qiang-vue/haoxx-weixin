@@ -1,5 +1,5 @@
 <template>
-<div class="report-detail" v-show="detail.vin">
+<div class="report-detail" v-show="detail.code">
 	<div class="block">
 		<div class="title">车辆档案</div>
 		<ul class="form-list">

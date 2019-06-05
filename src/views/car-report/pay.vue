@@ -100,7 +100,7 @@ export default {
 				vin: this.vin
 			}, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
-					this.pay(res.data.id)
+					this.pay(res.data.item.id)
 				}
 			})
 		},
