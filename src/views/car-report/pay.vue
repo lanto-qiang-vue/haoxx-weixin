@@ -149,6 +149,7 @@ export default {
 						"paySign": data.sign,
 					},
 					function(res){
+						alert(JSON.stringify(res))
 						switch (res.err_msg){
 							case 'get_brand_wcpay_request:ok':{
 								alert('支付成功')
