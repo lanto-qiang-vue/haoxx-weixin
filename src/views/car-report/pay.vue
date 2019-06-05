@@ -96,7 +96,7 @@ export default {
 		},
 		create(){
 			this.axiosQixiu.post('/hxxdc/order/create',{
-				id: this.radio.id,
+				productId: this.radio.id,
 				vin: this.vin
 			}, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
