@@ -159,10 +159,11 @@ export default {
 								self.$router.push('/report/report?id='+ orderId)
 								break
 							}
-							case 'get_brand_wcpay_request:cancel':{
-								break
-							}
+							case 'get_brand_wcpay_request:cancel':
 							case 'get_brand_wcpay_request:fail':{
+								self.axiosQixiu.delete('/hxxdc/order/'+orderId, {hxxtoken: true}).then( (dres) => {
+									console.log(dres.data)
+								})
 								break
 							}
 						}
@@ -197,15 +198,26 @@ export default {
 			line-height: 40px;
 			padding-left: 10px;
 			border-bottom: 1px solid #EEEEEE;
+			position: relative;
 			&:last-child{
 				border: 0;
 			}
 			p{
 				display: inline-block;
-				line-height: 40px;
+				line-height: 20px;
 				color: #333333;
+				padding-right: 55px;
+				max-width: 100%;
+				word-break: break-all;
+				vertical-align: middle;
+				margin: 5px 0;
+				padding-left: 30px;
+				position: relative;
 				>span{
-					margin-right: 10px;
+					position: absolute;
+					left: 0;
+					top: 50%;
+					transform: translateY(-50%);
 				}
 			}
 			>span{
@@ -213,7 +225,10 @@ export default {
 				color: #666666;
 				float: right;
 				line-height: 30px;
-				margin: 5px 0;
+				position: absolute;
+				top: 50%;
+				right: 0;
+				transform: translateY(-50%);
 			}
 			.disabled .mint-radio .mint-radio-core{
 				background-color: #ececec;
