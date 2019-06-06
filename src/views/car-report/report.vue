@@ -140,11 +140,12 @@ export default {
 		}
 	},
 	mounted(){
-		let id= this.$route.query.id
+		let id= this.$route.query.id, detailVersion= this.$route.query.detailVersion;
 		switch (id){
 			case '1':{
-				this.showDetail= true
+				this.showDetail= JSON.parse(detailVersion)
 				this.getDetail()
+				break
 			}
 			default :{
 				this.getData()
