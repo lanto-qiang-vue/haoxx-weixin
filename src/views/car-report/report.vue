@@ -75,9 +75,9 @@
 		<div class="title">车主爱惜度</div>
 		<ul class="form-list">
 			<!--<li><label>最后一次保养时间</label><p>{{detail.aa}}</p></li>-->
-			<li><label>年平均保养次数</label><p v-if="detail.repair_count_per_year">{{detail.repair_count_per_year}} 次/年</p><p v-else>无</p></li>
-			<li><label>最后一次进店时间</label><p v-if="detail.last_repair_date">{{detail.last_repair_date}}</p><p v-else>无</p></li>
-			<li><label>年平均行驶里程</label><p v-if="detail.mileage_per_year">{{detail.mileage_per_year || '-'}} 公里/年</p><p v-else>无</p></li>
+			<li><label>年平均维保次数</label><p>{{unitData(detail.repair_count_per_year, '次/年')}}</p></li>
+			<li><label>最后一次进店时间</label><p>{{unitData(detail.last_repair_date, '')}}</p></li>
+			<li><label>年平均行驶里程</label><p>{{unitData(detail.mileage_per_year, '公里/年')}}</p></li>
 		</ul>
 	</div>
 
@@ -140,7 +140,16 @@ export default {
 		}
 	},
 	mounted(){
-		if(this.$route.query.id) this.getData()
+		let id= this.$route.query.id
+		switch (id){
+			case '1':{
+				this.showDetail= true
+				this.getDetail()
+			}
+			default :{
+				this.getData()
+			}
+		}
 	},
 	methods:{
 		getData(){
@@ -171,7 +180,7 @@ export default {
 					// console.log('action', action)
 					switch (action){
 						case 'confirm':{
-							this.$router.push({path: '/report/pay', query:{vin: this.detail.vin, id: this.detail.id}})
+							this.$router.push({path: '/report/pay', query:{vin: this.detail.vin}})
 							break
 						}
 						case 'cancel':{
@@ -179,6 +188,13 @@ export default {
 					}
 				})
 			}
+		},
+		unitData(data, unit){
+			let res= '无'
+			if(data){
+				res= data+ ' '+ unit
+			}
+			return res
 		}
 	}
 }
