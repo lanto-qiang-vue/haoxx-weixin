@@ -333,5 +333,13 @@ routes: [
 		},
 		component: () => import('@/views/car-report/history-detail.vue')
 	},
+	{
+		path: '/obu-plan',
+		name: 'obu-plan',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/activity/obu.vue')
+	},
 
 ]})

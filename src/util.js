@@ -338,6 +338,12 @@ export const getWeixinId=()=>{
 	}
 }
 
+export const openidGetInfo=(openid, callback)=>{
+	axios.axiosQixiu.get('/weixin/hxx/user/info/'+ openid, {constBaseUrl: true}).then(res=>{
+		callback(res)
+	})
+}
+
 export const getwxticket= (jsApiList, callback) => {
 	axios.axiosQixiu.get('/weixin/hxx/ticket/jsapi?url='+ (window.location.href.split('#')[0]),
 		{constBaseUrl: true}).then(res=>{
