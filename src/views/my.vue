@@ -8,7 +8,7 @@
 		<div class="button">
 			<router-link tag="div" to="/coupons-type"><span>{{couponsNum}}</span><p>我的卡券</p></router-link>
 			<router-link tag="div" to="/my-reservation"><span>{{reservationNum}}</span><p>我的预约</p></router-link>
-			<div><span>0.00<i>¥</i></span><p>我的钱包</p></div>
+			<div><span>0.00<i></i></span><p>我的奖励</p></div>
 		</div>
 	</div>
 	<ul class="list">
@@ -74,11 +74,11 @@ export default {
 					this.myCarPath= '/bind-car'
 				}
 			})
-			this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
-				if(res.data.code=='0'){
-					if(res.data.item) this.showReport= true
-				}
-			})
+			// this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
+			// 	if(res.data.code=='0'){
+			// 		if(res.data.item) this.showReport= true
+			// 	}
+			// })
 		},
 		nickName(){
 			this.$refs.popupInput.popup({title: '修改昵称', value: this.userinfo.nickName, maxlength: 10}).then(({status, value})=>{

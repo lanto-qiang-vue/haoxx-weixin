@@ -156,11 +156,11 @@ export default {
 						this.myCarPath= '/bind-car'
 					}
 				})
-				this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
-					if(res.data.code=='0'){
-						if(res.data.item) this.showReport= true
-					}
-				})
+				// this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
+				// 	if(res.data.code=='0'){
+				// 		if(res.data.item) this.showReport= true
+				// 	}
+				// })
 			}
 		},
 		getBanner(){
