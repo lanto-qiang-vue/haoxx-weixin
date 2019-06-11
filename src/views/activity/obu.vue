@@ -148,6 +148,8 @@ export default {
 		share(){
 			if(this.toLogin()){
 				this.showShare= true
+			}else{
+				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
 			}
 		},
 		deal(){
@@ -198,7 +200,7 @@ export default {
 			this.on= !this.on
 			if(this.on){
 				setTimeout(()=>{
-					document.documentElement.scrollTop= top+50
+					document.body.scrollTop= top+50
 				},50)
 			}
 		}
@@ -207,6 +209,7 @@ export default {
 		wx.ready(function(){
 			wx.showAllNonBaseMenuItem();
 		})
+		next()
 	}
 }
 </script>
@@ -225,6 +228,7 @@ export default {
 		.msg{
 			position: absolute;
 			width: 80%;
+			min-width: 280px;
 			text-align: center;
 			left: 50%;
 			top: 10px;

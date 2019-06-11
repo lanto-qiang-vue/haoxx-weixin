@@ -66,7 +66,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
-	console.log('router.afterEach((to,', to)
+	// console.log('router.afterEach((to,', to)
 	let title= document.title
 	let img= 'https://weixin.shanghaiqixiu.org/static/img/shqxw.jpg'
 	let link= window.location.href
