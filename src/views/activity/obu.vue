@@ -116,7 +116,7 @@ export default {
 						data.userId= this.$store.state.user.userinfo.userId
 					}
 					this.etcPost(data, (res)=>{
-						this.shareConfig(res.data.data.did)
+						this.shareConfig(res.data.did)
 					})
 				}
 			})
