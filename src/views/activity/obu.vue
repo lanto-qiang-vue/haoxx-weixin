@@ -157,7 +157,7 @@ export default {
 		},
 		toLogin(){
 			if(this.isLogin){
-				return false
+				return true
 			}else{
 				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
 			}
