@@ -79,7 +79,7 @@
 	<div class="rules share" v-show="showShare" @click="showShare= false">
 		<div class="mask"></div>
 		<img src="~@/assets/img/obu/share.png" class="arrow"/>
-		<div class="text">点击右上角<br/>把这个福利分享给好友</div>
+		<div class="text">点击右上角<br/>邀请好友参与活动</div>
 	</div>
 </div>
 </template>
@@ -102,7 +102,7 @@ export default {
 		}
 	},
 	beforeCreate(){
-		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem'])
+		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage'])
 		let openid= localStorage.getItem("OPENID");
 		if(openid){
 			openidGetInfo(openid, (res)=>{
@@ -164,7 +164,7 @@ export default {
 		},
 		shareConfig(id){
 			let link= window.location.origin+ '/#/obu?id='+ id
-			let titles= 'ETC设备免费领！高速通行优惠多！'
+			let titles= '价值390元ETC设备免费领！'
 			let shareImg= window.location.origin+ '/img/obu/obu.png'
 			let self= this
 			wx.ready(function(){
