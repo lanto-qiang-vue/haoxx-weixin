@@ -34,7 +34,7 @@
 			<img src="~@/assets/img/index/我的爱车2.png"/>
 			<p><i class="zmdi zmdi-plus-circle-o"></i>我的爱车</p>
 		</router-link>
-		<router-link tag="li" to="/report/query-vin">
+		<router-link tag="li" to="/report/query-vin" v-show="showReport">
 			<img src="~@/assets/img/index/车史报告.png"/>
 			<p>车史报告</p>
 		</router-link>
@@ -46,9 +46,11 @@
 	</ul>
 	<ul class="coupons block">
 		<p class="title">车主权益<span @click="goCoupons(null)">查看更多</span></p>
+		<router-link tag="li" to="/obu" class="etc">
+			<img src="~@/assets/img/index/etc.png"/>
+		</router-link>&thinsp;
 		<li @click="goCoupons('洗车')">洗车券<span>查看可用券</span></li>&thinsp;
-		<li @click="goCoupons('保养')">保养券<span>查看可用券</span></li>&thinsp;
-		<li @click="goCoupons('油漆')">油漆券<span>查看可用券</span></li>
+		<li @click="goCoupons('保养')">保养券<span>查看可用券</span></li>
 	</ul>
 	<ul class="block">
 		<p class="title">车谈话题
@@ -93,7 +95,8 @@ export default {
 				allLoaded: false
 			},
 			couponsType: [],
-			myCarPath: '/car-list'
+			myCarPath: '/car-list',
+			showReport: false
 		}
 	},
 	computed:{
@@ -151,6 +154,11 @@ export default {
 						this.myCarPath= '/car-list'
 					}else{
 						this.myCarPath= '/bind-car'
+					}
+				})
+				this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
+					if(res.data.code=='0'){
+						if(res.data.item) this.showReport= true
 					}
 				})
 			}
@@ -417,6 +425,18 @@ export default {
 				height: 1px;
 				border-top:1px dotted #E48E69;
 				opacity: .5;
+			}
+		}
+		.etc{
+			img{
+				height: 34px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+			&:after{
+				display: none;
 			}
 		}
 	}

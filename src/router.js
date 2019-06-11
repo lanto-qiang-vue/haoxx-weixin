@@ -233,6 +233,7 @@ routes: [
 		name: 'article-detail',
 		meta: {
 			tourist: true,
+			share: true
 		},
 		component: () => import('@/views/article/article-detail.vue')
 	},
@@ -272,8 +273,7 @@ routes: [
 		path: '/my-forum',
 		name: 'my-forum',
 		meta: {
-			tourist: true,
-			cache: true
+
 		},
 		component: () => import('@/views/forum/my-post.vue')
 	},
@@ -334,10 +334,12 @@ routes: [
 		component: () => import('@/views/car-report/history-detail.vue')
 	},
 	{
-		path: '/obu-plan',
-		name: 'obu-plan',
+		path: '/obu',
+		name: 'obu',
 		meta: {
 			tourist: true,
+			share: true,
+			title: 'etc设备免费领'
 		},
 		component: () => import('@/views/activity/obu.vue')
 	},

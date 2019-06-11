@@ -8,11 +8,12 @@
 		<div class="button">
 			<router-link tag="div" to="/coupons-type"><span>{{couponsNum}}</span><p>我的卡券</p></router-link>
 			<router-link tag="div" to="/my-reservation"><span>{{reservationNum}}</span><p>我的预约</p></router-link>
+			<div><span>0.00<i>¥</i></span><p>我的钱包</p></div>
 		</div>
 	</div>
 	<ul class="list">
 		<router-link tag="li" :to="myCarPath">我的爱车 <i></i></router-link>
-		<router-link tag="li" to="/my/car-report">我的车史报告 <i></i></router-link>
+		<router-link tag="li" to="/my/car-report" v-show="showReport">我的车史报告 <i></i></router-link>
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
 		<router-link tag="li" to="/my-remark" v-show="isShanghai">我的点评 <i></i></router-link>
 		<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>
@@ -32,7 +33,8 @@ export default {
 		return{
 			couponsNum: 0,
 			reservationNum: 0,
-			myCarPath: '/car-list'
+			myCarPath: '/car-list',
+			showReport: false
 		}
 	},
 	computed:{
@@ -70,6 +72,11 @@ export default {
 					this.myCarPath= '/car-list'
 				}else{
 					this.myCarPath= '/bind-car'
+				}
+			})
+			this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					if(res.data.item) this.showReport= true
 				}
 			})
 		},
@@ -132,29 +139,39 @@ export default {
 			color: white;
 			overflow: hidden;
 			&>div{
-				width: 50%;
+				width: 33%;
 				float: left;
 				text-align: center;
+				position: relative;
 				span{
 					font-size: 20px;
 					font-weight: 600;
+					i{
+						font-style:normal;
+						font-size: 16px;
+						margin-left: 2px;
+					}
 				}
 				p{
 					color: white;
 					font-size: 12px;
 				}
+				&:before{
+					content: '';
+					display: block;
+					width: 1px;
+					height: 30px;
+					background-color: white;
+					position: absolute;
+					top: 50%;
+					right: 0;
+					transform: translateY(-50%);
+				}
+				&:last-child:before{
+					display: none;
+				}
 			}
-			&:before{
-				content: '';
-				display: block;
-				width: 1px;
-				height: 30px;
-				background-color: white;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-			}
+
 		}
 	}
 	.list{
