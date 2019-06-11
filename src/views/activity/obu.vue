@@ -148,8 +148,6 @@ export default {
 		share(){
 			if(this.toLogin()){
 				this.showShare= true
-			}else{
-				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
 			}
 		},
 		deal(){
@@ -158,13 +156,11 @@ export default {
 			}
 		},
 		toLogin(){
-			let flag= false
 			if(this.isLogin){
-				flag= true
+				return false
 			}else{
 				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
 			}
-			return flag
 		},
 		shareConfig(id){
 			let link= window.location.origin+ '/#/obu?id='+ id
