@@ -102,7 +102,14 @@ export default {
 		}
 	},
 	beforeCreate(){
-		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage'])
+		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems'])
+
+		wx.ready(function(){
+			wx.hideMenuItems({
+				menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
+			});
+		})
+
 		let openid= localStorage.getItem("OPENID");
 		if(openid){
 			openidGetInfo(openid, (res)=>{
