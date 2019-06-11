@@ -101,6 +101,7 @@ export default {
 		}
 	},
 	beforeCreate(){
+		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem'])
 		let openid= localStorage.getItem("OPENID");
 		if(openid){
 			openidGetInfo(openid, (res)=>{
@@ -114,6 +115,10 @@ export default {
 					}
 					if(this.isLogin){
 						data.userId= this.$store.state.user.userinfo.userId
+					}else{
+						wx.ready(function(){
+							wx.hideAllNonBaseMenuItem();
+						})
 					}
 					this.etcPost(data, (res)=>{
 						this.shareConfig(res.data.did)
@@ -170,7 +175,7 @@ export default {
 					link: link,
 					imgUrl: shareImg,
 					success: function () {
-						self.$toast('分享成功')
+						// self.$toast('分享成功')
 					}
 				})
 				//分享给朋友
@@ -182,11 +187,16 @@ export default {
 					type: '',
 					dataUrl: '',
 					success: function () {
-						self.$toast('分享成功')
+						// self.$toast('分享成功')
 					}
 				});
 			})
 		}
+	},
+	beforeRouteLeave(to, from, next){
+		wx.ready(function(){
+			wx.showAllNonBaseMenuItem();
+		})
 	}
 }
 </script>
