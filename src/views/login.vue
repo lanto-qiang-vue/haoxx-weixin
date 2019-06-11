@@ -198,6 +198,9 @@ export default {
 	},
 	mounted(){
 		this.showBlock('code')
+		if(this.$route.query.redirect){
+			this.$toast('请登录');
+		}
 	},
 	methods:{
 		showBlock(block){
