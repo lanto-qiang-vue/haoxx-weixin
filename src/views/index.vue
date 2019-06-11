@@ -395,6 +395,7 @@ export default {
 			font-size: 16px;
 			line-height: 32px;
 			font-weight: 600;
+			vertical-align: middle;
 			span{
 				font-weight: 400;
 				display: block;

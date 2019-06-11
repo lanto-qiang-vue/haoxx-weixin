@@ -339,7 +339,7 @@ routes: [
 		meta: {
 			tourist: true,
 			share: true,
-			title: 'etc设备免费领'
+			title: 'ETC设备免费领'
 		},
 		component: () => import('@/views/activity/obu.vue')
 	},

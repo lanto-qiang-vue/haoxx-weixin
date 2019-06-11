@@ -2,6 +2,7 @@
 <div class="obu" v-show="isFollow">
 	<div class="above">
 		<img src="~@/assets/img/obu/main.png"/>
+		<div class="msg">2019年底前基本取消高速省界人工收费站 ！替换为ETC通道</div>
 		<ul>
 			<li>
 				<div @click="share">邀请好友</div>
@@ -10,7 +11,7 @@
 				<div @click="deal">免费申领</div>
 			</li>
 		</ul>
-		<p @click="on=!on" :class="{on}">更多优惠详情<img src="~@/assets/img/obu/arrow.png"/></p>
+		<p @click="lookMore" :class="{on}">更多优惠详情<img src="~@/assets/img/obu/arrow.png"/></p>
 		<div class="rule" @click="showRule=true">使用规则</div>
 	</div>
 	<div class="detail" v-show="on">
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-import { getWeixinId, openidGetInfo} from '@/util'
+import { getWeixinId, openidGetInfo, getwxticket} from '@/util'
 export default {
 	name: "obu",
 	data(){
@@ -191,6 +192,15 @@ export default {
 					}
 				});
 			})
+		},
+		lookMore(){
+			let top= document.documentElement.scrollTop
+			this.on= !this.on
+			if(this.on){
+				setTimeout(()=>{
+					document.documentElement.scrollTop= top+50
+				},50)
+			}
 		}
 	},
 	beforeRouteLeave(to, from, next){
@@ -211,6 +221,18 @@ export default {
 		background:linear-gradient(180deg,rgba(72,205,248,1) 0%,rgba(2,152,221,1) 100%);
 		>img{
 			width: 100%;
+		}
+		.msg{
+			position: absolute;
+			width: 80%;
+			text-align: center;
+			left: 50%;
+			top: 10px;
+			transform: translateX(-50%);
+			color: #066C9D;
+			font-size: 14px;
+			line-height: 20px;
+			font-weight: 600;
 		}
 		ul{
 			overflow: hidden;
