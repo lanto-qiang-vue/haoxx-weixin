@@ -1,8 +1,12 @@
 <template>
 <div class="obu" v-show="isFollow">
 	<div class="above">
+		<div class="msg">
+			2019年底前基本取消高速省界人工收费站！
+			<div>替换为ETC通道</div>
+		</div>
 		<img src="~@/assets/img/obu/main.png"/>
-		<div class="msg">2019年底前基本取消高速省界人工收费站 ！替换为ETC通道</div>
+
 		<ul>
 			<li>
 				<div @click="share">邀请好友</div>
@@ -102,40 +106,42 @@ export default {
 		}
 	},
 	beforeCreate(){
-		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems'])
-
-		wx.ready(function(){
-			wx.hideMenuItems({
-				menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
-			});
-		})
-
 		let openid= localStorage.getItem("OPENID");
-		if(openid){
-			openidGetInfo(openid, (res)=>{
-				// console.log('res.data', res.data)
-				if(res.data.subscribe==0){
-					window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
-				}else{
-					this.isFollow= true
-					let data= {
-						superiorDid: this.$route.query.id
-					}
-					if(this.isLogin){
-						data.userId= this.$store.state.user.userinfo.userId
+		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems'], ()=>{
+			wx.ready(function(){
+				wx.hideMenuItems({
+					menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
+				});
+			})
+
+			if(openid){
+				openidGetInfo(openid, (res)=>{
+					// console.log('res.data', res.data)
+					if(res.data.subscribe==0){
+						window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
 					}else{
-						wx.ready(function(){
-							wx.hideAllNonBaseMenuItem();
+						this.isFollow= true
+						let data= {
+							superiorDid: this.$route.query.id
+						}
+						if(this.isLogin){
+							data.userId= this.$store.state.user.userinfo.userId
+						}else{
+							wx.ready(function(){
+								wx.hideAllNonBaseMenuItem();
+							})
+						}
+						this.etcPost(data, (res)=>{
+							this.shareConfig(res.data.did)
 						})
 					}
-					this.etcPost(data, (res)=>{
-						this.shareConfig(res.data.did)
-					})
-				}
-			})
-		}else{
-			getWeixinId()
-		}
+				})
+			}else{
+				getWeixinId()
+			}
+
+		})
+
 	},
 	mounted(){
 
@@ -199,11 +205,11 @@ export default {
 			})
 		},
 		lookMore(){
-			let top= document.documentElement.scrollTop
+			let top= document.body.scrollTop
 			this.on= !this.on
 			if(this.on){
 				setTimeout(()=>{
-					document.body.scrollTop= top+50
+					document.body.scrollTop= top+100
 				},50)
 			}
 		}
@@ -222,27 +228,36 @@ export default {
 	min-height: 100vh;
 	background-color: #0298DD;
 	.above{
+		height: 100vh;
 		position: relative;
 		overflow: hidden;
 		background:linear-gradient(180deg,rgba(72,205,248,1) 0%,rgba(2,152,221,1) 100%);
 		>img{
 			width: 100%;
+			position: absolute;
+			top: 43%;
+			left: 0;
+			transform: translateY(-50%);
 		}
 		.msg{
 			position: absolute;
-			width: 80%;
+			width: 100%;
 			min-width: 280px;
 			text-align: center;
-			left: 50%;
-			top: 10px;
-			transform: translateX(-50%);
+			left: 0;
+			top: 4%;
 			color: #066C9D;
 			font-size: 14px;
 			line-height: 20px;
 			font-weight: 600;
+			z-index: 1;
 		}
 		ul{
+			width: 100%;
 			overflow: hidden;
+			position: absolute;
+			left: 0;
+			bottom: 10%;
 			li{
 				width: 50%;
 				float: left;
@@ -261,10 +276,13 @@ export default {
 				}
 			}
 		}
-		p{
+		>p{
+			position: absolute;
+			bottom: 20px;
+			left: 0;
+			width: 100%;
 			text-align: center;
 			color: white;
-			margin: 10px 0 15px;
 			img{
 				width: 16px;
 				vertical-align: middle;

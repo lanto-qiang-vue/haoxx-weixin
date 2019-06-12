@@ -356,6 +356,7 @@ export const getwxticket= (jsApiList, callback) => {
 			signature: res.data.signature,
 			jsApiList: jsApiList
 		})
+		if(callback) callback()
 	})
 }
 
