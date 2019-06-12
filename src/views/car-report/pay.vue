@@ -41,7 +41,7 @@
 			<input type="checkbox" class="check-input" value="check" :checked="agree">
 			<span class="check-core"></span>
 		</span>
-		同意<a>《好修修车史协议》</a>
+		同意<router-link to="/article-detail?infoId=hxx-report-protocol">《好修修车史协议》</router-link>
 	</div>
 	<!--<div class="pay" @click="create">去支付</div>-->
 	<submit-button class="pay" :rules="rule" :datas="{id: radio.id, agree}" :feedback="true" @click="create">去支付</submit-button>

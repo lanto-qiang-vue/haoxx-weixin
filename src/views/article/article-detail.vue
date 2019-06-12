@@ -20,15 +20,13 @@ export default {
 	},
 	created() {
 		getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
-		this.axiosQixiu({
-			method: 'post',
-			url: '/infopublic/detail/' + this.$route.query.infoId,
-		}).then(res => {
+		this.axiosQixiu.post('/infopublic/detail/' + this.$route.query.infoId,{},
+			{noLogin: true,  constBaseUrl: true}).then(res => {
 			this.infoDetail = res.data.item;
 			this.share()
 		}).catch(function (error) {
-		})
 
+		})
 	},
 	methods: {
 		goBack(){this.$router.go(-1)},

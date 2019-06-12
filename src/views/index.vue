@@ -116,7 +116,7 @@ export default {
 	},
 	watch:{
 		isLogin(){
-			this.init()
+			// this.init()
 		}
 	},
 	mounted(){
@@ -162,11 +162,11 @@ export default {
 					}
 				})
 			}
-			this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
-				if(res.data.code=='0'){
-					if(res.data.item) this.showReport= true
-				}
-			})
+			// this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
+			// 	if(res.data.code=='0'){
+			// 		if(res.data.item) this.showReport= true
+			// 	}
+			// })
 		},
 		getBanner(){
 			this.axiosQixiu.post('/banner/query', {
