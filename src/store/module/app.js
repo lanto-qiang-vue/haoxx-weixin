@@ -30,7 +30,8 @@ export default {
 		city: setCity(),
 		cityHistory: setCityHistory(),
 		manuallocation:{},
-		vehiclemodelIndex: null
+		vehiclemodelIndex: null,
+		wxticket: 0
 	},
 	getters: {
 
@@ -71,6 +72,9 @@ export default {
 			}
 			localStorage.setItem('cityHistory', JSON.stringify(list))
 		},
+		setwxticket(state){
+			state.wxticket++
+		}
 	},
 	actions:{
 		setCity(context, item){

@@ -71,7 +71,7 @@
 		</template>
 	</div>
 
-	<div class="block">
+	<div class="block" v-if="detail.code|| detail.vin || detail.id">
 		<div class="title">车主爱惜度</div>
 		<ul class="form-list">
 			<!--<li><label>最后一次保养时间</label><p>{{detail.aa}}</p></li>-->
@@ -79,7 +79,7 @@
 			<li><label>年平均行驶里程</label><p>{{unitData(detail.repair_mileage_per_year, '公里/年')}}</p></li>
 			<li><label>最后一次进店时间</label><p>{{unitData(detail.last_repair_date, '')}}</p></li>
 			<li><label>最后一次维保里程</label><p>{{unitData(detail.last_repair_mileage , '公里')}}</p></li>
-			<li class="none" v-show="none">由于维保数据上传不全，导致数据为“无”</li>
+			<li class="none" v-show="showNone">由于维保数据上传不全，导致数据为“无”</li>
 		</ul>
 	</div>
 
@@ -134,7 +134,7 @@ export default {
 			popupVisible: false,
 			popupItem: {},
 			showDetail: false,
-			none: false
+			showNone: false
 		}
 	},
 	computed:{
@@ -198,7 +198,7 @@ export default {
 			if(data){
 				res= data+ ' '+ unit
 			}else{
-				this.none= true
+				this.showNone= true
 			}
 			return res
 		}

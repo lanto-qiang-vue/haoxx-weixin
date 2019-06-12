@@ -26,5 +26,5 @@ getLocation().then(( success)=>{
 	}
 })
 
-getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
+
 
