@@ -15,7 +15,7 @@
 				<div @click="deal">免费申领</div>
 			</li>
 		</ul>
-		<p @click="lookMore" v-show="isWeixn" :class="{on}">更多优惠详情<img src="~@/assets/img/obu/arrow.png"/></p>
+		<p @click="lookMore" :class="{on}">更多优惠详情<img src="~@/assets/img/obu/arrow.png"/></p>
 		<div class="rule" @click="showRule=true">使用规则</div>
 	</div>
 	<div class="detail" v-show="on">
