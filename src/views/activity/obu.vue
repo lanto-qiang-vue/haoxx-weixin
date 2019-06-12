@@ -147,7 +147,11 @@ export default {
 					}
 				})
 			}else{
-				getWeixinId()
+				if(this.isWeixn){
+					getWeixinId()
+				}else{
+					this.isFollow= true
+				}
 			}
 		})
 	},
