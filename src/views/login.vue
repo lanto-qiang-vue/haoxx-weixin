@@ -302,7 +302,7 @@ export default {
 		setStore(data){
 			this.$store.commit('setHxxToken', data.data.tokenStr);
 			this.$store.dispatch('dictInit', data.data.dict);
-			delete data.data.dict
+			// delete data.data.dict
 			this.$store.commit('setUserInfo',data.data);
 		},
 		goBackUrl(){

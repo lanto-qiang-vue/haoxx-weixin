@@ -36,8 +36,15 @@
 			</FormItem>
 		</Form>
 	</div>
+	<div class="agree">
+		<span class="checkbox" @click="agree=!agree">
+			<input type="checkbox" class="check-input" value="check" :checked="agree">
+			<span class="check-core"></span>
+		</span>
+		同意<a>《好修修车史协议》</a>
+	</div>
 	<!--<div class="pay" @click="create">去支付</div>-->
-	<submit-button class="pay" :rules="rule" :datas="radio"  @click="create">去支付</submit-button>
+	<submit-button class="pay" :rules="rule" :datas="{id: radio.id, agree}" :feedback="true" @click="create">去支付</submit-button>
 </div>
 </template>
 
@@ -51,12 +58,23 @@ export default {
 		return{
 			vin: '',
 			radio: {},
-			list: [],
+			list: [
+				{id: 1}
+			],
 			detailVersion: false,
 			rule: {
-				id: { required: true, message:'必填项不能为空'}
+				id: { required: true, message:'请选择版本号'},
+				agree: { validator: (rule, value, callback) => {
+						if (value) {
+							return callback();
+						}else{
+							return callback(new Error('请同意《好修修车史协议》'));
+						}
+					}
+				},
 			},
-			orderId: ''
+			orderId: '',
+			agree: true
 		}
 	},
 	mounted(){
@@ -239,7 +257,7 @@ export default {
 	.pay{
 		height: 40px;
 		line-height: 40px;
-		margin: 20px 40px 0;
+		margin: 10px 40px 0;
 		background-color: #FFCB9C;
 		border-radius:20px;
 		font-size: 16px;
@@ -248,6 +266,55 @@ export default {
 		display: block;
 		&.on{
 			background-color: #FF9738;
+		}
+	}
+	.agree{
+		margin-top: 20px;
+		text-align: center;
+		font-size: 12px;
+		color: #333333;
+		.checkbox{
+			width: 18px;
+			height: 18px;
+			vertical-align: text-top;
+			display: inline-block;
+			font-size: 0;
+			input{
+				display: none;
+			}
+			.check-core{
+				display: inline-block;
+				background-color: #fff;
+				border-radius: 2px;
+				border: 1px solid #ccc;
+				position: relative;
+				width: 100%;
+				height: 100%;
+				vertical-align: middle;
+				&:after{
+					content: "";
+					border-radius: 1px;
+					top: 50%;
+					left: 50%;
+					position: absolute;
+					width: 0;
+					height: 0;
+					transition: all .2s;
+					transform: translate(-50%, -50%);
+					background-color: #FF9738;
+				}
+			}
+			input:checked + .check-core {
+				/*background-color: #FF9738;*/
+				border-color: #FF9738;
+				&:after{
+					width: 50%;
+					height: 50%;
+				}
+			}
+		}
+		a{
+			color: #FF9738;
 		}
 	}
 }

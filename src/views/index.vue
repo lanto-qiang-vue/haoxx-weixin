@@ -114,6 +114,11 @@ export default {
 			&& this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
 		}
 	},
+	watch:{
+		isLogin(){
+			this.init()
+		}
+	},
 	mounted(){
 		this.getBanner()
 		this.init()

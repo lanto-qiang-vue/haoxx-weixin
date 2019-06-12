@@ -84,12 +84,15 @@
 		<div class="mask"></div>
 		<img src="~@/assets/img/obu/share.png" class="arrow"/>
 		<div class="text">点击右上角<br/>邀请好友参与活动</div>
+		<img class="qrcode" :src="qrimg" v-show="qrimg"/>
+		<p v-show="qrimg">扫码分享给好友</p>
 	</div>
 </div>
 </template>
 
 <script>
 import { getWeixinId, openidGetInfo, getwxticket, isWeixn} from '@/util'
+import qrcode from '~/public/lib/qrcode.js'
 export default {
 	name: "obu",
 	data(){
@@ -98,6 +101,7 @@ export default {
 			isFollow: false,
 			showRule: false,
 			showShare: false,
+			qrimg: ''
 		}
 	},
 	computed:{
@@ -116,16 +120,20 @@ export default {
 					menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
 				});
 			})
+
 			if(openid){
 				openidGetInfo(openid, (res)=>{
 					// console.log('res.data', res.data)
+					let data= {
+						superiorDid: this.$route.query.id
+					}
 					if(res.data.subscribe==0){
-						window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
+						this.etcPost(data, (res)=>{
+							window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
+						})
 					}else{
 						this.isFollow= true
-						let data= {
-							superiorDid: this.$route.query.id
-						}
+
 						if(this.isLogin){
 							data.userId= this.$store.state.user.userinfo.userId
 							wx.ready(()=>{
@@ -156,7 +164,9 @@ export default {
 		})
 	},
 	mounted(){
-
+		document.body.addEventListener('touchmove', ()=>{
+			this.on= true
+		});
 	},
 	methods:{
 		etcPost({userId, superiorDid}, callback){
@@ -192,6 +202,12 @@ export default {
 			let titles= '价值390元ETC设备免费领！'
 			let shareImg= window.location.origin+ '/img/obu/obu.png'
 			let self= this
+
+			let qr = new qrcode({
+				text: link
+			})
+			this.qrimg =  qr.toDataURL("image/png");
+
 			wx.ready(function(){
 				//分享到朋友圈
 				wx.onMenuShareTimeline({
@@ -489,6 +505,7 @@ export default {
 		}
 	}
 	.share{
+		text-align: center;
 		.mask{
 			position: absolute;
 			left: 0;
@@ -498,7 +515,7 @@ export default {
 			z-index: -1;
 		}
 		.arrow{
-			width: 70%;
+			width: 150px;
 			margin-right: 5px;
 			float: right;
 			margin-bottom: 10px;
@@ -511,10 +528,17 @@ export default {
 			text-shadow:0px 2px 1px rgba(174,18,18,0.5);
 			padding: 10px 35px;
 			border-radius: 40px;
-			margin-left: 20px;
 			display: inline-block;
 			background:linear-gradient(180deg,rgba(255,189,124,1) 0%,rgba(255,132,24,1) 68%,rgba(238,89,4,1) 100%);
 			box-shadow:0px 5px 5px 0px rgba(142,58,4,0.43);
+		}
+		.qrcode{
+			width: 150px;
+			margin-top: 20px;
+		}
+		p{
+			margin-top: 10px;
+			color: white;
 		}
 	}
 }

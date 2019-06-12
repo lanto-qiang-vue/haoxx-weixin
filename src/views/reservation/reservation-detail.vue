@@ -106,7 +106,7 @@ export default {
 			ruleValidate : {
 				appointmentTime: [rule],
 			},
-			typeList:[{label:'1009001',value:1009001},{label:'1009002',value:1009002},],
+			typeList:[],
 			showCarList: false
 		}
 	},
