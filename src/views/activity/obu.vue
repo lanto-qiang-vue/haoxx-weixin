@@ -262,7 +262,7 @@ export default {
 			min-width: 280px;
 			text-align: center;
 			left: 0;
-			top: 4%;
+			top: 2%;
 			color: #066C9D;
 			font-size: 14px;
 			line-height: 20px;
@@ -274,7 +274,7 @@ export default {
 			overflow: hidden;
 			position: absolute;
 			left: 0;
-			bottom: 8%;
+			bottom: 6%;
 			li{
 				width: 50%;
 				float: left;
@@ -295,7 +295,7 @@ export default {
 		}
 		>p{
 			position: absolute;
-			bottom: 20px;
+			bottom: 2%;
 			left: 0;
 			width: 100%;
 			text-align: center;

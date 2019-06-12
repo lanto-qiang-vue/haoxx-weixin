@@ -26,10 +26,10 @@ module.exports = {
                 secure: false
 			},
 			'/hxx-gateway-proxy/': {
-				// target: 'https://www.test.shanghaiqixiu.org/proxy/',
+				target: 'https://www.test.shanghaiqixiu.org/proxy/',
 				// target: 'http://192.168.169.231:8888/',
 				// target: 'http://api.test.hoxiuxiu.com/',
-				target: 'http://192.168.169.109:8289/',
+				// target: 'http://192.168.169.109:8289/',
 				pathRewrite: {'^/hxx-gateway-proxy/': ''},
 				secure: false
 			},
