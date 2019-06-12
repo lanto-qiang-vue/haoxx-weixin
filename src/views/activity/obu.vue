@@ -82,12 +82,14 @@
 	</div>
 	<div class="rules share" v-show="showShare" @click="showShare= false">
 		<div class="mask"></div>
-		<img src="~@/assets/img/obu/share.png" class="arrow"/>
-		<br/>
+		<div>
+			<img src="~@/assets/img/obu/share.png" class="arrow"/>
+		</div>
 		<div class="text">点击右上角<br/>邀请好友参与活动</div>
-		<br/>
-		<img class="qrcode" :src="qrimg" v-show="qrimg"/>
-		<p v-show="qrimg">扫码分享给好友</p>
+		<div>
+			<img class="qrcode" :src="qrimg" v-show="qrimg"/>
+			<p v-show="qrimg">扫码分享给好友</p>
+		</div>
 	</div>
 </div>
 </template>
@@ -541,6 +543,9 @@ export default {
 		p{
 			margin-top: 10px;
 			color: white;
+		}
+		>div{
+			overflow: hidden;
 		}
 	}
 }
