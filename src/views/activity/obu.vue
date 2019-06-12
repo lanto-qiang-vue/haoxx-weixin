@@ -282,7 +282,7 @@ export default {
 			min-width: 280px;
 			text-align: center;
 			left: 0;
-			top: 2%;
+			top: 1%;
 			color: #066C9D;
 			font-size: 14px;
 			line-height: 20px;
@@ -294,7 +294,7 @@ export default {
 			overflow: hidden;
 			position: absolute;
 			left: 0;
-			bottom: 6%;
+			bottom: 5%;
 			li{
 				width: 50%;
 				float: left;
@@ -304,7 +304,7 @@ export default {
 					display: inline-block;
 					font-size: 18px;
 					font-weight: 600;
-					padding: 10px 35px;
+					padding: 6px 35px;
 					background:linear-gradient(180deg,rgba(255,189,124,1) 0%,rgba(255,132,24,1) 68%,rgba(238,89,4,1) 100%);
 					box-shadow:0 5px 5px 0 rgba(142,58,4,0.43);
 					border-radius:6px;
