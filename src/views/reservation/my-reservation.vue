@@ -40,7 +40,7 @@ export default {
 				limit: 10,
 			}
 			// if(this.selected) params.hasRead= this.selected
-			this.axiosHxx.post('/operate/order/list ',params).then(res=>{
+			this.axiosHxx.post('/operate/order/list',params).then(res=>{
 				this.total= res.data.total
 				if(res.data.data&&res.data.data.length){
 					this.list=this.list.concat(res.data.data)

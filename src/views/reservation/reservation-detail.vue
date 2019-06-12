@@ -46,19 +46,27 @@
 	</mt-datetime-picker>
 
 	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID;form.TID = $event.TID;"></vehicle-model>
-	<my-car-list style="position: fixed;top: 0;left: 0" v-if="qixiutoken" v-show="showCarList"
-	             :isPage="false" :showButton="false"
-		@select="form.PLATE_NUM=$event.vehicleplatenumber;form.VIN_NO=$event.vin;showCarList=false"></my-car-list>
+
+	<!--<my-car-list style="position: fixed;top: 0;left: 0" v-if="qixiutoken" v-show="showCarList" :isPage="false" :showButton="false"-->
+		<!--@select="form.PLATE_NUM=$event.vehicleplatenumber;form.VIN_NO=$event.vin;showCarList=false"></my-car-list>-->
+
+	<mt-popup
+			v-model="showCarList"
+			position="right"
+			popup-transition="popup-fade">
+		<car-list ref="carlist" style="width: 90vw" :show-button="false"
+		          @select="form.PLATE_NUM=$event.vehiclePlateNumber;form.VIN_NO=$event.vin;showCarList=false"></car-list>
+	</mt-popup>
 </div>
 </template>
 
 <script>
 import SelectRadio from '@/components/select-radio.vue'
 import VehicleModel from '@/components/vehicle-model.vue'
-import MyCarList from '@/views/car-record/my-car-list.vue'
+import CarList from '@/views/car-record/car-list.vue'
 export default {
 	name: "reservation-detail",
-	components: {SelectRadio, VehicleModel, MyCarList},
+	components: {SelectRadio, VehicleModel, CarList},
 	data(){
 		let rule= { required: true, message:'必填项不能为空'}
 		return{
