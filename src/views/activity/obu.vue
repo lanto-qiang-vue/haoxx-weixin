@@ -7,7 +7,7 @@
 		</div>
 		<img src="~@/assets/img/obu/main.png"/>
 
-		<ul>
+		<ul v-show="isWeixn">
 			<li>
 				<div @click="share">邀请好友</div>
 			</li>
@@ -15,7 +15,7 @@
 				<div @click="deal">免费申领</div>
 			</li>
 		</ul>
-		<p @click="lookMore" :class="{on}">更多优惠详情<img src="~@/assets/img/obu/arrow.png"/></p>
+		<p @click="lookMore" v-show="isWeixn" :class="{on}">更多优惠详情<img src="~@/assets/img/obu/arrow.png"/></p>
 		<div class="rule" @click="showRule=true">使用规则</div>
 	</div>
 	<div class="detail" v-show="on">
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { getWeixinId, openidGetInfo, getwxticket} from '@/util'
+import { getWeixinId, openidGetInfo, getwxticket, isWeixn} from '@/util'
 export default {
 	name: "obu",
 	data(){
@@ -103,6 +103,9 @@ export default {
 	computed:{
 		isLogin(){
 			return this.$store.state.user.hxxtoken
+		},
+		isWeixn(){
+			return isWeixn()
 		}
 	},
 	beforeCreate(){
@@ -130,7 +133,7 @@ export default {
 									menuList: ["menuItem:share:appMessage", "menuItem:share:timeline"]
 								});
 							})
-							
+
 						}else{
 							wx.ready(()=>{
 								wx.hideMenuItems({
