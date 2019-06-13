@@ -199,9 +199,10 @@ export default {
 		}
 		input{
 			width: 55%;
+			line-height: 22px;
 		}
 		i{
-			color: #333333;
+			color: #666666;
 			font-size: 20px;
 			position: absolute;
 			top: 50%;
