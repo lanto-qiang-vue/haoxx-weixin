@@ -116,7 +116,7 @@ export default {
 	},
 	watch:{
 		isLogin(){
-			this.init()
+			// this.init()
 		}
 	},
 	mounted(){

@@ -5,8 +5,6 @@ import { Toast, Indicator, Popup } from 'mint-ui'
 import { isWeixn, getCityToken, cityIsSupport} from './util'
 
 let toast= null
-const CancelToken = axios.CancelToken;
-const source = CancelToken.source();
 
 let axiosHxx= axios.create({
 	baseURL: '/hxx-proxy',
@@ -107,7 +105,6 @@ axiosHxx.interceptors.request.use(config => {
 			spinnerType: 'snake'
 		});
 	}
-	config.cancelToken = source.token;
     return config
 }, error => {
     return Promise.reject(error);
@@ -121,7 +118,6 @@ axiosHxx.interceptors.response.use(response => {
 	// console.log('data', data)
 	if (data &&!data.success) {
 		if(data.code == 808){
-			source.cancel();
 			logout()
 			// return false;
 		}else{
@@ -185,7 +181,6 @@ axiosHxx.interceptors.response.use(response => {
 
 axiosQixiu.interceptors.request.use(config => {
 	// console.log('axiosQixiu.config', config)
-	config.cancelToken = source.token;
 	if(config.hxxtoken){
 		config.headers.token= store.state.user.hxxtoken
 	}else{
@@ -224,11 +219,9 @@ axiosQixiu.interceptors.response.use(response => {
 		case '401':
 		case '2000':
 		case '100':{
-			source.cancel();
 			logout()
 			break
 		}
-
 
 		// case '000001':
 		//   Toast('系统异常')
