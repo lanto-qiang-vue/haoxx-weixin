@@ -129,11 +129,22 @@ export default {
 			this.roadliense = this.$route.query.license;
 			this.confirmTime(new Date());
 		}
-		this.typeList =  this.$store.state.user.dict['1019'];
 
+		this.getType()
 		this.form.TELPHONE= this.$store.state.user.userinfo.telphone
 	},
     methods:{
+		getType(){
+			let list= this.$store.state.user.unit
+			for(let key in list){
+				if(key.substring(0,4)=='1019'){
+					this.typeList.push({
+						value: key,
+						label: list[key]
+					})
+				}
+			}
+		},
         confirmTime(res){
             this.form.ORDER_DATE = res.getFullYear()+"-"+this.fillZero(res.getMonth()+1)+"-"+this.fillZero(res.getDate());
             this.form.ORDER_TIME= this.fillZero(res.getHours()) +":"+this.fillZero(res.getMinutes());

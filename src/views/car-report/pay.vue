@@ -58,9 +58,7 @@ export default {
 		return{
 			vin: '',
 			radio: {},
-			list: [
-				{id: 1}
-			],
+			list: [],
 			detailVersion: false,
 			rule: {
 				id: { required: true, message:'请选择版本号'},
