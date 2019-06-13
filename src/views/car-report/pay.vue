@@ -276,7 +276,7 @@ export default {
 		.checkbox{
 			width: 18px;
 			height: 18px;
-			vertical-align: text-top;
+			vertical-align: middle;
 			display: inline-block;
 			font-size: 0;
 			input{
