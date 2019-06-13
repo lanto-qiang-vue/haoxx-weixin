@@ -105,10 +105,9 @@ export default {
 					if(res.data.success){
 						this.$toast('回复成功')
 						this.$refs.reply.close()
-						console.log('this.$refs.replyitem', this.$refs)
-						console.log('res', res)
-						console.log('this.$refs[`replyitem${res.data.data.commentId}`]',
-							this.$refs[`replyitem${res.data.data.commentId}`])
+						// console.log('this.$refs.replyitem', this.$refs)
+						// console.log('res', res)
+						// console.log('this.$refs[`replyitem${res.data.data.commentId}`]', this.$refs[`replyitem${res.data.data.commentId}`])
 						this.$refs[`replyitem${res.data.data.commentId}`][0].pushList(res.data.data)
 					}
 				})

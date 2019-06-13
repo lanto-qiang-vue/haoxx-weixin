@@ -16,7 +16,7 @@ export default {
 	state: {
 		hxxtoken: hxxtoken,
 		qixiutoken: toJson(qixiutoken) || {},
-		userinfo: toJson(userinfo)|| '',
+		userinfo: toJson(userinfo)|| {},
 		// dict:dict ? JSON.parse(dict) : '',
 		unit: toJson(unit)||  ''
 	},

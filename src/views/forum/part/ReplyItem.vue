@@ -64,7 +64,12 @@ export default {
 		},
 		pushList(item){
 			this.total++
-			this.addList.push(item)
+			if(this.list.length){
+				this.list.push(item)
+			}else{
+				this.addList.push(item)
+			}
+
 		},
 		getList(){
 			this.axiosHxx.post('/topic/carcircles/allreply', {

@@ -76,9 +76,9 @@
 		<ul class="form-list">
 			<!--<li><label>最后一次保养时间</label><p>{{detail.aa}}</p></li>-->
 			<li><label>年平均维保次数</label><p>{{unitData(detail.repair_count_per_year, '次/年', 0)}}</p></li>
-			<li><label>年平均行驶里程</label><p>{{unitData(detail.repair_mileage_per_year, '公里/年', 2)}}</p></li>
+			<li><label>年平均行驶里程</label><p>{{unitData(detail.repair_mileage_per_year, '公里/年', 1)}}</p></li>
 			<li><label>最后一次进店时间</label><p>{{unitData(detail.last_repair_date, '', false)}}</p></li>
-			<li><label>最后一次维保里程</label><p>{{unitData(detail.last_repair_mileage , '公里', 2)}}</p></li>
+			<li><label>最后一次维保里程</label><p>{{unitData(detail.last_repair_mileage , '公里', 1)}}</p></li>
 			<li class="none" v-show="showNone">由于维保数据上传不全，导致数据为“无”</li>
 		</ul>
 	</div>

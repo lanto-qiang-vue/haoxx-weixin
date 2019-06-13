@@ -363,7 +363,7 @@ export default {
 				box-shadow:0 1px 1px 0 #208BF1;
 			}
 			&.li2 img{
-				box-shadow:0 1px 1px 0 #208BF1;
+				box-shadow:0 1px 1px 0 #EA2F2E;
 			}
 			&.li3 img{
 				box-shadow: 0 1px 1px 0 #F07315;
