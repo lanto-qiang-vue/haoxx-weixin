@@ -98,7 +98,7 @@
 		</ul>
 	</div>
 
-	<div class="look-all" v-show="!showAll && form!='my' "><a @click="lookAll">查看详细报告</a></div>
+	<div class="look-all" v-show="showMore"><a @click="lookAll">查看详细报告</a></div>
 
 	<mt-popup
 			v-model="popupVisible"
@@ -141,9 +141,17 @@ export default {
 		showAll(){
 			return this.detail.detailVersion && this.showDetail
 		},
-		form(){
-			this.$route.query.form
-		}
+		showMore(){
+			let flag= false
+			if(this.$route.query.from== 'my'){
+				if(this.detail.detailVersion){
+					flag= !(this.detail.detailVersion && this.showDetail )
+				}else flag= false
+			}else{
+				flag= !(this.detail.detailVersion && this.showDetail )
+			}
+			return flag
+		},
 	},
 	mounted(){
 		let id= this.$route.query.id, detailVersion= this.$route.query.detailVersion;
