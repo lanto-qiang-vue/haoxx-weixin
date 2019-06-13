@@ -184,7 +184,7 @@ export default {
 					// console.log('action', action)
 					switch (action){
 						case 'confirm':{
-							this.$router.push({path: '/report/pay', query:{vin: this.detail.vin}})
+							this.$router.push({path: '/report/pay', query:{vin: this.detail.vin, detailVersion: false}})
 							break
 						}
 						case 'cancel':{

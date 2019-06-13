@@ -77,11 +77,11 @@ export default {
 	},
 	mounted(){
 		this.vin= this.$route.query.vin
-		this.getList()
 		let detailVersion= this.$route.query.detailVersion
 		if(detailVersion){
 			this.detailVersion= JSON.parse(detailVersion)
 		}
+		this.getList()
 
 		// getwxticket(['chooseWXPay'])
 	},
