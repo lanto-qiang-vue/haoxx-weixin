@@ -41,7 +41,7 @@
 			<input type="checkbox" class="check-input" value="check" :checked="agree">
 			<span class="check-core"></span>
 		</span>
-		同意<router-link to="/article-detail?infoId=hxx-report-protocol">《好修修车史协议》</router-link>
+		<span>同意<router-link to="/article-detail?infoId=hxx-report-protocol">《好修修车史协议》</router-link></span>
 	</div>
 	<!--<div class="pay" @click="create">去支付</div>-->
 	<submit-button class="pay" :rules="rule" :datas="{id: radio.id, agree}" :feedback="true" @click="create">去支付</submit-button>
@@ -272,23 +272,22 @@ export default {
 		font-size: 12px;
 		color: #333333;
 		.checkbox{
-			width: 18px;
-			height: 18px;
-			vertical-align: middle;
+			width: 14px;
+			height: 14px;
+			margin-right: 3px;
 			display: inline-block;
 			font-size: 0;
 			input{
 				display: none;
 			}
 			.check-core{
-				display: inline-block;
+				display: block;
 				background-color: #fff;
 				border-radius: 2px;
 				border: 1px solid #ccc;
 				position: relative;
 				width: 100%;
 				height: 100%;
-				vertical-align: middle;
 				&:after{
 					content: "";
 					border-radius: 1px;
@@ -313,6 +312,9 @@ export default {
 		}
 		a{
 			color: #FF9738;
+		}
+		span{
+			vertical-align: middle;
 		}
 	}
 }

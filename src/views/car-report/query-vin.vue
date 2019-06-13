@@ -201,7 +201,7 @@ export default {
 			width: 55%;
 		}
 		i{
-			color: #CACACA;
+			color: #333333;
 			font-size: 20px;
 			position: absolute;
 			top: 50%;
@@ -213,7 +213,8 @@ export default {
 			height: 24px;
 			line-height: 24px;
 			padding: 0 15px;
-			background-color: #FFCB9C;
+			/*background-color: #FFCB9C;*/
+			background-color: #FF9738;
 			color: white;
 			border-radius: 18px;
 			position: absolute;
