@@ -78,7 +78,7 @@ export default {
 			this.getList(true)
 		},
 		look(item){
-			this.$router.push('/report/report?id='+ item.id)
+			this.$router.push(`/report/report?id=${item.id}&from=my`)
 		}
 	}
 }
