@@ -162,7 +162,7 @@ export default {
 					}
 				})
 			}
-			this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true}).then( (res) => {
+			this.axiosQixiu.get( '/hxxdc/activity/check/1',{hxxtoken: true, notoast: true}).then( (res) => {
 				if(res.data.code=='0'){
 					if(res.data.item) this.showReport= true
 				}

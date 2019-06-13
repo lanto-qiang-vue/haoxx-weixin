@@ -115,8 +115,8 @@ axiosHxx.interceptors.request.use(config => {
 
 // Add a response interceptor 响应拦截器
 axiosHxx.interceptors.response.use(response => {
-	Indicator.close()
 	// console.log('response', response)
+	Indicator.close()
 	let { data } = response
 	// console.log('data', data)
 	if (data &&!data.success) {
@@ -125,11 +125,13 @@ axiosHxx.interceptors.response.use(response => {
 			logout()
 			// return false;
 		}else{
-			if(data.hasOwnProperty("Exception")){
-				// console.log(data.Exception.message);
-				Toast( data.Exception.message || data.title);
-			}else{
-				Toast(data.title || data.message);
+			if(!response.config.notoast){
+				if(data.hasOwnProperty("Exception")){
+					// console.log(data.Exception.message);
+					Toast( data.Exception.message || data.title);
+				}else{
+					Toast(data.title || data.message);
+				}
 			}
 		}
 	}
@@ -139,7 +141,7 @@ axiosHxx.interceptors.response.use(response => {
 		if(response.data.status) content+= response.data.status
 		if(response.data.message) content+= ' '+response.data.message
 		if(response.data.msg) content+= ' '+response.data.msg
-		if(response.data.code &&content){
+		if(response.data.code &&content && !response.config.notoast){
 			if(toast) toast.close()
 			toast = Toast(content)
 		}
@@ -214,6 +216,7 @@ axiosQixiu.interceptors.request.use(config => {
 
 
 axiosQixiu.interceptors.response.use(response => {
+	// console.log('response', response)
 	Indicator.close()
 	switch (response.data.code){
 		case '0': break
@@ -236,7 +239,7 @@ axiosQixiu.interceptors.response.use(response => {
 			if(response.data.status) content+= response.data.status
 			if(response.data.message) content+= ' '+response.data.message
 			if(response.data.msg) content+= ' '+response.data.msg
-			if(response.data.code &&content){
+			if(response.data.code &&content && !response.config.notoast){
 				if(toast) toast.close()
 				toast = Toast(content)
 			}
