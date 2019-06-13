@@ -34,7 +34,7 @@
 			<img src="~@/assets/img/index/我的爱车2.png"/>
 			<p><i class="zmdi zmdi-plus-circle-o"></i>我的爱车</p>
 		</router-link>
-		<router-link tag="li" to="/report/query-vin" v-if="true" class="li2">
+		<router-link tag="li" to="/report/query-vin" v-if="showReport" class="li2">
 			<img src="~@/assets/img/index/车史报告.png"/>
 			<p><i class="fa fa-file-text-o" style="font-size: 13px"></i>车史报告</p>
 		</router-link>
