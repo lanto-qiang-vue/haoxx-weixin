@@ -7,7 +7,7 @@
 		</div>
 		<div class="button">
 			<router-link tag="div" to="/coupons-type"><span>{{couponsNum}}</span><p>我的卡券</p></router-link>
-			<router-link tag="div" to="/my-reservation"><span>{{reservationNum}}</span><p>我的预约</p></router-link>
+			<!--<router-link tag="div" to="/my-reservation"><span>{{reservationNum}}</span><p>我的预约</p></router-link>-->
 			<div><span>0.00<i></i></span><p>我的奖励</p></div>
 		</div>
 	</div>
@@ -139,7 +139,7 @@ export default {
 			color: white;
 			overflow: hidden;
 			&>div{
-				width: 33%;
+				width: 50%;
 				float: left;
 				text-align: center;
 				position: relative;

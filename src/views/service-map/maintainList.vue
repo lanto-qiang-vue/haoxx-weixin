@@ -385,7 +385,8 @@ export default {
 		    let defaultSort= '_score desc,distance asc'
 		    query+= ('&sort='+ (this.search.sort|| defaultSort))
 		    if(this.nowLnglat.lng) query+=('&point='+this.nowLnglat.lat+','+this.nowLnglat.lng)
-		    let fq='&fq=status:1+AND+tag:hxx+AND+type:'+ this.search.type, is4s=''
+		    // let fq='&fq=status:1+AND+tag:hxx+AND+type:'+ this.search.type, is4s=''
+		    let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
 		    if(this.search.area && (is164 )) fq+= '+AND+areaKey:'+ this.search.area
 		    if(this.search.is4s && is164){
 			    is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')

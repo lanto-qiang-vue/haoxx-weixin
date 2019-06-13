@@ -15,10 +15,7 @@
   <div class="text">特约维修：{{all.brand}}</div>
   <div class="text">经营范围：{{all.bizScope}}</div>
   <div class="button">
-    <router-link tag="div" :to="{
-    	path: '/reservation-detail',
-    	query: {license: this.all.licenseNo, name: this.all.name}}">
-      <span class="yuyue">预约服务</span></router-link>
+    <!--<router-link tag="div" :to="{path: '/reservation-detail',query: {license: this.all.licenseNo, name: this.all.name}}"><span class="yuyue">预约服务</span></router-link>-->
     <!--<router-link tag="div" :to="{path: '/carOwner-centre/visitService', query: {id: id} }">-->
       <!--<span class="shangmeng">上门服务</span></router-link>-->
     <router-link tag="div" :to="{ path : '/remark-match', query: { corpId: this.compId }}">
