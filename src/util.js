@@ -326,7 +326,7 @@ export const getWeixinId=(callback)=>{
 					localStorage.setItem("UNIONID",res.data.data.unionid);
 					localStorage.setItem("OPENID",res.data.data.openid);
 					history.replaceState(null, null, window.location.origin + window.location.hash)
-					if(callback) callback()
+					if(callback) callback({unionid: res.data.data.unionid, openid: res.data.data.openid})
 				}
 			})
 		}

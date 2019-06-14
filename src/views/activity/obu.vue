@@ -128,8 +128,8 @@ export default {
 				this.funopenidGetInfo(openid)
 			}else{
 				if(this.isWeixn){
-					getWeixinId(()=>{
-						this.funopenidGetInfo(openid)
+					getWeixinId((data)=>{
+						this.funopenidGetInfo(data.openid)
 					})
 				}else{
 					this.isFollow= true
