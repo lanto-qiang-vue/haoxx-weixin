@@ -12,13 +12,22 @@ let qixiutoken= localStorage.getItem('QIXIUTOKEN')
 let userinfo= localStorage.getItem('USERINFO')||''
 // let dict = localStorage.getItem('dict') || ''
 let unit = localStorage.getItem('unit') || ''
+// let unionid = localStorage.getItem('UNIONID') || ''
+// let openid = localStorage.getItem('OPENID') || ''
+// let unionidlock= unionid? 1: 0
+
 export default {
 	state: {
 		hxxtoken: hxxtoken,
 		qixiutoken: toJson(qixiutoken) || {},
 		userinfo: toJson(userinfo)|| {},
 		// dict:dict ? JSON.parse(dict) : '',
-		unit: toJson(unit)||  ''
+		unit: toJson(unit)||  '',
+		// weixinid:{
+		// 	unionid: unionid,
+		// 	openid: openid,
+		// 	lock: lock
+		// }
 	},
 	getters: {
 

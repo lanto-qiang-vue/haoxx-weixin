@@ -339,7 +339,9 @@ routes: [
 		meta: {
 			tourist: true,
 			share: true,
-			title: 'ETC设备免费领'
+			title: 'ETC设备免费领',
+			notGetLocation: true,
+			notGetWeixinId: true,
 		},
 		component: () => import('@/views/activity/obu.vue')
 	},

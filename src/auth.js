@@ -1,7 +1,7 @@
 import router from './router'
 import {Toast, Indicator, MessageBox} from 'mint-ui'
 import store from './store'
-import {getwxticket, cityIsSupport, getCityToken} from '@/util.js'
+import {getwxticket, cityIsSupport, getCityToken, getWeixinId, getLocation} from '@/util.js'
 
 router.beforeEach((to, from, next) => {
 	Indicator.close()
@@ -77,6 +77,24 @@ router.afterEach((to, from) => {
 		}else{
 			share()
 		}
+	}
+
+	if(!to.meta.notGetWeixinId){
+		getWeixinId()
+	}
+
+	if(!to.meta.notGetLocation){
+		getLocation().then(( success)=>{
+			if(success){
+				let appstore= store.state.app
+				if(!appstore.city.regionId){
+					store.dispatch('setCity', {
+						regionId: appstore.location.adcode,
+						regionName: appstore.location.city || appstore.location.province,
+					});
+				}
+			}
+		})
 	}
 })
 
