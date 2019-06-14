@@ -303,7 +303,7 @@ export const getUrlParam= (name)=> {
 }
 
 
-export const getWeixinId=()=>{
+export const getWeixinId=(callback)=>{
 	if(isWeixn()){
 		let unionid= localStorage.getItem("UNIONID");
 		let state= getUrlParam('state')
@@ -326,6 +326,7 @@ export const getWeixinId=()=>{
 					localStorage.setItem("UNIONID",res.data.data.unionid);
 					localStorage.setItem("OPENID",res.data.data.openid);
 					history.replaceState(null, null, window.location.origin + window.location.hash)
+					if(callback) callback()
 				}
 			})
 		}

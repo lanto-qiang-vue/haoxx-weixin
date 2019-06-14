@@ -125,41 +125,12 @@ export default {
 			})
 
 			if(openid){
-				openidGetInfo(openid, (res)=>{
-					// console.log('res.data', res.data)
-					let data= {
-						superiorDid: this.$route.query.id
-					}
-					if(res.data.subscribe==0){
-						this.etcPost(data, (res)=>{
-							window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
-						})
-					}else{
-						this.isFollow= true
-
-						if(this.isLogin){
-							data.userId= this.$store.state.user.userinfo.userId
-							wx.ready(()=>{
-								wx.showMenuItems({
-									menuList: ["menuItem:share:appMessage", "menuItem:share:timeline"]
-								});
-							})
-
-						}else{
-							wx.ready(()=>{
-								wx.hideMenuItems({
-									menuList: ["menuItem:share:appMessage", "menuItem:share:timeline"]
-								});
-							})
-						}
-						this.etcPost(data, (res)=>{
-							this.shareConfig(res.data.did)
-						})
-					}
-				})
+				this.funopenidGetInfo(openid)
 			}else{
 				if(this.isWeixn){
-					getWeixinId()
+					getWeixinId(()=>{
+						this.funopenidGetInfo(openid)
+					})
 				}else{
 					this.isFollow= true
 				}
@@ -172,6 +143,40 @@ export default {
 		});
 	},
 	methods:{
+		funopenidGetInfo(openid){
+			openidGetInfo(openid, (res)=>{
+				// console.log('res.data', res.data)
+				let data= {
+					superiorDid: this.$route.query.id
+				}
+				if(res.data.subscribe==0){
+					this.etcPost(data, (res)=>{
+						window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
+					})
+				}else{
+					this.isFollow= true
+
+					if(this.isLogin){
+						data.userId= this.$store.state.user.userinfo.userId
+						wx.ready(()=>{
+							wx.showMenuItems({
+								menuList: ["menuItem:share:appMessage", "menuItem:share:timeline"]
+							});
+						})
+
+					}else{
+						wx.ready(()=>{
+							wx.hideMenuItems({
+								menuList: ["menuItem:share:appMessage", "menuItem:share:timeline"]
+							});
+						})
+					}
+					this.etcPost(data, (res)=>{
+						this.shareConfig(res.data.did)
+					})
+				}
+			})
+		},
 		etcPost({userId, superiorDid}, callback){
 			this.axiosHxx.post('/carlive/etc/apply', {
 				userId: userId|| -1,
