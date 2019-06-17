@@ -119,7 +119,7 @@ export default {
 		},
 		keyboardOk(val){
 			this.license[this.clickOn]= val
-			if(this.clickOn<6)
+			if(this.clickOn<6 || (this.clickOn<7 && this.form.color== 'green'))
 				this.getLicense(this.clickOn+1)
 			else
 				this.$refs.keyboard.close()
