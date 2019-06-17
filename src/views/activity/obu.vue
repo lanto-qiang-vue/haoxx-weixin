@@ -195,7 +195,7 @@ export default {
 		},
 		deal(){
 			if(this.toLogin()){
-				window.location.href='https://mobile.abchina.com/MBRCard/netBank/webank/applyCard.aspx?id=&q=direct5130&cardcode=CCPY5I'
+				this.$router.push('/etc')
 			}
 		},
 		toLogin(){

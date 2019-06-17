@@ -345,5 +345,13 @@ routes: [
 		},
 		component: () => import('@/views/activity/obu.vue')
 	},
+	{
+		path: '/etc',
+		name: 'etc',
+		meta: {
+			title: '农行ETC',
+		},
+		component: () => import('@/views/activity/etc.vue')
+	},
 
 ]})
