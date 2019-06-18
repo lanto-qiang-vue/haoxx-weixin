@@ -26,9 +26,9 @@
 		<ul class="plate">
 			<li :class="['blue', {on: form.color=='blue'}]" @click="form.color='blue'">蓝牌</li>
 			<li :class="['green', {on: form.color=='green'}]" @click="form.color='green'">绿牌</li>
-			<li class="gray">其他</li>
+			<li class="gray" @click="showAlert= true">其他</li>
 		</ul>
-		<p class="rule">暂只支持 ≦7座的个人小型客车办理</p>
+		<p class="rule">暂只支持 ≦7座的个人小型汽车办理</p>
 	</div>
 	<div class="msg">
 		<p>办理农行沪通ETC卡，免费领取ETC设备</p>
@@ -36,6 +36,15 @@
 	</div>
 	<submit-button class="next" :rules="rule" :datas="form" :feedback="true" @click="submit">下一步</submit-button>
 	<custom-keyboard ref="keyboard" @ok="keyboardOk" @del="keyboardDel" @close="keyboardClose"></custom-keyboard>
+
+	<div class="alert" v-show="showAlert">
+		<div class="mask"></div>
+		<div class="info">
+			<h2>提示</h2>
+			<p>抱歉，暂时仅支持<span class="bl">蓝色</span>和<span class="gr">绿色</span>车牌的车辆办理</p>
+			<a @click="showAlert= false">确认</a>
+		</div>
+	</div>
 </div>
 </template>
 
@@ -79,6 +88,7 @@ export default {
 					}
 				},
 			},
+			showAlert: false
 		}
 	},
 	computed:{
@@ -296,6 +306,52 @@ export default {
 		box-shadow:0px 4px 4px 0px rgba(192,249,242,1);
 		border-radius:5px;
 		text-align: center;
+	}
+	.alert{
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100vw;
+		height: 100vh;
+		.mask{
+			width: 100%;
+			height: 100%;
+			background-color: #333333;
+			opacity: .5;
+		}
+		.info{
+			width: 90%;
+			min-width: 300px;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			background-color: white;
+			border-radius: 5px;
+			color: #333333;
+			text-align: center;
+			h2{
+				font-size: 16px;
+				margin: 15px 0;
+			}
+			p{
+				font-size: 14px;
+				margin-bottom: 20px;
+				.bl{
+					color: #2C82D7;
+				}
+				.gr{
+					color: #31C8B6;
+				}
+			}
+			a{
+				font-size: 14px;
+				line-height: 40px;
+				color: #31C8B6;
+				display: block;
+				border-top: 1px solid #DCDEE3;
+			}
+		}
 	}
 }
 </style>
