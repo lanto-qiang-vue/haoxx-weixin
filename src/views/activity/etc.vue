@@ -8,7 +8,7 @@
 				<Input v-model="form.name" :maxlength="11" placeholder="务必与机动车所有人一致 "></Input>
 			</FormItem>
 			<FormItem label="车主常用手机号" prop="tel">
-				<Input v-model="form.tel" :maxlength="11" placeholder="请填写车主常用手机号"></Input>
+				<Input v-model="form.tel" :maxlength="11" placeholder="请填写车主手机号"></Input>
 			</FormItem>
 		</Form>
 
