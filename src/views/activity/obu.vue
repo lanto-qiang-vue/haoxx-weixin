@@ -1,10 +1,10 @@
 <template>
 <div class="obu" v-show="isFollow">
 	<div class="above">
-		<div class="msg">
-			2019年底前基本取消高速省界人工收费站！
-			<div>替换为ETC通道</div>
-		</div>
+		<!--<div class="msg">-->
+			<!--2019年底前<span>基本取消高速省界人工收费站！</span>-->
+			<!--<div>替换为ETC通道</div>-->
+		<!--</div>-->
 		<img src="~@/assets/img/obu/main.png"/>
 
 		<ul v-show="isWeixn">
@@ -276,7 +276,7 @@ export default {
 		>img{
 			width: 100%;
 			position: absolute;
-			top: 43%;
+			top: 40%;
 			left: 0;
 			transform: translateY(-50%);
 		}
@@ -298,7 +298,7 @@ export default {
 			overflow: hidden;
 			position: absolute;
 			left: 0;
-			bottom: 5%;
+			bottom: 10%;
 			li{
 				width: 50%;
 				float: left;
@@ -319,7 +319,7 @@ export default {
 		}
 		>p{
 			position: absolute;
-			bottom: 2%;
+			bottom: 4%;
 			left: 0;
 			width: 100%;
 			text-align: center;
@@ -344,7 +344,7 @@ export default {
 			line-height: 24px;
 			padding: 0 6px 0 10px;
 			right: 0;
-			bottom: 44.5%;
+			top: 46%;
 		}
 	}
 	.detail{
