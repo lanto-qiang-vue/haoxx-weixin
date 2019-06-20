@@ -66,6 +66,9 @@ export default {
 		document.removeEventListener('click', this.onDocumentClick);
 		next()
 	},
+	beforeDestroy(){
+		document.removeEventListener('click', this.onDocumentClick);
+	}
 }
 </script>
 
