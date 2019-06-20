@@ -287,7 +287,7 @@ export default {
 			min-width: 280px;
 			text-align: center;
 			left: 0;
-			top: 4%;
+			top: 15px;
 			color: #066C9D;
 			font-size: 14px;
 			line-height: 20px;
