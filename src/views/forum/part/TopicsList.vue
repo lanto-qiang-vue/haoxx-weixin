@@ -11,7 +11,7 @@
 			    v-infinite-scroll="loadMoreHottest"
 			    infinite-scroll-disabled="hottestAllLoaded"
 			    infinite-scroll-distance="30">
-				<topics-item v-for="(item, key) in hottest.list" :key="key" :item="item" type="hottest"></topics-item>
+				<topics-item v-for="(item, key) in hottest.list" :key="key" :item="item" :isHome="isHome" type="hottest"></topics-item>
 			</ul>
 		</mt-tab-container-item>
 		<mt-tab-container-item id="latest" v-if="latestShow">
@@ -19,7 +19,7 @@
 			    v-infinite-scroll="loadMoreLatest"
 			    infinite-scroll-disabled="latestAllLoaded"
 			    infinite-scroll-distance="30">
-				<topics-item v-for="(item, key) in latest.list" :key="key" :item="item" type="latest"></topics-item>
+				<topics-item v-for="(item, key) in latest.list" :key="key" :isHome="isHome" :item="item" type="latest"></topics-item>
 			</ul>
 		</mt-tab-container-item>
 	</mt-tab-container>
@@ -49,6 +49,9 @@ export default {
 			default: true
 		},
 		isIndex: {
+			default: false
+		},
+		isHome: {
 			default: false
 		},
 	},

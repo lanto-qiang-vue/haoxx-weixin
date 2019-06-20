@@ -13,7 +13,7 @@
 		</router-link>
 	</ul>
 
-	<topics-list :top="130" :latestShow="false"></topics-list>
+	<topics-list :top="130" :latestShow="false" :isHome="true"></topics-list>
 	<topic-add></topic-add>
 </div>
 </template>

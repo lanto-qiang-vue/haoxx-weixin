@@ -4,7 +4,7 @@
 		<img src="/img/head.png"/>
 		<span>{{item.nickname}}</span>
 	</div>
-	<p class="title" @click="topic(item.id)">{{item.title}}</p>
+	<p :class="{title: true, top: showTop(item)}" @click="topic(item.id)">{{item.title}}</p>
 	<div class="img-group" v-if="item.path">
 		<img v-for="(img, key) in item.path.split(',')" :src="img" :key="key" v-img="{group: `img-${type}-${item.id}`}"/>
 	</div>
@@ -20,10 +20,13 @@
 <script>
 export default {
 	name: "topics-item",
-	props: ['item', 'type'],
+	props: ['item', 'type', 'isHome'],
 	methods:{
 		topic(id){
 			this.$router.push(`/topic?id=${id}`)
+		},
+		showTop(item){
+			return this.isHome? item.hometop: item.top
 		}
 	}
 }
@@ -59,6 +62,24 @@ export default {
 		text-overflow: ellipsis;
 		margin-bottom:5px;
 		font-weight: 600;
+		position: relative;
+		&.top{
+			color: #438EFF;
+			padding-left: 20px;
+			&:before{
+				content: '顶';
+				color: white;
+				background-color: #438EFF;
+				padding: 2px;
+				border-radius: 2px;
+				font-size: 12px;
+				line-height: 12px;
+				position: absolute;
+				left: 0;
+				top: 2px;
+				font-weight: 400;
+			}
+		}
 	}
 	.img-group{
 		overflow: auto;

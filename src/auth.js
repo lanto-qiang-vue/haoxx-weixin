@@ -5,7 +5,7 @@ import {getwxticket, cityIsSupport, getCityToken, getWeixinId, getLocation} from
 
 router.beforeEach((to, from, next) => {
 	Indicator.close()
-	let title= to.meta.title|| '好修修'
+	let title= to.meta.title|| '好修修车生活'
 	document.title = title
 	// console.log('from, to',  from, to)
 	let hasCity= store.state.app.city.regionId

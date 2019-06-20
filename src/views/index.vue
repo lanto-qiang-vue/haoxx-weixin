@@ -56,7 +56,7 @@
 		<p class="title">车谈话题
 		</p>
 	</ul>
-	<topics-list :top="0" :hottestShow="false" :isIndex="true" class="topics-list"></topics-list>
+	<topics-list :top="0" :hottestShow="false" :isIndex="true" :isHome="true" class="topics-list"></topics-list>
 	<p class="coupons-more">
 		<router-link tag="span" to="/forum" class="more">查看更多</router-link>
 	</p>

@@ -353,5 +353,21 @@ routes: [
 		},
 		component: () => import('@/views/activity/etc.vue')
 	},
+	{
+		path: '/accredit',
+		name: 'accredit',
+		meta: {
+
+		},
+		component: () => import('@/views/setting/accredit.vue')
+	},
+	{
+		path: '/to-remark',
+		name: 'to-remark',
+		meta: {
+
+		},
+		component: () => import('@/views/remark/to-remark.vue')
+	},
 
 ]})
