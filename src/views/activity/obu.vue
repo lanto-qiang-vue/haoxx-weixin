@@ -5,6 +5,7 @@
 			<!--2019年底前<span>基本取消高速省界人工收费站！</span>-->
 			<!--<div>替换为ETC通道</div>-->
 		<!--</div>-->
+		<div class="msg"><img src="~@/assets/img/obu/msg.png"/></div>
 		<img src="~@/assets/img/obu/main.png"/>
 
 		<ul v-show="isWeixn">
@@ -62,7 +63,7 @@
 					<p>成功申领并开通ETC，您将获得15元红包奖励。</p>
 					<label>2.邀请好友</label>
 					<p>点击【邀请好友】按钮，好友通过您分享的链接，成功申领并开通ETC后，您将获得15元红包奖励。</p>
-					<p><span>小贴士：</span>如果好友并未成功申领并开通ETC，您将无法获得邀请好友的红包了哦~</p>
+					<p><span>小贴士：</span>如果好友未成功申领开通ETC，您将无法获得邀请好友的红包了哦~</p>
 					<label>2.查看奖励</label>
 					<p>使用分享时的手机号登录好修修微信公众号，进入“我的”-“我的奖励”菜单，查看红包奖励。</p>
 					<p><span>小贴士：</span>您的奖励是可以叠加的，每多一位好友通过您分享的链接成功申领并开通ETC，您即多获得一次15元红包奖励。累计邀请每满60位好友申领并开通ETC，额外奖励100元红包。</p>
@@ -286,12 +287,15 @@ export default {
 			min-width: 280px;
 			text-align: center;
 			left: 0;
-			top: 1%;
+			top: 4%;
 			color: #066C9D;
 			font-size: 14px;
 			line-height: 20px;
 			font-weight: 600;
 			z-index: 1;
+			img{
+				width: 90%;
+			}
 		}
 		>ul{
 			width: 100%;
