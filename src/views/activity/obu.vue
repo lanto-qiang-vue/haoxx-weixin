@@ -278,7 +278,7 @@ export default {
 			position: absolute;
 			top: 40%;
 			left: 0;
-			transform: translateY(-50%);
+			transform: translateY(-45%);
 		}
 		.msg{
 			position: absolute;
@@ -298,7 +298,7 @@ export default {
 			overflow: hidden;
 			position: absolute;
 			left: 0;
-			bottom: 10%;
+			bottom: 7%;
 			li{
 				width: 50%;
 				float: left;
@@ -319,7 +319,7 @@ export default {
 		}
 		>p{
 			position: absolute;
-			bottom: 4%;
+			bottom: 3%;
 			left: 0;
 			width: 100%;
 			text-align: center;
@@ -344,7 +344,7 @@ export default {
 			line-height: 24px;
 			padding: 0 6px 0 10px;
 			right: 0;
-			top: 46%;
+			top: 50%;
 		}
 	}
 	.detail{
