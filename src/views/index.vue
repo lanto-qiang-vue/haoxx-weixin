@@ -44,7 +44,11 @@
 		</router-link>
 		<li></li>
 	</ul>
-	<ul class="coupons block">
+	<div class="to-remark" v-show="showToRemark">
+		<i class="fa fa-volume-up"></i>为提升维修门店服务质量，请为您的维修记录点评！
+		<span>去点评</span>
+	</div>
+	<ul :class="['coupons block', {noborder: showToRemark}]">
 		<p class="title">车主权益<span @click="goCoupons(null)">查看更多</span></p>
 		<router-link tag="li" to="/obu" class="etc">
 			<img src="~@/assets/img/index/etc.png"/>
@@ -96,7 +100,8 @@ export default {
 			},
 			couponsType: [],
 			myCarPath: '/car-list',
-			showReport: false
+			showReport: false,
+			showToRemark: false,
 		}
 	},
 	computed:{
@@ -384,6 +389,32 @@ export default {
 			}
 		}
 	}
+	.to-remark{
+		padding: 0 55px 0 10px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		position: relative;
+		line-height: 22px;
+		i{
+			font-size: 14px;
+			margin-right: 3px;
+			color: #FF6D0E;
+		}
+		span{
+			font-size: 12px;
+			width: 56px;
+			line-height: 22px;
+			text-align: center;
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 10px;
+			background-color: #F2F2F2;
+			color: #FF6D0E;
+			border-radius: 10px;
+		}
+	}
 	.coupons{
 		text-align: justify;
 		height: 100px;
@@ -454,6 +485,9 @@ export default {
 				display: none;
 			}
 		}
+	}
+	.noborder{
+		border: none;
 	}
 	/*.forum{*/
 		/*border-top: 10px solid #F3F3F3;*/

@@ -369,5 +369,13 @@ routes: [
 		},
 		component: () => import('@/views/remark/to-remark.vue')
 	},
+	{
+		path: '/remark',
+		name: 'remark',
+		meta: {
+
+		},
+		component: () => import('@/views/remark/remark.vue')
+	},
 
 ]})
