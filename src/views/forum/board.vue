@@ -4,7 +4,7 @@
 	    <search placeholder="搜索话题" :readonly="true"
 	            @click="$router.push({path: '/forum-query', query: {id: $route.query.id}})"></search>
 	</div>
-	<topics-list :top="40" :id="$route.query.id"></topics-list>
+	<topics-list :top="40" :id="$route.query.id" :isHome="!$route.query.id"></topics-list>
 	<topic-add :id="$route.query.id"></topic-add>
 </div>
 </template>
