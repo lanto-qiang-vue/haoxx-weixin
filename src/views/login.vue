@@ -32,6 +32,10 @@
 		</mt-tab-container-item>
 	</mt-tab-container>
 
+	<single-checkbox v-model="agree" v-show="activeBlock=='code'" class="agree">
+		<span>同时注册汽车维修电子健康档案系统</span>
+	</single-checkbox>
+
 	<div :class="['submit',{on: activity}]" @click="submit">登录</div>
 
 	<p class="protocol">新用户登录即完成注册，代表同意
@@ -108,10 +112,11 @@
 
 <script>
 import Countdown from '@/components/countdown-button.vue'
+import SingleCheckbox from '@/components/single-checkbox.vue'
 import { reg} from '@/util.js'
 export default {
 	name: "accredit-bind",
-	components: {Countdown },
+	components: {Countdown, SingleCheckbox},
 	data(){
 		return{
 			activeBlock: 'code',
@@ -139,7 +144,8 @@ export default {
 			},
 			showBind: false,
 			showForget: false,
-			tempToken: ''
+			tempToken: '',
+			agree: true
 		}
 	},
 	computed:{
@@ -377,6 +383,12 @@ export default {
 		&.off{
 			color: #999999;
 		}
+	}
+	.agree{
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 230px;
 	}
 	.submit{
 		margin-top: 40px;
