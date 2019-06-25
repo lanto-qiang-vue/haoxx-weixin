@@ -85,6 +85,19 @@
 				  }
 				  if(flag) self.$refs.loadmore.onBottomLoaded()
 			  })
+
+			  this.axiosQixiu.get('/review/shop/cartalk_hxx/query/companyCode',{params:{
+					  companyCode: this.code,
+					  platform: 'cartalk_hxx',
+					  page: this.page-1
+				  }}).then( (res) => {
+				  self.list=self.list.concat(res.data.content)
+				  // self.list=res.data.comments
+				  if(self.list.length>=res.data.totalElements){
+					  self.allLoaded=true
+				  }
+				  if(flag) self.$refs.loadmore.onBottomLoaded()
+			  })
       },
       hide( content) {
         return content.substr(0,2)+"****"+content.substr(content.length-1,1)

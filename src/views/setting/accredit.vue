@@ -19,7 +19,15 @@
 <script>
 export default {
 	name: "accredit",
-
+	methods:{
+		affirm(){
+			this.axiosHxx.post('/cartalk/userinfo/authorizeCarlive',{}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+				if(res.data.success){
+					this.money= res.data.total
+				}
+			})
+		}
+	}
 }
 </script>
 

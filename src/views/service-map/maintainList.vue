@@ -52,38 +52,8 @@
 			    :class="{on : tagIsOn('hot', item.value)}">{{item.name}}</li>
 		</ul>
 	</div>
-	<div v-if="mapType=='300'">
-		<div class="button" :class="{show: showBlock=='button'}">
-			<div class="area-button"  @click="switchBlock('area-block')"><img src="~@/assets/img/maintain/区域.png" />
-				<p>{{getName('area')|| '区域'}}</p></div>
-			<div class="sort-button"  @click="switchBlock( 'sort-block')"><img src="~@/assets/img/maintain/排序.png" />
-				<p>{{getName('sort')|| '排序'}}</p></div>
-			<div class="hot-button"  @click="switchBlock( 'biz-block')"><img src="~@/assets/img/maintain/驾照.png" />
-				<p>{{getName('biz')|| '驾照'}}</p></div>
-		</div>
-		<ul class="area-block" :class="{show: showBlock=='area-block'}">
-			<div class="close" @click="switchBlock( 'button')"></div>
-			<li v-for="(item, index) in area" :key="index" @click="select('area', item.code)"
-			    :class="{on : tagIsOn('area', item.code)}">{{item.name}}</li>
-		</ul>
-		<ul class="sort-block" :class="{show: showBlock=='sort-block'}">
-			<div class="close"  @click="switchBlock('button')"></div>
-			<li v-for="(item, index) in sort" :key="index" @click="select('sort', item.value)"
-			    :class="{on : tagIsOn('sort', item.value)}">{{item.name}}</li>
-		</ul>
-		<ul class="hot-block" :class="{show: showBlock=='biz-block'}">
-			<div class="close"  @click="switchBlock('button')"></div>
-			<li v-for="(item, index) in biz" :key="index" @click="select('biz', item.value)"
-			    :class="{on : tagIsOn('biz', item.value)}">{{item.name}}</li>
-		</ul>
 	</div>
-	</div>
-	<div id="head2" v-show="showHead=='base'||showHead=='baseMap'">
-		<div class="search-input"><p class="base-head">{{search.base}}驾校基地（{{total}}家驾校）</p>
-			<p class="base-head" v-if="schoolBrand">{{schoolBrand}}自用基地</p>
-			<p class="base-head" v-else>合用基地</p>
-		</div>
-	</div>
+
   <div class="roll" :style="{height: listHeight+'px'}">
     <mt-loadmore :bottom-method="toQuery" :bottom-all-loaded="allLoaded" :autoFill="false"
                  bottomPullText="加载更多"   ref="loadMore">
@@ -566,14 +536,14 @@ export default {
 			// let type= item.type.toString()
 	      switch (this.type){
 		      case 'remark':{
-			      this.$router.push({path: '/remark-match', query: { corpId: item.sid }})
+			      this.$router.push({path: '/remark-match', query: { corpId: item.sid, code: item.code }})
 			      break;
 		      }
 		      default :{
 			//       // this.$emit('goMap', item)
 			//       this.$store.commit('setMaintainListHistory', false)
 			      this.$store.commit('setMaintainListHistory', item)
-			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance}})
+			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance, code: item.code}})
 		      }
 	      }
 

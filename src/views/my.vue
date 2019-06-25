@@ -8,7 +8,7 @@
 		<div class="button">
 			<router-link tag="div" to="/coupons-type"><span>{{couponsNum}}</span><p>我的卡券</p></router-link>
 			<!--<router-link tag="div" to="/my-reservation"><span>{{reservationNum}}</span><p>我的预约</p></router-link>-->
-			<div><span>0.00<i></i></span><p>我的奖励</p></div>
+			<div><span>{{money.toFixed(2)}}<i></i></span><p>我的奖励</p></div>
 		</div>
 	</div>
 	<ul class="list">
@@ -34,7 +34,8 @@ export default {
 			couponsNum: 0,
 			reservationNum: 0,
 			myCarPath: '/car-list',
-			showReport: false
+			showReport: false,
+			money: 0
 		}
 	},
 	computed:{
@@ -61,7 +62,12 @@ export default {
 			})
 			this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
 				if(res.data.success){
-					this.reservationNum= res.data.total
+					this.reservationNum= res.data.data.rewardMoney
+				}
+			})
+			this.axiosHxx.post('/cartalk/userinfo/queryRewardmoney',{}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+				if(res.data.success){
+					this.money= res.data.total
 				}
 			})
 			this.axiosQixiu.post( '/hxxdc/vehicle/bind/list', {

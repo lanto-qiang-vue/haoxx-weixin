@@ -4,7 +4,7 @@
 		<mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :autoFill="false"
 		             bottomPullText="加载更多" ref="loadmore">
 			<ul class="list">
-				<li v-for="(item, key) in list" :key="key" @click="$emit('select', item)">
+				<li v-for="(item, key) in list" :key="key" @click="goto(item)">
 					<div class="head">
 						{{item.name}}
 					</div>
@@ -66,6 +66,9 @@ export default {
 			this.page++
 			this.getList(true)
 		},
+		goto(item){
+
+		}
 	}
 }
 </script>

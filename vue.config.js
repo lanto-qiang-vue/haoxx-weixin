@@ -16,7 +16,7 @@ module.exports = {
 		port: 7777,
 		proxy: {
 			'/hxx-proxy/': {
-				// target: 'http://192.168.169.121:8761',
+				// target: 'http://192.168.169.119:8761',
 				// target: 'https://hxx.test.hoxiuxiu.com/',
 				// target: 'http://developer.hxx.hoxiuxiu.com/',
 				// target: 'http://mendian.dev.hoxiuxiu.com/',
@@ -42,21 +42,21 @@ module.exports = {
 			},
 
 			'/repair-proxy/': {
-				target: 'http://192.168.169.230:7210/',
-				// target: 'https://www.shanghaiqixiu.org/repair/',
+				// target: 'http://192.168.169.230:7210/',
+				target: 'https://www.shanghaiqixiu.org/repair/',
 				pathRewrite: {'^/repair-proxy/': ''},
 				secure: false
 			},
 			'/qixiu-proxy-shandong/': {
-				target: 'http://192.168.169.208:8888/',
-				// target: 'https://www.test.shanghaiqixiu.org/proxy/',
+				// target: 'http://192.168.169.208:8888/',
+				target: 'https://www.test.shanghaiqixiu.org/proxy/',
 				// target: 'https://www.shanghaiqixiu.org/proxy/',
 				pathRewrite: {'^/qixiu-proxy-shandong/': ''},
 				secure: false
 			},
 			'/repair-proxy-shandong/': {
-				target: 'http://192.168.169.211:7210/',
-				// target: 'https://www.shanghaiqixiu.org/repair/',
+				// target: 'http://192.168.169.211:7210/',
+				target: 'https://www.shanghaiqixiu.org/repair/',
 				pathRewrite: {'^/repair-proxy-shandong/': ''},
 				secure: false
 			},

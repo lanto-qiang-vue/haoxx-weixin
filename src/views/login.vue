@@ -225,7 +225,9 @@ export default {
 				switch (this.activeBlock){
 					case 'code':{
 						this.axiosHxx.post('/operate/controller/carLiveLogin',
-							Object.assign(this.codeForm, this.weixinid)).then(res => {
+							Object.assign(this.codeForm, this.weixinid, {
+								authorizeStatus: this.agree?1 : 0
+							})).then(res => {
 							this.loginSuccess(res.data)
 						})
 						break

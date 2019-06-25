@@ -31,7 +31,7 @@
       <!--<img @click="small();$emit('back')" class="back" src="~@/assets/img/maintain/back.png" />-->
     </div>
     <div class="head">累计评论（{{(comment.totalElements||0)+1}}条）
-      <router-link tag="a" :to="{path: '/maintain-remark', query: {id: this.compId, joint: all.joint} }">
+      <router-link tag="a" :to="{path: '/maintain-remark', query: {id: compId, joint: all.joint, code: code} }">
         <img src="~@/assets/img/maintain/箭头.png"/>
       </router-link>
     </div>
@@ -154,6 +154,9 @@ export default {
 	  compId(){
       return this.$route.query.compId
     },
+	  code(){
+      return this.$route.query.code
+    },
 	  isOpenTime(){
 		  // console.log('isOpenTime')
 		  let sTime=0, eTime=0, now=0;
@@ -223,7 +226,10 @@ export default {
 		    this.$emit('goMap', {lon: res.data.lon, lat: res.data.lat})
 	    })
 
-	    this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page=0&companyId='+this.compId).then( (res) => {
+	    this.axiosQixiu.get('/review/shop/cartalk_hxx/query/companyCode',{params:{
+			    companyCode: this.code,
+			    platform: 'cartalk_hxx'
+		    }}).then( (res) => {
 			    let data=res.data;
 			    // this.total=res.data.totalElements;
 		    // for (let i in data.content){
