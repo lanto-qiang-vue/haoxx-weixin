@@ -101,7 +101,6 @@ p {
           box-shadow: none;
         }
       }
-
       .ivu-input-number{
         width: 100%;
       }
@@ -158,13 +157,13 @@ p {
       line-height: 18px;
       margin-left: 10px;
     }
-    .select{
+    .select, .text{
       min-width: 100%;
       max-width: 100%;
       padding-right: 16px;
       line-height: 22px!important;
       margin-top: 10px!important;
-      &:after{
+      &:not(.text):after{
         content: '';
         position: absolute;
         right: 4px;

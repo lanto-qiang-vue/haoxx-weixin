@@ -72,6 +72,12 @@ export default {
 		changePassSuccess(state){
 			state.userinfo.is_modify= 1
 			localStorage.setItem('USERINFO', JSON.stringify(state.userinfo))
+		},
+		changeUserInfo(state, obj){
+			for(let key in obj){
+				state.userinfo[key]= obj[key]
+			}
+			localStorage.setItem('USERINFO', JSON.stringify(state.userinfo))
 		}
 	},
 	actions:{

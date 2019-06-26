@@ -213,7 +213,7 @@ export default {
 	    this.axiosQixiu({
 		    method: 'get',
 		    baseURL: '/repair-proxy',
-		    url: '/micro/search/company/repair/'+ this.compId,
+		    url: '/micro/search/shop/repair/'+ this.compId,
 	    }).then(res => {
 		    this.all=res.data
 		    setTimeout( ()=> {

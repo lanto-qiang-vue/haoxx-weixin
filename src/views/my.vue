@@ -2,7 +2,7 @@
 <div class="my">
 	<div class="above">
 		<div class="head">
-			<img :src="'/img/head.png'"/>
+			<img :src="userinfo.userPic ||'/img/head.png'" @click="$refs.upload.clickBox()"/>
 			<span>{{userinfo.nickName}} <i class="fa fa-pencil-square-o" @click="nickName"></i></span>
 		</div>
 		<div class="button">
@@ -16,19 +16,21 @@
 		<router-link tag="li" to="/my/car-report" v-show="showReport">我的车史报告 <i></i></router-link>
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
 		<router-link tag="li" to="/my-remark" v-show="isShanghai">我的点评 <i></i></router-link>
-		<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>
+		<!--<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>-->
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
 		<li @click="logout">退出</li>
 	</ul>
 	<popup-input ref="popupInput"></popup-input>
+	<upload-img  ref="upload" backend="hxx" @done="getImg"></upload-img>
 </div>
 </template>
 
 <script>
 import PopupInput from '@/components/popup-input.vue'
+import UploadImg from '@/components/compress-upload.vue'
 export default {
 	name: "my",
-	components: {PopupInput},
+	components: {PopupInput, UploadImg},
 	data(){
 		return{
 			couponsNum: 0,
@@ -60,14 +62,14 @@ export default {
 					}
 				}
 			})
-			this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
-				if(res.data.success){
-					this.reservationNum= res.data.data.rewardMoney
-				}
-			})
+			// this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
+			// 	if(res.data.success){
+			// 		this.reservationNum= res.data.total
+			// 	}
+			// })
 			this.axiosHxx.post('/cartalk/userinfo/queryRewardmoney',{}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
-				if(res.data.success){
-					this.money= res.data.total
+				if(res.data.success && res.data.data.rewardMoney){
+					this.money= res.data.data.rewardMoney
 				}
 			})
 			this.axiosQixiu.post( '/hxxdc/vehicle/bind/list', {
@@ -99,6 +101,16 @@ export default {
 					}else{
 						this.$toast('请输入内容');
 					}
+				}
+			})
+		},
+		getImg({url, base64}){
+			this.axiosHxx.post('/cartalk/userinfo/updateUserpic',{
+				pic: url
+			}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+				if(res.data.success){
+					this.$store.commit('changeUserInfo', {userPic: base64});
+					this.$toast('头像修改成功');
 				}
 			})
 		},

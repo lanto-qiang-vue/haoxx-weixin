@@ -6,14 +6,14 @@
 			<p>{{company.name}}</p>
 			<span><i class="fa fa-map-marker"></i>门店地址：{{company.addr}}</span>
 		</div>
-		<div class="row">
-			<p>选择车辆</p>
+		<div class="row" style="margin-bottom: 0">
+			<p v-show="!carList.length">选择车辆</p>
 			<router-link to="/bind-car" class="add-car" v-show="!carList.length">请先添加爱车</router-link>
 			<Form :class="['common-form']" v-show="carList.length"
 			      :label-width="80" label-position="left" ref="form">
 				<FormItem label="车牌号" class="noborder">
 					<span class="ivu-input select" @click="showCarList= true" v-show="!repairId">{{vehicleNum}}</span>
-					<span class="ivu-input" v-show="repairId">{{vehicleNum}}</span>
+					<span class="ivu-input text" v-show="repairId">{{vehicleNum}}</span>
 				</FormItem>
 			</Form>
 		</div>
@@ -78,15 +78,12 @@ export default {
 				{title: '维修价格', level: 3, field: 'price'}
 			],
 			remarkText: ['极差', '失望', '一般', '满意', '惊喜'],
-			company: {
-				name: '上海鹏万汽车服务有限公司',
-				addr: '上海市奉贤区金海公路1611弄商务2区101－111、142－150、201－210、242－250'
-			},
+			company: {},
 			showCarList: false,
 			approve: true,
 			tags: [],
 			vehicleNum: '',
-			carList: []
+			carList: [{}]
 		}
 	},
 	computed:{
@@ -111,12 +108,12 @@ export default {
 			this.remarkList[index].level= i
 		},
 		getCar(item){
-			this.form.vehicleNum = item.vehiclePlateNumber
+			this.vehicleNum = item.vehiclePlateNumber
 		},
 		getCarList(list){
 			this.carList= list
 			if(list.length){
-				this.form.vehicleNum = list[0].vehiclePlateNumber
+				this.vehicleNum = list[0].vehiclePlateNumber
 			}
 		},
 		cltag(flag){
@@ -157,21 +154,27 @@ export default {
 				openId: localStorage.getItem("OPENID"),
 				vehicleNum: this.vehicleNum,
 				tags: [],
-				userId: this.$store.state.user.userinfo.userId
+				userId: this.$store.state.user.userinfo.userId,
+				companyId: this.$route.query.corpId
 			}
 			for (let i in this.tags){
-				if(this.tags[i].checked) data.tag.push(this.tags[i].name)
+				if(this.tags[i].checked) data.tags.push(this.tags[i].name)
 			}
 			for (let i in this.remarkList){
 				data[this.remarkList[i].field]= this.remarkList[i].level
 			}
 			if(this.repairId){
-				data.repairId= this.repairId
+				data.repairUid= this.repairId
 			}else{
-				data.companyId= this.$route.query.corpId
+				data.companyCode= this.$route.query.companyCode
 			}
 			this.axiosQixiu.post('/review/shop/cartalk_hxx', data ,{hxxtoken: true}).then(res=>{
-
+				if (res.data.code == '0') {
+					this.$toast('点评成功');
+					this.$router.replace({
+						path: '/my-remark',
+					})
+				}
 			})
 		}
 	}

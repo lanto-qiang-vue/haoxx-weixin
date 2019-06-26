@@ -176,7 +176,7 @@ routes: [
 		path: '/my-remark',
 		name: 'my-remark',
 		meta: {
-			needQixiu: true,
+			// needQixiu: true,
 		},
 		component: () => import('@/views/remark/my-remark.vue')
 	},

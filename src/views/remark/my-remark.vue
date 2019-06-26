@@ -49,7 +49,7 @@
         this.axiosQixiu.get('/review/shop/cartalk_hxx/query/userId',{params:{
 		        page: this.page-1,
 		        platform: 'cartalk_hxx'
-	        }}).then(res => {
+	        },hxxtoken: true}).then(res => {
             // console.log(res.data)
             if(res.data.content&&res.data.content.length){
               this.list=this.list.concat(res.data.content)

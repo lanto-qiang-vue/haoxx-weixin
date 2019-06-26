@@ -44,10 +44,10 @@
 		</router-link>
 		<li></li>
 	</ul>
-	<div class="to-remark" v-show="showToRemark">
+	<router-link to="/to-remark" tag="div" class="to-remark" v-show="showToRemark">
 		<i class="fa fa-volume-up"></i>为提升维修门店服务质量，请为您的维修记录点评！
 		<span>去点评</span>
-	</div>
+	</router-link>
 	<ul :class="['coupons block', {noborder: showToRemark}]">
 		<p class="title">车主权益<span @click="goCoupons(null)">查看更多</span></p>
 		<router-link tag="li" to="/obu" class="etc">
@@ -164,6 +164,13 @@ export default {
 						this.myCarPath= '/car-list'
 					}else{
 						this.myCarPath= '/bind-car'
+					}
+				})
+				this.axiosQixiu.get('/hxxdc/vehicle/to/comment/list', {hxxtoken: true}).then((res) => {
+					if (res.data.code == '0') {
+						if(res.data.items.length){
+							this.showToRemark= true
+						}
 					}
 				})
 			}
@@ -390,6 +397,7 @@ export default {
 		}
 	}
 	.to-remark{
+		margin: 10px 0 5px;
 		padding: 0 55px 0 10px;
 		white-space: nowrap;
 		overflow: hidden;

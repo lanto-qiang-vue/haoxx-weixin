@@ -5,7 +5,7 @@
 		infinite-scroll-disabled="allLoaded"
 		infinite-scroll-distance="30">
 		<li v-for="(item, index) in list" :key="index">
-			<img class="head" src="/img/head.png">
+			<img class="head" :src="item.pic||'/img/head.png'">
 			<div class="body">
 				<p class="name">{{item.nickname}}</p>
 				<div class="content" v-html="item.commentContent.replace(/\n/g,'<br/>')"></div>
