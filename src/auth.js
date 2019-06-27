@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
 	* 3判断是否需要登录
 	* 4判断是否绑定汽修平台
 	* */
-	let needArea= to.meta.needArea|| to.meta.needQixiu
+	let needArea= to.meta.needArea
 	let urlredirect= to.query.redirect, redirect= to.fullPath
 	if(urlredirect){
 		redirect= urlredirect
@@ -49,10 +49,10 @@ router.beforeEach((to, from, next) => {
 			next()
 		} else {
 			if (store.state.user.hxxtoken) {
-				if (to.meta.needQixiu){
-					if (!getCityToken()) {
-						Toast('请绑定汽修平台账号')
-						next({path: '/accredit-bind', query: { redirect: redirect}})
+				if (to.meta.needAccredit){
+					if (!store.state.user.userinfo.isAuthorize) {
+						Toast('请授权汽修平台')
+						next({path: '/accredit', query: { redirect: redirect}})
 					} else {
 						next()
 					}

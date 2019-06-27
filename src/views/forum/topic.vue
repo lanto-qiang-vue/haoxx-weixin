@@ -14,7 +14,7 @@
 
 	<div class="body">
 		<div class="head">
-			<img src="/img/head.png">
+			<img :src="detail.userPhotoUrl ||'/img/head.png'">
 			<span>{{detail.nickname}}</span>
 		</div>
 		<div class="content" v-html="detail.content && detail.content.replace(/\n/g,'<br/>')"></div>

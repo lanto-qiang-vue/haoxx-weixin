@@ -30,20 +30,13 @@
 		name: "my-remark",
     data(){
       return{
-        selected: '1',
-
         userId: '',
         page: 1,
         list: [],
         allLoaded: false,
-
-        page2: 1,
-        list2: [],
-        allLoaded2: false
       }
 		},
     created(){
-      this.userId=JSON.parse(localStorage.getItem("USERINFO")).userId
       this.getList(false)
       // this.getList2(false)
     },
@@ -52,62 +45,23 @@
         this.page++
         this.getList(true)
       },
-      loadBottom2(){
-        this.page2++
-        this.getList2(true)
-      },
 	  getList(flag){
-		    let self=this
-		  let page=this.page-1;
-        this.axiosQixiu({
-          method: 'get',
-          url: '/comment/maintain/query/userId?size=10&page='+page,
-        }).then(res => {
+        this.axiosQixiu.get('/review/shop/cartalk_hxx/query/userId',{params:{
+		        page: this.page-1,
+		        platform: 'cartalk_hxx'
+	        },hxxtoken: true}).then(res => {
             // console.log(res.data)
             if(res.data.content&&res.data.content.length){
-              self.list=self.list.concat(res.data.content)
-              // self.list=res.data.comments
-              if(self.list.length>=res.data.totalElements){
-                self.allLoaded=true
+              this.list=this.list.concat(res.data.content)
+              // this.list=res.data.comments
+              if(this.list.length>=res.data.totalElements){
+                this.allLoaded=true
               }
-              if(flag) self.$refs.loadmore.onBottomLoaded()
+              if(flag) this.$refs.loadmore.onBottomLoaded()
             }else{
-              self.allLoaded=true
+              this.allLoaded=true
             }
 
-
-        })
-      },
-      getList2(flag){
-        let self=this
-        this.axiosQixiu({
-          method: 'post',
-          url: '/comment/getComments/repair?accessToken='+ localStorage.getItem("ACCESSTOKEN"),
-          headers: {
-            'Content-type': 'application/json'
-          },
-          data: JSON.stringify({
-            userId: this.userId,
-            page: this.page2,
-            pageSize: 10,
-          })
-        }).then(res => {
-          if(res.data.code=='0'){
-            // console.log(res.data)
-            if(res.data.comments&&res.data.comments.length){
-              self.list2=self.list2.concat(res.data.comments)
-              // self.list=res.data.comments
-              if(self.list2.length>=res.data.count){
-                self.allLoaded2=true
-              }
-              if(flag) self.$refs.loadmore2.onBottomLoaded()
-            }else{
-              self.allLoaded2=true
-            }
-
-          } else{
-            Toast(res.data.status);
-          }
 
         })
       },

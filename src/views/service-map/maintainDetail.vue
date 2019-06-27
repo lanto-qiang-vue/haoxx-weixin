@@ -18,8 +18,8 @@
     <!--<router-link tag="div" :to="{path: '/reservation-detail',query: {license: this.all.licenseNo, name: this.all.name}}"><span class="yuyue">预约服务</span></router-link>-->
     <!--<router-link tag="div" :to="{path: '/carOwner-centre/visitService', query: {id: id} }">-->
       <!--<span class="shangmeng">上门服务</span></router-link>-->
-    <router-link tag="div" :to="{ path : '/remark-match', query: { corpId: this.compId }}">
-      <span class="dianping" v-show="isShanghai">点评</span></router-link>
+    <router-link tag="div" :to="{ path : '/remark', query: { corpId: this.compId }}">
+      <span class="dianping">点评</span></router-link>
     <div v-show="all.tel" ><a class="lianxi" :href="'tel:'+ all.tel">联系</a></div>
     <div v-show="!all.tel"><a class="lianxi" @click="noTal">联系</a></div>
   </div>
@@ -31,7 +31,7 @@
       <!--<img @click="small();$emit('back')" class="back" src="~@/assets/img/maintain/back.png" />-->
     </div>
     <div class="head">累计评论（{{(comment.totalElements||0)+1}}条）
-      <router-link tag="a" :to="{path: '/maintain-remark', query: {id: this.compId, joint: all.joint} }">
+      <router-link tag="a" :to="{path: '/maintain-remark', query: {id: compId, joint: all.joint, code: scode} }">
         <img src="~@/assets/img/maintain/箭头.png"/>
       </router-link>
     </div>
@@ -109,6 +109,7 @@
 <script>
 import { Toast } from 'mint-ui'
 import SlideBar from '@/views/service-map/SlideBar'
+// import {cityIsSupport } from '@/util.js'
 // import maintainBottom from '@/views/service-map/maintainBottom'
 export default {
   name: "mantain-detail",
@@ -154,6 +155,9 @@ export default {
 	  compId(){
       return this.$route.query.compId
     },
+	  scode(){
+      return this.$route.query.scode
+    },
 	  isOpenTime(){
 		  // console.log('isOpenTime')
 		  let sTime=0, eTime=0, now=0;
@@ -174,7 +178,8 @@ export default {
 	  isShanghai(){
 		  return this.$store.state.app.city && this.$store.state.app.city.regionId
 			  && this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
-	  }
+	  },
+	  // cityIsSupport
   },
 	watch: {
 		compId(id){
@@ -210,7 +215,7 @@ export default {
 	    this.axiosQixiu({
 		    method: 'get',
 		    baseURL: '/repair-proxy',
-		    url: '/micro/search/company/repair/'+ this.compId,
+		    url: '/micro/search/shop/repair/'+ this.scode,
 	    }).then(res => {
 		    this.all=res.data
 		    setTimeout( ()=> {
@@ -223,7 +228,10 @@ export default {
 		    this.$emit('goMap', {lon: res.data.lon, lat: res.data.lat})
 	    })
 
-	    this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page=0&companyId='+this.compId).then( (res) => {
+	    this.axiosQixiu.get('/review/shop/cartalk_hxx/query/companyCode',{params:{
+			    companyCode: this.scode,
+			    platform: 'cartalk_hxx'
+		    }}).then( (res) => {
 			    let data=res.data;
 			    // this.total=res.data.totalElements;
 		    // for (let i in data.content){

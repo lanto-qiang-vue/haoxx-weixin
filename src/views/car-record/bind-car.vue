@@ -192,8 +192,11 @@ export default{
 				switch(res.data.code){
 					case '0':{
 						this.$toast('添加成功')
-						// this.$router.go(-1)
-						this.$router.replace('/car-list')
+						if(this.$route.query.back){
+							this.$router.go(-1)
+						}else{
+							this.$router.replace('/car-list')
+						}
 					}
 					case '10002':{
 						this.needId= true

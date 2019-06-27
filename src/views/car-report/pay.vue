@@ -36,13 +36,9 @@
 			</FormItem>
 		</Form>
 	</div>
-	<div class="agree">
-		<span class="checkbox" @click="agree=!agree">
-			<input type="checkbox" class="check-input" value="check" :checked="agree">
-			<span class="check-core"></span>
-		</span>
+	<single-checkbox v-model="agree" class="agree">
 		<span>同意<router-link to="/article-detail?infoId=hxx-report-protocol">《好修修车史协议》</router-link></span>
-	</div>
+	</single-checkbox>
 	<!--<div class="pay" @click="create">去支付</div>-->
 	<submit-button class="pay" :rules="rule" :datas="{id: radio.id, agree}" :feedback="true" @click="create">去支付</submit-button>
 </div>
@@ -51,9 +47,10 @@
 <script>
 import { getwxticket} from '@/util.js'
 import SubmitButton from '@/components/submit-button.vue'
+import SingleCheckbox from '@/components/single-checkbox.vue'
 export default {
 	name: "report-pay",
-	components: { SubmitButton},
+	components: { SubmitButton, SingleCheckbox},
 	data(){
 		return{
 			vin: '',
@@ -268,54 +265,6 @@ export default {
 	}
 	.agree{
 		margin-top: 20px;
-		text-align: center;
-		font-size: 12px;
-		color: #333333;
-		.checkbox{
-			width: 14px;
-			height: 14px;
-			margin-right: 3px;
-			display: inline-block;
-			font-size: 0;
-			input{
-				display: none;
-			}
-			.check-core{
-				display: block;
-				background-color: #fff;
-				border-radius: 2px;
-				border: 1px solid #ccc;
-				position: relative;
-				width: 100%;
-				height: 100%;
-				&:after{
-					content: "";
-					border-radius: 1px;
-					top: 50%;
-					left: 50%;
-					position: absolute;
-					width: 0;
-					height: 0;
-					transition: all .2s;
-					transform: translate(-50%, -50%);
-					background-color: #FF9738;
-				}
-			}
-			input:checked + .check-core {
-				/*background-color: #FF9738;*/
-				border-color: #FF9738;
-				&:after{
-					width: 50%;
-					height: 50%;
-				}
-			}
-		}
-		a{
-			color: #FF9738;
-		}
-		span{
-			vertical-align: middle;
-		}
 	}
 }
 </style>

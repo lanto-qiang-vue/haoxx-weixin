@@ -77,6 +77,7 @@ export default {
 					}else{
 						this.allLoaded=true
 					}
+					this.$emit('done', this.list)
 				}
 			})
 		},

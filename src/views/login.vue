@@ -32,6 +32,10 @@
 		</mt-tab-container-item>
 	</mt-tab-container>
 
+	<single-checkbox v-model="agree" v-show="activeBlock=='code'" class="agree">
+		<span>同时注册汽车维修电子健康档案系统</span>
+	</single-checkbox>
+
 	<div :class="['submit',{on: activity}]" @click="submit">登录</div>
 
 	<p class="protocol">新用户登录即完成注册，代表同意
@@ -108,10 +112,11 @@
 
 <script>
 import Countdown from '@/components/countdown-button.vue'
+import SingleCheckbox from '@/components/single-checkbox.vue'
 import { reg} from '@/util.js'
 export default {
-	name: "accredit-bind",
-	components: {Countdown },
+	name: "login",
+	components: {Countdown, SingleCheckbox},
 	data(){
 		return{
 			activeBlock: 'code',
@@ -139,7 +144,8 @@ export default {
 			},
 			showBind: false,
 			showForget: false,
-			tempToken: ''
+			tempToken: '',
+			agree: true
 		}
 	},
 	computed:{
@@ -188,7 +194,10 @@ export default {
 				open_id: localStorage.getItem("OPENID")||'',
 				union_id: localStorage.getItem("UNIONID")||'',
 			}
-		}
+		},
+		isLogin(){
+			return this.$store.state.user.hxxtoken
+		},
 	},
 	watch:{
 		'$route'(){
@@ -199,7 +208,12 @@ export default {
 	mounted(){
 		this.showBlock('code')
 		if(this.$route.query.redirect){
-			this.$toast('请登录');
+			if(this.isLogin){
+				this.$router.replace({
+					path: this.$route.query.redirect
+				})
+			}else
+				this.$toast('请登录');
 		}
 	},
 	methods:{
@@ -219,7 +233,9 @@ export default {
 				switch (this.activeBlock){
 					case 'code':{
 						this.axiosHxx.post('/operate/controller/carLiveLogin',
-							Object.assign(this.codeForm, this.weixinid)).then(res => {
+							Object.assign(this.codeForm, this.weixinid, {
+								authorizeStatus: this.agree?1 : 0
+							})).then(res => {
 							this.loginSuccess(res.data)
 						})
 						break
@@ -291,7 +307,15 @@ export default {
 					this.setStore(data)
 					this.$toast('登录成功');
 					this.activeBlock='code'
-					this.goBackUrl()
+					if(data.data.isAuthorize){
+						this.goBackUrl()
+					}else{
+						if(this.$route.query.redirect){
+							this.goBackUrl()
+						}else{
+							this.$router.replace({path: '/accredit', query: { redirect: this.$route.query.redirect|| '/' }})
+						}
+					}
 				}else{
 					this.tempToken= data.data.tokenStr
 					this.activeBlock='bindPhone'
@@ -314,11 +338,11 @@ export default {
 				this.$router.replace({path: '/'})
 			}
 		},
-		goBackAll(){
-			if(this.$route.query.redirect && this.$store.state.user.hxxtoken){
-				this.$router.replace({path: this.$route.query.redirect})
-			}
-		}
+		// goBackAll(){
+		// 	if(this.$route.query.redirect && this.$store.state.user.hxxtoken){
+		// 		this.$router.replace({path: this.$route.query.redirect})
+		// 	}
+		// }
 	},
 	// beforeRouteLeave (to, from, next) {
 	// 	this.activeBlock='code'
@@ -377,6 +401,12 @@ export default {
 		&.off{
 			color: #999999;
 		}
+	}
+	.agree{
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 230px;
 	}
 	.submit{
 		margin-top: 40px;

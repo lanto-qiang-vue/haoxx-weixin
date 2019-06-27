@@ -1,7 +1,7 @@
 <template>
 <ul class="reply-item forum-comments">
 	<li v-for="(item, index) in showList" :key="index">
-		<img class="head" src="/img/head.png">
+		<img class="head" :src="item.pic || '/img/head.png'">
 		<div class="body">
 			<p class="name">{{item.replyname}} <i class="fa fa-angle-right"></i> {{item.replytousername}}</p>
 			<div class="content" v-html="item.content.replace(/\n/g,'<br/>')"></div>
