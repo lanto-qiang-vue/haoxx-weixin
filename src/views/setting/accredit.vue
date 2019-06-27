@@ -191,7 +191,7 @@ export default {
 	.affirm{
 		display: block;
 		width: 80%;
-		margin: 20px auto 5px auto;
+		margin: 40px auto 5px auto;
 		font-size: 16px;
 		color: white;
 		text-align: center;
