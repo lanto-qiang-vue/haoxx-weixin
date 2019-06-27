@@ -38,7 +38,7 @@
 			<img src="~@/assets/img/index/车史报告.png"/>
 			<p><i class="fa fa-file-text-o" style="font-size: 13px"></i>车史报告</p>
 		</router-link>
-		<router-link tag="li" to="/remark-map" v-if="isShanghai" class="li3">
+		<router-link tag="li" to="/remark-map" v-if="cityIsSupport" class="li3">
 			<img src="~@/assets/img/index/维修点评2.png"/>
 			<p><i class="fa fa-thumbs-o-up"></i>维修点评</p>
 		</router-link>
@@ -70,7 +70,7 @@
 <script>
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import { getCityToken} from '@/util'
+import { getCityToken, cityIsSupport} from '@/util'
 import TopicsList from '@/views/forum/part/TopicsList.vue'
 export default {
 	name: "index",
@@ -117,7 +117,8 @@ export default {
 		isShanghai(){
 			return this.$store.state.app.city && this.$store.state.app.city.regionId
 			&& this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
-		}
+		},
+		cityIsSupport
 	},
 	watch:{
 		isLogin(){
@@ -125,6 +126,17 @@ export default {
 		}
 	},
 	mounted(){
+
+		switch (this.comments.abc){
+			case 1:{
+				console.log(1)
+				break
+			}
+			default: {
+				console.log('default')
+			}
+		}
+
 		this.getBanner()
 		this.init()
 		// setTimeout(()=>{

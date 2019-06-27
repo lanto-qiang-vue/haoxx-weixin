@@ -19,7 +19,7 @@
     <!--<router-link tag="div" :to="{path: '/carOwner-centre/visitService', query: {id: id} }">-->
       <!--<span class="shangmeng">上门服务</span></router-link>-->
     <router-link tag="div" :to="{ path : '/remark', query: { corpId: this.compId }}">
-      <span class="dianping" v-show="isShanghai">点评</span></router-link>
+      <span class="dianping" v-show="cityIsSupport">点评</span></router-link>
     <div v-show="all.tel" ><a class="lianxi" :href="'tel:'+ all.tel">联系</a></div>
     <div v-show="!all.tel"><a class="lianxi" @click="noTal">联系</a></div>
   </div>
@@ -109,6 +109,7 @@
 <script>
 import { Toast } from 'mint-ui'
 import SlideBar from '@/views/service-map/SlideBar'
+import {cityIsSupport } from '@/util.js'
 // import maintainBottom from '@/views/service-map/maintainBottom'
 export default {
   name: "mantain-detail",
@@ -177,7 +178,8 @@ export default {
 	  isShanghai(){
 		  return this.$store.state.app.city && this.$store.state.app.city.regionId
 			  && this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
-	  }
+	  },
+	  cityIsSupport
   },
 	watch: {
 		compId(id){
@@ -213,7 +215,7 @@ export default {
 	    this.axiosQixiu({
 		    method: 'get',
 		    baseURL: '/repair-proxy',
-		    url: '/micro/search/shop/repair/'+ this.compId,
+		    url: '/micro/search/shop/repair/'+ this.code,
 	    }).then(res => {
 		    this.all=res.data
 		    setTimeout( ()=> {

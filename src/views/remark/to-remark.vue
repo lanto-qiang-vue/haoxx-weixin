@@ -41,13 +41,14 @@ export default {
 				}
 			})
 		},
-		goto({corpId, uniqueId, companyCode}){
+		goto({corpId, uniqueId, companyCode, vpn}){
 			this.$router.push({
 				path: '/remark',
 				query:{
 					repairId: uniqueId,
+					vehicleNum: vpn,
 					corpId,
-					companyCode
+					companyCode,
 				}
 			})
 		}

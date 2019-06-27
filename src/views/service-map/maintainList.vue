@@ -260,6 +260,7 @@ export default {
         // console.log('maintainListHistory')
         return this.$store.state.app.maintainListHistory
       },
+	    cityIsSupport,
     },
     watch:{
 		show(isShow){
@@ -366,10 +367,10 @@ export default {
 		    //
 		    // return query
 
-		    let params={}, fq={}, fqstr='', paramstr= ''
+		    let params={}, fq={}, fqstr='', paramstr= '', area= this.cityIsSupport.adcode.substring(0,2)+'*';
 
 		    fq={
-			    areaKey: this.search.area|| '31*',
+			    areaKey: this.search.area|| area,
 			    status: 1,
 			    type: this.search.type,
 		    }
@@ -567,14 +568,14 @@ export default {
 			// let type= item.type.toString()
 	      switch (this.type){
 		      case 'remark':{
-			      this.$router.push({path: '/remark-match', query: { corpId: item.sid, code: item.code }})
+			      this.$router.push({path: '/remark-match', query: { corpId: item.sid, code: item.scode }})
 			      break;
 		      }
 		      default :{
 			//       // this.$emit('goMap', item)
 			//       this.$store.commit('setMaintainListHistory', false)
 			      this.$store.commit('setMaintainListHistory', item)
-			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance, code: item.code}})
+			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance, code: item.scode}})
 		      }
 	      }
 

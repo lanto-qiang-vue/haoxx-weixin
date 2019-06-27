@@ -115,7 +115,7 @@ import Countdown from '@/components/countdown-button.vue'
 import SingleCheckbox from '@/components/single-checkbox.vue'
 import { reg} from '@/util.js'
 export default {
-	name: "accredit-bind",
+	name: "login",
 	components: {Countdown, SingleCheckbox},
 	data(){
 		return{
@@ -194,7 +194,10 @@ export default {
 				open_id: localStorage.getItem("OPENID")||'',
 				union_id: localStorage.getItem("UNIONID")||'',
 			}
-		}
+		},
+		isLogin(){
+			return this.$store.state.user.hxxtoken
+		},
 	},
 	watch:{
 		'$route'(){
@@ -205,7 +208,12 @@ export default {
 	mounted(){
 		this.showBlock('code')
 		if(this.$route.query.redirect){
-			this.$toast('请登录');
+			if(this.isLogin){
+				this.$router.replace({
+					path: this.$route.query.redirect
+				})
+			}else
+				this.$toast('请登录');
 		}
 	},
 	methods:{
@@ -299,7 +307,15 @@ export default {
 					this.setStore(data)
 					this.$toast('登录成功');
 					this.activeBlock='code'
-					this.goBackUrl()
+					if(data.data.isAuthorize){
+						this.goBackUrl()
+					}else{
+						if(this.$route.query.redirect){
+							this.goBackUrl()
+						}else{
+							this.$router.replace({path: '/accredit', query: { redirect: this.$route.query.redirect|| '/' }})
+						}
+					}
 				}else{
 					this.tempToken= data.data.tokenStr
 					this.activeBlock='bindPhone'
@@ -322,11 +338,11 @@ export default {
 				this.$router.replace({path: '/'})
 			}
 		},
-		goBackAll(){
-			if(this.$route.query.redirect && this.$store.state.user.hxxtoken){
-				this.$router.replace({path: this.$route.query.redirect})
-			}
-		}
+		// goBackAll(){
+		// 	if(this.$route.query.redirect && this.$store.state.user.hxxtoken){
+		// 		this.$router.replace({path: this.$route.query.redirect})
+		// 	}
+		// }
 	},
 	// beforeRouteLeave (to, from, next) {
 	// 	this.activeBlock='code'

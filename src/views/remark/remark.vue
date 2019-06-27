@@ -89,6 +89,9 @@ export default {
 	computed:{
 		repairId(){
 			return this.$route.query.repairId
+		},
+		queryVehicleNum(){
+			return this.$route.query.vehicleNum
 		}
 	},
 	watch:{
@@ -97,8 +100,9 @@ export default {
 		}
 	},
 	mounted(){
+		this.vehicleNum= this.queryVehicleNum|| ''
 		this.changeTag()
-		this.axiosQixiu.get( '/micro/search/company/repair/'+ this.$route.query.corpId ,
+		this.axiosQixiu.get( '/micro/search/shop/repair/'+ this.$route.query.companyCode ,
 			{baseURL: '/repair-proxy',}).then(res => {
 			this.company = res.data
 		})
@@ -112,7 +116,7 @@ export default {
 		},
 		getCarList(list){
 			this.carList= list
-			if(list.length){
+			if(list.length && !this.queryVehicleNum){
 				this.vehicleNum = list[0].vehiclePlateNumber
 			}
 		},
@@ -155,7 +159,7 @@ export default {
 				vehicleNum: this.vehicleNum,
 				tags: [],
 				userId: this.$store.state.user.userinfo.userId,
-				companyId: this.$route.query.corpId
+				// companyId: this.$route.query.corpId
 			}
 			for (let i in this.tags){
 				if(this.tags[i].checked) data.tags.push(this.tags[i].name)
