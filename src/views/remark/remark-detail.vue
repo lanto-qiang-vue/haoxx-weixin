@@ -47,20 +47,17 @@ export default {
         }
     },
     created(){
-	    let token= localStorage.getItem('ACCESSTOKEN')
-	    let openid= localStorage.getItem('QXWOPENID')
-	    let url= '/comment/maintain/'+ this.$route.query.id
-	    if(!token && openid) url+= ('?openId='+ openid)
-      this.axiosQixiu({
-        method: 'get',
-        url: url,
-      }).then(res => {
+	    // let token= localStorage.getItem('ACCESSTOKEN')
+	    // let openid= localStorage.getItem('QXWOPENID')
+	    // let url= '/comment/maintain/'+ this.$route.query.id
+	    // if(!token && openid) url+= ('?openId='+ openid)
+      this.axiosQixiu.get('/review/shop/cartalk_hxx/'+ this.$route.query.id,{hxxtoken: true}).then(res => {
 		this.info= res.data
-	      if(res.data.complaintId){
-		      this.axiosQixiu.get('/comment/complaint/maintain/'+ res.data.complaintId).then(res => {
-			      this.complaint= res.data
-		      })
-	      }
+	      // if(res.data.complaintId){
+		   //    this.axiosQixiu.get('/comment/complaint/maintain/'+ res.data.complaintId).then(res => {
+			//       this.complaint= res.data
+		   //    })
+	      // }
       })
 
     },

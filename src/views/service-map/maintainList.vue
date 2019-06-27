@@ -386,7 +386,7 @@ export default {
 		    }
 
 		    params={
-			    fl: 'pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours,licenseNo,code',
+			    fl: 'pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours,licenseNo,scode',
 			    q: this.search.q,
 			    page: `${this.page-1},${limit ||this.limit}`,
 			    sort: this.search.sort|| '_score desc,distance asc',
@@ -568,14 +568,14 @@ export default {
 			// let type= item.type.toString()
 	      switch (this.type){
 		      case 'remark':{
-			      this.$router.push({path: '/remark-match', query: { corpId: item.sid, code: item.scode }})
+			      this.$router.push({path: '/remark-match', query: { corpId: item.sid, scode: item.scode }})
 			      break;
 		      }
 		      default :{
 			//       // this.$emit('goMap', item)
 			//       this.$store.commit('setMaintainListHistory', false)
 			      this.$store.commit('setMaintainListHistory', item)
-			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance, code: item.scode}})
+			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance, scode: item.scode}})
 		      }
 	      }
 

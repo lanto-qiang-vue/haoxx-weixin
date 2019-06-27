@@ -15,7 +15,7 @@
 		<router-link tag="li" :to="myCarPath">我的爱车 <i></i></router-link>
 		<router-link tag="li" to="/my/car-report" v-show="showReport">我的车史报告 <i></i></router-link>
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
-		<router-link tag="li" to="/my-remark" v-show="cityIsSupport">我的点评 <i></i></router-link>
+		<router-link tag="li" to="/my-remark">我的点评 <i></i></router-link>
 		<!--<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>-->
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
 		<li @click="logout">退出</li>
@@ -28,7 +28,7 @@
 <script>
 import PopupInput from '@/components/popup-input.vue'
 import UploadImg from '@/components/compress-upload.vue'
-import { cityIsSupport} from '@/util'
+// import { cityIsSupport} from '@/util'
 export default {
 	name: "my",
 	components: {PopupInput, UploadImg},
@@ -49,7 +49,7 @@ export default {
 			return this.$store.state.app.city && this.$store.state.app.city.regionId
 				&& this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
 		},
-		cityIsSupport
+		// cityIsSupport
 	},
 	mounted(){
 		this.init()

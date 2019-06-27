@@ -45,13 +45,13 @@ routes: [
 		},
 		component: () => import('@/views/setting/setting.vue')
 	},
-	{
-		path: '/accredit-bind',
-		name: 'accredit-bind',
-		meta: {
-		},
-		component: () => import('@/views/setting/accredit-bind.vue')
-	},
+	// {
+	// 	path: '/accredit-bind',
+	// 	name: 'accredit-bind',
+	// 	meta: {
+	// 	},
+	// 	component: () => import('@/views/setting/accredit-bind.vue')
+	// },
 	{
 		path: '/city-select',
 		name: 'city-select',
@@ -89,6 +89,7 @@ routes: [
 		name: 'maintain-remark',
 		meta:{
 			tourist: true,
+			needArea: true
 		},
 		component: () => import('@/views/service-map/maintain-remark.vue')
 	},
@@ -170,6 +171,7 @@ routes: [
 		name: 'remark-map',
 		meta: {
 			needAccredit: true,
+			needArea: true
 		},
 		component: () => import('@/views/remark/remark-map.vue')
 	},

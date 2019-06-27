@@ -38,7 +38,7 @@
 			<img src="~@/assets/img/index/车史报告.png"/>
 			<p><i class="fa fa-file-text-o" style="font-size: 13px"></i>车史报告</p>
 		</router-link>
-		<router-link tag="li" to="/remark-map" v-if="cityIsSupport" class="li3">
+		<router-link tag="li" to="/remark-map" class="li3">
 			<img src="~@/assets/img/index/维修点评2.png"/>
 			<p><i class="fa fa-thumbs-o-up"></i>维修点评</p>
 		</router-link>
@@ -118,7 +118,7 @@ export default {
 			return this.$store.state.app.city && this.$store.state.app.city.regionId
 			&& this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
 		},
-		cityIsSupport
+		// cityIsSupport
 	},
 	watch:{
 		isLogin(){
