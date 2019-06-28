@@ -7,7 +7,7 @@
 			<span><i class="fa fa-map-marker"></i>门店地址：{{company.addr}}</span>
 		</div>
 		<div class="row" style="margin-bottom: 0">
-			<p v-show="!carList.length">选择车辆</p>
+			<p v-show="carList.length && !repairId">选择车辆</p>
 			<router-link to="/bind-car" class="add-car" v-show="!carList.length">请先添加爱车</router-link>
 			<Form :class="['common-form']" v-show="carList.length"
 			      :label-width="80" label-position="left" ref="form">

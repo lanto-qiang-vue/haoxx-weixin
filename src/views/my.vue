@@ -143,8 +143,9 @@ export default {
 			font-size: 20px;
 			color: white;
 			img{
-				height: 100%;
-				width: auto;
+				height: 45px;
+				width: 45px;
+				object-fit: cover;
 				border-radius: 100%;
 				/*border: 2px solid white;*/
 				margin-right: 10px;

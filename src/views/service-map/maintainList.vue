@@ -495,29 +495,11 @@ export default {
 		    })
 	    },
 	    getArea(){
-		    let location= cityIsSupport(true), url= '/area/query', method= 'get', data={}
-		    if(location && location.postfix){
-			    url= '/area/region/list'
-			    method= 'post'
-			    data.areaName= location.postfix
-		    }
-		    this.axiosQixiu[method](url, data).then( (res) => {
-		    	if(location.postfix){
-		    		let arr= res.data.items
-				    for(let i in arr){
-					    this.area.push({
-						    code: arr[i].value,
-						    name: arr[i].shortName,
-					    })
-				    }
+		    let location= cityIsSupport(true)
+		    this.axiosQixiu.post('/area/list', {
+			    parentCode: location.name
+		    }).then( (res) => {
 
-			    }else this.area.push(...res.data.items)
-			    // if(this.loading){
-				 //    Indicator.open({
-					//     text: '请稍候...',
-					//     spinnerType: 'snake'
-				 //    });
-			    // }
 		    })
 	    },
 	    getBase(){
@@ -568,7 +550,7 @@ export default {
 			// let type= item.type.toString()
 	      switch (this.type){
 		      case 'remark':{
-			      this.$router.push({path: '/remark-match', query: { corpId: item.sid, scode: item.scode }})
+			      this.$router.push({path: '/remark', query: { corpId: item.sid, companyCode: item.scode }})
 			      break;
 		      }
 		      default :{

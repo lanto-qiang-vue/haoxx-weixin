@@ -48,7 +48,8 @@
 	  getList(flag){
         this.axiosQixiu.get('/review/shop/cartalk_hxx/query/userId',{params:{
 		        page: this.page-1,
-		        platform: 'cartalk_hxx'
+		        platform: 'cartalk_hxx',
+		        size: 10
 	        },hxxtoken: true}).then(res => {
             // console.log(res.data)
             if(res.data.content&&res.data.content.length){
