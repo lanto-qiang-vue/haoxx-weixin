@@ -232,6 +232,14 @@ routes: [
 		component: () => import('@/views/coupons/coupons-coms.vue')
 	},
 	{
+		path: '/coupons-map',
+		name: 'coupons-map',
+		meta: {
+
+		},
+		component: () => import('@/views/coupons/coupons-map.vue')
+	},
+	{
 		path: '/article-detail',
 		name: 'article-detail',
 		meta: {

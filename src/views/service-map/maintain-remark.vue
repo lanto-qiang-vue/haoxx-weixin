@@ -76,18 +76,18 @@
 		  getList(flag){
 		    let self=this
 
-			  this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page='+(this.page-1)+'&companyId='+this.$route.query.id).then( (res) => {
-
-				  self.list=self.list.concat(res.data.content)
-				  // self.list=res.data.comments
-				  if(self.list.length>=res.data.totalElements){
-					  self.allLoaded=true
-				  }
-				  if(flag) self.$refs.loadmore.onBottomLoaded()
-			  })
+			  // this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page='+(this.page-1)+'&companyId='+this.$route.query.id).then( (res) => {
+			  //
+				//   self.list=self.list.concat(res.data.content)
+				//   // self.list=res.data.comments
+				//   if(self.list.length>=res.data.totalElements){
+				// 	  self.allLoaded=true
+				//   }
+				//   if(flag) self.$refs.loadmore.onBottomLoaded()
+			  // })
 
 			  this.axiosQixiu.get('/review/shop/cartalk_hxx/query/companyCode',{params:{
-					  companyCode: this.code,
+					  companyCode: this.$route.query.scode,
 					  platform: 'cartalk_hxx',
 					  page: this.page-1
 				  }}).then( (res) => {

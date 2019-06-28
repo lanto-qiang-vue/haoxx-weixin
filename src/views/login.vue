@@ -32,9 +32,9 @@
 		</mt-tab-container-item>
 	</mt-tab-container>
 
-	<single-checkbox v-model="agree" v-show="activeBlock=='code'" class="agree">
-		<span>同时注册汽车维修电子健康档案系统</span>
-	</single-checkbox>
+	<!--<single-checkbox v-model="agree" v-show="activeBlock=='code'" class="agree">-->
+		<!--<span>同时注册汽车维修电子健康档案系统</span>-->
+	<!--</single-checkbox>-->
 
 	<div :class="['submit',{on: activity}]" @click="submit">登录</div>
 
@@ -145,7 +145,7 @@ export default {
 			showBind: false,
 			showForget: false,
 			tempToken: '',
-			agree: true
+			agree: false
 		}
 	},
 	computed:{

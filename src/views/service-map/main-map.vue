@@ -38,12 +38,12 @@ data() {
 		markers: [],
 
 		defaultLnglat:{
-			lng: '',
-			lat: ''
+			lng: 0,
+			lat: 0
 		},
 		nowLnglat:{
-		  lng: '',
-		  lat: ''
+		  lng: 0,
+		  lat: 0
 		},
 	}
 },

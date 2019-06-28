@@ -367,7 +367,7 @@ export default {
 		    //
 		    // return query
 
-		    let params={}, fq={}, fqstr='', paramstr= '', area= this.cityIsSupport.adcode.substring(0,2)+'*';
+		    let params={}, fq={}, fqstr='', paramstr= '', area= this.cityIsSupport? this.cityIsSupport.adcode.substring(0,2)+'*': undefined;
 
 		    fq={
 			    areaKey: this.search.area|| area,
@@ -495,12 +495,14 @@ export default {
 		    })
 	    },
 	    getArea(){
-		    let location= cityIsSupport(true)
-		    this.axiosQixiu.post('/area/list', {
-			    parentCode: location.name
-		    }).then( (res) => {
+			if(this.cityIsSupport){
+				this.axiosQixiu.post('/area/list', {
+					parentCode: this.cityIsSupport.name
+				}).then( (res) => {
 
-		    })
+				})
+			}
+
 	    },
 	    getBase(){
 			if(this.$route.name=='school-map' && this.search.schoolPoint!= 300){
@@ -550,7 +552,7 @@ export default {
 			// let type= item.type.toString()
 	      switch (this.type){
 		      case 'remark':{
-			      this.$router.push({path: '/remark', query: { corpId: item.sid, companyCode: item.scode }})
+			      this.$router.push({path: '/remark', query: { corpId: item.sid, scode: item.scode }})
 			      break;
 		      }
 		      default :{
