@@ -6,7 +6,7 @@
       <li v-show="!$route.query.joint" class="system">
         <div class="left"><img src="~@/assets/img/maintain/shqx-head.png"/></div>
         <div class="right">
-          <div class="name">上海汽修平台<span>系统评分</span></div>
+          <div class="name">汽修平台<span>系统评分</span></div>
           <div class="avg">
             <img src="~@/assets/img/maintain/score_yellow.png"  v-for="index in 1" :key="'yellow'+index">
             <img src="~@/assets/img/maintain/score_gray.png"  v-for="index in 4" :key="'gray'+index">

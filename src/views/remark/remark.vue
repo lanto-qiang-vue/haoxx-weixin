@@ -102,7 +102,7 @@ export default {
 	mounted(){
 		this.vehicleNum= this.queryVehicleNum|| ''
 		this.changeTag()
-		this.axiosQixiu.get( '/micro/search/shop/repair/'+ this.$route.query.companyCode ,
+		this.axiosQixiu.get( '/micro/search/shop/repair/'+ this.$route.query.scode ,
 			{baseURL: '/repair-proxy',}).then(res => {
 			this.company = res.data
 		})
@@ -171,7 +171,7 @@ export default {
 			if(this.repairId){
 				data.repairUid= this.repairId
 			}else{
-				data.companyCode= this.$route.query.companyCode
+				data.companyCode= this.$route.query.scode
 			}
 			this.axiosQixiu.post('/review/shop/cartalk_hxx', data ,{hxxtoken: true}).then(res=>{
 				if (res.data.code == '0') {
