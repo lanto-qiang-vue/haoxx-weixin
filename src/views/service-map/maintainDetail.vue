@@ -18,7 +18,7 @@
     <!--<router-link tag="div" :to="{path: '/reservation-detail',query: {license: this.all.licenseNo, name: this.all.name}}"><span class="yuyue">预约服务</span></router-link>-->
     <!--<router-link tag="div" :to="{path: '/carOwner-centre/visitService', query: {id: id} }">-->
       <!--<span class="shangmeng">上门服务</span></router-link>-->
-    <router-link tag="div" :to="{ path : '/remark', query: { corpId: this.compId }}">
+    <router-link tag="div" :to="{ path : '/remark', query: { corpId: compId, companyCode: scode }}">
       <span class="dianping">点评</span></router-link>
     <div v-show="all.tel" ><a class="lianxi" :href="'tel:'+ all.tel">联系</a></div>
     <div v-show="!all.tel"><a class="lianxi" @click="noTal">联系</a></div>

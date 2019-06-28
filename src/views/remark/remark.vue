@@ -113,6 +113,7 @@ export default {
 		},
 		getCar(item){
 			this.vehicleNum = item.vehiclePlateNumber
+			this.showCarList= false
 		},
 		getCarList(list){
 			this.carList= list
