@@ -29,8 +29,9 @@
     </div>
 	<div v-if="mapType=='164'">
 		<div class="button" :class="{show: showBlock=='button'}">
-			<div class="area-button"  @click="switchBlock('area-block')"><img src="~@/assets/img/maintain/区域.png" />
-				<p>{{getName('area')|| '区域'}}</p></div>
+			<!--<div class="area-button"  @click="switchBlock('area-block')"><img src="~@/assets/img/maintain/区域.png" />-->
+			<div class="area-button"  @click="selectArea"><img src="~@/assets/img/maintain/区域.png" />
+				<p class="abs">{{ areaName || '区域'}}</p></div>
 			<div class="sort-button"  @click="switchBlock( 'sort-block')"><img src="~@/assets/img/maintain/排序.png" />
 				<p>{{getName('sort')|| '排序'}}</p></div>
 			<div class="hot-button"  @click="switchBlock( 'hot-block')"><img src="~@/assets/img/maintain/热搜.png" />
@@ -117,12 +118,14 @@
 
 </div>
 </slide-bar>
+	<area-select ref="area" @ok="areaOk"></area-select>
 </div>
 </template>
 
 <script>
 import SlideBar from '@/views/service-map/SlideBar'
 import SearchInput from '@/components/common-search.vue'
+import AreaSelect from '@/components/area-select.vue'
 import { Indicator} from 'mint-ui'
 import {deepClone, cityIsSupport} from '@/util.js'
 let search= {
@@ -138,7 +141,7 @@ let search= {
 	}
 export default {
 	name: "maintain-list",
-	components: { SlideBar, SearchInput},
+	components: { SlideBar, SearchInput, AreaSelect},
 	props: [ 'blur', 'nowLnglat', 'type'],
     data(){
 		let sotrName= ''
@@ -226,8 +229,8 @@ export default {
 			loading: true,
 			showHead: 'search',
 			inputPlaceholder: '搜索：企业名、地址、品牌、服务内容',
-			schoolBrand: ''
-
+			schoolBrand: '',
+			areaName: '',
         }
     },
     computed: {
@@ -297,7 +300,7 @@ export default {
     },
     mounted(){
 		// console.log('list.mounted')
-		this.getArea()
+		// this.getArea()
 	    this.getQuery()
       // this.calcHeight(this.height)
       // $(".roll").bind('touchmove',function(e){
@@ -494,16 +497,16 @@ export default {
 			    if(!hidePoint) this.renderMap(this.pointList)
 		    })
 	    },
-	    getArea(){
-			if(this.cityIsSupport){
-				this.axiosQixiu.post('/area/list', {
-					parentCode: this.cityIsSupport.name
-				}).then( (res) => {
-
-				})
-			}
-
-	    },
+	    // getArea(){
+			// if(this.cityIsSupport){
+			// 	this.axiosQixiu.post('/area/list', {
+			// 		parentCode: this.cityIsSupport.name
+			// 	}).then( (res) => {
+	    //
+			// 	})
+			// }
+	    //
+	    // },
 	    getBase(){
 			if(this.$route.name=='school-map' && this.search.schoolPoint!= 300){
 				this.axiosQixiu({
@@ -678,6 +681,14 @@ export default {
           }
         }
       },
+	    selectArea(){
+			this.$refs.area.open()
+	    },
+	    areaOk(a1, a2){
+		    this.areaName= a2.id? a1.name+a2.name: a1.name
+		    this.search.area= a2.id||  a1.id.toString().substring(0,4)+'*'
+		    this.toQuery(true)
+	    },
 		gradeText(grade){
 			let text= ''
 			switch (grade){
@@ -808,6 +819,13 @@ export default {
     >div{
       width: 25%;
       display: inline-block;
+	    position: relative;
+	    .abs{
+		    white-space: nowrap;
+		    position: absolute;
+		    left: 50%;
+		    transform: translateX(-50%);
+	    }
       img{
         height: 30px;
       }
