@@ -83,7 +83,9 @@ export default {
 					}
 				})
 			}else{
-				this.$router.go(-1)
+				if(this.$route.query.redirect){
+					this.$router.replace({path: '/'})
+				}else this.$router.go(-1)
 			}
 		},
 		deal(status){
@@ -110,7 +112,13 @@ export default {
 				this.$router.replace({path: '/'})
 			}
 		},
-	}
+	},
+	// beforeRouteEnter (to, from, next) {
+	// 	if(from.meta.needAccredit){
+	//
+	// 	}
+	// 	next()
+	// },
 }
 </script>
 
