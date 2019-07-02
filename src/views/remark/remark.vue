@@ -96,6 +96,9 @@ export default {
 		},
 		showImg(){
 			return showAreaImg(this.company.licenseNo|| '', '/img/maintain/shqxwbig.png')
+		},
+		corpId(){
+			return this.$route.query.corpId
 		}
 	},
 	watch:{
@@ -164,7 +167,7 @@ export default {
 				vehicleNum: this.vehicleNum,
 				tags: [],
 				userId: this.$store.state.user.userinfo.userId,
-				companyId: this.$route.query.corpId
+				companyId: this.corpId? parseInt(this.$route.query.corpId) :null
 			}
 			for (let i in this.tags){
 				if(this.tags[i].checked) data.tags.push(this.tags[i].name)
