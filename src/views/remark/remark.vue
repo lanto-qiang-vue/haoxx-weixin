@@ -167,7 +167,7 @@ export default {
 				vehicleNum: this.vehicleNum,
 				tags: [],
 				userId: this.$store.state.user.userinfo.userId,
-				companyId: this.corpId? parseInt(this.$route.query.corpId) :null
+				companyId: this.corpId? parseInt(this.corpId) :null
 			}
 			for (let i in this.tags){
 				if(this.tags[i].checked) data.tags.push(this.tags[i].name)

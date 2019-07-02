@@ -687,7 +687,7 @@ export default {
 	    },
 	    areaOk(a1, a2){
 		    this.areaName= a2.id? a1.name+a2.name: a1.name
-		    this.search.area= a2.id||  a1.id.toString().substring(0,4)+'*'
+		    this.search.area= a2.id||  a1.id.toString().substring(0,2)+'*'
 		    this.toQuery(true)
 	    },
 		gradeText(grade){
