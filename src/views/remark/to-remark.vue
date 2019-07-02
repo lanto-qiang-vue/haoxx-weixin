@@ -47,8 +47,8 @@ export default {
 				query:{
 					repairId: uniqueId,
 					vehicleNum: vpn,
+					scode: companyCode,
 					corpId,
-					companyCode,
 				}
 			})
 		}
