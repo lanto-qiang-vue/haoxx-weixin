@@ -73,7 +73,7 @@
       <li v-show="all.joint" class="system">
         <div class="left"><img src="~@/assets/img/maintain/shqx-head.png"/></div>
         <div class="right">
-          <div class="name">上海汽修平台<span>系统评分</span></div>
+          <div class="name">汽修平台<span>系统评分</span></div>
           <div class="avg">
             <img src="~@/assets/img/maintain/score_yellow.png"  v-for="index in 3" :key="'yellow'+index">
             <img src="~@/assets/img/maintain/score_gray.png"  v-for="index in 2" :key="'gray'+index">
@@ -129,7 +129,7 @@ export default {
 		    name: '高德地图',
 		    method(){
 			    let name= _this.all.name
-			    window.location.href = `http://uri.amap.com/marker?position=${_this.all.lon},${_this.all.lat}&name=${name}&src=上海汽修平台&coordinate=wgs84&callnative=1`
+			    window.location.href = `http://uri.amap.com/marker?position=${_this.all.lon},${_this.all.lat}&name=${name}&src=好修修车生活&coordinate=wgs84&callnative=1`
 		    }
 	    }, {
 			    name: '百度地图',
