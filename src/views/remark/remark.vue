@@ -1,6 +1,6 @@
 <template>
 <div class="remark">
-	<img class="compImg" :src="company.pic||'/img/maintain/shqxwbig.png'">
+	<img class="compImg" :src="company.pic|| showImg">
 	<div class="content" >
 		<div class="row">
 			<p>{{company.name}}</p>
@@ -65,6 +65,7 @@
 
 <script>
 import CarList from '@/views/car-record/car-list.vue'
+import { showAreaImg} from '@/util.js'
 export default {
 	name: "remark",
 	components: { CarList},
@@ -92,6 +93,9 @@ export default {
 		},
 		queryVehicleNum(){
 			return this.$route.query.vehicleNum
+		},
+		showImg(){
+			return showAreaImg(this.company.licenseNo|| '', '/img/maintain/shqxwbig.png')
 		}
 	},
 	watch:{

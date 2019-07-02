@@ -500,3 +500,15 @@ export  const checkVin = (str)=>{
         return false;
     }
 }
+
+export const showAreaImg= (areaKey, img)=>{
+	let list= config.location, path= img.split('.')[0], type= img.split('.')[1];
+	if(areaKey){
+		for(let i in list){
+			if(list[i].adcode.substring(0,3)== areaKey.toString().substring(0,3) && list[i].postfix){
+				path= path+ '-'+ list[i].postfix
+			}
+		}
+	}
+	return path+'.'+ type
+}

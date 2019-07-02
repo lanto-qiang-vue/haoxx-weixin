@@ -27,7 +27,7 @@
 <div class="list" :style="{height: listHeight+'px'}">
   <div id="list">
     <div class="img">
-      <img :src="all.pic||'/img/maintain/shqxwbig.png'"/>
+      <img :src="all.pic|| showAreaImg( scode||'', '/img/maintain/shqxwbig.png') "/>
       <!--<img @click="small();$emit('back')" class="back" src="~@/assets/img/maintain/back.png" />-->
     </div>
     <div class="head">累计评论（{{(comment.totalElements||0)+1}}条）
@@ -109,7 +109,7 @@
 <script>
 import { Toast } from 'mint-ui'
 import SlideBar from '@/views/service-map/SlideBar'
-import {cityIsSupport } from '@/util.js'
+import {cityIsSupport, showAreaImg } from '@/util.js'
 // import maintainBottom from '@/views/service-map/maintainBottom'
 export default {
   name: "mantain-detail",
@@ -200,6 +200,7 @@ export default {
 
   },
   methods:{
+	  showAreaImg,
 	  showBlock(){
 		  let compId= this.$route.query.compId
 		  if(compId){

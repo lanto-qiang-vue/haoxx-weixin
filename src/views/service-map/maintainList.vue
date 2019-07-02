@@ -63,7 +63,7 @@
         <div class="head"><span>最近搜索</span><img @click="clearHistory" src="~@/assets/img/maintain/del.png"/></div>
         <li v-for="(item, index) in maintainListHistory" :key="index" @click="goDetail(item)">
           <div class="picWrap">
-            <img :src="item.pic? item.pic.split(',')[0] :'/img/maintain/shqxw.jpg'" />
+            <img :src="item.pic? item.pic.split(',')[0] : showAreaImg(item.scode ,'/img/maintain/shqxw.png') " />
             <img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>
           </div>
           <div class="info">
@@ -89,7 +89,7 @@
         <div class="head"><span>智能推荐</span></div>
         <li v-for="(item, index) in list" :key="index" @click="goDetail(item)">
           <div class="picWrap">
-            <img :src="item.pic? item.pic.split(',')[0] :'/img/maintain/shqxw.jpg'" />
+            <img :src="item.pic? item.pic.split(',')[0] : showAreaImg(item.scode ,'/img/maintain/shqxw.png') " />
             <img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>
           </div>
           <div class="info">
@@ -127,7 +127,7 @@ import SlideBar from '@/views/service-map/SlideBar'
 import SearchInput from '@/components/common-search.vue'
 import AreaSelect from '@/components/area-select.vue'
 import { Indicator} from 'mint-ui'
-import {deepClone, cityIsSupport} from '@/util.js'
+import {deepClone, cityIsSupport, showAreaImg} from '@/util.js'
 let search= {
 		type: '',
 		q: '',
@@ -321,6 +321,7 @@ export default {
 		  this.getQuery()
     },
     methods:{
+	    showAreaImg,
 		getQuery(){
 			// let query= this.$route.query
 			// if(query){
