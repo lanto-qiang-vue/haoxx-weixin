@@ -1,7 +1,7 @@
 <template>
 <li class="maintain-item">
 	<div class="picWrap">
-		<img :src="item.pic? item.pic.split(',')[0] :'/img/maintain/shqxw.jpg'" />
+		<img :src="item.pic? item.pic.split(',')[0] :'/img/maintain/shqxw.png'" />
 		<img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>
 	</div>
 	<div class="info">
