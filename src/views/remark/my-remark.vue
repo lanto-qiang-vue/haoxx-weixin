@@ -8,7 +8,7 @@
 				<div class="info">评分详情：
 					履约：{{item.keepAppointment}}
 					态度：{{item.attitude}}
-					质量：{{item.quailty}}
+					质量：{{item.quality}}
 					速度：{{item.speed}}
 					价格：{{item.price}}
 				</div>
