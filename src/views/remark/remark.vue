@@ -1,18 +1,25 @@
 <template>
 <div class="remark">
-	<img class="compImg" :src="company.pic|| showImg">
-	<div class="content" >
-		<div class="row">
-			<p>{{company.name}}</p>
-			<span><i class="fa fa-map-marker"></i>门店地址：{{company.addr}}</span>
+	<div class="content">
+		<div style="float:left;padding-right:6px;">
+			<img class="compImg" :src="company.pic|| showImg">
 		</div>
-		<div class="row" style="margin-bottom: 0">
-			<p v-show="carList.length && !repairId">选择车辆</p>
+		<div class="row" style="float:left;width: calc((100% - 80px))">
+			<p>{{company.name}}</p>
+			<span>
+				<!--<i class="fa fa-map-marker"></i>-->
+				门店地址：{{company.addr}}</span>
+			 <div style="float:right;padding-top:8px;">0.3km</div>
+		</div>
+		<!---->
+		<div style="clear: both;"></div>
+		<div class="row" style="margin-bottom: 0;">
+			<!--<p v-show="carList.length && !repairId">选择车辆</p>-->
 			<router-link to="/bind-car?back=true" class="add-car" v-show="!carList.length">请先添加爱车</router-link>
 			<Form :class="['common-form']" v-show="carList.length"
-			      :label-width="80" label-position="left" ref="form">
+			      :label-width="80" label-position="left" ref="form" style="padding-left:0px;">
 				<FormItem label="车牌号" class="noborder">
-					<span class="ivu-input select" @click="showCarList= true" v-show="!repairId">{{vehicleNum}}</span>
+					<span class="ivu-input select" @click="showCarList= true" v-show="!repairId" style="color:black;">{{vehicleNum}}</span>
 					<span class="ivu-input text" v-show="repairId">{{vehicleNum}}</span>
 				</FormItem>
 			</Form>
@@ -23,12 +30,12 @@
 	<div class="remarkhead">
 		<h1>您对该门店服务满意吗？</h1>
 		<p>以下反馈是匿名的，便于我们记录并沟通改进</p>
-		<img src="/img/remark/chartico.png"/>
+		<!--<img src="/img/remark/chartico.png"/>-->
 	</div>
 	<div class="remarkbody">
-		<div class="head">{{company.name|| $route.query.compName}}
-			<!--<em @click="$router.go(-2)">修改</em>-->
-		</div>
+		<!--<div class="head">{{company.name|| $route.query.compName}}-->
+			<!--&lt;!&ndash;<em @click="$router.go(-2)">修改</em>&ndash;&gt;-->
+		<!--</div>-->
 		<ul class="remarkstar">
 			<li :data-index='index' v-for='(item, index) in remarkList' :key='index'>
 				<div class="left">{{ item.title }}</div>
@@ -42,8 +49,8 @@
 		<div class="saymore">
 			<span>还想再说点什么吗？</span>
 			<!--<input v-model="saymore" placeholder="还想再说点什么吗？" readonly="readonly"/>-->
-			<i :class="`fa fa-frown-o ${!approve? 'on': ''}`" @click="cltag(false)"></i>
-			<i :class="`fa fa-smile-o ${approve? 'on': ''}`" @click="cltag(true)"></i>
+			<i :class="`fa fa-frown-o ${!approve? 'on': ''}`" @click="cltag(false)"><span style="float-size:12px;">好评</span></i>
+			<i :class="`fa fa-smile-o ${approve? 'on': ''}`" @click="cltag(true)"><span style="float-size:12px;">差评</span></i>
 		</div>
 		<ul class="tag">
 			<li v-for="(item, index) in tags" :key="index"
@@ -195,13 +202,16 @@ export default {
 
 <style scoped lang='less'>
 .compImg{
-	width: 100%;
-	max-height: 200px;
+	width:66px;
+	height:66px;
+	border-radius:5px;
+	/*width: 100%;*/
+	/*max-height: 200px;*/
 	/*margin-top: 40px;*/
 }
 .content{
 	width: 100%;
-	padding: 15px;
+	padding: 6px 15px;
 	.row{
 		margin-bottom: 20px;
 		position: relative;
@@ -213,6 +223,9 @@ export default {
 		span{
 			font-size: 12px;
 			color: #b3b3b3;
+			display:block;
+			padding-top:8px;
+			float:left;
 			i{
 				font-size: 14px;
 				margin-right: 3px;
@@ -239,11 +252,11 @@ export default {
 .button{
 	height: 40px;
 	line-height: 40px;
+	border-radius: 20px;
 	text-align: center;
 	font-size: 16px;
 	color: white;
 	background-color: #FFCB9C;
-	border-radius: 5px
 }
 .button.on{
 	background-color: #FF9738;
@@ -253,8 +266,8 @@ export default {
 	overflow: auto;
 	.remarkhead{
 		/*margin-top: 40px;*/
-		border-bottom: 10px solid #f8f8f8;
-		padding: 10px 90px 10px 15px;
+		border-top: 5px solid #f8f8f8;
+		padding: 5px 90px 0px 15px;
 		position: relative;
 		h1{
 			font-size: 20px;
@@ -268,6 +281,7 @@ export default {
 			white-space: nowrap;
 			letter-spacing: -1px;
 			font-size: 12px;
+			color:#999999;
 		}
 		img{
 			width: 85px;
@@ -279,7 +293,7 @@ export default {
 		}
 	}
 	.remarkbody{
-		padding: 15px;
+		padding: 0px 15px 15px 15px;
 		.head{
 			font-size: 16px;
 			position: relative;
@@ -293,8 +307,9 @@ export default {
 			}
 		}
 		.remarkstar{
-			margin: 10px 0;
+			margin:0;
 			font-size: 14px;
+			padding-bottom:10px;
 			li {
 				padding: 8px 0;
 				.left {
@@ -324,12 +339,22 @@ export default {
 		.saymore{
 			position: relative;
 			line-height: 32px;
+			border-top: 5px solid #f8f8f8;
+			padding-top:10px;
 			margin-bottom: 10px;
 			font-size: 14px;
 			color: #999999;
 			i{
 				float: right;
 				font-size: 32px;
+				span{
+					display:block;
+					float:right;
+					color: #999999;
+					padding-left:5px;
+					font-size: 14px;
+					line-height:32px;
+			    }
 				margin-left: 10px;
 				&.on{
 					color: #FF9738;
