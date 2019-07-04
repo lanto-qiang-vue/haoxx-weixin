@@ -397,9 +397,9 @@ export const getLocation= ()=>{
 export const cityIsSupport= (getItem)=>{
 	let hasCity= false, thisCityCode= store.state.app.city.regionId, confList= config.location
 	if(thisCityCode){
-		let code= thisCityCode.toString().substring(0, 3)
+		let code= thisCityCode.toString().substring(0, 2)
 		for(let i in confList){
-			if(confList[i].adcode.toString().substring(0, 3)==code) {
+			if(confList[i].adcode.toString().substring(0, 2)==code) {
 				hasCity= getItem? confList[i]: code
 			}
 		}
@@ -499,4 +499,16 @@ export  const checkVin = (str)=>{
     }else{
         return false;
     }
+}
+
+export const showAreaImg= (areaKey, img)=>{
+	let list= config.location, path= img.split('.')[0], type= img.split('.')[1];
+	if(areaKey){
+		for(let i in list){
+			if(list[i].adcode.substring(0,2)== areaKey.toString().substring(0,2) && list[i].postfix){
+				path= path+ '-'+ list[i].postfix
+			}
+		}
+	}
+	return path+'.'+ type
 }

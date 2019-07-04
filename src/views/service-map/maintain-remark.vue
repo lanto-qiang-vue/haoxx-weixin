@@ -6,7 +6,7 @@
       <li v-show="!$route.query.joint" class="system">
         <div class="left"><img src="~@/assets/img/maintain/shqx-head.png"/></div>
         <div class="right">
-          <div class="name">上海汽修平台<span>系统评分</span></div>
+          <div class="name">汽修平台<span>系统评分</span></div>
           <div class="avg">
             <img src="~@/assets/img/maintain/score_yellow.png"  v-for="index in 1" :key="'yellow'+index">
             <img src="~@/assets/img/maintain/score_gray.png"  v-for="index in 4" :key="'gray'+index">
@@ -39,7 +39,7 @@
       <li v-show="$route.query.joint" class="system">
         <div class="left"><img src="~@/assets/img/maintain/shqx-head.png"/></div>
         <div class="right">
-          <div class="name">上海汽修平台<span>系统评分</span></div>
+          <div class="name">汽修平台<span>系统评分</span></div>
           <div class="avg">
             <img src="~@/assets/img/maintain/score_yellow.png"  v-for="index in 3" :key="'yellow'+index">
             <img src="~@/assets/img/maintain/score_gray.png"  v-for="index in 2" :key="'gray'+index">
@@ -76,8 +76,21 @@
 		  getList(flag){
 		    let self=this
 
-			  this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page='+(this.page-1)+'&companyId='+this.$route.query.id).then( (res) => {
+			  // this.axiosQixiu.get('/comment/maintain/query/companyId?size=10&page='+(this.page-1)+'&companyId='+this.$route.query.id).then( (res) => {
+			  //
+				//   self.list=self.list.concat(res.data.content)
+				//   // self.list=res.data.comments
+				//   if(self.list.length>=res.data.totalElements){
+				// 	  self.allLoaded=true
+				//   }
+				//   if(flag) self.$refs.loadmore.onBottomLoaded()
+			  // })
 
+			  this.axiosQixiu.get('/review/shop/cartalk_hxx/query/companyCode',{params:{
+					  companyCode: this.$route.query.scode,
+					  platform: 'cartalk_hxx',
+					  page: this.page-1
+				  }}).then( (res) => {
 				  self.list=self.list.concat(res.data.content)
 				  // self.list=res.data.comments
 				  if(self.list.length>=res.data.totalElements){

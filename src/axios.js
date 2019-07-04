@@ -181,21 +181,25 @@ axiosHxx.interceptors.response.use(response => {
 
 axiosQixiu.interceptors.request.use(config => {
 	// console.log('axiosQixiu.config', config)
-	if(config.hxxtoken){
-		config.headers.token= store.state.user.hxxtoken
-	}else{
-		let token= getCityToken()
-		if(token && !config.noLogin) {
-			config.headers.token= token
-		}
+	let token= store.state.user.hxxtoken
+	if(token && config.hxxtoken){
+		config.headers.token= token
 	}
+	// if(config.hxxtoken){
+	// 	config.headers.token= store.state.user.hxxtoken
+	// }else{
+	// 	let token= getCityToken()
+	// 	if(token && !config.noLogin) {
+	// 		config.headers.token= token
+	// 	}
+	// }
 
-	if(!config.constBaseUrl){
-		let location= cityIsSupport(true)
-		if(location && location.postfix && !config.hxxtoken){
-			config.baseURL= config.baseURL+ '-'+ location.postfix
-		}
-	}
+	// if(!config.constBaseUrl && config.baseURL== '/repair-proxy'){
+	// 	let location= cityIsSupport(true)
+	// 	if(location && location.postfix && !config.hxxtoken){
+	// 		config.baseURL= config.baseURL+ '-'+ location.postfix
+	// 	}
+	// }
 	Indicator.close()
 	if(!config.noIndicator){
 		Indicator.open({

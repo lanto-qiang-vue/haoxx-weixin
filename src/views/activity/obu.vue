@@ -60,17 +60,17 @@
 			<div class="content">
 				<div class="up">
 					<label>1.申领奖励</label>
-					<p>成功申领并开通ETC，您将获得15元红包奖励。</p>
+					<p>成功申领并开通ETC，您将免费获得价值390元的ETC设备。</p>
 					<label>2.邀请好友</label>
-					<p>点击【邀请好友】按钮，好友通过您分享的链接，成功申领并开通ETC后，您将获得15元红包奖励。</p>
+					<p>点击【邀请好友】按钮，好友通过您分享的链接，成功申领并开通ETC后，您将获得10元红包奖励。</p>
 					<p><span>小贴士：</span>如果好友未成功申领开通ETC，您将无法获得邀请好友的红包了哦~</p>
 					<label>2.查看奖励</label>
 					<p>使用分享时的手机号登录好修修微信公众号，进入“我的”-“我的奖励”菜单，查看红包奖励。</p>
-					<p><span>小贴士：</span>您的奖励是可以叠加的，每多一位好友通过您分享的链接成功申领并开通ETC，您即多获得一次15元红包奖励。累计邀请每满60位好友申领并开通ETC，额外奖励100元红包。</p>
+					<p><span>小贴士：</span>您的奖励是可以叠加的，每多一位好友通过您分享的链接成功申领并开通ETC，您即多获得一次10元红包奖励。累计邀请每满100位好友申领并开通ETC，即可得1000元红包。奖励无最高上限。</p>
 				</div>
 				<div class="down">
 					<h4>以下问题要注意哦</h4>
-					<p>* 分享者本人如果使用自己分享的链接成功申领并开通ETC，将无法获得15元的邀请奖励。</p>
+					<p>* 分享者本人如果使用自己分享的链接成功申领并开通ETC，将无法获得10元的邀请奖励。</p>
 					<p>* 您的好友申领ETC时填写的手机号必须与其登录好修修公众号时使用的手机号一致，否则您将无法获得红包奖励。</p>
 					<p>* 您的好友通过您分享的链接，成功申领并开通ETC后的30天内，我们将给您发放奖励。</p>
 					<p>* 您的好友是否成功申领并开通ETC，以平台确认结果为准。</p>
@@ -152,7 +152,8 @@ export default {
 				}
 				if(res.data.subscribe==0){
 					this.etcPost(data, (res)=>{
-						window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
+						// window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
+						window.location.href= 'https://mp.weixin.qq.com/s/-pLr9kwa4WsnpoVBzJrTJw'
 					})
 				}else{
 					this.isFollow= true
@@ -210,7 +211,7 @@ export default {
 			let link= window.location.origin+ '/#/obu?id='+ id
 			let titles= '价值390元ETC设备免费领！'
 			let shareImg= window.location.origin+ '/img/obu/obu.png'
-			let self= this
+			// let self= this
 
 			let qr = new qrcode({
 				text: link

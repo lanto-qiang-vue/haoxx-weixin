@@ -1,7 +1,14 @@
 <template>
 <div :class="['app-body', {'show-footer': showFooter}]">
-	<router-view v-if="!cache"></router-view>
-	<keep-alive><router-view v-if="cache"></router-view></keep-alive>
+	<router-view v-if="!keep.cache"></router-view>
+	<keep-alive>
+		<router-view v-if="keep.cache && !keep.needArea"></router-view>
+	</keep-alive>
+	<template v-for="item in confList">
+		<keep-alive>
+			<router-view v-if="keep.cache && keep.needArea && item.adcode==keep.area.adcode"></router-view>
+		</keep-alive>
+	</template>
 
 	<ul class="footer" v-show="showFooter">
 		<router-link to="/" tag="li" :class="{on: active('/')}">
@@ -24,7 +31,8 @@
 </template>
 
 <script>
-// import { getWeixinId, getLocation } from '@/util.js'
+import { cityIsSupport } from '@/util.js'
+import config from '~/config.js'
 export default {
 	name: "app-body",
 	computed:{
@@ -39,6 +47,20 @@ export default {
 		cache(){
 			return this.$route.meta.cache
 		},
+		keep(){
+			let cache= this.$route.meta.cache, needArea= this.$route.meta.needArea
+			let obj={
+				cache,
+				needArea
+			}
+			if(needArea){
+				obj.area= cityIsSupport(true)
+			}
+			return obj
+		},
+		confList(){
+			return config.location
+		}
 		// appstore(){
 		// 	return this.$store.state.app
 		// }

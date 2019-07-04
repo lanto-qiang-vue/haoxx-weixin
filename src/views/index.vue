@@ -38,13 +38,17 @@
 			<img src="~@/assets/img/index/车史报告.png"/>
 			<p><i class="fa fa-file-text-o" style="font-size: 13px"></i>车史报告</p>
 		</router-link>
-		<router-link tag="li" to="/remark-map" v-if="isShanghai" class="li3">
+		<router-link tag="li" to="/remark-map" class="li3">
 			<img src="~@/assets/img/index/维修点评2.png"/>
 			<p><i class="fa fa-thumbs-o-up"></i>维修点评</p>
 		</router-link>
 		<li></li>
 	</ul>
-	<ul class="coupons block">
+	<router-link to="/to-remark" tag="div" class="to-remark" v-show="showToRemark">
+		<i class="fa fa-volume-up"></i>为提升维修门店服务质量，请为您的维修记录点评！
+		<span>去点评</span>
+	</router-link>
+	<ul :class="['coupons block', {noborder: showToRemark}]">
 		<p class="title">车主权益<span @click="goCoupons(null)">查看更多</span></p>
 		<router-link tag="li" to="/obu" class="etc">
 			<img src="~@/assets/img/index/etc.png"/>
@@ -66,7 +70,7 @@
 <script>
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import { getCityToken} from '@/util'
+import { getCityToken, cityIsSupport} from '@/util'
 import TopicsList from '@/views/forum/part/TopicsList.vue'
 export default {
 	name: "index",
@@ -96,7 +100,8 @@ export default {
 			},
 			couponsType: [],
 			myCarPath: '/car-list',
-			showReport: false
+			showReport: false,
+			showToRemark: false,
 		}
 	},
 	computed:{
@@ -112,7 +117,8 @@ export default {
 		isShanghai(){
 			return this.$store.state.app.city && this.$store.state.app.city.regionId
 			&& this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
-		}
+		},
+		// cityIsSupport
 	},
 	watch:{
 		isLogin(){
@@ -120,6 +126,17 @@ export default {
 		}
 	},
 	mounted(){
+
+		switch (this.comments.abc){
+			case 1:{
+				console.log(1)
+				break
+			}
+			default: {
+				console.log('default')
+			}
+		}
+
 		this.getBanner()
 		this.init()
 		// setTimeout(()=>{
@@ -159,6 +176,13 @@ export default {
 						this.myCarPath= '/car-list'
 					}else{
 						this.myCarPath= '/bind-car'
+					}
+				})
+				this.axiosQixiu.get('/hxxdc/vehicle/to/comment/list', {hxxtoken: true}).then((res) => {
+					if (res.data.code == '0') {
+						if(res.data.items.length){
+							this.showToRemark= true
+						}
 					}
 				})
 			}
@@ -384,6 +408,33 @@ export default {
 			}
 		}
 	}
+	.to-remark{
+		margin: 10px 0 5px;
+		padding: 0 55px 0 10px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		position: relative;
+		line-height: 22px;
+		i{
+			font-size: 14px;
+			margin-right: 3px;
+			color: #FF6D0E;
+		}
+		span{
+			font-size: 12px;
+			width: 56px;
+			line-height: 22px;
+			text-align: center;
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 10px;
+			background-color: #F2F2F2;
+			color: #FF6D0E;
+			border-radius: 10px;
+		}
+	}
 	.coupons{
 		text-align: justify;
 		height: 100px;
@@ -454,6 +505,9 @@ export default {
 				display: none;
 			}
 		}
+	}
+	.noborder{
+		border: none;
 	}
 	/*.forum{*/
 		/*border-top: 10px solid #F3F3F3;*/

@@ -31,29 +31,32 @@
 	<div class="block">
 		<Form class="common-form" v-show="radio.price"
 		      :label-width="60" label-position="left" ref="form">
+			<FormItem label="优惠券">
+				<span class="ivu-input select" @click="openCoupons">{{showCouponName || '请选择'}}</span>
+			</FormItem>
 			<FormItem label="支付金额">
-				<Input :value="`¥ ${radio.price}`" readonly class="money"></Input>
+				<Input :value="`¥ ${showPrice}`" readonly class="money"></Input>
 			</FormItem>
 		</Form>
 	</div>
-	<div class="agree">
-		<span class="checkbox" @click="agree=!agree">
-			<input type="checkbox" class="check-input" value="check" :checked="agree">
-			<span class="check-core"></span>
-		</span>
+	<single-checkbox v-model="agree" class="agree">
 		<span>同意<router-link to="/article-detail?infoId=hxx-report-protocol">《好修修车史协议》</router-link></span>
-	</div>
+	</single-checkbox>
 	<!--<div class="pay" @click="create">去支付</div>-->
 	<submit-button class="pay" :rules="rule" :datas="{id: radio.id, agree}" :feedback="true" @click="create">去支付</submit-button>
+
+	<coupons-use ref="coupons" @ok="coupon= $event"></coupons-use>
 </div>
 </template>
 
 <script>
 import { getwxticket} from '@/util.js'
 import SubmitButton from '@/components/submit-button.vue'
+import SingleCheckbox from '@/components/single-checkbox.vue'
+import CouponsUse from '@/views/coupons/coupons-use.vue'
 export default {
 	name: "report-pay",
-	components: { SubmitButton},
+	components: { SubmitButton, SingleCheckbox, CouponsUse},
 	data(){
 		return{
 			vin: '',
@@ -72,7 +75,24 @@ export default {
 				},
 			},
 			orderId: '',
-			agree: true
+			agree: true,
+			coupon: {}
+		}
+	},
+	computed:{
+		showCouponName(){
+			let item= this.coupon
+			return item.name? item.name + (item.amount? `-抵扣${item.amount}元`: '') : ''
+		},
+		showPrice(){
+			let oldP= parseFloat(this.radio.price||0) , minus= parseFloat(this.coupon.amount||0) , newP=0;
+			if(minus){
+				let val= oldP - minus
+				newP= val>=0? val: 0
+			}else{
+				newP= oldP
+			}
+			return newP.toFixed(2)
 		}
 	},
 	mounted(){
@@ -114,6 +134,7 @@ export default {
 		create(){
 			this.axiosQixiu.post('/hxxdc/order/create',{
 				productId: this.radio.id,
+				promotionId: this.coupon.id|| null,
 				vin: this.vin
 			}, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
@@ -199,6 +220,9 @@ export default {
 			}else{
 				onBridgeReady();
 			}
+		},
+		openCoupons(){
+			this.$refs.coupons.open(this.radio.id)
 		}
 	}
 }
@@ -268,54 +292,6 @@ export default {
 	}
 	.agree{
 		margin-top: 20px;
-		text-align: center;
-		font-size: 12px;
-		color: #333333;
-		.checkbox{
-			width: 14px;
-			height: 14px;
-			margin-right: 3px;
-			display: inline-block;
-			font-size: 0;
-			input{
-				display: none;
-			}
-			.check-core{
-				display: block;
-				background-color: #fff;
-				border-radius: 2px;
-				border: 1px solid #ccc;
-				position: relative;
-				width: 100%;
-				height: 100%;
-				&:after{
-					content: "";
-					border-radius: 1px;
-					top: 50%;
-					left: 50%;
-					position: absolute;
-					width: 0;
-					height: 0;
-					transition: all .2s;
-					transform: translate(-50%, -50%);
-					background-color: #FF9738;
-				}
-			}
-			input:checked + .check-core {
-				/*background-color: #FF9738;*/
-				border-color: #FF9738;
-				&:after{
-					width: 50%;
-					height: 50%;
-				}
-			}
-		}
-		a{
-			color: #FF9738;
-		}
-		span{
-			vertical-align: middle;
-		}
 	}
 }
 </style>

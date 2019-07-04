@@ -19,15 +19,15 @@
 						<div class="right">
 							<span v-show="localSuccess">距离{{item.distance.toFixed(2)}}km <i class="fa fa-location-arrow icon"></i></span>
 							<router-link tag="div" class="goto"
-							             :to="`/maintain?compId=${item.sid}&distance=${item.distance}`">前往</router-link>
+							             :to="`/coupons-map?compId=${item.sid}&distance=${item.distance}&scode=${item.scode}`"
+							>前往</router-link>
 						</div>
 					</div>
 				</li>
-
 			</ul>
 			<p class="show-rule" v-show="allLoaded">没有更多了</p>
 		</mt-loadmore>
-		<mt-popup v-model="showRadio"  style="width: 90%" >
+		<mt-popup v-model="showRadio"  style="width: 90%">
 			<div class="popupBlock">
 				<mt-radio
 						@click.native="selectArea"
@@ -42,7 +42,7 @@
 
 <script>
 import { Toast} from 'mint-ui'
-import {getwxticket, getLocation} from '@/util.js'
+import {getwxticket, getLocation, cityIsSupport} from '@/util.js'
 export default {
 		name: "coupons-coms",
 		props:['type'],
@@ -89,7 +89,8 @@ export default {
 			},
 			show10km(){
 				return (this.localSuccess && (this.search.area=='310000'||!this.search.area) && !this.search.q)
-			}
+			},
+			cityIsSupport
 		},
 		watch:{
 			areaName(){
@@ -105,23 +106,26 @@ export default {
 			// console.log('path:', this.$route.path)
 			this.init()
 			// this.axiosQixiu.post('/area/region/list', {areaName: 'shanghai'}).then((res) => {
-			this.axiosQixiu.get('/area/query').then((res) => {
-				if (res.data.code == '0') {
-					let arr= res.data.items
-					for(let i in arr){
-						if(arr[i].regionCode=='310000') {
-							this.area.push({
-								label: '全部',
-								value: '310000',
-							})
-						}else
-							this.area.push({
-								label: arr[i].name,
-								value: arr[i].code,
-							})
+			if(cityIsSupport){
+				this.axiosQixiu.get('/area/query').then((res) => {
+					if (res.data.code == '0') {
+						let arr= res.data.items
+						for(let i in arr){
+							if(arr[i].regionCode=='310000') {
+								this.area.push({
+									label: '全部',
+									value: '310000',
+								})
+							}else
+								this.area.push({
+									label: arr[i].name,
+									value: arr[i].code,
+								})
+						}
 					}
-				}
-			})
+				})
+			}
+
 
 			// getwxticket(['onMenuShareTimeline', 'onMenuShareAppMessage'])
 			// this.share()
@@ -178,7 +182,7 @@ export default {
 				this.showRadio= false
 			},
 			calcQuery(limit){
-				let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,credit'+
+				let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,credit,scode'+
 					'&q='+ this.search.q +
 					'&page='+ (this.page-1) +','+ (limit ||this.limit)
 				query+= ('&sort='+ '_score desc,distance asc')
@@ -202,7 +206,7 @@ export default {
 				console.log('getList')
 				this.axiosQixiu({
 					baseURL: '/repair-proxy',
-					url: '/micro/search/company'+ this.calcQuery(),
+					url: '/micro/search/shop'+ this.calcQuery(),
 					method: 'get',
 				}).then(res=>{
 					this.total= res.data.totalElements

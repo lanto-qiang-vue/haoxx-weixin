@@ -152,7 +152,7 @@ export default {
 		},
 		lookMyCar(){
 			let length= this.$refs.carlist.list.length
-			console.log('this.$refs.carlist.list.length', length)
+			// console.log('this.$refs.carlist.list.length', length)
 			switch (length){
 				case 0:{
 					this.$messagebox({message: '请先绑定个人爱车', closeOnClickModal: false,

@@ -1,7 +1,7 @@
 <template>
 <li class="topics-item">
 	<div class="head">
-		<img src="/img/head.png"/>
+		<img :src="item.pic ||'/img/head.png'"/>
 		<span>{{item.nickname}}</span>
 	</div>
 	<p :class="{title: true, top: showTop(item)}" @click="topic(item.id)">{{item.title}}</p>

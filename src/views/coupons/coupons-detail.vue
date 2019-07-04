@@ -6,18 +6,16 @@
 				<div class="left">
 					<p>{{detail.name}}</p>
 					<span>有效期：{{formatDate(detail.begin_time)}}-{{formatDate(detail.end_time)}}</span>
-					<span style="margin: 0" v-if="license">限用车牌：{{license}}</span>
+					<span style="margin: 0">限用车牌：{{license|| '无'}}</span>
 				</div>
 				<i></i>
 				<div class="right">
-					<!--<div class="button on">查看详情</div>-->
-					<div class="tag">
-					<p :class="[{orange:parseInt(detail.isuse) == 1}]">{{useList[parseInt(detail.isuse)]}}</p>
+					<div class="right">
+						<div class="type">
+							<h3>{{detail.coupontype}}</h3>
+							<p>{{useList[parseInt(detail.isuse)]}}</p>
+						</div>
 					</div>
-					<!--<div class="times">-->
-					<!--<p>已核销数</p>-->
-					<!--<span>1690</span>-->
-					<!--</div>-->
 				</div>
 			</div>
 		</li>
@@ -48,11 +46,11 @@
 	<Form class="common-form" :label-width="100" label-position="left" ref="form">
 		<FormItem label="使用细则" ></FormItem>
 		<FormItem class="top-position">
-			<div class="content">
-				<p class="coupons-rules">1､ 优惠券有使用期限限制，过了有效期不能使用；</p>
-				<p class="coupons-rules">2､ 订单中包含特价商品时不能使用优惠券，优惠券不能与其他优惠（如促销活动）同时使用；</p>
-				<p class="coupons-rules">3､ 优惠券只能抵扣订单金额，优惠金额超出订单金额部分不能再次使用，不能兑换现金；</p>
-				<p class="coupons-rules">4､ 每个订单只能使用一张优惠券；</p>
+			<div class="content" v-html="detail.note">
+				<!--<p class="coupons-rules">1､ 优惠券有使用期限限制，过了有效期不能使用；</p>-->
+				<!--<p class="coupons-rules">2､ 订单中包含特价商品时不能使用优惠券，优惠券不能与其他优惠（如促销活动）同时使用；</p>-->
+				<!--<p class="coupons-rules">3､ 优惠券只能抵扣订单金额，优惠金额超出订单金额部分不能再次使用，不能兑换现金；</p>-->
+				<!--<p class="coupons-rules">4､ 每个订单只能使用一张优惠券；</p>-->
 			</div>
 		</FormItem>
 	</Form>

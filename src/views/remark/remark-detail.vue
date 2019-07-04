@@ -3,7 +3,7 @@
 	<!--<mt-header title="点评详情" style="position: fixed;top: 0;width: 100%;z-index: 100"><mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button></mt-header>-->
 
       <div class="compinfo" >
-        <img :src="info.companyPhoto ||'/img/maintain/shqxw.jpg'"/>
+        <img :src="info.companyPhoto || showImg"/>
         <div class="rightinfo">
           <p class="name">{{info.companyName}}</p>
           <p class="small">{{info.companyAddress}}</p>
@@ -38,6 +38,7 @@
 
 <script>
 import { Toast} from 'mint-ui'
+import { showAreaImg} from '@/util.js'
 export default {
 	name: "new-remark-detail",
     data(){
@@ -46,26 +47,28 @@ export default {
 			complaint:{}
         }
     },
+	computed:{
+		showImg(){
+			return showAreaImg(this.info.companyCode||'', '/img/maintain/shqxw.png')
+		}
+	},
     created(){
-	    let token= localStorage.getItem('ACCESSTOKEN')
-	    let openid= localStorage.getItem('QXWOPENID')
-	    let url= '/comment/maintain/'+ this.$route.query.id
-	    if(!token && openid) url+= ('?openId='+ openid)
-      this.axiosQixiu({
-        method: 'get',
-        url: url,
-      }).then(res => {
+	    // let token= localStorage.getItem('ACCESSTOKEN')
+	    // let openid= localStorage.getItem('QXWOPENID')
+	    // let url= '/comment/maintain/'+ this.$route.query.id
+	    // if(!token && openid) url+= ('?openId='+ openid)
+      this.axiosQixiu.get('/review/shop/cartalk_hxx/'+ this.$route.query.id,{hxxtoken: true}).then(res => {
 		this.info= res.data
-	      if(res.data.complaintId){
-		      this.axiosQixiu.get('/comment/complaint/maintain/'+ res.data.complaintId).then(res => {
-			      this.complaint= res.data
-		      })
-	      }
+	      // if(res.data.complaintId){
+		   //    this.axiosQixiu.get('/comment/complaint/maintain/'+ res.data.complaintId).then(res => {
+			//       this.complaint= res.data
+		   //    })
+	      // }
       })
 
     },
     methods:{
-
+	    // showAreaImg
 
     }
 }

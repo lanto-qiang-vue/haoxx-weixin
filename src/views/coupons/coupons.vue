@@ -1,26 +1,32 @@
 <template>
 <div class="coupons">
-	<p class="num">共{{total}}张，可用{{query.canuse}}张</p>
+	<ul class="tab">
+		<li :class="{on: status=='1'}" @click="clickTab(1)"><span>可使用</span></li>
+		<li :class="{on: status=='2'}" @click="clickTab(2)"><span>已使用</span></li>
+		<li :class="{on: status=='3'}" @click="clickTab(3)"><span>已过期</span></li>
+	</ul>
+	<p class="num">共{{total}}张</p>
+	<!--<p class="num">共{{total}}张，可用{{query.canuse}}张</p>-->
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 	<ul class="coupons-list">
-		<router-link tag="li" v-for="(item, key) in list" :to="'/coupons-detail?code='+ item.code" :key="key">
+		<li v-for="(item, key) in list" @click="goto(item)"
+		             :class="`status${item.isuse}`" :key="key">
 			<div class="content">
-
 				<div class="left">
 					<p>{{item.name}}</p>
 					<span>有效期{{formatDate(item.begin_time)}}-{{formatDate(item.end_time)}}</span>
-					<span style="margin: 0">限用车牌：{{item.license}}</span>
-
+					<span style="margin: 0">限用车牌：{{item.license || '无'}}</span>
 				</div>
 				<i></i>
-				<router-link tag="div" class="right" :to="'/coupons-detail?code='+item.code">
-					<div class="tag">
-					<p :class="[{orange:item.isuse == 1}]">{{useList[parseInt(item.isuse)]}}</p>
+				<div class="right">
+					<div class="type">
+						<h3>{{item.coupontype}}</h3>
+						<p>{{useList[parseInt(item.isuse)]}}</p>
 					</div>
-				</router-link>
+				</div>
 			</div>
-		</router-link>
+		</li>
 	</ul>
 	</mt-loadmore>
 </div>
@@ -38,6 +44,7 @@ export default {
 			allLoaded: false,
 			type:"",
 			useList:['未领用','可使用','已使用','已过期'],
+			status: 1
 		}
 	},
 	computed:{
@@ -53,6 +60,7 @@ export default {
 			let params={
 				page: this.page,
 				limit: 10,
+				useStatus: this.status,
                 USER_ID:this.$store.state.user.userinfo.userId,
 				type:this.query.type,
 			}
@@ -73,11 +81,22 @@ export default {
 				}
 			})
 		},
+		clickTab(status){
+			this.list= []
+			this.page= 1
+			this.status= status
+			this.getList(false);
+		},
 		formatDate: formatDate,
 		loadMore(){
 			this.page++
 			this.getList(true)
 		},
+		goto(item){
+			if(item.isuse!=3){
+				this.$router.push(`/coupons-detail?code=${item.code}`)
+			}
+		}
 	}
 }
 </script>
@@ -87,11 +106,47 @@ export default {
 	height: 100vh;
 	overflow: auto;
 	background-color: white;
+	.tab{
+		overflow: hidden;
+		border-bottom: 10px #F7F7F7 solid;
+		text-align: center;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: white;
+		li{
+			width: 80px;
+			display: inline-block;
+			text-align: center;
+			font-size: 16px;
+			color: #333333;
+			span{
+				display: inline-block;
+				margin: 0 auto;
+				line-height: 38px;
+				border-bottom: 2px solid transparent;
+			}
+		}
+		li.on span{
+			color: #FF6D0E;
+			border-bottom: 2px solid  #FF6D0E;
+		}
+	}
 	.num{
 		color: #666666;
 		font-size: 12px;
-		margin-top: 10px;
-		padding: 0 10px;
+		/* padding-top: 10px; */
+		padding: 10px 10px 5px;
+		position: fixed;
+		top: 50px;
+		background-color: white;
+		z-index: 1;
+		width: 100%;
+	}
+	.coupons-list{
+		margin-top: 80px;
 	}
 }
 @import "./coupons.less";

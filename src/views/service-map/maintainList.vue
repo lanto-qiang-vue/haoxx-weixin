@@ -29,8 +29,9 @@
     </div>
 	<div v-if="mapType=='164'">
 		<div class="button" :class="{show: showBlock=='button'}">
-			<div class="area-button"  @click="switchBlock('area-block')"><img src="~@/assets/img/maintain/区域.png" />
-				<p>{{getName('area')|| '区域'}}</p></div>
+			<!--<div class="area-button"  @click="switchBlock('area-block')"><img src="~@/assets/img/maintain/区域.png" />-->
+			<div class="area-button"  @click="selectArea"><img src="~@/assets/img/maintain/区域.png" />
+				<p class="abs">{{ areaName || '区域'}}</p></div>
 			<div class="sort-button"  @click="switchBlock( 'sort-block')"><img src="~@/assets/img/maintain/排序.png" />
 				<p>{{getName('sort')|| '排序'}}</p></div>
 			<div class="hot-button"  @click="switchBlock( 'hot-block')"><img src="~@/assets/img/maintain/热搜.png" />
@@ -52,38 +53,8 @@
 			    :class="{on : tagIsOn('hot', item.value)}">{{item.name}}</li>
 		</ul>
 	</div>
-	<div v-if="mapType=='300'">
-		<div class="button" :class="{show: showBlock=='button'}">
-			<div class="area-button"  @click="switchBlock('area-block')"><img src="~@/assets/img/maintain/区域.png" />
-				<p>{{getName('area')|| '区域'}}</p></div>
-			<div class="sort-button"  @click="switchBlock( 'sort-block')"><img src="~@/assets/img/maintain/排序.png" />
-				<p>{{getName('sort')|| '排序'}}</p></div>
-			<div class="hot-button"  @click="switchBlock( 'biz-block')"><img src="~@/assets/img/maintain/驾照.png" />
-				<p>{{getName('biz')|| '驾照'}}</p></div>
-		</div>
-		<ul class="area-block" :class="{show: showBlock=='area-block'}">
-			<div class="close" @click="switchBlock( 'button')"></div>
-			<li v-for="(item, index) in area" :key="index" @click="select('area', item.code)"
-			    :class="{on : tagIsOn('area', item.code)}">{{item.name}}</li>
-		</ul>
-		<ul class="sort-block" :class="{show: showBlock=='sort-block'}">
-			<div class="close"  @click="switchBlock('button')"></div>
-			<li v-for="(item, index) in sort" :key="index" @click="select('sort', item.value)"
-			    :class="{on : tagIsOn('sort', item.value)}">{{item.name}}</li>
-		</ul>
-		<ul class="hot-block" :class="{show: showBlock=='biz-block'}">
-			<div class="close"  @click="switchBlock('button')"></div>
-			<li v-for="(item, index) in biz" :key="index" @click="select('biz', item.value)"
-			    :class="{on : tagIsOn('biz', item.value)}">{{item.name}}</li>
-		</ul>
 	</div>
-	</div>
-	<div id="head2" v-show="showHead=='base'||showHead=='baseMap'">
-		<div class="search-input"><p class="base-head">{{search.base}}驾校基地（{{total}}家驾校）</p>
-			<p class="base-head" v-if="schoolBrand">{{schoolBrand}}自用基地</p>
-			<p class="base-head" v-else>合用基地</p>
-		</div>
-	</div>
+
   <div class="roll" :style="{height: listHeight+'px'}">
     <mt-loadmore :bottom-method="toQuery" :bottom-all-loaded="allLoaded" :autoFill="false"
                  bottomPullText="加载更多"   ref="loadMore">
@@ -92,7 +63,7 @@
         <div class="head"><span>最近搜索</span><img @click="clearHistory" src="~@/assets/img/maintain/del.png"/></div>
         <li v-for="(item, index) in maintainListHistory" :key="index" @click="goDetail(item)">
           <div class="picWrap">
-            <img :src="item.pic? item.pic.split(',')[0] :'/img/maintain/shqxw.jpg'" />
+            <img :src="item.pic? item.pic.split(',')[0] : showAreaImg(item.scode ,'/img/maintain/shqxw.png') " />
             <img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>
           </div>
           <div class="info">
@@ -118,7 +89,7 @@
         <div class="head"><span>智能推荐</span></div>
         <li v-for="(item, index) in list" :key="index" @click="goDetail(item)">
           <div class="picWrap">
-            <img :src="item.pic? item.pic.split(',')[0] :'/img/maintain/shqxw.jpg'" />
+            <img :src="item.pic? item.pic.split(',')[0] : showAreaImg(item.scode ,'/img/maintain/shqxw.png') " />
             <img class="tag" :src="item.is4s?'/img/maintain/tag-4s.png':'/img/maintain/tag-normal.png'"/>
           </div>
           <div class="info">
@@ -147,14 +118,16 @@
 
 </div>
 </slide-bar>
+	<area-select ref="area" @ok="areaOk"></area-select>
 </div>
 </template>
 
 <script>
 import SlideBar from '@/views/service-map/SlideBar'
 import SearchInput from '@/components/common-search.vue'
+import AreaSelect from '@/components/area-select.vue'
 import { Indicator} from 'mint-ui'
-import {deepClone, cityIsSupport} from '@/util.js'
+import {deepClone, cityIsSupport, showAreaImg} from '@/util.js'
 let search= {
 		type: '',
 		q: '',
@@ -168,7 +141,7 @@ let search= {
 	}
 export default {
 	name: "maintain-list",
-	components: { SlideBar, SearchInput},
+	components: { SlideBar, SearchInput, AreaSelect},
 	props: [ 'blur', 'nowLnglat', 'type'],
     data(){
 		let sotrName= ''
@@ -256,8 +229,8 @@ export default {
 			loading: true,
 			showHead: 'search',
 			inputPlaceholder: '搜索：企业名、地址、品牌、服务内容',
-			schoolBrand: ''
-
+			schoolBrand: '',
+			areaName: '',
         }
     },
     computed: {
@@ -290,6 +263,7 @@ export default {
         // console.log('maintainListHistory')
         return this.$store.state.app.maintainListHistory
       },
+	    cityIsSupport,
     },
     watch:{
 		show(isShow){
@@ -326,7 +300,7 @@ export default {
     },
     mounted(){
 		// console.log('list.mounted')
-		this.getArea()
+		// this.getArea()
 	    this.getQuery()
       // this.calcHeight(this.height)
       // $(".roll").bind('touchmove',function(e){
@@ -347,6 +321,7 @@ export default {
 		  this.getQuery()
     },
     methods:{
+	    showAreaImg,
 		getQuery(){
 			// let query= this.$route.query
 			// if(query){
@@ -378,23 +353,57 @@ export default {
 			// }
 		},
 	    calcQuery(limit){
-		    let is164= this.search.type== '164'
-		    let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours,licenseNo'+
-			    '&q='+ this.search.q +
-			    '&page='+ (this.page-1) +','+ (limit ||this.limit)
-		    let defaultSort= '_score desc,distance asc'
-		    query+= ('&sort='+ (this.search.sort|| defaultSort))
-		    if(this.nowLnglat.lng) query+=('&point='+this.nowLnglat.lat+','+this.nowLnglat.lng)
-		    // let fq='&fq=status:1+AND+tag:hxx+AND+type:'+ this.search.type, is4s=''
-		    let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
-		    if(this.search.area && (is164 )) fq+= '+AND+areaKey:'+ this.search.area
-		    if(this.search.is4s && is164){
-			    is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
-			    fq+= '+AND+' + is4s
-		    }
-		    query += fq
+		    // let is164= this.search.type== '164'
+		    // let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours,licenseNo,code'+
+			 //    '&q='+ this.search.q +
+			 //    '&page='+ (this.page-1) +','+ (limit ||this.limit)
+		    // let defaultSort= '_score desc,distance asc'
+		    // query+= ('&sort='+ (this.search.sort|| defaultSort))
+		    // if(this.nowLnglat.lng) query+=('&point='+this.nowLnglat.lat+','+this.nowLnglat.lng)
+		    // // let fq='&fq=status:1+AND+tag:hxx+AND+type:'+ this.search.type, is4s=''
+		    // let fq='&fq=areaKey:37*+AND+status:1+AND+type:'+ this.search.type, is4s=''
+		    // if(this.search.area && (is164 )) fq+= '+AND+areaKey:'+ this.search.area
+		    // if(this.search.is4s && is164){
+			 //    is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
+			 //    fq+= '+AND+' + is4s
+		    // }
+		    // query += fq
+		    //
+		    // return query
 
-		    return query
+		    let params={}, fq={}, fqstr='', paramstr= '', area= this.cityIsSupport? this.cityIsSupport.adcode.substring(0,2)+'*': undefined;
+
+		    fq={
+			    areaKey: this.search.area|| area,
+			    status: 1,
+			    type: this.search.type,
+		    }
+
+		    for(let key in fq){
+		    	if(fq[key]!==undefined){
+				    fqstr+= ((fqstr? '+AND+': '') + `${key}:${fq[key]}` )
+			    }
+		    }
+
+		    if(this.search.is4s){
+			    fqstr+= '+AND+' + (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
+		    }
+
+		    params={
+			    fl: 'pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,rating,openHours,licenseNo,scode',
+			    q: this.search.q,
+			    page: `${this.page-1},${limit ||this.limit}`,
+			    sort: this.search.sort|| '_score desc,distance asc',
+			    point: this.nowLnglat.lat+','+this.nowLnglat.lng,
+				fq: fqstr
+		    }
+		    for(let key in params){
+			    if(params[key]!==undefined){
+				    paramstr+= ((paramstr? '&': '') + `${key}=${params[key]}` )
+			    }
+		    }
+
+		    return paramstr
 	    },
 		calcHeight(height, time){
 			// let lh= parseInt(height -
@@ -404,7 +413,7 @@ export default {
 
 			setTimeout(()=>{
 				lh= parseInt(height -
-					document.querySelector("#head1").offsetHeight- document.querySelector("#head2").offsetHeight)
+					document.querySelector("#head1").offsetHeight)
 				this.listHeight= (lh<0 ? 0 : lh)
 			},time|| 100)
 
@@ -451,11 +460,8 @@ export default {
 		getCompList(clearPoint, clearList, hidePoint){
 		    if(clearList) this.page=1
 		    else this.page++
-		    let query= this.calcQuery()
-		    this.axiosQixiu({
+		    this.axiosQixiu.get('/micro/search/shop?'+ this.calcQuery(),{
 			    baseURL: '/repair-proxy',
-			    url: '/micro/search/company'+ query,
-			    method: 'get',
 		    }).then( (res) => {
 		    	this.loading= false
 			    let datas= res.data.content
@@ -492,32 +498,16 @@ export default {
 			    if(!hidePoint) this.renderMap(this.pointList)
 		    })
 	    },
-	    getArea(){
-		    let location= cityIsSupport(true), url= '/area/query', method= 'get', data={}
-		    if(location && location.postfix){
-			    url= '/area/region/list'
-			    method= 'post'
-			    data.areaName= location.postfix
-		    }
-		    this.axiosQixiu[method](url, data).then( (res) => {
-		    	if(location.postfix){
-		    		let arr= res.data.items
-				    for(let i in arr){
-					    this.area.push({
-						    code: arr[i].value,
-						    name: arr[i].shortName,
-					    })
-				    }
-
-			    }else this.area.push(...res.data.items)
-			    // if(this.loading){
-				 //    Indicator.open({
-					//     text: '请稍候...',
-					//     spinnerType: 'snake'
-				 //    });
-			    // }
-		    })
-	    },
+	    // getArea(){
+			// if(this.cityIsSupport){
+			// 	this.axiosQixiu.post('/area/list', {
+			// 		parentCode: this.cityIsSupport.name
+			// 	}).then( (res) => {
+	    //
+			// 	})
+			// }
+	    //
+	    // },
 	    getBase(){
 			if(this.$route.name=='school-map' && this.search.schoolPoint!= 300){
 				this.axiosQixiu({
@@ -566,14 +556,14 @@ export default {
 			// let type= item.type.toString()
 	      switch (this.type){
 		      case 'remark':{
-			      this.$router.push({path: '/remark-match', query: { corpId: item.sid }})
+			      this.$router.push({path: '/remark', query: { corpId: item.sid, scode: item.scode }})
 			      break;
 		      }
 		      default :{
 			//       // this.$emit('goMap', item)
 			//       this.$store.commit('setMaintainListHistory', false)
 			      this.$store.commit('setMaintainListHistory', item)
-			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance}})
+			      this.$router.push({path:'/maintain', query:{compId: item.sid, distance: item.distance, scode: item.scode}})
 		      }
 	      }
 
@@ -692,6 +682,14 @@ export default {
           }
         }
       },
+	    selectArea(){
+			this.$refs.area.open()
+	    },
+	    areaOk(a1, a2){
+		    this.areaName= a2.id? a1.name+a2.name: a1.name
+		    this.search.area= a2.id||  a1.id.toString().substring(0,2)+'*'
+		    this.toQuery(true)
+	    },
 		gradeText(grade){
 			let text= ''
 			switch (grade){
@@ -822,6 +820,13 @@ export default {
     >div{
       width: 25%;
       display: inline-block;
+	    position: relative;
+	    .abs{
+		    white-space: nowrap;
+		    position: absolute;
+		    left: 50%;
+		    transform: translateX(-50%);
+	    }
       img{
         height: 30px;
       }

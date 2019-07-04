@@ -2,39 +2,43 @@
 <div class="my">
 	<div class="above">
 		<div class="head">
-			<img :src="'/img/head.png'"/>
+			<img :src="userinfo.userPic ||'/img/head.png'" @click="$refs.upload.clickBox()"/>
 			<span>{{userinfo.nickName}} <i class="fa fa-pencil-square-o" @click="nickName"></i></span>
 		</div>
 		<div class="button">
 			<router-link tag="div" to="/coupons-type"><span>{{couponsNum}}</span><p>我的卡券</p></router-link>
 			<!--<router-link tag="div" to="/my-reservation"><span>{{reservationNum}}</span><p>我的预约</p></router-link>-->
-			<div><span>0.00<i></i></span><p>我的奖励</p></div>
+			<div><span>{{money.toFixed(2)}}<i></i></span><p>我的奖励</p></div>
 		</div>
 	</div>
 	<ul class="list">
 		<router-link tag="li" :to="myCarPath">我的爱车 <i></i></router-link>
 		<router-link tag="li" to="/my/car-report" v-show="showReport">我的车史报告 <i></i></router-link>
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
-		<router-link tag="li" to="/my-remark" v-show="isShanghai">我的点评 <i></i></router-link>
-		<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>
+		<router-link tag="li" to="/my-remark">我的点评 <i></i></router-link>
+		<!--<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>-->
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
 		<li @click="logout">退出</li>
 	</ul>
 	<popup-input ref="popupInput"></popup-input>
+	<upload-img  ref="upload" backend="hxx" @done="getImg"></upload-img>
 </div>
 </template>
 
 <script>
 import PopupInput from '@/components/popup-input.vue'
+import UploadImg from '@/components/compress-upload.vue'
+// import { cityIsSupport} from '@/util'
 export default {
 	name: "my",
-	components: {PopupInput},
+	components: {PopupInput, UploadImg},
 	data(){
 		return{
 			couponsNum: 0,
 			reservationNum: 0,
 			myCarPath: '/car-list',
-			showReport: false
+			showReport: false,
+			money: 0
 		}
 	},
 	computed:{
@@ -44,7 +48,8 @@ export default {
 		isShanghai(){
 			return this.$store.state.app.city && this.$store.state.app.city.regionId
 				&& this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
-		}
+		},
+		// cityIsSupport
 	},
 	mounted(){
 		this.init()
@@ -59,9 +64,14 @@ export default {
 					}
 				}
 			})
-			this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
-				if(res.data.success){
-					this.reservationNum= res.data.total
+			// this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
+			// 	if(res.data.success){
+			// 		this.reservationNum= res.data.total
+			// 	}
+			// })
+			this.axiosHxx.post('/cartalk/userinfo/queryRewardmoney',{}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+				if(res.data.success && res.data.data.rewardMoney){
+					this.money= res.data.data.rewardMoney
 				}
 			})
 			this.axiosQixiu.post( '/hxxdc/vehicle/bind/list', {
@@ -96,6 +106,16 @@ export default {
 				}
 			})
 		},
+		getImg({url, base64}){
+			this.axiosHxx.post('/cartalk/userinfo/updateUserpic',{
+				pic: url
+			}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
+				if(res.data.success){
+					this.$store.commit('changeUserInfo', {userPic: base64});
+					this.$toast('头像修改成功');
+				}
+			})
+		},
 		logout(){
 			this.$messagebox({ message: '确定退出吗？', confirmButtonClass:'error-red',
 				confirmButtonText:'退出', showCancelButton: true}).then(action => {
@@ -123,8 +143,9 @@ export default {
 			font-size: 20px;
 			color: white;
 			img{
-				height: 100%;
-				width: auto;
+				height: 45px;
+				width: 45px;
+				object-fit: cover;
 				border-radius: 100%;
 				/*border: 2px solid white;*/
 				margin-right: 10px;

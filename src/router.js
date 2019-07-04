@@ -45,13 +45,13 @@ routes: [
 		},
 		component: () => import('@/views/setting/setting.vue')
 	},
-	{
-		path: '/accredit-bind',
-		name: 'accredit-bind',
-		meta: {
-		},
-		component: () => import('@/views/setting/accredit-bind.vue')
-	},
+	// {
+	// 	path: '/accredit-bind',
+	// 	name: 'accredit-bind',
+	// 	meta: {
+	// 	},
+	// 	component: () => import('@/views/setting/accredit-bind.vue')
+	// },
 	{
 		path: '/city-select',
 		name: 'city-select',
@@ -89,62 +89,63 @@ routes: [
 		name: 'maintain-remark',
 		meta:{
 			tourist: true,
+			needArea: true
 		},
 		component: () => import('@/views/service-map/maintain-remark.vue')
 	},
-	{
-		path: '/my-car-list',
-		name: 'my-car-list',
-		meta: {
-			needQixiu: true,
-		},
-		component: () => import('@/views/car-record/my-car-list.vue')
-	},
-	{
-		path: '/bind-my-car',
-		name: 'bind-my-car',
-		meta: {
-			needQixiu: true,
-		},
-		component: () => import('@/views/car-record/bind-my-car.vue')
-	},
-	{
-		path: '/bind-my-car-com',
-		name: 'bind-my-car-com',
-		meta: {
-			needQixiu: true,
-		},
-		component: () => import('@/views/car-record/bind-my-car.vue')
-	},
-	{
-		path: '/bind-other-car',
-		name: 'bind-other-car',
-		meta: {
-			needQixiu: true,
-		},
-		component: () => import('@/views/car-record/bind-other-car.vue')
-	},
-	{
-		path: '/record-list',
-		name: 'record-list',
-		meta: {
-			needQixiu: true,
-		},
-		component: () => import('@/views/car-record/record-list.vue')
-	},
-	{
-		path: '/record-detail',
-		name: 'record-detail',
-		meta: {
-			needQixiu: true,
-		},
-		component: () => import('@/views/car-record/record-detail.vue')
-	},
+	// {
+	// 	path: '/my-car-list',
+	// 	name: 'my-car-list',
+	// 	meta: {
+	// 		needAccredit: true,
+	// 	},
+	// 	component: () => import('@/views/car-record/my-car-list.vue')
+	// },
+	// {
+	// 	path: '/bind-my-car',
+	// 	name: 'bind-my-car',
+	// 	meta: {
+	// 		needAccredit: true,
+	// 	},
+	// 	component: () => import('@/views/car-record/bind-my-car.vue')
+	// },
+	// {
+	// 	path: '/bind-my-car-com',
+	// 	name: 'bind-my-car-com',
+	// 	meta: {
+	// 		needAccredit: true,
+	// 	},
+	// 	component: () => import('@/views/car-record/bind-my-car.vue')
+	// },
+	// {
+	// 	path: '/bind-other-car',
+	// 	name: 'bind-other-car',
+	// 	meta: {
+	// 		needAccredit: true,
+	// 	},
+	// 	component: () => import('@/views/car-record/bind-other-car.vue')
+	// },
+	// {
+	// 	path: '/record-list',
+	// 	name: 'record-list',
+	// 	meta: {
+	// 		needAccredit: true,
+	// 	},
+	// 	component: () => import('@/views/car-record/record-list.vue')
+	// },
+	// {
+	// 	path: '/record-detail',
+	// 	name: 'record-detail',
+	// 	meta: {
+	// 		needAccredit: true,
+	// 	},
+	// 	component: () => import('@/views/car-record/record-detail.vue')
+	// },
 	{
 		path: '/car-list',
 		name: 'car-list',
 		meta: {
-
+			needAccredit: true,
 		},
 		component: () => import('@/views/car-record/car-list.vue')
 	},
@@ -152,7 +153,8 @@ routes: [
 		path: '/bind-car',
 		name: 'bind-car',
 		meta: {
-			title: '添加爱车'
+			title: '添加爱车',
+			needAccredit: true,
 		},
 		component: () => import('@/views/car-record/bind-car.vue')
 	},
@@ -160,7 +162,7 @@ routes: [
 		path: '/reservation-detail',
 		name: 'reservation-detail',
 		meta: {
-			needQixiu: false,
+			needAccredit: false,
 		},
 		component: () => import('@/views/reservation/reservation-detail.vue')
 	},
@@ -168,7 +170,8 @@ routes: [
 		path: '/remark-map',
 		name: 'remark-map',
 		meta: {
-			needQixiu: true,
+			needAccredit: true,
+			needArea: true
 		},
 		component: () => import('@/views/remark/remark-map.vue')
 	},
@@ -176,7 +179,7 @@ routes: [
 		path: '/my-remark',
 		name: 'my-remark',
 		meta: {
-			needQixiu: true,
+			needAccredit: true,
 		},
 		component: () => import('@/views/remark/my-remark.vue')
 	},
@@ -184,7 +187,7 @@ routes: [
 		path: '/remark-detail',
 		name: 'remark-detail',
 		meta: {
-			needQixiu: true,
+			needAccredit: true,
 		},
 		component: () => import('@/views/remark/remark-detail.vue')
 	},
@@ -192,7 +195,7 @@ routes: [
 		path: '/remark-match',
 		name: 'remark-match',
 		meta: {
-			needQixiu: true,
+			needAccredit: true,
 		},
 		component: () => import('@/views/remark/match.vue')
 	},
@@ -226,6 +229,14 @@ routes: [
 
 		},
 		component: () => import('@/views/coupons/coupons-coms.vue')
+	},
+	{
+		path: '/coupons-map',
+		name: 'coupons-map',
+		meta: {
+
+		},
+		component: () => import('@/views/coupons/coupons-map.vue')
 	},
 	{
 		path: '/article-detail',
@@ -296,7 +307,7 @@ routes: [
 		path: '/report/query-vin',
 		name: 'hreport-query-vin',
 		meta: {
-
+			needAccredit: true,
 		},
 		component: () => import('@/views/car-report/query-vin.vue')
 	},
@@ -304,7 +315,7 @@ routes: [
 		path: '/report/pay',
 		name: 'report-pay',
 		meta: {
-
+			needAccredit: true,
 		},
 		component: () => import('@/views/car-report/pay.vue')
 	},
@@ -312,7 +323,7 @@ routes: [
 		path: '/my/car-report',
 		name: 'my-car-report',
 		meta: {
-
+			needAccredit: true,
 		},
 		component: () => import('@/views/car-report/my-report.vue')
 	},
@@ -320,7 +331,7 @@ routes: [
 		path: '/report/report',
 		name: 'report-detail',
 		meta: {
-
+			needAccredit: true,
 		},
 		component: () => import('@/views/car-report/report.vue')
 	},
@@ -328,7 +339,7 @@ routes: [
 		path: '/report/detail',
 		name: 'report-detail',
 		meta: {
-
+			needAccredit: true,
 		},
 		component: () => import('@/views/car-report/history-detail.vue')
 	},
@@ -364,9 +375,17 @@ routes: [
 		path: '/to-remark',
 		name: 'to-remark',
 		meta: {
-
+			needAccredit: true
 		},
 		component: () => import('@/views/remark/to-remark.vue')
+	},
+	{
+		path: '/remark',
+		name: 'remark',
+		meta: {
+			needAccredit: true,
+		},
+		component: () => import('@/views/remark/remark.vue')
 	},
 
 ]})
