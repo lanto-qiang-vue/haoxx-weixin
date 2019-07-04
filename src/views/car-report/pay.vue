@@ -31,8 +31,11 @@
 	<div class="block">
 		<Form class="common-form" v-show="radio.price"
 		      :label-width="60" label-position="left" ref="form">
+			<FormItem label="优惠券">
+				<span class="ivu-input select" @click="openCoupons">{{showCouponName || '请选择'}}</span>
+			</FormItem>
 			<FormItem label="支付金额">
-				<Input :value="`¥ ${radio.price}`" readonly class="money"></Input>
+				<Input :value="`¥ ${showPrice}`" readonly class="money"></Input>
 			</FormItem>
 		</Form>
 	</div>
@@ -41,6 +44,8 @@
 	</single-checkbox>
 	<!--<div class="pay" @click="create">去支付</div>-->
 	<submit-button class="pay" :rules="rule" :datas="{id: radio.id, agree}" :feedback="true" @click="create">去支付</submit-button>
+
+	<coupons-use ref="coupons" @ok="coupon= $event"></coupons-use>
 </div>
 </template>
 
@@ -48,9 +53,10 @@
 import { getwxticket} from '@/util.js'
 import SubmitButton from '@/components/submit-button.vue'
 import SingleCheckbox from '@/components/single-checkbox.vue'
+import CouponsUse from '@/views/coupons/coupons-use.vue'
 export default {
 	name: "report-pay",
-	components: { SubmitButton, SingleCheckbox},
+	components: { SubmitButton, SingleCheckbox, CouponsUse},
 	data(){
 		return{
 			vin: '',
@@ -69,7 +75,24 @@ export default {
 				},
 			},
 			orderId: '',
-			agree: true
+			agree: true,
+			coupon: {}
+		}
+	},
+	computed:{
+		showCouponName(){
+			let item= this.coupon
+			return item.name? item.name + (item.amount? `-抵扣${item.amount}元`: '') : ''
+		},
+		showPrice(){
+			let oldP= parseFloat(this.radio.price||0) , minus= parseFloat(this.coupon.amount||0) , newP=0;
+			if(minus){
+				let val= oldP - minus
+				newP= val>=0? val: 0
+			}else{
+				newP= oldP
+			}
+			return newP.toFixed(2)
 		}
 	},
 	mounted(){
@@ -111,6 +134,7 @@ export default {
 		create(){
 			this.axiosQixiu.post('/hxxdc/order/create',{
 				productId: this.radio.id,
+				promotionId: this.coupon.id|| null,
 				vin: this.vin
 			}, {hxxtoken: true}).then( (res) => {
 				if(res.data.code=='0'){
@@ -196,6 +220,9 @@ export default {
 			}else{
 				onBridgeReady();
 			}
+		},
+		openCoupons(){
+			this.$refs.coupons.open(this.radio.id)
 		}
 	}
 }

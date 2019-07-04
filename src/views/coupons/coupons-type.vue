@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import {MessageBox,Toast,} from 'mint-ui'
 export default {
 	name: "coupons-type",
 	data(){
