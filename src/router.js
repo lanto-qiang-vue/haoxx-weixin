@@ -216,7 +216,6 @@ routes: [
 		path: '/coupons-detail',
 		name: 'coupons-detail',
 		meta: {
-
 		},
 		component: () => import('@/views/coupons/coupons-detail.vue')
 	},
