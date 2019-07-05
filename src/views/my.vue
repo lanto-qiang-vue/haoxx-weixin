@@ -11,15 +11,21 @@
 			<div><span>{{money.toFixed(2)}}<i></i></span><p>我的奖励</p></div>
 		</div>
 	</div>
+
 	<ul class="list">
+		<router-link tag="div" to="/etc-promoter" v-show="!userinfo.isEtcPromoters" class="etc-promoter">
+			<img src="~@/assets/img/obu/icon-v.png"/><span>ETC分享开通奖励30元</span>
+			<span class="more">查看详情</span><i></i>
+		</router-link>
 		<router-link tag="li" :to="myCarPath">我的爱车 <i></i></router-link>
 		<router-link tag="li" to="/my/car-report" v-show="showReport">我的车史报告 <i></i></router-link>
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
 		<router-link tag="li" to="/my-remark">我的点评 <i></i></router-link>
 		<!--<router-link tag="li" to="/accredit-bind">更改授权 <i></i></router-link>-->
 		<router-link tag="li" to="/setting">设置 <i></i></router-link>
-		<li @click="logout">退出</li>
+
 	</ul>
+	<div class="logout" @click="logout">退出</div>
 	<popup-input ref="popupInput"></popup-input>
 	<upload-img  ref="upload" backend="hxx" @done="getImg"></upload-img>
 </div>
@@ -134,6 +140,9 @@ export default {
 
 <style scoped lang="less">
 .my{
+	height: 100%;
+	background-color: #F8F8F8;
+	overflow: auto;
 	.above{
 		padding: 17px 12px;
 		background:linear-gradient(133deg,#FF8E20 0%,#FF7324 100%,#F76B1C 100%);
@@ -196,11 +205,12 @@ export default {
 		}
 	}
 	.list{
+		background-color: white;
 		padding-left: 15px;
 		li{
 			padding-left: 15px;
-			height: 55px;
-			line-height: 54px;
+			/*height: 41px;*/
+			line-height: 40px;
 			color: #333333;
 			font-size: 16px;
 			border-bottom: 1px solid #EDEDED;
@@ -211,12 +221,65 @@ export default {
 				top: 50%;
 				border-right: 1px solid;
 				border-bottom: 1px solid;
-				width: 10px;
-				height: 10px;
+				width: 8px;
+				height: 8px;
 				color: #999;
 				transform: translateY(-50%) rotate(-45deg);
 			}
 		}
+		.etc-promoter{
+			line-height: 35px;
+			background: #EED7AD;
+			box-shadow:0 2px 2px 0 rgba(255,218,191,0.44);
+			border-radius:5px;
+			padding: 0 10px;
+			margin-top: 5px;
+			margin-right: 10px;
+			position: relative;
+			*{
+				vertical-align: middle;
+			}
+			img{
+				width: 20px;
+				margin-right: 5px;
+			}
+			span{
+				color: #333333;
+				font-size: 14px;
+				font-weight: 600;
+			}
+			.more{
+				line-height: 20px;
+				font-weight: 400;
+				font-size: 12px;
+				position: absolute;
+				right: 20px;
+				top: 50%;
+				color: #333333;
+				transform: translateY(-50%);
+			}
+			i{
+				position: absolute;
+				right: 10px;
+				top: 50%;
+				border-right: 1px solid;
+				border-bottom: 1px solid;
+				width: 8px;
+				height: 8px;
+				color: #333333;
+				transform: translateY(-50%) rotate(-45deg);
+			}
+		}
+	}
+	.logout{
+		background-color: white;
+		margin-top: 20px;
+		line-height: 40px;
+		text-align: center;
+		color: #F4333C;
+		font-size: 16px;
+		border-bottom: 1px solid #EDEDED;
+		border-top: 1px solid #EDEDED;
 	}
 
 }
