@@ -31,7 +31,6 @@ export default {
 			if(openid){
 				this.funopenidGetInfo(openid)
 			}else{
-				this.isFollow= true
 				if(this.isWeixn){
 					getWeixinId((data)=>{
 						this.funopenidGetInfo(data.openid)
@@ -47,23 +46,8 @@ export default {
 				if(res.data.subscribe==0){
 					window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
 				}else{
+					this.isFollow= true
 					this.shareConfig()
-
-					// this.isFollow= true
-					// if(this.isLogin){
-					// 	wx.ready(()=>{
-					// 		wx.showMenuItems({
-					// 			menuList: ["menuItem:share:appMessage", "menuItem:share:timeline"]
-					// 		});
-					// 	})
-					//
-					// }else{
-					// 	wx.ready(()=>{
-					// 		wx.hideMenuItems({
-					// 			menuList: ["menuItem:share:appMessage", "menuItem:share:timeline"]
-					// 		});
-					// 	})
-					// }
 				}
 			})
 		},
