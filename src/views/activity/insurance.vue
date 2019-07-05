@@ -20,7 +20,7 @@ export default {
 		}
 	},
 	created(){
-		let openid= localStorage.getItem("OPENID");
+		// let openid= localStorage.getItem("OPENID");
 		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
 			wx.ready(()=>{
 				wx.hideMenuItems({
@@ -28,15 +28,17 @@ export default {
 				});
 			})
 
-			if(openid){
-				this.funopenidGetInfo(openid)
-			}else{
-				if(this.isWeixn){
-					getWeixinId((data)=>{
-						this.funopenidGetInfo(data.openid)
-					})
-				}
-			}
+			this.shareConfig()
+
+			// if(openid){
+			// 	this.funopenidGetInfo(openid)
+			// }else{
+			// 	if(this.isWeixn){
+			// 		getWeixinId((data)=>{
+			// 			this.funopenidGetInfo(data.openid)
+			// 		})
+			// 	}
+			// }
 		})
 	},
 	methods:{
