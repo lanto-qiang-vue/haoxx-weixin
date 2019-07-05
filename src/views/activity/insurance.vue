@@ -69,7 +69,7 @@ export default {
 		shareConfig(){
 			let link= window.location.href
 			let titles= '交通部“安全带·生命带”，10万保额免费领！'
-			let shareImg= window.location.origin+ '/img/obu/obu.png'
+			let shareImg= window.location.origin+ '/img/obu/insurance.png'
 			// let self= this
 
 			wx.ready(function(){
@@ -103,7 +103,7 @@ export default {
 <style scoped lang="less">
 .insurance{
 	width: 100%;
-	height: 100vh;
+	min-height: 100vh;
 	overflow: auto;
 }
 </style>
