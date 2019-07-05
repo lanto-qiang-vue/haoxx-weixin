@@ -52,7 +52,7 @@ export default {
 			})
 		},
 		shareConfig(){
-			let link= window.location.href
+			let link= window.location.origin+ '/#/insurance'
 			let titles= '交通部“安全带·生命带”，10万保额免费领！'
 			let shareImg= window.location.origin+ '/img/obu/insurance.png'
 			// let self= this
