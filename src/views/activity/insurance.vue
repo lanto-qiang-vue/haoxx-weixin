@@ -19,8 +19,8 @@ export default {
 			return isWeixn()
 		}
 	},
-	created(){
-		// let openid= localStorage.getItem("OPENID");
+	mounted(){
+		let openid= localStorage.getItem("OPENID");
 		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
 			wx.ready(()=>{
 				wx.hideMenuItems({
@@ -28,17 +28,15 @@ export default {
 				});
 			})
 
-			this.shareConfig()
-
-			// if(openid){
-			// 	this.funopenidGetInfo(openid)
-			// }else{
-			// 	if(this.isWeixn){
-			// 		getWeixinId((data)=>{
-			// 			this.funopenidGetInfo(data.openid)
-			// 		})
-			// 	}
-			// }
+			if(openid){
+				this.funopenidGetInfo(openid)
+			}else{
+				if(this.isWeixn){
+					getWeixinId((data)=>{
+						this.funopenidGetInfo(data.openid)
+					})
+				}
+			}
 		})
 	},
 	methods:{
