@@ -31,12 +31,11 @@ export default {
 			if(openid){
 				this.funopenidGetInfo(openid)
 			}else{
+				this.isFollow= true
 				if(this.isWeixn){
 					getWeixinId((data)=>{
 						this.funopenidGetInfo(data.openid)
 					})
-				}else{
-					this.isFollow= true
 				}
 			}
 		})
