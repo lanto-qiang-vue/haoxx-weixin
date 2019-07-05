@@ -19,6 +19,9 @@ export default {
 			return isWeixn()
 		}
 	},
+	beforeCreate(){
+		history.replaceState(null, null, window.location.origin + window.location.hash)
+	},
 	mounted(){
 		let openid= localStorage.getItem("OPENID");
 		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
