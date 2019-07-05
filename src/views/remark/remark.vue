@@ -49,8 +49,8 @@
 		<div class="saymore">
 			<span>还想再说点什么吗？</span>
 			<!--<input v-model="saymore" placeholder="还想再说点什么吗？" readonly="readonly"/>-->
-			<i :class="`fa fa-frown-o ${!approve? 'on': ''}`" @click="cltag(false)"><span style="float-size:12px;">好评</span></i>
-			<i :class="`fa fa-smile-o ${approve? 'on': ''}`" @click="cltag(true)"><span style="float-size:12px;">差评</span></i>
+			<i :class="`fa fa-frown-o ${!approve? 'on': ''}`" @click="cltag(false)"><span style="float-size:12px;">差评</span></i>
+			<i :class="`fa fa-smile-o ${approve? 'on': ''}`" @click="cltag(true)"><span style="float-size:12px;">好评</span></i>
 		</div>
 		<ul class="tag">
 			<li v-for="(item, index) in tags" :key="index"
@@ -338,22 +338,22 @@ export default {
 		}
 		.saymore{
 			position: relative;
-			line-height: 32px;
+			line-height: 20px;
 			border-top: 5px solid #f8f8f8;
-			padding-top:10px;
+			padding-top:15px;
 			margin-bottom: 10px;
 			font-size: 14px;
 			color: #999999;
 			i{
 				float: right;
-				font-size: 32px;
+				font-size: 20px;
 				span{
 					display:block;
 					float:right;
 					color: #999999;
 					padding-left:5px;
 					font-size: 14px;
-					line-height:32px;
+					line-height:20px;
 			    }
 				margin-left: 10px;
 				&.on{
