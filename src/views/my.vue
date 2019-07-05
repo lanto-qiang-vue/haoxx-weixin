@@ -13,8 +13,8 @@
 	</div>
 
 	<ul class="list">
-		<router-link tag="div" to="/etc-promoter" v-show="!userinfo.isEtcPromoters" class="etc-promoter">
-			<img src="~@/assets/img/obu/icon-v.png"/><span>ETC分享开通奖励30元</span>
+		<router-link tag="div" to="/etc-promoter" v-show="userinfo.isEtcPromoters" class="etc-promoter">
+			<img src="~@/assets/img/obu/icon-v.png"/><span>ETC分享·30元专属特权奖励</span>
 			<span class="more">查看详情</span><i></i>
 		</router-link>
 		<router-link tag="li" :to="myCarPath">我的爱车 <i></i></router-link>
@@ -234,7 +234,8 @@ export default {
 			border-radius:5px;
 			padding: 0 10px;
 			margin-top: 5px;
-			margin-right: 10px;
+			left: -8px;
+			/*margin-right: 10px;*/
 			position: relative;
 			*{
 				vertical-align: middle;
