@@ -364,6 +364,14 @@ routes: [
 		component: () => import('@/views/activity/etc.vue')
 	},
 	{
+		path: '/etc-promoter',
+		name: 'etc-promoter',
+		meta: {
+			footer: true,
+		},
+		component: () => import('@/views/activity/etc-promoter.vue')
+	},
+	{
 		path: '/accredit',
 		name: 'accredit',
 		meta: {
