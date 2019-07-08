@@ -23,10 +23,10 @@ export default {
 	beforeCreate(){
 		history.replaceState(null, null, window.location.origin + window.location.hash)
 	},
-	mounted(){
-		this.mount= true
-		this.isFollow= true
-	},
+	// mounted(){
+	// 	this.mount= true
+	// 	this.isFollow= true
+	// },
 	mounted(){
 		this.mount= true
 		let openid= localStorage.getItem("OPENID");
