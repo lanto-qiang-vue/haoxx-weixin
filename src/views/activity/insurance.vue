@@ -105,6 +105,6 @@ export default {
 .insurance{
 	width: 100vw;
 	min-height: 100vh;
-	overflow: hidden;
+	overflow: auto;
 }
 </style>
