@@ -21,7 +21,7 @@ export default {
 		}
 	},
 	beforeCreate(){
-		history.replaceState(null, null, window.location.origin + window.location.hash)
+
 	},
 	// mounted(){
 	// 	this.mount= true
@@ -30,25 +30,23 @@ export default {
 	mounted(){
 		this.mount= true
 		let openid= localStorage.getItem("OPENID");
-		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
-			wx.ready(()=>{
-				wx.hideMenuItems({
-					menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
-				});
-			})
 
-			if(openid){
-				this.funopenidGetInfo(openid)
-			}else{
-				if(this.isWeixn){
-					getWeixinId((data)=>{
-						this.funopenidGetInfo(data.openid)
-					})
-				}
+		if(openid){
+			this.replaceState()
+			this.funopenidGetInfo(openid)
+		}else{
+			if(this.isWeixn){
+				getWeixinId((data)=>{
+					this.replaceState()
+					this.funopenidGetInfo(data.openid)
+				})
 			}
-		})
+		}
 	},
 	methods:{
+		replaceState(){
+			history.replaceState(null, null, window.location.origin + window.location.hash)
+		},
 		funopenidGetInfo(openid){
 			openidGetInfo(openid, (res)=>{
 				// console.log('res.data', res.data)
@@ -56,7 +54,16 @@ export default {
 					window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
 				}else{
 					this.isFollow= true
-					this.shareConfig()
+
+					getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
+						wx.ready(()=>{
+							wx.hideMenuItems({
+								menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
+							});
+						})
+
+						this.shareConfig()
+					})
 				}
 			})
 		},
