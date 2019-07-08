@@ -27,27 +27,27 @@ export default {
 		this.mount= true
 		this.isFollow= true
 	},
-	// mounted(){
-	// 	this.mount= true
-	// 	let openid= localStorage.getItem("OPENID");
-	// 	getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
-	// 		wx.ready(()=>{
-	// 			wx.hideMenuItems({
-	// 				menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
-	// 			});
-	// 		})
-	//
-	// 		if(openid){
-	// 			this.funopenidGetInfo(openid)
-	// 		}else{
-	// 			if(this.isWeixn){
-	// 				getWeixinId((data)=>{
-	// 					this.funopenidGetInfo(data.openid)
-	// 				})
-	// 			}
-	// 		}
-	// 	})
-	// },
+	mounted(){
+		this.mount= true
+		let openid= localStorage.getItem("OPENID");
+		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
+			wx.ready(()=>{
+				wx.hideMenuItems({
+					menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
+				});
+			})
+
+			if(openid){
+				this.funopenidGetInfo(openid)
+			}else{
+				if(this.isWeixn){
+					getWeixinId((data)=>{
+						this.funopenidGetInfo(data.openid)
+					})
+				}
+			}
+		})
+	},
 	methods:{
 		funopenidGetInfo(openid){
 			openidGetInfo(openid, (res)=>{
