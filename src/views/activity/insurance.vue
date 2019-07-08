@@ -1,5 +1,5 @@
 <template>
-	<iframe v-show="isFollow" v-if="mount" class="insurance" src="https://wx.cpic.com.cn/sxwxywhb/safetyBelt/index?openid=ox6yJju2tP9KBzAYsQDBVN-hdS1g&sceneId=&empno=SHH19996&empOpenid=ox6yJjpQxD3WgV01lDY3bvAlZ3_o"></iframe>
+	<iframe :style="{opacity: isFollow?1:0}" v-if="mount" class="insurance" src="https://wx.cpic.com.cn/sxwxywhb/safetyBelt/index?openid=ox6yJju2tP9KBzAYsQDBVN-hdS1g&sceneId=&empno=SHH19996&empOpenid=ox6yJjpQxD3WgV01lDY3bvAlZ3_o"></iframe>
 </template>
 
 <script>
@@ -25,25 +25,29 @@ export default {
 	},
 	mounted(){
 		this.mount= true
-		let openid= localStorage.getItem("OPENID");
-		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
-			wx.ready(()=>{
-				wx.hideMenuItems({
-					menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
-				});
-			})
-
-			if(openid){
-				this.funopenidGetInfo(openid)
-			}else{
-				if(this.isWeixn){
-					getWeixinId((data)=>{
-						this.funopenidGetInfo(data.openid)
-					})
-				}
-			}
-		})
+		this.isFollow= true
 	},
+	// mounted(){
+	// 	this.mount= true
+	// 	let openid= localStorage.getItem("OPENID");
+	// 	getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
+	// 		wx.ready(()=>{
+	// 			wx.hideMenuItems({
+	// 				menuList: ["menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:share:facebook", "menuItem:share:QZone"]
+	// 			});
+	// 		})
+	//
+	// 		if(openid){
+	// 			this.funopenidGetInfo(openid)
+	// 		}else{
+	// 			if(this.isWeixn){
+	// 				getWeixinId((data)=>{
+	// 					this.funopenidGetInfo(data.openid)
+	// 				})
+	// 			}
+	// 		}
+	// 	})
+	// },
 	methods:{
 		funopenidGetInfo(openid){
 			openidGetInfo(openid, (res)=>{
