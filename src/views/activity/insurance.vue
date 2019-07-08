@@ -1,5 +1,5 @@
 <template>
-	<iframe v-show="isFollow" class="insurance" src="https://wx.cpic.com.cn/sxwxywhb/safetyBelt/index?openid=ox6yJju2tP9KBzAYsQDBVN-hdS1g&sceneId=&empno=SHH19996&empOpenid=ox6yJjpQxD3WgV01lDY3bvAlZ3_o"></iframe>
+	<iframe v-show="isFollow" v-if="mount" class="insurance" src="https://wx.cpic.com.cn/sxwxywhb/safetyBelt/index?openid=ox6yJju2tP9KBzAYsQDBVN-hdS1g&sceneId=&empno=SHH19996&empOpenid=ox6yJjpQxD3WgV01lDY3bvAlZ3_o"></iframe>
 </template>
 
 <script>
@@ -8,7 +8,8 @@ export default {
 	name: "insurance",
 	data(){
 		return{
-			isFollow: false
+			isFollow: false,
+			mount: false
 		}
 	},
 	computed:{
@@ -23,6 +24,7 @@ export default {
 		history.replaceState(null, null, window.location.origin + window.location.hash)
 	},
 	mounted(){
+		this.mount= true
 		let openid= localStorage.getItem("OPENID");
 		getwxticket(['hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'showMenuItems'], ()=>{
 			wx.ready(()=>{
