@@ -372,6 +372,17 @@ routes: [
 		component: () => import('@/views/activity/etc-promoter.vue')
 	},
 	{
+		path: '/insurance',
+		name: 'insurance',
+		meta: {
+			share: true,
+			title: '安全带 生命带',
+			notGetLocation: true,
+			notGetWeixinId: true,
+		},
+		component: () => import('@/views/activity/insurance.vue')
+	},
+	{
 		path: '/accredit',
 		name: 'accredit',
 		meta: {
