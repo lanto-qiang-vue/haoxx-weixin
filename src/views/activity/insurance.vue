@@ -8,7 +8,7 @@ export default {
 	name: "insurance",
 	data(){
 		return{
-			isFollow: false,
+			isFollow: true,
 			mount: false
 		}
 	},
@@ -103,8 +103,8 @@ export default {
 
 <style scoped lang="less">
 .insurance{
-	width: 100%;
+	width: 100vw;
 	min-height: 100vh;
-	overflow: auto;
+	overflow: hidden;
 }
 </style>
