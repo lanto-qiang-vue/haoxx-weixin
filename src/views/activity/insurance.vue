@@ -1,5 +1,45 @@
 <template>
-	<iframe :style="{opacity: isFollow?1:0}" v-if="mount" class="insurance" src="https://wx.cpic.com.cn/sxwxywhb/safetyBelt/index?openid=ox6yJju2tP9KBzAYsQDBVN-hdS1g&sceneId=&empno=SHH19996&empOpenid=ox6yJjpQxD3WgV01lDY3bvAlZ3_o"></iframe>
+<div class="insurance">
+	<div class="top">
+		<img class="m1" src="/img/insurance/1.png"/>
+		<img class="m2" src="/img/insurance/2.png" @click="w1=true"/>
+	</div>
+	<div class="bot">
+		<img src="/img/insurance/3.png"/>
+		<img src="/img/insurance/4.png"/>
+		<a class="but" href="https://wx.cpic.com.cn/sxwxywhb/safetyBelt/clickPromise?empno=SHH19996&sceneId=&empOpenid=7bd324f44ee115c9232a277becb3f392e9924e84d22688041fbbf92698fc2b8a">领取赠险</a>
+	</div>
+	<div class="foot">
+		<p>承诺出行系好安全带，立即送10万保障</p>
+		<a @click="w2=true">活动须知</a>
+		<p>业务员工号:SHH19996</p>
+	</div>
+
+	<div class="window" v-show="w1">
+		<div class="mask"></div>
+		<div class="box">
+			<div class="head"><div class="close" @click="w1= false">✕</div></div>
+			<div class="content">
+				<img src="/img/insurance/f1.png"/>
+				<img src="/img/insurance/f2.png"/>
+			</div>
+		</div>
+	</div>
+
+	<div class="window" v-show="w2">
+		<div class="mask"></div>
+		<div class="box">
+			<div class="head"><div class="close" @click="w2= false">✕</div></div>
+			<div class="content know">
+				<a><i></i><span>活动须知内容</span><i></i></a>
+				<p>1、活动时间：2019年7月1日至12月31日或额度赠完为止。</p>
+				<p>2、承诺出行系好安全带即可赠送10万意外保障。</p>
+				<p>3、活动期间同一身份证号码只能领取一次。</p>
+				<p>4、领取客户必须年满18周岁。</p>
+			</div>
+		</div>
+	</div>
+</div>
 </template>
 
 <script>
@@ -8,8 +48,10 @@ export default {
 	name: "insurance",
 	data(){
 		return{
+			w1: false,
+			w2: false,
 			isFollow: true,
-			mount: false
+			mount: false,
 		}
 	},
 	computed:{
@@ -103,8 +145,166 @@ export default {
 
 <style scoped lang="less">
 .insurance{
-	width: 100vw;
-	min-height: 100vh;
-	overflow: auto;
+	.top{
+		background:linear-gradient(180deg, #56adeb 0%, #d8edf4 50%, #d8edf4 100%);
+		img{
+			width: 100%;
+			padding: 10px;
+		}
+		.m1{
+			padding-bottom: 0;
+		}
+		.m2{
+			padding-top: 0;
+		}
+	}
+	.bot{
+		img{
+			width: 100%;
+			padding: 0 10px;
+		}
+		a{
+			display: block;
+			margin: 10px;
+			line-height: 40px;
+			border-radius: 6px;
+			background:linear-gradient(180deg, #f8efb3 0%, #ecab24 100%);
+			text-align: center;
+			font-size: 16px;
+			color: #d37816;
+		}
+	}
+	.foot{
+		text-align: center;
+		margin: 20px 0;
+		p{
+			color: black;
+			font-size: 12px;
+		}
+		a{
+			display: inline-block;
+			color: #22a2ec;
+			margin-bottom: 20px;
+			text-decoration: underline;
+		}
+	}
+	.window{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		.mask{
+			width: 100%;
+			height: 100%;
+			background-color: black;
+			opacity: .5;
+		}
+		.box{
+			width: 80%;
+			height: auto;
+			overflow: auto;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			/*border-top: 20px solid #fbfbfb;*/
+			padding-top: 20px;
+			border-bottom: 20px solid #fbfbfb;
+			border-radius: 6px;
+			.head{
+				width: 100%;
+				height: 20px;
+				background-color: #fbfbfb;
+				position: absolute;
+				top: 0;
+				left: 0;
+				.close{
+					position: absolute;
+					padding: 5px;
+					font-size: 14px;
+					top: 0;
+					right: 0;
+					height: 20px;
+					width: 20px;
+					line-height: 10px;
+				}
+			}
+			.content{
+				width: 100%;
+				height: auto;
+				max-height: 65vh;
+				overflow: auto;
+				background-color: white;
+				*{
+					max-width: 100%;
+				}
+			}
+		}
+	}
+	.know{
+		a{
+			text-align: center;
+			display: block;
+			font-size: 16px;
+			color: black;
+			margin-bottom: 10px;
+			line-height: 24px;
+			i{
+				display: inline-block;
+				width: 70px;
+				height: 24px;
+				position: relative;
+				vertical-align: middle;
+				&:first-child{
+					&:before{
+						content: '';
+						width: 4px;
+						height: 4px;
+						background-color: #22a2ec;
+						position: absolute;
+						top: 8px;
+						right: 5px;
+						transform: rotate(45deg);
+					}
+					&:after{
+						content: '';
+						width: 60px;
+						height: 1px;
+						background:linear-gradient(-45deg, #22a2ec 0%, #ffffff 100%);
+						position: absolute;
+						top: 10px;
+						right: 12px;
+					}
+				}
+				&:last-child{
+					&:before{
+						content: '';
+						width: 4px;
+						height: 4px;
+						background-color: #22a2ec;
+						position: absolute;
+						top: 8px;
+						left: 5px;
+						transform: rotate(45deg);
+					}
+					&:after{
+						content: '';
+						width: 60px;
+						height: 1px;
+						background:linear-gradient(45deg, #22a2ec 0%, #ffffff 100%);
+						position: absolute;
+						top: 10px;
+						left: 12px;
+					}
+				}
+			}
+		}
+		p{
+			font-size: 12px;
+			padding: 0 15px;
+			color: #666666;
+		}
+	}
 }
 </style>

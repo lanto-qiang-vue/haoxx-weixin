@@ -46,7 +46,7 @@
 	<Form class="common-form" :label-width="100" label-position="left" ref="form">
 		<FormItem label="使用细则" ></FormItem>
 		<FormItem class="top-position">
-			<div class="content" v-html="detail.note">
+			<div class="content" v-html="detail.content">
 				<!--<p class="coupons-rules">1､ 优惠券有使用期限限制，过了有效期不能使用；</p>-->
 				<!--<p class="coupons-rules">2､ 订单中包含特价商品时不能使用优惠券，优惠券不能与其他优惠（如促销活动）同时使用；</p>-->
 				<!--<p class="coupons-rules">3､ 优惠券只能抵扣订单金额，优惠金额超出订单金额部分不能再次使用，不能兑换现金；</p>-->
