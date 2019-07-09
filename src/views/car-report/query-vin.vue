@@ -1,49 +1,78 @@
 <template>
 <div class="query-vin">
-	<div class="row">
-		<label>车架号</label>
-		<input ref="input" v-model="upperCaseVin" placeholder="请输入车架号" maxlength="17"/>
-		<i class="fa fa-camera" @click="showCamera= true"></i>
-		<!--<div class="look" @click="query(vin)">查看</div>-->
+	<ul class="tab">
+		<li :class="{on: active=='vin'}" @click="active='vin'"><span>按车架号查询</span></li>
+		<li :class="{on: active=='car'}" @click="active='car'"><span>按我的爱车查询</span></li>
+	</ul>
+
+	<div class="block vin" v-show="active=='vin'">
+		<Form class="common-form vin-form" :label-width="50" label-position="left" ref="form">
+			<FormItem label="车架号">
+				<Input v-model.trim="upperCaseVin" placeholder="请输入车架号或拍照识别" :maxlength="17"></Input>
+				<i class="fa fa-camera" @click="showCamera= true"></i>
+			</FormItem>
+		</Form>
 		<submit-button class="look" @click="query(vin)" :datas="{vin}" :rules="rule" :feedback="true">查看</submit-button>
-	</div>
-	<div class="row">
-		<label>我的爱车</label>
-		<div class="look on" @click="lookMyCar">查看</div>
+
+		<h5 v-show="showReport">已付费报告</h5>
+		<ul class="report-list" v-show="showReport">
+			<Form class="common-form" :label-width="60" label-position="left"
+			      v-for="(item, key) in reportList" :key="key">
+				<FormItem label="车架号">
+					<Input :value="item.vin" readonly></Input>
+				</FormItem>
+				<FormItem label="查询时间">
+					<Input :value="item.createTime" readonly></Input>
+				</FormItem>
+				<FormItem label="支付金额">
+					<Input :value="item.amount" readonly></Input>
+				</FormItem>
+				<FormItem label="报告版本" class="noborder">
+					<Input :value="item.type" readonly></Input>
+					<router-link :to="`/report/report?id=${item.id}&from=my`" class="detail">查看详情</router-link>
+				</FormItem>
+			</Form>
+		</ul>
+		<router-link tag="div" class="button" to="/my/car-report" v-show="showReport">查看更多>></router-link>
 	</div>
 
-	<router-link tag="div" class="button" to="/my/car-report">我的报告</router-link>
+	<div class="block car" v-show="active=='car'">
+		<div class="no-car" v-show="!showCar">
+			<img src="~@/assets/img/report/no-report.png"/>
+			<p>暂无爱车信息，<router-link to="/bind-car?back=true">赶紧去添加爱车吧>></router-link></p>
+		</div>
+		<ul class="car-list" v-show="showCar">
+			<li v-for="(item, key) in carList" :key="key">
+				<p><label>车牌号：</label>{{item.vehiclePlateNumber}}</p>
+				<p><label>车架号：</label>{{item.vin}}</p>
+				<a @click="query(item.vin)">查看</a>
+			</li>
+		</ul>
+	</div>
 
 	<upload mode="camera" @done="getVin" ref="upload" operate="base64"></upload>
-
 	<mt-actionsheet
 			:actions="actions"
 			v-model="showCamera">
 	</mt-actionsheet>
-
-	<mt-popup
-			v-model="showCarList"
-			position="right"
-			popup-transition="popup-fade">
-		<car-list ref="carlist" style="width: 90vw" @select="getCar" :show-button="false"></car-list>
-	</mt-popup>
 </div>
 </template>
 
 <script>
 import { getWeixinId, reg} from '@/util.js'
 import Upload from '@/components/compress-upload.vue'
-import CarList from '@/views/car-record/car-list.vue'
 import SubmitButton from '@/components/submit-button.vue'
 export default {
 	name: "query-vin",
-	components: { Upload, CarList, SubmitButton},
+	components: { Upload, SubmitButton},
 	data(){
 		return{
+			active: 'vin',
 			vin: '',
 			showCamera: false,
-			showCarList: false,
 			resolve: null,
+			reportList: [],
+			carList: [],
 		}
 	},
 	computed:{
@@ -84,13 +113,40 @@ export default {
 					}
 				}}
 			}
+		},
+		showReport(){
+			return this.reportList.length> 0
+		},
+		showCar(){
+			return this.carList.length> 0
 		}
 	},
+	mounted(){
+		this.getReport()
+		this.getCarList()
+	},
 	methods:{
-		getCar(item){
-			this.vin= item.vin
-			this.showCarList= false
-			this.query(item.vin)
+		getReport(){
+			this.axiosQixiu.post('/hxxdc/order/list', {
+				pageNo: 1,
+				pageSize: 2,
+			},{hxxtoken: true}).then( (res) => {
+				if(res.data.items&&res.data.items.length){
+					this.reportList= res.data.items
+				}
+			})
+		},
+		getCarList(){
+			this.axiosQixiu.post('/hxxdc/vehicle/bind/list', {
+				pageNo: 1,
+				pageSize: 10000,
+			},{hxxtoken: true}).then( (res) => {
+				if(res.data.code=='0'){
+					if(res.data.items&&res.data.items.length){
+						this.carList= res.data.items
+					}
+				}
+			})
 		},
 		getCamera(){
 			return new Promise((resolve, reject) => {
@@ -150,34 +206,6 @@ export default {
 			}
 
 		},
-		lookMyCar(){
-			let length= this.$refs.carlist.list.length
-			// console.log('this.$refs.carlist.list.length', length)
-			switch (length){
-				case 0:{
-					this.$messagebox({message: '请先绑定个人爱车', closeOnClickModal: false,
-						confirmButtonText: '去绑定', cancelButtonText: '取消', showCancelButton: true}).then(action => {
-						// console.log('action', action)
-						switch (action){
-							case 'confirm':{
-								this.$router.push({path: '/bind-car'})
-								break
-							}
-							case 'cancel':{
-							}
-						}
-					})
-					break
-				}
-				case 1:{
-					this.query(this.$refs.carlist.list[0].vin)
-					break
-				}
-				default :{
-					this.showCarList= true
-				}
-			}
-		}
 	}
 
 }
@@ -185,58 +213,204 @@ export default {
 
 <style scoped lang="less">
 .query-vin{
-	.row{
-		height: 70px;
-		line-height: 60px;
-		border-bottom: 10px solid #F3F3F3;
-		padding: 0 15px;
-		font-size: 14px;
-		position: relative;
-		label{
+	height: 100vh;
+	overflow: auto;
+	.tab{
+		overflow: hidden;
+		border-bottom: 5px #F7F7F7 solid;
+		text-align: center;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: white;
+		li{
+			width: 150px;
 			display: inline-block;
-			min-width: 55px;
+			text-align: center;
+			font-size: 16px;
 			color: #333333;
+			span{
+				display: inline-block;
+				margin: 0 auto;
+				line-height: 38px;
+				border-bottom: 2px solid transparent;
+			}
 		}
-		input{
-			width: 55%;
-			line-height: 22px;
+		li.on span{
+			color: #FF6D0E;
+			border-bottom: 2px solid  #FF6D0E;
 		}
-		i{
-			color: #666666;
-			font-size: 20px;
-			position: absolute;
-			top: 50%;
-			right: 80px;
-			transform: translateY(-50%);
+	}
+	.block{
+		padding-top: 45px;
+		min-height: 100%;
+		position: relative;
+		overflow: hidden;
+	}
+	.vin.block{
+		.vin-form{
+			.fa-camera{
+				/*color: #666666;*/
+				width: auto;
+				margin: 0;
+				font-size: 20px;
+				position: absolute;
+				top: 50%;
+				right: 20px;
+				transform: translateY(-50%);
+			}
 		}
 		.look{
-			display: inline-block;
-			height: 24px;
-			line-height: 24px;
-			padding: 0 15px;
-			/*background-color: #FFCB9C;*/
-			background-color: #FF9738;
+			display: block;
+			line-height: 40px;
+			text-align: center;
+			width: 80%;
+			margin: 20px auto;
+			background-color: #FFCB9C;
 			color: white;
-			border-radius: 18px;
-			position: absolute;
-			top: 50%;
-			right: 15px;
-			transform: translateY(-50%);
+			font-size: 16px;
+			border-radius: 20px;
 			&.on{
 				background-color: #FF9738;
 			}
 		}
+		h5{
+			line-height: 30px;
+			padding: 0 15px;
+			font-size: 12px;
+			font-weight: 400;
+			background-color: #F3F3F3;
+		}
+		.report-list{
+			.common-form{
+				border-bottom: 5px solid #F3F3F3;
+				.detail{
+					font-size: 12px;
+					width:80px;
+					line-height: 24px;
+					text-align: center;
+					border: 1px solid #FF9738;
+					color: #FF9738;
+					border-radius: 12px;
+					position: absolute;
+					right: 15px;
+					top: 50%;
+					transform: translateY(-50%);
+					margin: 0;
+				}
+			}
+		}
+		.button{
+			width: 100px;
+			margin: 10px auto;
+			text-align: center;
+			color: #FF9738;
+			font-size: 14px;
+		}
 	}
-	.button{
-		text-align: center;
-		width:150px;
-		line-height: 34px;
-		height:36px;
-		border-radius:20px;
-		border:1px solid #D6D6D6;
-		color: #4A4A4A;
-		font-size: 14px;
-		margin: 70px auto 0;
+	.car.block{
+		.no-car{
+			position: absolute;
+			top: 40%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			img{
+				width: 50px;
+				margin-bottom: 40px;
+			}
+			p{
+				color: #999999;
+				white-space: nowrap;
+				a{
+					color: #FF9738;
+				}
+			}
+		}
+		.car-list{
+			padding-left: 15px;
+			li{
+				border-bottom: 1px solid #F3F3F3;
+				padding: 10px 0;
+				position: relative;
+				p{
+					color: #333333;
+					line-height: 24px;
+					label{
+						color: #999999;
+					}
+				}
+				a{
+					line-height: 22px;
+					padding: 0 15px;
+					display: inline-block;
+					border: 1px solid #FF9738;
+					color: #FF9738;
+					font-size: 12px;
+					border-radius: 18px;
+					position: absolute;
+					right: 20px;
+					bottom: 10px;
+				}
+			}
+		}
 	}
 }
+/*.query-vin{*/
+	/*.row{*/
+		/*height: 70px;*/
+		/*line-height: 60px;*/
+		/*border-bottom: 10px solid #F3F3F3;*/
+		/*padding: 0 15px;*/
+		/*font-size: 14px;*/
+		/*position: relative;*/
+		/*label{*/
+			/*display: inline-block;*/
+			/*min-width: 55px;*/
+			/*color: #333333;*/
+		/*}*/
+		/*input{*/
+			/*width: 55%;*/
+			/*line-height: 22px;*/
+		/*}*/
+		/*i{*/
+			/*color: #666666;*/
+			/*font-size: 20px;*/
+			/*position: absolute;*/
+			/*top: 50%;*/
+			/*right: 80px;*/
+			/*transform: translateY(-50%);*/
+		/*}*/
+		/*.look{*/
+			/*display: inline-block;*/
+			/*height: 24px;*/
+			/*line-height: 24px;*/
+			/*padding: 0 15px;*/
+			/*!*background-color: #FFCB9C;*!*/
+			/*background-color: #FF9738;*/
+			/*color: white;*/
+			/*border-radius: 18px;*/
+			/*position: absolute;*/
+			/*top: 50%;*/
+			/*right: 15px;*/
+			/*transform: translateY(-50%);*/
+			/*&.on{*/
+				/*background-color: #FF9738;*/
+			/*}*/
+		/*}*/
+	/*}*/
+	/*.button{*/
+		/*text-align: center;*/
+		/*width:150px;*/
+		/*line-height: 34px;*/
+		/*height:36px;*/
+		/*border-radius:20px;*/
+		/*border:1px solid #D6D6D6;*/
+		/*color: #4A4A4A;*/
+		/*font-size: 14px;*/
+		/*margin: 70px auto 0;*/
+	/*}*/
+/*}*/
 </style>
