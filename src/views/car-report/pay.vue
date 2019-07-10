@@ -82,17 +82,20 @@ export default {
 	computed:{
 		showCouponName(){
 			let item= this.coupon
-			return item.name? item.name + (item.amount? `-抵扣${item.amount}元`: '') : ''
+			// return item.name? item.name + (item.amount? `-抵扣${item.amount}元`: '') : ''
+			return item.name
 		},
 		showPrice(){
-			let oldP= parseFloat(this.radio.price||0) , minus= parseFloat(this.coupon.amount||0) , newP=0;
-			if(minus){
-				let val= oldP - minus
-				newP= val>=0? val: 0
-			}else{
-				newP= oldP
-			}
-			return newP.toFixed(2)
+			// let oldP= parseFloat(this.radio.price||0) , minus= parseFloat(this.coupon.amount||0) , newP=0;
+			// if(minus){
+			// 	let val= oldP - minus
+			// 	newP= val>=0? val: 0
+			// }else{
+			// 	newP= oldP
+			// }
+			// return newP.toFixed(2)
+
+			return this.coupon.amount|| this.radio.price
 		}
 	},
 	mounted(){

@@ -10,7 +10,8 @@
 		<li v-for="(item, key) in showList" :class="{status3: !able}" :key="key">
 			<div class="content">
 				<div class="left">
-					<label>{{showName(item)}}</label>
+					<!--<label>{{showName(item)}}</label>-->
+					<label>{{item.name}}</label>
 				</div>
 				<i></i>
 				<div class="right">
