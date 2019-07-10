@@ -62,6 +62,7 @@ export default {
 	},
 	methods:{
 		open(id){
+			this.enableUsed= []
 			this.$router.push(  this.$route.path+ this.getBlockHash(id))
 			this.getList(id)
 		},
@@ -96,17 +97,18 @@ export default {
 				}
 			})
 		},
-		showName(item){
-			let num= parseFloat(item.discount || 0), text=''
-			if(num>0 && num<1){
+		showName({discount, use_type, name}){
+			let num= parseFloat(discount || 0), text=''
+			if(use_type== 10561003){
 				text= num*10 + '折'
-			}else if(num>=1){
+			}else if(use_type== 10561004){
 				text= num + '元'
 			}
-			return item.name + text
+			return name + text
 			// return item.name + (item.amount? `-抵扣${item.amount}元`: '')
 		},
 		use(item){
+			item.name= this.showName(item)
 			this.$emit('ok', item)
 			this.$router.go(-1)
 		},

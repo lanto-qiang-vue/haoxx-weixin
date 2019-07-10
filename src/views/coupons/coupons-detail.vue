@@ -4,7 +4,7 @@
 		<li>
 			<div class="content">
 				<div class="left">
-					<p>{{detail.name + discTest}}</p>
+					<p>{{(detail.name|| '') + discTest}}</p>
 					<span>有效期：{{formatDate(detail.begin_time)}}-{{formatDate(detail.end_time)}}</span>
 					<span style="margin: 0">限用车牌：{{license|| '无'}}</span>
 				</div>
@@ -80,10 +80,10 @@ export default {
 			return this.detail.note? this.detail.note.license: ''
 		},
 		discTest(){
-			let num= parseFloat(this.detail.discount), text=''
-			if(num>0 && num<1){
+			let num= parseFloat(this.detail.discount|| 0), text=''
+			if(this.detail.use_type== 10561003){
 				text= num*10 + '折'
-			}else if(num>=1){
+			}else if(this.detail.use_type== 10561004){
 				text= num + '元'
 			}
 			return text
