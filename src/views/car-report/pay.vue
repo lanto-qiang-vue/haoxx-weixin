@@ -82,8 +82,14 @@ export default {
 	computed:{
 		showCouponName(){
 			let item= this.coupon
+			let num= parseFloat(item.discount|| 0), text=''
+			if(num>0 && num<1){
+				text= num*10 + '折'
+			}else if(num>=1){
+				text= num + '元'
+			}
+			return item.name? item.name + text : ''
 			// return item.name? item.name + (item.amount? `-抵扣${item.amount}元`: '') : ''
-			return item.name
 		},
 		showPrice(){
 			// let oldP= parseFloat(this.radio.price||0) , minus= parseFloat(this.coupon.amount||0) , newP=0;

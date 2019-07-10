@@ -10,8 +10,8 @@
 		<li v-for="(item, key) in showList" :class="{status3: !able}" :key="key">
 			<div class="content">
 				<div class="left">
-					<!--<label>{{showName(item)}}</label>-->
-					<label>{{item.name}}</label>
+					<label>{{showName(item)}}</label>
+					<!--<label>{{item.name}}</label>-->
 				</div>
 				<i></i>
 				<div class="right">
@@ -97,7 +97,14 @@ export default {
 			})
 		},
 		showName(item){
-			return item.name + (item.amount? `-抵扣${item.amount}元`: '')
+			let num= parseFloat(item.discount || 0), text=''
+			if(num>0 && num<1){
+				text= num*10 + '折'
+			}else if(num>=1){
+				text= num + '元'
+			}
+			return item.name + text
+			// return item.name + (item.amount? `-抵扣${item.amount}元`: '')
 		},
 		use(item){
 			this.$emit('ok', item)
