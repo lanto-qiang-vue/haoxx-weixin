@@ -14,7 +14,7 @@
 		             :class="`status${item.isuse}`" :key="key">
 			<div class="content">
 				<div class="left">
-					<p>{{item.name}}</p>
+					<p>{{item.name+ discTest(item.discount)}}</p>
 					<span>有效期{{formatDate(item.begin_time)}}-{{formatDate(item.end_time)}}</span>
 					<span style="margin: 0">限用车牌：{{item.license || '无'}}</span>
 				</div>
@@ -96,6 +96,15 @@ export default {
 			if(item.isuse!=3){
 				this.$router.push(`/coupons-detail?code=${item.code}`)
 			}
+		},
+		discTest(discount){
+			let num= parseFloat(discount), text=''
+			if(num>0 && num<1){
+				text= num*10 + '折'
+			}else if(num>=1){
+				text= num + '元'
+			}
+			return text
 		}
 	}
 }

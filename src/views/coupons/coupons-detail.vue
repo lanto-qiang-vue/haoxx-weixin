@@ -4,7 +4,7 @@
 		<li>
 			<div class="content">
 				<div class="left">
-					<p>{{detail.name}}</p>
+					<p>{{detail.name + discTest}}</p>
 					<span>有效期：{{formatDate(detail.begin_time)}}-{{formatDate(detail.end_time)}}</span>
 					<span style="margin: 0">限用车牌：{{license|| '无'}}</span>
 				</div>
@@ -38,6 +38,9 @@
 		</FormItem>
 		<FormItem label="门店地址" v-show="detail.isuse == 2">
 			<span class="line">{{detail.tenantAdd}}</span>
+		</FormItem>
+		<FormItem label="使用途径" v-show="detail.way">
+			<span class="line">{{detail.way}}</span>
 		</FormItem>
 		<FormItem label="适用门店">
 			<router-link tag="span" :to="'/coupons-coms?road_license='+detail.ROAD_LICENSE" class="ivu-input half select"></router-link>
@@ -75,6 +78,15 @@ export default {
 		},
 		license(){
 			return this.detail.note? this.detail.note.license: ''
+		},
+		discTest(){
+			let num= parseFloat(this.detail.discount), text=''
+			if(num>0 && num<1){
+				text= num*10 + '折'
+			}else if(num>=1){
+				text= num + '元'
+			}
+			return text
 		}
 	},
 	mounted(){
