@@ -1,5 +1,5 @@
 <template>
-<div class="insurance">
+<div class="insurance" v-show="isFollow">
 	<div class="top">
 		<img class="m1" src="/img/insurance/1.png"/>
 		<img class="m2" src="/img/insurance/2.png" @click="w1=true"/>
@@ -51,7 +51,6 @@ export default {
 			w1: false,
 			w2: false,
 			isFollow: true,
-			mount: false,
 		}
 	},
 	computed:{
@@ -70,7 +69,6 @@ export default {
 	// 	this.isFollow= true
 	// },
 	mounted(){
-		this.mount= true
 		let openid= localStorage.getItem("OPENID");
 
 		if(openid){
