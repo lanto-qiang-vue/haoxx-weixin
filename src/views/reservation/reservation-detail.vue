@@ -1,38 +1,44 @@
 <template>
 <div class="reservation-detail">
-	<div :class="['status', 'statu'+status]">{{$store.state.user.unit[form.STATUS]|| '新建'}}</div>
+	<!--<div :class="['status', 'statu'+status]">{{$store.state.user.unit[form.STATUS]|| '新建'}}</div>-->
 	<Form :class="['common-form']" :model="form" :rules="ruleValidate"
 	      :label-width="80" label-position="left" ref="form">
-		<FormItem label="门店名称">
-			<span class="line">{{TENANT_NAME}}</span>
+		<!--<FormItem label="门店名称">-->
+			<!--<span class="line">{{TENANT_NAME}}</span>-->
+		<!--</FormItem>-->
+		<FormItem label="预约时间" prop="appointmentTime">
+			<span class="ivu-input select" readonly @click="open">{{form.appointmentTime|| '请选择来店时间'}}</span>
 		</FormItem>
-		<FormItem label="到店时间" prop="appointmentTime">
-			<span class="ivu-input select"  readonly @click="open">{{form.appointmentTime}}</span>
-		</FormItem>
-		<FormItem label="当前里程" prop="MILEAGE">
-			<Input v-model.trim="form.MILEAGE" type="number"></Input>
-			<p style="position: absolute;top: 50%;right: 5px;transform: translateY(-50%);width: auto;margin: 0">公里</p>
-		</FormItem>
-		<FormItem label="预约人" prop="ORDER_PERSON">
-			<Input v-model.trim="form.ORDER_PERSON"></Input>
-		</FormItem>
-		<FormItem label="联系电话" prop="TELPHONE">
-			<Input v-model.trim="form.TELPHONE"></Input>
+		<FormItem label="预约服务" prop="">
+			<ul class="service-type">
+				<li v-for="(item , key) in serviceType" :key="key" :class="{on: item.checked}">{{item.name}}</li>
+			</ul>
 		</FormItem>
 		<FormItem label="车牌号码" prop="PLATE_NUM">
 			<Input v-model.trim="form.PLATE_NUM" style="padding-right: 15px"></Input>
 			<div class="next" @click="selectPlate"></div>
 		</FormItem>
-		<FormItem label="车辆型号" prop="VEHICLE_MODEL">
+		<FormItem label="车型车系" prop="VEHICLE_MODEL">
 			<Input v-model.trim="form.VEHICLE_MODEL" style="padding-right: 15px"></Input>
 			<div class="next" @click="$refs.vehicle.open()"></div>
 		</FormItem>
-		<FormItem label="维修类型" prop="REPAIR_TYPE">
-			<select-radio class="ivu-input select" v-model="form.REPAIR_TYPE" :options="typeList"></select-radio>
+		<FormItem label="当前里程" prop="MILEAGE">
+			<Input v-model.trim="form.MILEAGE" type="number"></Input>
+			<p style="position: absolute;top: 50%;right: 5px;transform: translateY(-50%);width: auto;margin: 0">公里</p>
 		</FormItem>
-		<FormItem label="故障描述" prop="FAULT_DESC">
-			<Input v-model.trim="form.FAULT_DESC"></Input>
+		<FormItem label="联系电话" prop="TELPHONE">
+			<Input v-model.trim="form.TELPHONE"></Input>
 		</FormItem>
+		<FormItem label="预约人" prop="ORDER_PERSON">
+			<Input v-model.trim="form.ORDER_PERSON"></Input>
+		</FormItem>
+
+		<!--<FormItem label="维修类型" prop="REPAIR_TYPE">-->
+			<!--<select-radio class="ivu-input select" v-model="form.REPAIR_TYPE" :options="typeList"></select-radio>-->
+		<!--</FormItem>-->
+		<!--<FormItem label="故障描述" prop="FAULT_DESC">-->
+			<!--<Input v-model.trim="form.FAULT_DESC"></Input>-->
+		<!--</FormItem>-->
 	</Form>
 	<div class="common-submit" @click="submit" v-show="!orderId"><a>提交预约</a></div>
 	<mt-datetime-picker
@@ -101,6 +107,12 @@ export default {
 				//新增字段
 				TID:'',
 			},
+			serviceType: [
+				{name: '保养', checked: false},
+				{name: '维修', checked: false},
+				{name: '漆面', checked: false},
+				{name: '洗车', checked: false},
+			],
             roadliense:"",//道路许可证
 			ruleValidate : {
 				appointmentTime: [rule],
@@ -206,6 +218,22 @@ export default {
 	}
 	.statu3{
 		color: #ed4014;
+	}
+	.service-type{
+		li{
+			color: #333333;
+			line-height: 22px;
+			padding: 0 15px;
+			display: inline-block;
+			margin: 3px 0 5px 5px;
+			float: left;
+			border: 1px solid #EEEEEE;
+			border-radius: 15px;
+			&.on{
+				color: #FF9738;
+				border-color: #FF9738;
+			}
+		}
 	}
 }
 </style>
