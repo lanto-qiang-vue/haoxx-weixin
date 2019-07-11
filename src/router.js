@@ -61,6 +61,13 @@ routes: [
 		component: () => import('@/views/setting/city-select.vue')
 	},
 	{
+		path: '/reservation',
+		name: 'reservation',
+		meta: {
+		},
+		component: () => import('@/views/reservation/reservation.vue')
+	},
+	{
 		path: '/my-reservation',
 		name: 'my-reservation',
 		meta: {
@@ -68,8 +75,8 @@ routes: [
 		component: () => import('@/views/reservation/my-reservation.vue')
 	},
 	{
-		path: '/reservation',
-		name: 'reservation',
+		path: '/reservation-detail',
+		name: 'reservation-detail',
 		meta: {
 		},
 		component: () => import('@/views/reservation/reservation-detail.vue')
@@ -157,14 +164,6 @@ routes: [
 			needAccredit: true,
 		},
 		component: () => import('@/views/car-record/bind-car.vue')
-	},
-	{
-		path: '/reservation-detail',
-		name: 'reservation-detail',
-		meta: {
-			needAccredit: false,
-		},
-		component: () => import('@/views/reservation/reservation-detail.vue')
 	},
 	{
 		path: '/remark-map',
