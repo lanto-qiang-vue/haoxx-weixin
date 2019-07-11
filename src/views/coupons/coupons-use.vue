@@ -94,6 +94,10 @@ export default {
 				if(res.data.code=='0'){
 					this.enableUsed= res.data.item.enableUsed ||[]
 					this.disableUsed= res.data.item.disableUsed || []
+
+					if(this.enableUsed.length==0){
+						this.$toast('暂无优惠券');
+					}
 				}
 			})
 		},
