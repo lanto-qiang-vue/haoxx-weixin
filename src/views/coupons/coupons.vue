@@ -16,7 +16,7 @@
 				<div class="left">
 					<p>{{item.name+ discTest(item)}}</p>
 					<span>有效期{{formatDate(item.begin_time)}}-{{formatDate(item.end_time)}}</span>
-					<span style="margin: 0">限用车牌：{{item.license || '无'}}</span>
+					<span style="margin: 0" v-show="item.license">限用车牌：{{item.license }}</span>
 				</div>
 				<i></i>
 				<div class="right">

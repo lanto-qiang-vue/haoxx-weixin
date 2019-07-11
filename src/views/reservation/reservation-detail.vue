@@ -66,8 +66,7 @@ import VehicleModel from '@/components/vehicle-model.vue'
 import CarList from '@/views/car-record/car-list.vue'
 export default {
 	name: "reservation-detail",
-	components: {SelectRadio, VehicleModel, CarList},
-	data(){
+	components: {SelectRadio, VehicleModel, CarList}, data(){
 		let rule= { required: true, message:'必填项不能为空'}
 		return{
             pickerVisible:"",

@@ -6,7 +6,7 @@
 				<div class="left">
 					<p>{{(detail.name|| '') + discTest}}</p>
 					<span>有效期：{{formatDate(detail.begin_time)}}-{{formatDate(detail.end_time)}}</span>
-					<span style="margin: 0">限用车牌：{{license|| '无'}}</span>
+					<span style="margin: 0" v-show="license">限用车牌：{{license}}</span>
 				</div>
 				<i></i>
 				<div class="right">
