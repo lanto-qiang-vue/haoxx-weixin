@@ -153,7 +153,7 @@ export default {
 				if(res.data.subscribe==0){
 					this.etcPost(data, (res)=>{
 						// window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
-						window.location.href= 'https://mp.weixin.qq.com/s/-pLr9kwa4WsnpoVBzJrTJw'
+						window.location.href= 'https://mp.weixin.qq.com/s/OgPQ3_rdEsVcJCaWLz8TTg'
 					})
 				}else{
 					this.isFollow= true
