@@ -43,7 +43,8 @@
 			<span class="line">{{detail.way}}</span>
 		</FormItem>
 		<FormItem label="适用门店">
-			<router-link tag="span" :to="'/coupons-coms?road_license='+detail.ROAD_LICENSE" class="ivu-input half select"></router-link>
+			<router-link tag="span" class="ivu-input half select"
+			             :to="`/coupons-coms?road_license=${detail.ROAD_LICENSE}&serverType=${detail.db_codeId}`"></router-link>
 		</FormItem>
 	</Form>
 	<Form class="common-form" :label-width="100" label-position="left" ref="form">

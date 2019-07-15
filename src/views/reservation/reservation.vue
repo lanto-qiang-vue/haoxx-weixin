@@ -11,7 +11,7 @@
 		</FormItem>
 		<FormItem label="预约服务" prop="">
 			<ul class="service-type">
-				<li v-for="(item , key) in serviceType" :key="key" :class="{on: item.checked}">{{item.name}}</li>
+				<li v-for="(item , key) in typeList" :key="key" :class="{on: item.checked}">{{item.label}}</li>
 			</ul>
 		</FormItem>
 		<FormItem label="车牌号码" prop="PLATE_NUM">
@@ -107,12 +107,6 @@ export default {
 				//新增字段
 				TID:'',
 			},
-			serviceType: [
-				{name: '保养', checked: false},
-				{name: '维修', checked: false},
-				{name: '漆面', checked: false},
-				{name: '洗车', checked: false},
-			],
             roadliense:"",//道路许可证
 			ruleValidate : {
 				appointmentTime: [rule],
@@ -130,7 +124,7 @@ export default {
 		},
 		orderId(){
 			return this.$route.query.id
-		}
+		},
 	},
 	mounted(){
 		if(this.orderId){
@@ -151,7 +145,8 @@ export default {
 				if(key.substring(0,4)=='1019'){
 					this.typeList.push({
 						value: key,
-						label: list[key]
+						label: list[key],
+						checked: false
 					})
 				}
 			}

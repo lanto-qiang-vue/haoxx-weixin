@@ -19,7 +19,7 @@
 						<div class="right">
 							<span v-show="localSuccess">距离{{item.distance.toFixed(2)}}km <i class="fa fa-location-arrow icon"></i></span>
 							<router-link tag="div" class="goto"
-							             :to="`/coupons-map?compId=${item.sid}&distance=${item.distance}&scode=${item.scode}`"
+ :to="`/coupons-map?compId=${item.sid}&distance=${item.distance}&scode=${item.scode}&serverType=${$route.query.serverType}`"
 							>前往</router-link>
 						</div>
 					</div>

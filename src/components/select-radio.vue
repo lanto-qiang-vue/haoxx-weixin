@@ -7,11 +7,10 @@
 	          pop-transition="popup-fade" >
 		<div class="popupBlock">
 			<mt-radio
-					@click.native=""
-					align="right"
-					v-model="val"
-
-					:options="options">
+				@click.native=""
+				align="right"
+				v-model="val"
+				:options="options">
 			</mt-radio>
 		</div>
 	</mt-popup>
@@ -32,6 +31,9 @@ export default {
 		},
 		setclass:{
 			default: ''
+		},
+		placeholder:{
+			default: ''
 		}
 	},
 	data(){
@@ -41,7 +43,7 @@ export default {
 	},
 	computed:{
 		label(){
-			let label= ''
+			let label= this.placeholder
 			if(this.value && this.options.length){
 				for(let i in this.options){
 					if(this.options[i].value== this.value){

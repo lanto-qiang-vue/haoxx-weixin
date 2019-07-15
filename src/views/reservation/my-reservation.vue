@@ -2,7 +2,7 @@
 <div class="my-reservation">
 	<ul class="select">
 		<li @click="clickDatetime">预约时间<i class="fa fa-caret-down"></i></li>
-		<li>预约类型<i class="fa fa-caret-down"></i></li>
+		<li @click="showRadio=true">{{typeLabel || '预约类型'}}<i class="fa fa-caret-down"></i></li>
 	</ul>
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
@@ -26,12 +26,28 @@
 			month-format="{value} 月"
 			date-format="{value} 日">
 	</mt-datetime-picker>
+
+	<mt-popup v-model="showRadio"
+	          position="bottom"
+	          style="width: 100%"
+	          pop-transition="popup-fade" >
+		<div class="popupBlock">
+			<mt-radio
+					@click.native="showRadio= false"
+					align="right"
+					v-model="type"
+					:options="typeList">
+			</mt-radio>
+		</div>
+	</mt-popup>
 </div>
 </template>
 
 <script>
+import SelectRadio from '@/components/select-radio.vue'
 export default {
 	name: "my-reservation",
+	components: {SelectRadio },
 	data(){
 		return{
 			list:[
@@ -47,8 +63,35 @@ export default {
 			page: 1,
 			total: 0,
 			allLoaded: false,
-
+			showRadio: false
 		}
+	},
+	computed:{
+		typeList(){
+			let list= this.$store.state.user.unit, typeList=[{label: '全部', value: '0', checked: false}]
+			for(let key in list){
+				if(key.substring(0,4)=='1019'){
+					typeList.push({
+						value: key,
+						label: list[key],
+						checked: false
+					})
+				}
+			}
+			return typeList
+		},
+		typeLabel(){
+			let label= ''
+			if(this.type && this.typeList.length){
+				for(let i in this.typeList){
+					if(this.typeList[i].value== this.type){
+						label= this.typeList[i].label
+						break
+					}
+				}
+			}
+			return label
+		},
 	},
 	mounted(){
 		// this.getList(false)
@@ -158,6 +201,18 @@ export default {
 				label{
 					/*color: #999999;*/
 				}
+			}
+		}
+	}
+}
+</style>
+<style lang="less">
+.my-reservation{
+	.select{
+		.select-radio {
+			width: auto;
+			label{
+				line-height: 40px;
 			}
 		}
 	}

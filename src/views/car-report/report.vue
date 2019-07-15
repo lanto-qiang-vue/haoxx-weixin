@@ -4,10 +4,10 @@
 		<div class="title">车辆档案</div>
 		<ul class="form-list">
 			<li><label>车架号</label><p>{{vin}}</p></li>
-			<li><label>车辆品牌</label><p>{{detail.vehicle.brand}}</p></li>
+			<li><label>车牌号码</label><p>{{detail.vehicle.vpn}}</p></li>
+			<li><label>品牌</label><p>{{detail.vehicle.brand}}</p></li>
 			<li><label>车型</label><p>{{detail.vehicle.model}}</p></li>
-			<li><label>车牌号</label><p>{{detail.vehicle.vpn}}</p></li>
-			<li><label>查询报告时间</label><p>{{detail.vehicle.create_time}}</p></li>
+			<li><label>查询报告时间</label><p>{{detail.create_time}}</p></li>
 		</ul>
 	</div>
 	<div class="block">
@@ -134,7 +134,7 @@
 			<div class="title">里程数异常详情</div>
 			<ul class="form-list">
 				<li>
-					<label>里程数异常原因：</label>
+					<!--<label>里程数异常原因：</label>-->
 					<span>{{detail.summary.mileage_anomaly_reason}}</span>
 				</li>
 			</ul>
@@ -142,18 +142,19 @@
 		<div class="block piece abnormal-block" v-show="abnormalType=='recall'">
 			<div class="title">召回详情</div>
 			<ul class="form-list" v-for="(item, key) in recallList" :key="key">
-				<div class="sub-title">{{item.publish_date}}发布召回</div>
+				<!--<div class="sub-title">{{item.publish_date}}发布召回</div>-->
+				<div class="sub-title">{{item.title}}</div>
 				<li>
 					<label>制造商：</label>
-					<span>{{item.producer_name}}</span>
+					<span class="right">{{item.producer_name}}</span>
 				</li>
 				<li>
 					<label>召回时间：</label>
-					<span>{{item.recall_effective_time}}</span>
+					<span class="right">{{item.recall_effective_time}}</span>
 				</li>
 				<li>
 					<label>涉及数量：</label>
-					<span>{{item.recall_count}}</span>
+					<span class="right">{{item.recall_count}}</span>
 				</li>
 				<li>
 					<label>缺陷情况：</label>
