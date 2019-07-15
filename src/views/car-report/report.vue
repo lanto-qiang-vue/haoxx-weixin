@@ -1,52 +1,55 @@
 <template>
-<div class="report-detail" v-show="detail.code|| detail.vin || detail.id">
+<div class="report-detail" v-show="detail.code|| vin || detail.id">
 	<div class="block">
 		<div class="title">车辆档案</div>
 		<ul class="form-list">
-			<li><label>车架号</label><p>{{detail.vin}}</p></li>
-			<li><label>查询报告时间</label><p>{{detail.create_time}}</p></li>
+			<li><label>车架号</label><p>{{vin}}</p></li>
+			<li><label>车辆品牌</label><p>{{detail.vehicle.brand}}</p></li>
+			<li><label>车型</label><p>{{detail.vehicle.model}}</p></li>
+			<li><label>车牌号</label><p>{{detail.vehicle.vpn}}</p></li>
+			<li><label>查询报告时间</label><p>{{detail.vehicle.create_time}}</p></li>
 		</ul>
 	</div>
 	<div class="block">
 		<div class="title">车史报告</div>
 		<ul class="tags">
-			<li :class="{err: detail.recall}">
+			<li :class="{err: detail.summary.recall}" @click="showAbnormal('recall')">
 				<img src="~@/assets/img/report/正常保养.png"/>
 				<p>召回排查</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
-			<li :class="{err: detail.burned}">
+			<li :class="{err: detail.summary.burned}">
 				<img src="~@/assets/img/report/非火烧.png"/>
 				<p>火烧排查</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
-			<li :class="{err: detail.blistered}">
+			<li :class="{err: detail.summary.blistered}">
 				<img src="~@/assets/img/report/非泡水.png"/>
 				<p>泡水排查</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
-			<li :class="{err: detail.mileage_anomaly}">
+			<li :class="{err: detail.summary.mileage_anomaly}" @click="showAbnormal('mileage_anomaly')">
 				<img src="~@/assets/img/report/里程数.png"/>
 				<p>里程数</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
-			<li :class="{err: detail.airbag}">
+			<li :class="{err: detail.summary.airbag}">
 				<img src="~@/assets/img/report/安全气囊无弹开.png"/>
 				<p>安全气囊</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
-			<li :class="{err: detail.engine}">
+			<li :class="{err: detail.summary.engine}">
 				<img src="~@/assets/img/report/无发动机维修.png"/>
 				<p>发动机</p>
 				<i class="zmdi zmdi-check-circle"></i>
 				<i class="zmdi zmdi-alert-circle"></i>
 			</li>
-			<li :class="{err: detail.gearbox}">
+			<li :class="{err: detail.summary.gearbox}">
 				<img src="~@/assets/img/report/无变速箱维修.png"/>
 				<p>变速箱</p>
 				<i class="zmdi zmdi-check-circle"></i>
@@ -71,14 +74,14 @@
 		</template>
 	</div>
 
-	<div class="block" v-if="detail.code|| detail.vin || detail.id">
+	<div class="block" v-if="detail.code|| vin || detail.id">
 		<div class="title">车主爱惜度</div>
 		<ul class="form-list">
 			<!--<li><label>最后一次保养时间</label><p>{{detail.aa}}</p></li>-->
-			<li><label>年平均维保次数</label><p>{{unitData(detail.repair_count_per_year, '次/年', 0)}}</p></li>
-			<li><label>年平均行驶里程</label><p>{{unitData(detail.repair_mileage_per_year, '公里/年', 1)}}</p></li>
-			<li><label>最后一次进店时间</label><p>{{unitData(detail.last_repair_date, '', false)}}</p></li>
-			<li><label>最后一次维保里程</label><p>{{unitData(detail.last_repair_mileage , '公里', 1)}}</p></li>
+			<li><label>年平均维保次数</label><p>{{unitData(detail.summary.repair_count_per_year, '次/年', 0)}}</p></li>
+			<li><label>年平均行驶里程</label><p>{{unitData(detail.summary.repair_mileage_per_year, '公里/年', 1)}}</p></li>
+			<li><label>最后一次进店时间</label><p>{{unitData(detail.summary.last_repair_date, '', false)}}</p></li>
+			<li><label>最后一次维保里程</label><p>{{unitData(detail.summary.last_repair_mileage , '公里', 1)}}</p></li>
 			<li class="none" v-show="showNone">由于维保数据上传不全，导致数据为“无”</li>
 		</ul>
 	</div>
@@ -122,6 +125,55 @@
 			</ul>
 		</div>
 	</mt-popup>
+
+	<mt-popup
+			v-model="abnormalShow"
+			position="right"
+			popup-transition="popup-fade">
+		<div class="block piece abnormal-block" v-show="abnormalType=='mileage_anomaly'">
+			<div class="title">里程数异常详情</div>
+			<ul class="form-list">
+				<li>
+					<label>里程数异常原因：</label>
+					<span>{{detail.summary.mileage_anomaly_reason}}</span>
+				</li>
+			</ul>
+		</div>
+		<div class="block piece abnormal-block" v-show="abnormalType=='recall'">
+			<div class="title">召回详情</div>
+			<ul class="form-list" v-for="(item, key) in recallList" :key="key">
+				<div class="sub-title">{{item.publish_date}}发布召回</div>
+				<li>
+					<label>制造商：</label>
+					<span>{{item.producer_name}}</span>
+				</li>
+				<li>
+					<label>召回时间：</label>
+					<span>{{item.recall_effective_time}}</span>
+				</li>
+				<li>
+					<label>涉及数量：</label>
+					<span>{{item.recall_count}}</span>
+				</li>
+				<li>
+					<label>缺陷情况：</label>
+					<span>{{item.bug_desc}}</span>
+				</li>
+				<li>
+					<label>可能后果：</label>
+					<span>{{item.consequences}}</span>
+				</li>
+				<li>
+					<label>维修措施：</label>
+					<span>{{item.repair_measures}}</span>
+				</li>
+				<li>
+					<label>改进措施：</label>
+					<span>{{item.improve_measures}}</span>
+				</li>
+			</ul>
+		</div>
+	</mt-popup>
 </div>
 </template>
 
@@ -130,11 +182,19 @@ export default {
 	name: "report-detail",
 	data(){
 		return{
-			detail: {},
+			detail: {
+				records: [],
+				results: [],
+				summary: {},
+				vehicle: {},
+			},
 			popupVisible: false,
+			abnormalShow: false,
+			abnormalType: '',
 			popupItem: {},
 			showDetail: false,
-			showNone: false
+			showNone: false,
+			recallList: []
 		}
 	},
 	computed:{
@@ -152,6 +212,19 @@ export default {
 			}
 			return flag
 		},
+		vin(){
+			return this.detail.vehicle && this.detail.vehicle.vin
+		},
+		recall(){
+			return this.detail.summary && this.detail.summary.recall
+		}
+	},
+	watch:{
+		recall(val){
+			if(val){
+				this.getRecall()
+			}
+		}
 	},
 	mounted(){
 		let id= this.$route.query.id, detailVersion= this.$route.query.detailVersion;
@@ -181,6 +254,13 @@ export default {
 				}
 			})
 		},
+		getRecall(){
+			this.axiosQixiu.get( '/hxxdc/carhistory/recall/notice/'+ this.vin, {hxxtoken: true}).then( (res) => {
+				if(res.data.notices && res.data.notices.length){
+					this.recallList= res.data.notices
+				}
+			})
+		},
 		pop(item){
 			this.popupItem= item
 			this.popupVisible= true
@@ -195,7 +275,7 @@ export default {
 					// console.log('action', action)
 					switch (action){
 						case 'confirm':{
-							this.$router.push({path: '/report/pay', query:{vin: this.detail.vin, detailVersion: true}})
+							this.$router.push({path: '/report/pay', query:{vin: this.vin, detailVersion: true}})
 							break
 						}
 						case 'cancel':{
@@ -215,6 +295,13 @@ export default {
 				this.showNone= true
 			}
 			return res
+		},
+		showAbnormal(type){
+			if(this.detail.summary[type]){
+				this.abnormalType= type
+				this.abnormalShow= true
+			}
+
 		}
 	}
 }
@@ -334,6 +421,13 @@ export default {
 		width: 80vw;
 		overflow: auto;
 		padding-top: 0;
+		border: 0;
+	}
+	.abnormal-block{
+		height: 100vh;
+		background-color: white;
+		width: 90vw;
+		overflow: auto;
 		border: 0;
 	}
 }
