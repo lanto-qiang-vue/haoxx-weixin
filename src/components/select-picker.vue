@@ -44,12 +44,13 @@ export default {
 				this.$refs.picker.setValues(val)
 			}else{
 				// console.log(this.$refs.picker.getValues())
-				// let arr= this.$refs.picker.getValues()
+				let arr= this.$refs.picker.getValues()
 				// for(let i in arr){
 				// 	arr[i]= null
 				// }
 				// this.value= null
-				// this.$refs.picker.setValues(arr)
+				this.value= arr
+				this.$refs.picker.setValues(arr)
 			}
 		},
 		change(inst, valArr){
@@ -73,6 +74,7 @@ export default {
 		cancel(){
 			this.value= null
 			this.show= false
+			this.$emit('cancel')
 		},
 		ok(){
 			this.$emit('ok', this.value)

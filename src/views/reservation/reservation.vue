@@ -6,24 +6,25 @@
 		<!--<FormItem label="门店名称">-->
 			<!--<span class="line">{{TENANT_NAME}}</span>-->
 		<!--</FormItem>-->
-		<FormItem label="预约时间" prop="appointmentTime">
-			<span class="ivu-input select" readonly @click="open">{{form.appointmentTime|| '请选择来店时间'}}</span>
+		<FormItem label="预约时间" prop="dateTime">
+			<span class="ivu-input select" readonly @click="dateTimeOpen">{{form.dateTime|| '请选择来店时间'}}</span>
 		</FormItem>
-		<FormItem label="预约服务" prop="">
+		<FormItem label="预约服务" prop="REPAIR_TYPE">
 			<ul class="service-type">
-				<li v-for="(item , key) in typeList" :key="key" :class="{on: item.checked}">{{item.label}}</li>
+				<li v-for="(item , key) in typeList" :key="key" :class="{on: item.checked}"
+				@click="checkType(key)">{{item.label}}</li>
 			</ul>
 		</FormItem>
-		<FormItem label="车牌号码" prop="PLATE_NUM">
-			<Input v-model.trim="form.PLATE_NUM" style="padding-right: 15px"></Input>
-			<div class="next" @click="selectPlate"></div>
+		<FormItem label="车牌号码" prop="plateNum">
+			<Input v-model.trim="form.plateNum" placeholder="请选择或填写" style="padding-right: 15px"></Input>
+			<div class="next" @click="showCarList= true"></div>
 		</FormItem>
-		<FormItem label="车型车系" prop="VEHICLE_MODEL">
-			<Input v-model.trim="form.VEHICLE_MODEL" style="padding-right: 15px"></Input>
+		<FormItem label="车型车系" prop="vehicleModel">
+			<Input v-model.trim="form.vehicleModel" placeholder="请选择或填写" style="padding-right: 15px"></Input>
 			<div class="next" @click="$refs.vehicle.open()"></div>
 		</FormItem>
 		<FormItem label="当前里程" prop="MILEAGE">
-			<Input v-model.trim="form.MILEAGE" type="number"></Input>
+			<Input v-model.trim="form.MILEAGE" type="number" style="padding-right: 30px"></Input>
 			<p style="position: absolute;top: 50%;right: 5px;transform: translateY(-50%);width: auto;margin: 0">公里</p>
 		</FormItem>
 		<FormItem label="联系电话" prop="TELPHONE">
@@ -40,18 +41,22 @@
 			<!--<Input v-model.trim="form.FAULT_DESC"></Input>-->
 		<!--</FormItem>-->
 	</Form>
-	<div class="common-submit" @click="submit" v-show="!orderId"><a>提交预约</a></div>
-	<mt-datetime-picker
-			v-model="pickerVisible"
-			type="datetime"
-			ref="picker"
-			:startDate="new Date()"
-			@confirm="confirmTime"
-			hour-format="{value}时"
-			minute-format="{value}分">
-	</mt-datetime-picker>
+	<!--<div class="common-submit" @click="submit" v-show="!orderId"><a>提交预约</a></div>-->
 
-	<vehicle-model ref="vehicle" @ok="form.VEHICLE_MODEL= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID;form.TID = $event.TID;"></vehicle-model>
+	<div class="common-submit">
+		<submit-button :rules="ruleValidate" :datas="form" :feedback="false" @click="submit">提交预约</submit-button>
+	</div>
+	<!--<mt-datetime-picker-->
+			<!--v-model="pickerVisible"-->
+			<!--type="datetime"-->
+			<!--ref="picker"-->
+			<!--:startDate="new Date()"-->
+			<!--@confirm="confirmTime"-->
+			<!--hour-format="{value}时"-->
+			<!--minute-format="{value}分">-->
+	<!--</mt-datetime-picker>-->
+
+	<vehicle-model ref="vehicle" @ok="form.vehicleModel= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID;form.TID = $event.TID;"></vehicle-model>
 
 	<!--<my-car-list style="position: fixed;top: 0;left: 0" v-if="qixiutoken" v-show="showCarList" :isPage="false" :showButton="false"-->
 		<!--@select="form.PLATE_NUM=$event.vehicleplatenumber;form.VIN_NO=$event.vin;showCarList=false"></my-car-list>-->
@@ -61,58 +66,50 @@
 			position="right"
 			popup-transition="popup-fade">
 		<car-list ref="carlist" style="width: 90vw" :show-button="false"
-		          @select="form.PLATE_NUM=$event.vehiclePlateNumber;form.VIN_NO=$event.vin;showCarList=false"></car-list>
+		          @select="form.plateNum=$event.vehiclePlateNumber;form.VIN_NO=$event.vin;showCarList=false"></car-list>
 	</mt-popup>
+
+	<select-picker :slots="datetimeSlot" @change="changeDatetime" ref="picker" @ok="sureDatetime"></select-picker>
 </div>
 </template>
 
 <script>
-import SelectRadio from '@/components/select-radio.vue'
+// import SelectRadio from '@/components/select-radio.vue'
 import VehicleModel from '@/components/vehicle-model.vue'
 import CarList from '@/views/car-record/car-list.vue'
+import SelectPicker from '@/components/select-picker.vue'
+import SubmitButton from '@/components/submit-button.vue'
+import { deepClone} from '@/util'
 export default {
 	name: "reservation",
-	components: {SelectRadio, VehicleModel, CarList}, data(){
+	components: {
+		// SelectRadio,
+		VehicleModel, CarList, SelectPicker, SubmitButton},
+	data(){
 		let rule= { required: true, message:'必填项不能为空'}
 		return{
-            pickerVisible:"",
-            defaultYear:"",
-            defaultMonth:"",
-            defaultDay:"",
-			TENANT_NAME:"",
 			form: {
-                ORDER_DATE:"",//预约时间 年月日
-                ORDER_TIME:"",//时分
-                appointmentTime:"",//拼接的时间
-                MILEAGE:"",//里程
-                ORDER_PERSON:"",//预约人
-                TELPHONE:"",//联系人
-                PLATE_NUM:"",//车牌号码
-                VEHICLE_MODEL:"",//车型中文说明
-                VEHICLE_ID:"",//车型ID
-                REPAIR_TYPE:"10191001",//维修类型1019系列
-                FAULT_DESC:"",//故障描述
-                ORDER_ID:"",
-                ORDER_TYPE: "10411001",
-                VIN_NO:"",
-				//无关页面还必须有写字段
-                CUSTOMER_INFO:"",
-                STATUS: "10421001",
-                IS_ITEM_GROUP: "10411003",
-                REPAIR_ITEM_DERATE_MONEY: 0,
-                REPAIR_PART_DERATE_MONEY: 0,
-                REPAIR_ITEM_MONEY: 0,
-                REPAIR_PART_MONEY: 0,
-                SUM_MONEY: 0,
-				//新增字段
-				TID:'',
+				dateTime: '',
+				REPAIR_TYPE: '',
+				plateNum: '',
+				vehicleModel: '',
+				MILEAGE: '',
+				TELPHONE: '',
+				ORDER_PERSON: '',
+				ORDER_DATE: '',
+				ORDER_TIME: '',
 			},
-            roadliense:"",//道路许可证
 			ruleValidate : {
-				appointmentTime: [rule],
+				dateTime: [rule],
+				REPAIR_TYPE: [rule],
+				plateNum: [rule],
+				vehicleModel: [rule],
+				MILEAGE: [rule],
+				TELPHONE: [rule],
 			},
 			typeList:[],
-			showCarList: false
+			showCarList: false,
+			dateTime: null
 		}
 	},
 	computed:{
@@ -125,74 +122,210 @@ export default {
 		orderId(){
 			return this.$route.query.id
 		},
+		serverType(){
+			return this.$route.query.serverType
+		},
+		startDate(){
+			let now= new Date(), start= null
+			if(now.getHours()<12){
+				start= new Date(now.setDate(now.getDate()+1));
+			}else{
+				start= new Date(now.setDate(now.getDate()+2));
+			}
+			return start
+		},
+		datetimeSlot(){
+			let startYear= this.startDate.getFullYear(),years= [startYear+'年', startYear+1+'年'], hours= []
+			for(let i =0; i<24; i++){
+				hours.push(i+ '时')
+			}
+			return [
+				{
+					flex: 1.3,
+					values: years,
+					className: 'slot1',
+					textAlign: 'center'
+				}, {
+					divider: true,
+					content: '-',
+					className: 'slot2'
+				}, {
+					flex: 1,
+					values: this.months(this.startDate),
+					className: 'slot3',
+					textAlign: 'center'
+				}, {
+					divider: true,
+					content: '-',
+					className: 'slot2'
+				}, {
+					flex: 1,
+					values: this.days(this.startDate),
+					className: 'slot3',
+					textAlign: 'center'
+				}, {
+					divider: true,
+					content: ' ',
+					className: 'slot2'
+				}, {
+					flex: 1,
+					values: hours,
+					className: 'slot3',
+					textAlign: 'center'
+				}, {
+					divider: true,
+					content: ':',
+					className: 'slot2'
+				},{
+					flex: 1,
+					values: ['00分', '30分'],
+					className: 'slot3',
+					textAlign: 'center'
+				},
+			]
+		}
 	},
 	mounted(){
-		if(this.orderId){
-			this.getData(this.orderId);
-		}else{
-			this.TENANT_NAME = this.$route.query.name;
-			this.roadliense = this.$route.query.license;
-			this.confirmTime(new Date());
-		}
-
 		this.getType()
 		this.form.TELPHONE= this.$store.state.user.userinfo.telphone
 	},
     methods:{
+		dateTimeOpen(){
+			this.$refs.picker.open()
+		},
+		getDaysNum(date){
+			let tdate= new Date(date)
+			return new Date(tdate.getFullYear(), tdate.getMonth()+1, 0).getDate()
+		},
+	    months(date){
+		    let startYear= this.startDate.getFullYear(),
+			    startMonth= this.startDate.getMonth(),
+			    year= new Date(date).getFullYear(),
+			    months= []
+		    for(let i=(startYear==year?startMonth: 0); i<12; i++){
+			    months.push(i+1+ '月')
+		    }
+		    return months
+	    },
+	    days(date){
+		    let startYear= this.startDate.getFullYear(),
+			    startMonth= this.startDate.getMonth(),
+			    startDay= this.startDate.getDate(),
+			    year= new Date(date).getFullYear(),
+			    month= new Date(date).getMonth(),
+			    sameDay= startYear==year && startMonth== month,
+			    dayNum= this.getDaysNum(date),
+			    days= []
+		    for(let i=(sameDay?startDay: 1); i<=dayNum; i++){
+			    days.push(i+ '日')
+		    }
+		    return days
+	    },
+	    changeDatetime(inst, valArr){
+			let year= valArr[0].split('年')[0], yearmonth= `${year}/${valArr[1].split('月')[0]}`,
+				months= this.months(year), days= this.days(yearmonth)
+			// console.log(valArr)
+		    if(!this.dateTime){
+			    this.dateTime= deepClone(valArr)
+		    } else{
+				if(this.dateTime[0]==valArr[0]){
+					if(this.dateTime[1]==valArr[1]){
+
+					}else{
+						// console.log(this.days(yearmonth))
+						inst.setSlotValues(2, days)
+						inst.setSlotValue(2, days[0])
+					}
+				}else{
+					// console.log(this.months(year))
+					inst.setSlotValues(1, months)
+					inst.setSlotValues(2, days)
+					inst.setSlotValue(1, months[0])
+					inst.setSlotValue(2, days[0])
+				}
+		    }
+		    this.dateTime= deepClone(valArr)
+	    },
+	    sureDatetime(val){
+			// console.log(val)
+		    if(val){
+			    this.form.ORDER_DATE= `${this.zeroize(val[0])}-${this.zeroize(val[1])}-${this.zeroize(val[2])}`
+			    this.form.ORDER_TIME= `${this.zeroize(val[3])}:${this.zeroize(val[4])}`
+			    this.form.dateTime= val.join('')
+		    }else{
+			    this.form.ORDER_DATE= ''
+			    this.form.ORDER_TIME= ''
+			    this.form.dateTime= ''
+		    }
+
+	    },
+	    zeroize(val){
+			let res= val.substring(0, val.length-1)
+			return res.length<2? ('0'+res): res
+	    },
 		getType(){
 			let list= this.$store.state.user.unit
 			for(let key in list){
 				if(key.substring(0,4)=='1019'){
-					this.typeList.push({
-						value: key,
-						label: list[key],
-						checked: false
-					})
+					if(this.serverType=='-1'){
+						this.typeList.push({
+							value: key,
+							label: list[key],
+							checked: false
+						})
+					}else if(this.serverType== key){
+						this.typeList.push({
+							value: key,
+							label: list[key],
+							checked: true
+						})
+						this.form.REPAIR_TYPE= key
+					}
 				}
 			}
 		},
-        confirmTime(res){
-            this.form.ORDER_DATE = res.getFullYear()+"-"+this.fillZero(res.getMonth()+1)+"-"+this.fillZero(res.getDate());
-            this.form.ORDER_TIME= this.fillZero(res.getHours()) +":"+this.fillZero(res.getMinutes());
-            this.form.appointmentTime = this.form.ORDER_DATE  + " " + this.form.ORDER_TIME;
-            this.pickerVisible = this.form.appointmentTime;
-        },
-        open(){
-            this.$refs.picker.open();
-        },
-        fillZero(n){
-            return n < 10 ? "0"+n : n + "";
-        },
+	    checkType(index){
+		    if(this.serverType=='-1'){
+			    // this.typeList[index].checked= !this.typeList[index].checked
+			    // let arr= []
+			    // for(let i in this.typeList){
+				 //    if(this.typeList[i].checked){
+					//     arr.push(this.typeList[i].value)
+				 //    }
+				 //    this.form.REPAIR_TYPE= arr.join(',')
+			    // }
+
+			    for(let i in this.typeList){
+				    this.typeList[i].checked= false
+			    }
+			    this.typeList[index].checked= true
+			    this.form.REPAIR_TYPE= this.typeList[index].value
+		    }
+	    },
         submit(){
-            this.axiosHxx.post('/operate/order/saveOrSubmit', {data:this.form,items:[],itemGroups:[],parts:[],roadliense:this.roadliense}).then(res => {
-                if(res.data.success){
-                    //下一步操作
-	                this.$toast('提交成功')
-	                this.$router.go(-1)
-                }
-            })
+	        this.$messagebox.confirm('确定提交预约单?').then(action => {
+		        // console.log('action', action)
+		        this.axiosHxx.post('/operate/appoint/saveSlip', {
+		        	data: {
+				        ORDER_DATE: this.form.ORDER_DATE,
+				        ORDER_TIME: this.form.ORDER_TIME,
+				        REPAIR_TYPE: this.form.REPAIR_TYPE,
+				        TELPHONE: this.form.TELPHONE,
+				        ORDER_PERSON: this.form.ORDER_PERSON,
+			        },
+			        plateNum: this.form.TELPHONE,
+			        vehicleModel: this.form.vehicleModel,
+			        license: this.form.license,
+		        }).then(res => {
+			        if(res.data.success){
+				        //下一步操作
+				        this.$toast('提交成功')
+				        this.$router.replace('/my-reservation')
+			        }
+		        })
+	        });
+
         },
-        getData(id){
-            this.axiosHxx.post('/operate/order/queryOrderDetail', {ORDER_ID:id}).then(res => {
-                if(res.data.success){
-                    //下一步操作;
-                    let data = res.data.data[0];
-                    this.pickerVisible = data.appointmentTime = data.ORDER_DATE.substr(0,10) + " " + data.ORDER_TIME;
-                    for(let i in this.form){
-                       this.form[i] = data[i] || "";
-                    }
-                    this.TENANT_NAME = data.TENANT_NAME || '';
-                }
-            })
-        },
-	    selectPlate(){
-        	if(this.qixiutoken){
-		        this.showCarList= true
-	        }else{
-		        this.$toast('请添加汽修平台账号')
-		        this.$router.push({path: '/accredit-bind', query: { redirect: this.$route.fullPath }})
-	        }
-	    }
     },
 }
 </script>

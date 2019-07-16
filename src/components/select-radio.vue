@@ -70,7 +70,7 @@ export default {
 	},
 	methods:{
 		click(){
-			console.log('click')
+			// console.log('click')
 			if(!this.showRadio) this.showRadio= true
 		}
 	}
