@@ -33,6 +33,8 @@
 			<span class="text">{{info.shop}}</span>
 		</FormItem>
 	</Form>
+
+	<div class="common-submit" @click="cancel"><a class="on">取消预约</a></div>
 </div>
 </template>
 
@@ -46,6 +48,11 @@ export default {
 				add: '淞虹路207号明基商务广场C栋',
 				tel: '021-55678906'
 			}
+		}
+	},
+	methods:{
+		cancel(){
+
 		}
 	}
 }

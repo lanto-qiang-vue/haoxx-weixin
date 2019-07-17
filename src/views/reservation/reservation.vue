@@ -28,10 +28,10 @@
 			<p style="position: absolute;top: 50%;right: 5px;transform: translateY(-50%);width: auto;margin: 0">公里</p>
 		</FormItem>
 		<FormItem label="联系电话" prop="TELPHONE">
-			<Input v-model.trim="form.TELPHONE"></Input>
+			<Input v-model.trim="form.TELPHONE" type="tel" :maxlength="11"></Input>
 		</FormItem>
 		<FormItem label="预约人" prop="ORDER_PERSON">
-			<Input v-model.trim="form.ORDER_PERSON"></Input>
+			<Input v-model.trim="form.ORDER_PERSON" ></Input>
 		</FormItem>
 
 		<!--<FormItem label="维修类型" prop="REPAIR_TYPE">-->
@@ -79,7 +79,7 @@ import VehicleModel from '@/components/vehicle-model.vue'
 import CarList from '@/views/car-record/car-list.vue'
 import SelectPicker from '@/components/select-picker.vue'
 import SubmitButton from '@/components/submit-button.vue'
-import { deepClone} from '@/util'
+import { deepClone, reg} from '@/util'
 export default {
 	name: "reservation",
 	components: {
@@ -113,15 +113,15 @@ export default {
 		}
 	},
 	computed:{
-		status(){
-			return this.form.status? this.form.status.toString(): ''
-		},
-		qixiutoken(){
-			return this.$store.state.user.qixiutoken
-		},
-		orderId(){
-			return this.$route.query.id
-		},
+		// status(){
+		// 	return this.form.status? this.form.status.toString(): ''
+		// },
+		// qixiutoken(){
+		// 	return this.$store.state.user.qixiutoken
+		// },
+		// orderId(){
+		// 	return this.$route.query.id
+		// },
 		serverType(){
 			return this.$route.query.serverType
 		},
@@ -133,6 +133,9 @@ export default {
 				start= new Date(now.setDate(now.getDate()+2));
 			}
 			return start
+		},
+		plateNum(){
+			return this.form.plateNum
 		},
 		datetimeSlot(){
 			let startYear= this.startDate.getFullYear(),years= [startYear+'年', startYear+1+'年'], hours= []
@@ -183,6 +186,20 @@ export default {
 					textAlign: 'center'
 				},
 			]
+		}
+	},
+	watch:{
+		plateNum(val){
+			if(reg.vehicle.test(val) && !this.form.vehicleModel){
+				this.axiosHxx.post('/operate/appoint/matchVehicle', {
+					license: this.$route.query.license,
+					plateNum: val
+				}).then(res => {
+					if(res.data.success){
+						this.form.vehicleModel= res.data.data.vehicleModel
+					}
+				})
+			}
 		}
 	},
 	mounted(){
@@ -315,7 +332,7 @@ export default {
 			        },
 			        plateNum: this.form.TELPHONE,
 			        vehicleModel: this.form.vehicleModel,
-			        license: this.form.license,
+			        license: this.$route.query.license,
 		        }).then(res => {
 			        if(res.data.success){
 				        //下一步操作

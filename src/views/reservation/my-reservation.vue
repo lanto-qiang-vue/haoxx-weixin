@@ -1,7 +1,7 @@
 <template>
 <div class="my-reservation">
 	<ul class="select">
-		<li @click="clickDatetime">预约时间<i class="fa fa-caret-down"></i></li>
+		<li @click="clickDatetime">{{ dates || '预约时间'}}<i class="fa fa-caret-down"></i></li>
 		<li @click="showRadio=true">{{typeLabel || '预约类型'}}<i class="fa fa-caret-down"></i></li>
 	</ul>
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
@@ -20,7 +20,10 @@
 
 	<mt-datetime-picker
 			ref="datetime"
-			v-model="date"
+			@cancel="date='';getList(false)"
+			@confirm="date= $event;getList(false)"
+			:startDate="new Date('2019/1/1')"
+			:endDate="new Date()"
 			type="date"
 			year-format="{value} 年"
 			month-format="{value} 月"
@@ -33,7 +36,7 @@
 	          pop-transition="popup-fade" >
 		<div class="popupBlock">
 			<mt-radio
-					@click.native="showRadio= false"
+					@click.native="showRadio= false;getList(false)"
 					align="right"
 					v-model="type"
 					:options="typeList">
@@ -45,6 +48,7 @@
 
 <script>
 import SelectRadio from '@/components/select-radio.vue'
+import { formatDate} from '@/util.js'
 export default {
 	name: "my-reservation",
 	components: {SelectRadio },
@@ -92,21 +96,26 @@ export default {
 			}
 			return label
 		},
+		dates(){
+			return formatDate(this.date)
+		}
 	},
 	mounted(){
-		// this.getList(false)
+		this.getList(false)
 	},
 	methods:{
 	    to(id){
 	      this.$router.push({path:'/reservation-detail',query:{id:id}});
 		},
 		getList(flag){
-			let params={
+			let data={
 				page: this.page,
 				limit: 10,
+				date: formatDate(this.date).replace(/\//g,'-'),
+				repairType: this.type=='0'? '': this.type
 			}
 			// if(this.selected) params.hasRead= this.selected
-			this.axiosHxx.post('/operate/order/list',params).then(res=>{
+			this.axiosHxx.post('/operate/appoint/orders', data).then(res=>{
 				this.total= res.data.total
 				if(res.data.data&&res.data.data.length){
 					this.list=this.list.concat(res.data.data)
@@ -129,7 +138,7 @@ export default {
 		},
 		clickDatetime(){
 	    	this.$refs.datetime.open()
-		}
+		},
 	}
 }
 </script>
