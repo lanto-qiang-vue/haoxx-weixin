@@ -7,13 +7,13 @@
 	<mt-loadmore :bottom-method="loadMore" :bottom-all-loaded="allLoaded" :autoFill="false"
 	             bottomPullText="加载更多"   ref="loadmore">
 		<ul class="list">
-			<li v-for="item in list" tag="a" @click="to(item.ORDER_ID)">
+			<li v-for="item in list" tag="a" @click="go(item)">
 				<div class="head">
-					<label>{{item.name}}</label>
-					<span class="status">{{item.status}}</span>
+					<label>{{ unit[item.REPAIR_TYPE]}}</label>
+					<span class="status">{{unit[item.STATUS]}}</span>
 				</div>
-				<p><label>预约时间：</label>{{item.time}}</p>
-				<p><label>车牌号：</label>{{item.card}}</p>
+				<p><label>预约时间：</label>{{item.ORDER_DATE}}</p>
+				<p><label>车牌号：</label>{{item.PLATE_NUM}}</p>
 			</li>
 		</ul>
 	</mt-loadmore>
@@ -54,14 +54,7 @@ export default {
 	components: {SelectRadio },
 	data(){
 		return{
-			list:[
-				{
-					name: '洗车',
-					time: '2019-05-23 11:38',
-					card: '沪AL59A1',
-					status: '待处理'
-				}
-			],
+			list:[],
 			date: '',
 			type:'',
 			page: 1,
@@ -98,14 +91,17 @@ export default {
 		},
 		dates(){
 			return formatDate(this.date)
+		},
+		unit(){
+			return this.$store.state.user.unit
 		}
 	},
 	mounted(){
 		this.getList(false)
 	},
 	methods:{
-	    to(id){
-	      this.$router.push({path:'/reservation-detail',query:{id:id}});
+	    go(item){
+	      this.$router.push({path:'/reservation-detail', query:{ ...item}});
 		},
 		getList(flag){
 			let data={

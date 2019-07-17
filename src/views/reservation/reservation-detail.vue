@@ -43,12 +43,20 @@ export default {
 	name: "reservation-detail",
 	data(){
 		return{
-			info:{
-				shop: '小明汽车快修',
-				add: '淞虹路207号明基商务广场C栋',
-				tel: '021-55678906'
-			}
+			// info:{
+			// 	shop: '小明汽车快修',
+			// 	add: '淞虹路207号明基商务广场C栋',
+			// 	tel: '021-55678906'
+			// }
 		}
+	},
+	computed:{
+		info(){
+			return this.$route.query
+		}
+	},
+	mounted(){
+		console.log(this.$route.query)
 	},
 	methods:{
 		cancel(){
