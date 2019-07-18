@@ -12,7 +12,7 @@
 					<label>{{ unit[item.REPAIR_TYPE]}}</label>
 					<span class="status">{{unit[item.STATUS]}}</span>
 				</div>
-				<p><label>预约时间：</label>{{item.ORDER_DATE}}</p>
+				<p><label>预约时间：</label>{{`${item.ORDER_DATE} ${item.ORDER_TIME}`}}</p>
 				<p><label>车牌号：</label>{{item.PLATE_NUM}}</p>
 			</li>
 		</ul>
@@ -163,6 +163,7 @@ export default {
 		width: 100%;
 		padding: 0 10px;
 		background-color: white;
+		z-index: 1;
 		li{
 			color: #666666;
 			margin-right: 10px;

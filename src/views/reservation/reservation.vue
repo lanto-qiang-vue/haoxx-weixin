@@ -205,8 +205,8 @@ export default {
 					plateNum: val
 				}).then(res => {
 					if(res.data.success){
-						this.form.vehicleModel= res.data.data.vehicleModel
-						this.form.vin = res.data.data.vin
+						this.form.vehicleModel= res.data.data.vehicleModel || ''
+						this.form.vin = res.data.data.vin || ''
 					}
 				})
 			}

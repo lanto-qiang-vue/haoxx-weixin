@@ -18,10 +18,10 @@
 			</a>
 		</FormItem>
 		<FormItem label="预约时间">
-			<span class="text">{{info.ORDER_DATE}}</span>
+			<span class="text">{{`${info.ORDER_DATE} ${info.ORDER_TIME}`}}</span>
 		</FormItem>
 		<FormItem label="预约类型">
-			<span class="text">{{unit[info.ORDER_TYPE]}}</span>
+			<span class="text">{{unit[info.REPAIR_TYPE]}}</span>
 		</FormItem>
 		<FormItem label="车牌号">
 			<span class="text">{{info.PLATE_NUM}}</span>
