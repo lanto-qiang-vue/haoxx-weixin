@@ -15,7 +15,7 @@
   <div class="text">特约维修：{{all.brand}}</div>
   <div class="text">经营范围：{{all.bizScope}}</div>
   <div class="button">
-    <router-link tag="div" v-show="serverType" :to="{path: '/reservation',query: {license: this.all.licenseNo, name: this.all.name, serverType}}"><span class="yuyue">预约</span></router-link>
+    <router-link tag="div" v-show="coupon" :to="{path: '/reservation',query: {license: this.all.licenseNo, name: this.all.name, coupon}}"><span class="yuyue">预约</span></router-link>
     <!--<router-link tag="div" :to="{path: '/carOwner-centre/visitService', query: {id: id} }">-->
       <!--<span class="shangmeng">上门服务</span></router-link>-->
     <router-link tag="div" :to="{ path : '/remark', query: { compId, scode }}">
@@ -180,8 +180,8 @@ export default {
 			  && this.$store.state.app.city.regionId.toString().substring(0, 3)=='310'
 	  },
 	  cityIsSupport,
-		serverType(){
-			return this.$route.query.serverType
+	  coupon(){
+			return this.$route.query.coupon
 		}
   },
 	watch: {

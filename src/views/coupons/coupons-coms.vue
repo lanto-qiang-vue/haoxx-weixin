@@ -15,11 +15,11 @@
 				<li v-for="item in list" :key="item.sid">
 					<h2>{{item.name}}</h2>
 					<div class="info">
-						<span :class="['addr',{short: localSuccess}]">{{item.name}}</span>
+						<span :class="['addr',{short: localSuccess}]">{{item.addr}}</span>
 						<div class="right">
 							<span v-show="localSuccess">距离{{item.distance.toFixed(2)}}km <i class="fa fa-location-arrow icon"></i></span>
 							<router-link tag="div" class="goto"
- :to="`/coupons-map?compId=${item.sid}&distance=${item.distance}&scode=${item.scode}&serverType=${$route.query.serverType}`"
+ :to="`/coupons-map?compId=${item.sid}&distance=${item.distance}&scode=${item.scode}&coupon=${$route.query.coupon}`"
 							>前往</router-link>
 						</div>
 					</div>
@@ -447,22 +447,23 @@ export default {
 						bottom: 0;
 						font-size: 12px;
 						width: 100%;
-						padding-right: 110px;
+						padding-right: 70px;
 						overflow: hidden;
 						text-overflow: ellipsis;
 						white-space: nowrap;
-					}
-					.short.addr{
-						padding-right: 150px;
+						&.short{
+							padding-right: 160px;
+						}
 					}
 					.right{
 						position: absolute;
 						right: 15px;
-						bottom: 1px;
+						bottom: -1px;
 						color: #666666;
 						height: auto;
 						padding-top: 2px;
 						overflow: visible;
+						background-color: white;
 						*{
 							vertical-align: text-bottom;
 						}
@@ -470,7 +471,7 @@ export default {
 							color: transparent;
 							-webkit-text-stroke: 1px #666666;
 							font-size: 14px;
-							margin-left: 4px;
+							/*margin-left: 4px;*/
 							vertical-align: text-top;
 						}
 						.goto{
@@ -479,7 +480,7 @@ export default {
 							padding: 0 15px;
 							background-color: #FF9738;
 							color: white;
-							margin-left: 10px;
+							margin-left: 5px;
 							border-radius: 12px;
 						}
 					}

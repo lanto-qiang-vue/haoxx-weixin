@@ -16,8 +16,8 @@
 			</ul>
 		</FormItem>
 		<FormItem label="车牌号码" prop="plateNum">
-			<Input v-model.trim="form.plateNum" placeholder="请选择或填写" style="padding-right: 15px"></Input>
-			<div class="next" @click="showCarList= true"></div>
+			<Input v-model.trim="form.plateNum" placeholder="请选择或填写" :readonly="!!fixPlate" style="padding-right: 15px"></Input>
+			<div class="next" v-show="!fixPlate" @click="showCarList= true"></div>
 		</FormItem>
 		<FormItem label="车型车系" prop="vehicleModel">
 			<Input v-model.trim="form.vehicleModel" placeholder="请选择或填写" style="padding-right: 15px"></Input>
@@ -98,6 +98,7 @@ export default {
 				ORDER_PERSON: '',
 				ORDER_DATE: '',
 				ORDER_TIME: '',
+				vin: ''
 			},
 			ruleValidate : {
 				dateTime: [rule],
@@ -109,7 +110,8 @@ export default {
 			},
 			typeList:[],
 			showCarList: false,
-			dateTime: null
+			dateTime: null,
+			couponInfo: {}
 		}
 	},
 	computed:{
@@ -122,8 +124,15 @@ export default {
 		// orderId(){
 		// 	return this.$route.query.id
 		// },
+		coupon(){
+			return this.$route.query.coupon
+		},
 		serverType(){
-			return this.$route.query.serverType
+			let type= this.couponInfo.db_codeId
+			return type? type.toString(): ''
+		},
+		fixPlate(){
+			return this.couponInfo.license
 		},
 		startDate(){
 			let now= new Date(), start= null
@@ -197,13 +206,15 @@ export default {
 				}).then(res => {
 					if(res.data.success){
 						this.form.vehicleModel= res.data.data.vehicleModel
+						this.form.vin = res.data.data.vin
 					}
 				})
 			}
 		}
 	},
 	mounted(){
-		this.getType()
+		this.getCoupon()
+
 		this.form.TELPHONE= this.$store.state.user.userinfo.telphone
 	},
     methods:{
@@ -242,7 +253,7 @@ export default {
 	    changeDatetime(inst, valArr){
 			let year= valArr[0].split('年')[0], yearmonth= `${year}/${valArr[1].split('月')[0]}/1`,
 				months= this.months(year), days= this.days(yearmonth)
-			console.log('days', days)
+			// console.log('days', days)
 		    if(!this.dateTime){
 			    this.dateTime= deepClone(valArr)
 		    } else{
@@ -275,11 +286,24 @@ export default {
 			    this.form.ORDER_TIME= ''
 			    this.form.dateTime= ''
 		    }
-
 	    },
 	    zeroize(val){
 			let res= val.substring(0, val.length-1)
 			return res.length<2? ('0'+res): res
+	    },
+	    getCoupon(){
+		    this.axiosHxx.post('/operate/coupon/returncouponmsg', {
+			    code: this.coupon,
+			    BUSINESS_TYPE: 1
+		    }).then(res => {
+			    if(res.data.success){
+				    this.couponInfo= res.data.data
+				    this.getType()
+				    if(this.fixPlate){
+					    this.form.plateNum= this.fixPlate
+				    }
+			    }
+		    })
 	    },
 		getType(){
 			let list= this.$store.state.user.unit
@@ -333,6 +357,7 @@ export default {
 			        },
 			        plateNum: this.form.TELPHONE,
 			        vehicleModel: this.form.vehicleModel,
+			        vin: this.form.vin,
 			        license: this.$route.query.license,
 		        }).then(res => {
 			        if(res.data.success){

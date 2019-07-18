@@ -44,7 +44,7 @@
 		</FormItem>
 		<FormItem label="预约门店">
 			<router-link tag="span" class="ivu-input half select"
-			             :to="`/coupons-coms?road_license=${detail.ROAD_LICENSE}&serverType=${detail.db_codeId}`"></router-link>
+			             :to="`/coupons-coms?road_license=${detail.ROAD_LICENSE}&coupon=${query.code}`"></router-link>
 		</FormItem>
 	</Form>
 	<Form class="common-form" :label-width="100" label-position="left" ref="form">
