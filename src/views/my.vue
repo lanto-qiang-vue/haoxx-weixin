@@ -70,11 +70,14 @@ export default {
 					}
 				}
 			})
-			// this.axiosHxx.post('/operate/order/list',{page: 1, limit: 1,}).then(res=>{
-			// 	if(res.data.success){
-			// 		this.reservationNum= res.data.total
-			// 	}
-			// })
+
+			this.axiosHxx.post('/operate/appoint/orders', {
+				page: 1,
+				limit: 1,
+			}).then(res=>{
+				this.reservationNum= res.data.total
+			})
+
 			this.axiosHxx.post('/cartalk/userinfo/queryRewardmoney',{}, {baseURL: '/hxx-gateway-proxy'}).then(res=>{
 				if(res.data.success && res.data.data.rewardMoney){
 					this.money= res.data.data.rewardMoney

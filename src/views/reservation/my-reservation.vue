@@ -20,10 +20,10 @@
 
 	<mt-datetime-picker
 			ref="datetime"
-			@cancel="date='';getList(false)"
-			@confirm="date= $event;getList(false)"
+			@cancel="date='';list=[];getList(false)"
+			@confirm="date= $event;list=[];getList(false)"
 			:startDate="new Date('2019/1/1')"
-			:endDate="new Date()"
+			:endDate="endDate"
 			type="date"
 			year-format="{value} 年"
 			month-format="{value} 月"
@@ -36,7 +36,7 @@
 	          pop-transition="popup-fade" >
 		<div class="popupBlock">
 			<mt-radio
-					@click.native="showRadio= false;getList(false)"
+					@click.native="showRadio= false"
 					align="right"
 					v-model="type"
 					:options="typeList">
@@ -92,8 +92,19 @@ export default {
 		dates(){
 			return formatDate(this.date)
 		},
+		endDate(){
+			let now=new Date(), end=new Date();
+			end.setFullYear(now.getFullYear()+1);
+			return end
+		},
 		unit(){
 			return this.$store.state.user.unit
+		}
+	},
+	watch:{
+		type(val){
+			this.list= []
+			this.getList(false)
 		}
 	},
 	mounted(){
