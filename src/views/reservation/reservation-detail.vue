@@ -64,13 +64,13 @@ export default {
 			let address= this.info.TENANT_ADD
 			return  [{
 				name: '高德地图',
-				method(){
+				method:()=>{
 
 					window.location.href = `http://uri.amap.com/marker?position=${this.point.lon},${this.point.lat}&name=${name}&src=好修修车生活&coordinate=wgs84&callnative=1`
 				}
 			}, {
 				name: '百度地图',
-				method(){
+				method:()=>{
 					window.location.href = `http://api.map.baidu.com/marker?location=${this.point.lat},${this.point.lon}&title=${name}&content=${address}&output=html&src=webapp.baidu.openAPIdemo`
 				}
 			}]
@@ -97,12 +97,18 @@ export default {
 			});
 		},
 		getPoint(){
-			this.axiosQixiu({
-				method: 'get',
+			// this.axiosQixiu({
+			// 	method: 'get',
+			// 	baseURL: '/repair-proxy',
+			// 	url: '/micro/search/shop/repair/'+ this.info.ROAD_LICENSE,
+			// }).then(res => {
+			// 	this.point= res.data.point
+			// })
+
+			this.axiosQixiu.get('/micro/search/shop?fl=sid,type,name,addr,lon,lat&fq=licenseNo:'+ this.info.ROAD_LICENSE,{
 				baseURL: '/repair-proxy',
-				url: '/micro/search/shop/repair/'+ this.info.ROAD_LICENSE,
-			}).then(res => {
-				this.point= res.data.point
+			}).then( (res) => {
+				this.point= res.data.content[0]
 			})
 		}
 	}

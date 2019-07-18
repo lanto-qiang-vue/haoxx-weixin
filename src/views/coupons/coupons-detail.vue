@@ -42,7 +42,7 @@
 		<FormItem label="使用途径" v-show="detail.way">
 			<span class="line">{{detail.way}}</span>
 		</FormItem>
-		<FormItem label="适用门店">
+		<FormItem label="预约门店">
 			<router-link tag="span" class="ivu-input half select"
 			             :to="`/coupons-coms?road_license=${detail.ROAD_LICENSE}&serverType=${detail.db_codeId}`"></router-link>
 		</FormItem>

@@ -233,15 +233,16 @@ export default {
 			    sameDay= startYear==year && startMonth== month,
 			    dayNum= this.getDaysNum(date),
 			    days= []
+		    // coxnsole.log('sameDay, startDay, dayNum, date', sameDay, startDay, dayNum, date)
 		    for(let i=(sameDay?startDay: 1); i<=dayNum; i++){
 			    days.push(i+ '日')
 		    }
 		    return days
 	    },
 	    changeDatetime(inst, valArr){
-			let year= valArr[0].split('年')[0], yearmonth= `${year}/${valArr[1].split('月')[0]}`,
+			let year= valArr[0].split('年')[0], yearmonth= `${year}/${valArr[1].split('月')[0]}/1`,
 				months= this.months(year), days= this.days(yearmonth)
-			// console.log(valArr)
+			console.log('days', days)
 		    if(!this.dateTime){
 			    this.dateTime= deepClone(valArr)
 		    } else{
@@ -264,7 +265,7 @@ export default {
 		    this.dateTime= deepClone(valArr)
 	    },
 	    sureDatetime(val){
-			// console.log(val)
+			console.log(val)
 		    if(val){
 			    this.form.ORDER_DATE= `${this.zeroize(val[0])}-${this.zeroize(val[1])}-${this.zeroize(val[2])}`
 			    this.form.ORDER_TIME= `${this.zeroize(val[3])}:${this.zeroize(val[4])}`
