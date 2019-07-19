@@ -12,8 +12,8 @@
 			<span class="select" @click="sheetVisible= true">{{info.TENANT_ADD}}</span>
 		</FormItem>
 		<FormItem label="门店电话">
-			<span class="text">{{info.TELPHONE ||'暂无'}}</span>
-			<a class="tel" v-show="info.TELPHONE" :href="'tel:'+ info.TELPHONE">
+			<span class="text">{{info.LINK_TEL ||'暂无'}}</span>
+			<a class="tel" v-show="info.LINK_TEL" :href="'tel:'+ info.LINK_TEL">
 				<i class="fa fa-phone"></i>
 			</a>
 		</FormItem>

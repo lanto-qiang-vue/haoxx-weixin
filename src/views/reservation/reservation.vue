@@ -355,7 +355,7 @@ export default {
 				        TELPHONE: this.form.TELPHONE,
 				        ORDER_PERSON: this.form.ORDER_PERSON,
 			        },
-			        plateNum: this.form.TELPHONE,
+			        plateNum: this.form.plateNum,
 			        vehicleModel: this.form.vehicleModel,
 			        vin: this.form.vin,
 			        license: this.$route.query.license,
