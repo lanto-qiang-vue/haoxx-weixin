@@ -109,33 +109,26 @@ export default {
 	},
 	methods:{
 	    getData(){
-		    // Promise.all([ this.axiosHxx.post('/operate/coupon/returncouponmsg', {
-			 //    code: this.query.code,
-			 //    BUSINESS_TYPE: 1
-		    // }), getLocation()]).then(([resData, locationSuccess ]) => {
-			 //    if(resData.data.success){
-				//     this.detail= resData.data.data
-				//     if(locationSuccess){
-				// 	    let qr = new qrcode({
-				// 		    text: JSON.stringify({
-				// 			    code: this.query.code,
-				// 			    ...this.$store.state.app.location
-				// 		    })
-				// 	    });
-				// 	    this.img =  qr.toDataURL("image/png");
-				//     }else{
-				// 	    this.$toast('请打开定位获取二维码')
-				//     }
-			 //    }
-		    // });
 		    this.axiosHxx.post('/operate/coupon/returncouponmsg', {
 			    code: this.query.code,
 			    BUSINESS_TYPE: 1
 		    }).then(res => {
 				if(res.data.success){
 					this.detail= res.data.data
+					if(this.license){
+						this.isBind()
+					}
 				}
 		    })
+		},
+		isBind(){
+			this.axiosHxx.post('/operate/appoint/binding', {
+				plateNum: this.license
+			}).then(res => {
+				if(res.data.success){
+					this.detail.isBind
+				}
+			})
 		},
 		formatDate: formatDate
 	},

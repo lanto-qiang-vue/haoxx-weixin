@@ -359,6 +359,7 @@ export default {
 			        vehicleModel: this.form.vehicleModel,
 			        vin: this.form.vin,
 			        license: this.$route.query.license,
+			        couponid: this.couponInfo.id
 		        }).then(res => {
 			        if(res.data.success){
 				        //下一步操作
