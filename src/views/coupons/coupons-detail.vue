@@ -43,8 +43,8 @@
 			<span class="line">{{detail.way}}</span>
 		</FormItem>
 		<FormItem label="预约门店">
-			<router-link tag="span" class="ivu-input half select"
-			             :to="`/coupons-coms?road_license=${detail.ROAD_LICENSE}&coupon=${query.code}`"></router-link>
+			<span @click="goto"  class="ivu-input half select"></span>
+			<!--<router-link tag="span" class="ivu-input half select" :to="`/coupons-coms?road_license=${detail.ROAD_LICENSE}&coupon=${query.code}`"></router-link>-->
 		</FormItem>
 	</Form>
 	<Form class="common-form" :label-width="100" label-position="left" ref="form">
@@ -126,9 +126,26 @@ export default {
 				plateNum: this.license
 			}).then(res => {
 				if(res.data.success){
-					this.detail.isBind
+					this.detail.isBind= !! res.data.data.vin
 				}
 			})
+		},
+		goto(){
+	    	if(this.detail.isBind){
+	    		this.$router.push(`/coupons-coms?road_license=${this.detail.ROAD_LICENSE}&coupon=${this.query.code}`)
+		    }else{
+			    this.$messagebox({title: '您未绑定车辆：'+this.license ,message: '是否前往绑定', closeOnClickModal: false,
+				    confirmButtonText: '去绑定', cancelButtonText: '取消', showCancelButton: true}).then(action => {
+				    // console.log('action', action)
+				    switch (action){
+					    case 'confirm':{
+						    this.$router.push('/bind-car?back=true')
+						    break
+					    }
+					    case 'cancel':{}
+				    }
+			    })
+		    }
 		},
 		formatDate: formatDate
 	},

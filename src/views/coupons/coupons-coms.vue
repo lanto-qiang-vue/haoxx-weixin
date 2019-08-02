@@ -18,10 +18,16 @@
 						<span :class="['addr',{short: localSuccess}]">{{item.addr}}</span>
 						<div class="right">
 							<span v-show="localSuccess">距离{{item.distance.toFixed(2)}}km <i class="fa fa-location-arrow icon"></i></span>
-							<router-link tag="div" class="goto"
- :to="`/coupons-map?compId=${item.sid}&distance=${item.distance}&scode=${item.scode}&coupon=${$route.query.coupon}`"
-							>前往</router-link>
+
 						</div>
+					</div>
+					<div style="margin-bottom: 5px">
+						<router-link tag="div" class="look"
+						             :to="`/coupons-map?compId=${item.sid}&distance=${item.distance}&scode=${item.scode}&coupon=${$route.query.coupon}`"
+						>查看地图</router-link>
+						<router-link tag="div" class="goto"
+						             :to="{path: '/reservation',query: {license: item.licenseNo, coupon: $route.query.coupon}}"
+						>前往预约</router-link>
 					</div>
 				</li>
 			</ul>
@@ -182,7 +188,7 @@ export default {
 				this.showRadio= false
 			},
 			calcQuery(limit){
-				let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,credit,scode'+
+				let query='?fl=licenseNo,pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag,credit,scode'+
 					'&q='+ this.search.q +
 					'&page='+ (this.page-1) +','+ (limit ||this.limit)
 				query+= ('&sort='+ '_score desc,distance asc')
@@ -428,7 +434,7 @@ export default {
 					font-size: 12px;
 					position: relative;
 					height: 32px;
-					margin-bottom: 10px;
+					margin-bottom: 5px;
 					.level{
 						color: #FF7E1E;
 						position: absolute;
@@ -474,15 +480,7 @@ export default {
 							/*margin-left: 4px;*/
 							vertical-align: text-top;
 						}
-						.goto{
-							display: inline-block;
-							line-height: 24px;
-							padding: 0 15px;
-							background-color: #FF9738;
-							color: white;
-							margin-left: 5px;
-							border-radius: 12px;
-						}
+
 					}
 				}
 				h4{
@@ -496,6 +494,25 @@ export default {
 					font-size: 12px;
 					line-height: 17px;
 					padding: 6px 15px 6px 0;
+				}
+				.look{
+					display: inline-block;
+					line-height: 22px;
+					border: 1px solid #666666;
+					padding: 0 15px;
+					/*background-color: #FF9738;*/
+					color: #666666;
+					margin-left: 5px;
+					border-radius: 12px;
+				}
+				.goto{
+					display: inline-block;
+					line-height: 24px;
+					padding: 0 15px;
+					background-color: #FF9738;
+					color: white;
+					margin-left: 5px;
+					border-radius: 12px;
 				}
 			}
 

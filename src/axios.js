@@ -113,7 +113,10 @@ axiosHxx.interceptors.request.use(config => {
 // Add a response interceptor 响应拦截器
 axiosHxx.interceptors.response.use(response => {
 	// console.log('response', response)
-	Indicator.close()
+	if(!response.config.keepLoading){
+		Indicator.close()
+	}
+
 	let { data } = response
 	// console.log('data', data)
 	if (data &&!data.success) {

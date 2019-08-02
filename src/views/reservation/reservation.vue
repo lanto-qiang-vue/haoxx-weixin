@@ -20,13 +20,14 @@
 			<div class="next" v-show="!fixPlate" @click="showCarList= true"></div>
 		</FormItem>
 		<FormItem label="车型车系" prop="vehicleModel">
-			<Input v-model.trim="form.vehicleModel" placeholder="请选择或填写" style="padding-right: 15px"></Input>
-			<div class="next" @click="$refs.vehicle.open()"></div>
+			<!--<Input v-model.trim="form.vehicleModel" placeholder="请选择" :readonly="true" style="padding-right: 15px"></Input>-->
+			<!--<div class="next" @click="$refs.vehicle.open()"></div>-->
+			<span class="ivu-input select" @click="$refs.vehicle.open()">{{form.vehicleModel|| '请选择'}}</span>
 		</FormItem>
-		<FormItem label="当前里程" prop="MILEAGE">
-			<Input v-model.trim="form.MILEAGE" type="number" style="padding-right: 30px"></Input>
-			<p style="position: absolute;top: 50%;right: 5px;transform: translateY(-50%);width: auto;margin: 0">公里</p>
-		</FormItem>
+		<!--<FormItem label="当前里程" prop="MILEAGE">-->
+			<!--<Input v-model.trim="form.MILEAGE" type="number" style="padding-right: 30px"></Input>-->
+			<!--<p style="position: absolute;top: 50%;right: 5px;transform: translateY(-50%);width: auto;margin: 0">公里</p>-->
+		<!--</FormItem>-->
 		<FormItem label="联系电话" prop="TELPHONE">
 			<Input v-model.trim="form.TELPHONE" type="tel" :maxlength="11"></Input>
 		</FormItem>
@@ -34,6 +35,11 @@
 			<Input v-model.trim="form.ORDER_PERSON" ></Input>
 		</FormItem>
 
+
+		<FormItem label="使用机油">
+			<span class="text">{{oil.name}}</span>
+		</FormItem>
+		<p style="color: red;" v-show="oil.total_fee">使用量超出5升，需额外购买{{oil.number}}升，需支付{{oil.total_fee}}元</p>
 		<!--<FormItem label="维修类型" prop="REPAIR_TYPE">-->
 			<!--<select-radio class="ivu-input select" v-model="form.REPAIR_TYPE" :options="typeList"></select-radio>-->
 		<!--</FormItem>-->
@@ -56,7 +62,7 @@
 			<!--minute-format="{value}分">-->
 	<!--</mt-datetime-picker>-->
 
-	<vehicle-model ref="vehicle" @ok="form.vehicleModel= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID;form.TID = $event.TID;"></vehicle-model>
+	<vehicle-model ref="vehicle" @ok="form.vehicleModel= $event.MODEL_NAME;form.VEHICLE_ID= $event.MODEL_ID;form.tid = $event.TID;"></vehicle-model>
 
 	<!--<my-car-list style="position: fixed;top: 0;left: 0" v-if="qixiutoken" v-show="showCarList" :isPage="false" :showButton="false"-->
 		<!--@select="form.PLATE_NUM=$event.vehicleplatenumber;form.VIN_NO=$event.vin;showCarList=false"></my-car-list>-->
@@ -98,20 +104,22 @@ export default {
 				ORDER_PERSON: '',
 				ORDER_DATE: '',
 				ORDER_TIME: '',
-				vin: ''
+				vin: '',
+				tid: '',
 			},
 			ruleValidate : {
 				dateTime: [rule],
 				REPAIR_TYPE: [rule],
 				plateNum: [rule],
 				vehicleModel: [rule],
-				MILEAGE: [rule],
+				// MILEAGE: [rule],
 				TELPHONE: [rule],
 			},
 			typeList:[],
 			showCarList: false,
 			dateTime: null,
-			couponInfo: {}
+			couponInfo: {},
+			oil: {},
 		}
 	},
 	computed:{
@@ -145,6 +153,9 @@ export default {
 		},
 		plateNum(){
 			return this.form.plateNum
+		},
+		tid(){
+			return this.form.tid
 		},
 		datetimeSlot(){
 			let startYear= this.startDate.getFullYear(),years= [startYear+'年', startYear+1+'年'], hours= []
@@ -199,17 +210,57 @@ export default {
 	},
 	watch:{
 		plateNum(val){
-			if(reg.vehicle.test(val) && !this.form.vehicleModel){
-				this.axiosHxx.post('/operate/appoint/matchVehicle', {
-					license: this.$route.query.license,
-					plateNum: val
-				}).then(res => {
-					if(res.data.success){
-						this.form.vehicleModel= res.data.data.vehicleModel || ''
-						this.form.vin = res.data.data.vin || ''
+			this.axiosHxx.post('/operate/appoint/binding', {
+				plateNum: val
+			},{keepLoading: true}).then(res => {
+				if(res.data.success){
+					let vin= res.data.data.vin
+					this.form.vin= vin
+					if(vin){
+						this.axiosHxx.post('/operate/appoint/matchVehicle', {
+							vin
+						}, {keepLoading: true}).then(res2 => {
+							if(res2.data.success){
+								this.form.vehicleModel= res2.data.data.vehicleModel
+								this.form.tid= res2.data.data.tid
+							}
+						})
+					}else{
+						this.$messagebox({title: '您未绑定车辆：'+val ,message: '是否前往绑定', closeOnClickModal: false,
+							confirmButtonText: '去绑定', cancelButtonText: '取消', showCancelButton: true}).then(action => {
+							// console.log('action', action)
+							switch (action){
+								case 'confirm':{
+									this.$router.push('/bind-car?back=true')
+									break
+								}
+								case 'cancel':{}
+							}
+						})
 					}
-				})
-			}
+				}
+			})
+
+			// if(reg.vehicle.test(val) && !this.form.vehicleModel){
+			// 	this.axiosHxx.post('/operate/appoint/matchVehicle', {
+			// 		license: this.$route.query.license,
+			// 		plateNum: val
+			// 	}).then(res => {
+			// 		if(res.data.success){
+			// 			this.form.vehicleModel= res.data.data.vehicleModel || ''
+			// 			this.form.vin = res.data.data.vin || ''
+			// 		}
+			// 	})
+			// }
+		},
+		tid(val){
+			this.axiosHxx.post('/operate/appoint/getOil', {
+				tid: val
+			}).then(res => {
+				if(res.data.success){
+					this.oil= res.data.data
+				}
+			})
 		}
 	},
 	mounted(){
@@ -309,13 +360,13 @@ export default {
 			let list= this.$store.state.user.unit
 			for(let key in list){
 				if(key.substring(0,4)=='1019'){
-					if(this.serverType=='-1'){
+					if(this.couponInfo.db_codeId=='-1'){
 						this.typeList.push({
 							value: key,
 							label: list[key],
 							checked: false
 						})
-					}else if(this.serverType== key){
+					}else if(this.couponInfo.db_codeId== key){
 						this.typeList.push({
 							value: key,
 							label: list[key],
@@ -345,7 +396,7 @@ export default {
 		    }
 	    },
         submit(){
-	        this.$messagebox.confirm('确定提交预约单?').then(action => {
+	        this.$messagebox.confirm('确定预约此次服务?').then(action => {
 		        // console.log('action', action)
 		        this.axiosHxx.post('/operate/appoint/saveSlip', {
 		        	data: {
@@ -358,18 +409,31 @@ export default {
 			        plateNum: this.form.plateNum,
 			        vehicleModel: this.form.vehicleModel,
 			        vin: this.form.vin,
+			        tid: this.form.tid,
 			        license: this.$route.query.license,
 			        couponid: this.couponInfo.id
 		        }).then(res => {
 			        if(res.data.success){
-				        //下一步操作
-				        this.$toast('提交成功')
-				        this.$router.replace('/my-reservation')
+				        if(res.data.data.repairSuccess){
+					        this.$toast('提交成功')
+					        this.$router.replace('/my-reservation')
+				        }else{
+							this.pay(res.data.data.out_trade_no)
+				        }
 			        }
 		        })
 	        });
 
         },
+	    pay(orderNo){
+		    this.axiosHxx.post('/carlive/repair/pay', {
+			    orderNo
+		    }).then(res => {
+			    if(res.data.success){
+
+			    }
+		    })
+	    }
     },
 }
 </script>
