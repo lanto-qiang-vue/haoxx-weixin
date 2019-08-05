@@ -512,3 +512,48 @@ export const showAreaImg= (areaKey, img)=>{
 	}
 	return path+'.'+ type
 }
+
+export const wxPay= (data, callback)=>{
+	function onBridgeReady(){
+		WeixinJSBridge.invoke(
+			'getBrandWCPayRequest', {
+				"appId": data.appId,
+				"timeStamp": data.timeStamp,
+				"nonceStr": data.nonceStr,
+				"package": data.package,
+				"signType": data.signType,
+				"paySign": data.sign,
+			},
+			function(res){
+				// alert(JSON.stringify(res))
+				switch (res.err_msg){
+					case 'get_brand_wcpay_request:ok':{
+						callback('ok')
+						break
+					}
+					case 'get_brand_wcpay_request:cancel':{
+						callback('cancel')
+						break
+					}
+					case 'get_brand_wcpay_request:fail':{
+						callback('fail')
+						break
+					}
+				}
+				// if(res.err_msg == "get_brand_wcpay_request:ok" ){
+				// 	// 使用以上方式判断前端返回,微信团队郑重提示：
+				// 	//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+				// }
+			});
+	}
+	if (typeof WeixinJSBridge == "undefined"){
+		if( document.addEventListener ){
+			document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+		}else if (document.attachEvent){
+			document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+			document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		}
+	}else{
+		onBridgeReady();
+	}
+}

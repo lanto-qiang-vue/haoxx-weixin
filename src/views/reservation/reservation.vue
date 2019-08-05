@@ -39,7 +39,7 @@
 		<FormItem label="使用机油">
 			<span class="text">{{oil.name}}</span>
 		</FormItem>
-		<p style="color: red;" v-show="oil.total_fee">使用量超出5升，需额外购买{{oil.number}}升，需支付{{oil.total_fee}}元</p>
+		<p style="color: red;" v-show="oil.total_fee">使用量超过5升，需额外购买{{oil.number}}升，需支付{{oil.total_fee}}元</p>
 		<!--<FormItem label="维修类型" prop="REPAIR_TYPE">-->
 			<!--<select-radio class="ivu-input select" v-model="form.REPAIR_TYPE" :options="typeList"></select-radio>-->
 		<!--</FormItem>-->
@@ -50,7 +50,8 @@
 	<!--<div class="common-submit" @click="submit" v-show="!orderId"><a>提交预约</a></div>-->
 
 	<div class="common-submit">
-		<submit-button :rules="ruleValidate" :datas="form" :feedback="false" @click="submit">提交预约</submit-button>
+		<submit-button :rules="ruleValidate" :datas="form" :feedback="false" @click="submit"
+		>{{oil.total_fee? '支付并预约': '提交预约'}}</submit-button>
 	</div>
 	<!--<mt-datetime-picker-->
 			<!--v-model="pickerVisible"-->
@@ -85,7 +86,7 @@ import VehicleModel from '@/components/vehicle-model.vue'
 import CarList from '@/views/car-record/car-list.vue'
 import SelectPicker from '@/components/select-picker.vue'
 import SubmitButton from '@/components/submit-button.vue'
-import { deepClone, reg} from '@/util'
+import { deepClone, reg, wxPay} from '@/util'
 export default {
 	name: "reservation",
 	components: {
@@ -426,14 +427,21 @@ export default {
 
         },
 	    pay(orderNo){
-		    this.axiosHxx.post('/carlive/repair/pay', {
-			    orderNo
+		    this.axiosHxx.post('/operate/appoint/payOrder', {
+			    orderNo,
+			    deviceType: 2
 		    }).then(res => {
 			    if(res.data.success){
-
+				    let data= res.data
+				    wxPay(data, (res2)=>{
+				    	if(res2=='ok'){
+						    this.$toast('支付成功')
+					    }
+					    this.$router.replace('/my-reservation')
+				    })
 			    }
 		    })
-	    }
+	    },
     },
 }
 </script>

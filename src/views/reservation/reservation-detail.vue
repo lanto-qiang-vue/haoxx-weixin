@@ -32,7 +32,12 @@
 		<FormItem label="状态">
 			<span class="text">{{unit[info.STATUS]}}</span>
 		</FormItem>
+		<div v-show="oil.total_fee">
+			<p style="color: red;" v-show="oil.total_fee">使用量超过5升，需额外购买{{oil.number}}升，需支付{{oil.total_fee}}元</p>
+			<a class="topay" @click="pay">立即支付</a>
+		</div>
 	</Form>
+
 
 	<div v-show="info.STATUS!='10201007'" class="common-submit" @click="cancel"><a class="on">取消预约</a></div>
 
@@ -44,12 +49,14 @@
 </template>
 
 <script>
+import { wxPay} from '@/util'
 export default {
 	name: "reservation-detail",
 	data(){
 		return{
 			point: {},
-			sheetVisible: false
+			sheetVisible: false,
+			oil: {}
 		}
 	},
 	computed:{
@@ -79,6 +86,7 @@ export default {
 	mounted(){
 		// console.log(this.$route.query)
 		this.getPoint()
+		this.gitOil()
 	},
 	methods:{
 		cancel(){
@@ -110,7 +118,34 @@ export default {
 			}).then( (res) => {
 				this.point= res.data.content[0]
 			})
-		}
+		},
+		gitOil(){
+			if(this.info.STATUS== '10421001' && this.info.TID){
+				this.axiosHxx.post('/operate/appoint/getOil', {
+					tid: this.info.TID
+				}).then(res => {
+					if(res.data.success){
+						this.oil= res.data.data
+					}
+				})
+			}
+		},
+		pay(){
+			this.axiosHxx.post('/operate/appoint/payOrder', {
+				orderNo: this.info.ORDER_NO,
+				deviceType: 2
+			}).then(res => {
+				if(res.data.success){
+					let data= res.data
+					wxPay(data, (res2)=>{
+						if(res2=='ok'){
+							this.$toast('支付成功')
+						}
+						this.$router.replace('/my-reservation')
+					})
+				}
+			})
+		},
 	}
 }
 </script>
@@ -128,6 +163,15 @@ export default {
 			margin: 0;
 			font-size: 22px;
 		}
+	}
+	.topay{
+		display: inline-block;
+		background-color: #FF7324 ;
+		padding: 5px 10px;
+		border-radius: 5px;
+		color: white;
+		float: right;
+		margin-right: 10px;
 	}
 }
 </style>
