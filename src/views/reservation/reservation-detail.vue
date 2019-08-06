@@ -136,7 +136,7 @@ export default {
 				deviceType: 2
 			}).then(res => {
 				if(res.data.success){
-					let data= res.data
+					let data= res.data.data
 					wxPay(data, (res2)=>{
 						if(res2=='ok'){
 							this.$toast('支付成功')
