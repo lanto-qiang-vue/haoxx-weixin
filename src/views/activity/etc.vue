@@ -32,7 +32,7 @@
 	</div>
 	<div class="msg">
 		<p>办理农行沪通ETC卡，免费领取ETC设备</p>
-		<img src="~@/assets/img/obu/msg-text.png"/>
+		<!--<img src="~@/assets/img/obu/msg-text.png"/>-->
 	</div>
 	<submit-button class="next" :rules="rule" :datas="form" :feedback="true" @click="submit">下一步</submit-button>
 	<custom-keyboard ref="keyboard" @ok="keyboardOk" @del="keyboardDel" @close="keyboardClose"></custom-keyboard>
