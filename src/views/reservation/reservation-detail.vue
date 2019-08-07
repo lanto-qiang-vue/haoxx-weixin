@@ -32,6 +32,13 @@
 		<FormItem label="状态">
 			<span class="text">{{unit[info.STATUS]}}</span>
 		</FormItem>
+
+		<FormItem label="使用机油" v-show="oil.name">
+			<span class="text">{{oil.name}}</span>
+		</FormItem>
+		<FormItem label="机油用量" v-show="oil.total">
+			<span class="text">{{oil.total}}升</span>
+		</FormItem>
 		<div v-show="oil.total_fee">
 			<p style="color: red;" v-show="oil.total_fee">使用量超过5升，需额外购买{{oil.number}}升，需支付{{oil.total_fee}}元</p>
 			<a class="topay" @click="pay">立即支付</a>

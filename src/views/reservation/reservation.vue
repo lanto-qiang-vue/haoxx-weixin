@@ -36,8 +36,11 @@
 		</FormItem>
 
 
-		<FormItem label="使用机油">
+		<FormItem label="使用机油" v-show="oil.name">
 			<span class="text">{{oil.name}}</span>
+		</FormItem>
+		<FormItem label="机油用量" v-show="oil.total">
+			<span class="text">{{oil.total}}升</span>
 		</FormItem>
 		<p style="color: red;" v-show="oil.total_fee">使用量超过5升，需额外购买{{oil.number}}升，需支付{{oil.total_fee}}元</p>
 		<!--<FormItem label="维修类型" prop="REPAIR_TYPE">-->
