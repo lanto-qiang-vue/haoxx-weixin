@@ -17,7 +17,7 @@
 			</li>
 		</ul>
 		<p @click="lookMore" :class="{on}">更多优惠详情<img src="~@/assets/img/obu/arrow.png"/></p>
-		<div class="rule" @click="showRule=true">使用规则</div>
+		<!--<div class="rule" @click="showRule=true">使用规则</div>-->
 	</div>
 	<div class="detail" v-show="on">
 		<div class="head">OBU设备免费送</div>
