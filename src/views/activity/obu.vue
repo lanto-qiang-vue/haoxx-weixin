@@ -17,7 +17,7 @@
 			</li>
 		</ul>
 		<p @click="lookMore" :class="{on}">更多优惠详情<img src="~@/assets/img/obu/arrow.png"/></p>
-		<div class="rule" @click="showRule=true">使用规则</div>
+		<!--<div class="rule" @click="showRule=true">使用规则</div>-->
 	</div>
 	<div class="detail" v-show="on">
 		<div class="head">OBU设备免费送</div>
@@ -153,7 +153,7 @@ export default {
 				if(res.data.subscribe==0){
 					this.etcPost(data, (res)=>{
 						// window.location.href= 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNDc5ODkyOQ==&scene=126&bizpsid=0#wechat_redirect'
-						window.location.href= 'https://mp.weixin.qq.com/s/-pLr9kwa4WsnpoVBzJrTJw'
+						window.location.href= 'https://mp.weixin.qq.com/s/OgPQ3_rdEsVcJCaWLz8TTg'
 					})
 				}else{
 					this.isFollow= true
