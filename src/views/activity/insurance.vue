@@ -7,7 +7,7 @@
 	<div class="bot">
 		<img src="/img/insurance/3.png"/>
 		<img src="/img/insurance/4.png"/>
-		<a class="but" href="https://wx.cpic.com.cn/sxwxywhb/safetyBelt/clickPromise?empno=SHH19996&sceneId=&empOpenid=7bd324f44ee115c9232a277becb3f392e9924e84d22688041fbbf92698fc2b8a">领取赠险</a>
+		<a class="but" href="https://camsdev.cpic.com.cn/cams/TaiBaoApp/dist/#/product/buyInfoSeatBeltProductCar?pid=0&pEnsure=0&mid=10301&userName=1002911">领取赠险</a>
 	</div>
 	<div class="foot">
 		<p>承诺出行系好安全带，立即送10万保障</p>
