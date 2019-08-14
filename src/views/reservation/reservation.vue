@@ -432,7 +432,8 @@ export default {
 	    pay(orderNo){
 		    this.axiosHxx.post('/operate/appoint/payOrder', {
 			    orderNo,
-			    deviceType: 2
+			    deviceType: 2,
+			    couponId: this.couponInfo.id
 		    }).then(res => {
 			    if(res.data.success){
 				    let data= res.data.data
