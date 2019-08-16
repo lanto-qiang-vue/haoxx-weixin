@@ -161,6 +161,10 @@ export default {
 		tid(){
 			return this.form.tid
 		},
+		isKeep(){
+			let type= this.form.REPAIR_TYPE
+			return type? type== '10191001': false
+		},
 		datetimeSlot(){
 			let startYear= this.startDate.getFullYear(),years= [startYear+'年', startYear+1+'年'], hours= []
 			for(let i =0; i<24; i++){
@@ -257,22 +261,31 @@ export default {
 			// 	})
 			// }
 		},
+		isKeep(bol){
+			if(bol && this.tid){
+				this.getOil(this.tid)
+			}
+		},
 		tid(val){
-			this.axiosHxx.post('/operate/appoint/getOil', {
-				tid: val
-			}).then(res => {
-				if(res.data.success){
-					this.oil= res.data.data
-				}
-			})
+			if(this.isKeep){
+				this.getOil(val)
+			}
 		}
 	},
 	mounted(){
 		this.getCoupon()
-
 		this.form.TELPHONE= this.$store.state.user.userinfo.telphone
 	},
     methods:{
+	    getOil(val){
+		    this.axiosHxx.post('/operate/appoint/getOil', {
+			    tid: val
+		    }).then(res => {
+			    if(res.data.success){
+				    this.oil= res.data.data
+			    }
+		    })
+	    },
 		dateTimeOpen(){
 			this.$refs.picker.open()
 		},
