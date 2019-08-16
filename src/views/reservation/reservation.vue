@@ -227,7 +227,7 @@ export default {
 					if(vin){
 						this.axiosHxx.post('/operate/appoint/matchVehicle', {
 							vin
-						}, {keepLoading: true}).then(res2 => {
+						}, {keepLoading: false}).then(res2 => {
 							if(res2.data.success){
 								this.form.vehicleModel= res2.data.data.vehicleModel
 								this.form.tid= res2.data.data.tid

@@ -7,7 +7,7 @@
 	<div class="bot">
 		<img src="/img/insurance/3.png"/>
 		<img src="/img/insurance/4.png"/>
-		<a class="but" href="https://camssit.cpic.com.cn/cams/TaiBaoApp/dist/#/product/buyInfoSeatBeltProductCar?pid=0&pEnsure=0&mid=1543&userName=100761">领取赠险</a>
+		<a class="but" @click="toGo">领取赠险</a>
 	</div>
 	<div class="foot">
 		<p>承诺出行系好安全带，立即送10万保障</p>
@@ -84,6 +84,9 @@ export default {
 		}
 	},
 	methods:{
+		toGo(){
+			window.location.href= "https://camssit.cpic.com.cn/cams/TaiBaoApp/dist/#/product/buyInfoSeatBeltProductCar?pid=0&pEnsure=0&mid=1543&userName=100761&url="+ encodeURIComponent(window.location.href)
+		},
 		replaceState(){
 			history.replaceState(null, null, window.location.origin + window.location.hash)
 		},
