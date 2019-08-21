@@ -85,8 +85,8 @@ export default {
 	},
 	methods:{
 		toGo(){
-			// window.location.href= "https://camssit.cpic.com.cn/cams/TaiBaoApp/dist/#/product/buyInfoSeatBeltProductCar?pid=0&pEnsure=0&mid=1543&userName=100761&url="+ encodeURIComponent(window.location.href)
-			window.location.href= "https://camsdev.cpic.com.cn/cams/TaiBaoApp/dist/#/product/buyInfoSeatBeltProductCar?pid=0&pEnsure=0&mid=10301&userName=1002911&url="+ encodeURIComponent(window.location.href)
+			window.location.href= "https://camssit.cpic.com.cn/cams/TaiBaoApp/dist/#/product/buyInfoSeatBeltProductCar?pid=0&pEnsure=0&mid=1543&userName=100761&url="+ encodeURIComponent(window.location.href)
+			// window.location.href= "https://camsdev.cpic.com.cn/cams/TaiBaoApp/dist/#/product/buyInfoSeatBeltProductCar?pid=0&pEnsure=0&mid=10301&userName=1002911&url="+ encodeURIComponent(window.location.href)
 		},
 		replaceState(){
 			history.replaceState(null, null, window.location.origin + window.location.hash)
