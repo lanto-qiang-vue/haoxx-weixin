@@ -30,7 +30,8 @@ export default {
 	},
 	methods:{
 		click(){
-			this.$refs.vehicle.open()
+			window.location.href= 'https://wxcredit.test.abchina.com/App/pic/?isshare=1&saler=18ffcb4b0e588486081e0e4359a612537&salersource=1'
+			// this.$refs.vehicle.open()
 			// this.$router.push({path: this.$route.path, query:{vehiclemodelblock: 1}})
 			// this.$router.push('/test?vehiclemodelblock=1')
 			// console.log('this.$route', this.$route)
