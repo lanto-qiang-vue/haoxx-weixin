@@ -156,7 +156,8 @@ export default {
 		submit(){
 			this.axiosHxx.post('/carlive/etc/saveetcmsg', this.form,{ baseURL: '/hxx-gateway-proxy/'}).then(res => {
 				if(res.data.success){
-					window.location.href='https://mobile.abchina.com/MBRCard/netBank/webank/applyCard.aspx?id=&q=direct5130&cardcode=CCPY5I'
+					// window.location.href='https://mobile.abchina.com/MBRCard/netBank/webank/applyCard.aspx?id=&q=direct5130&cardcode=CCPY5I'
+					window.location.href='https://wxcredit.test.abchina.com/App/pic/?isshare=1&saler=18ffcb4b0e588486081e0e4359a612537&salersource=1'
 				}
 			})
 		}
