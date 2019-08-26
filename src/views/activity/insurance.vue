@@ -113,7 +113,7 @@ export default {
 		},
 		shareConfig(){
 			let link= window.location.origin+ '/#/insurance'
-			let titles= '参与“安全带·生命带”公益活动，即可领取10万保额赠险！'
+			let titles= '参与“安全带·生命带”公益活动，免费领10万保额赠险！'
 			let shareImg= window.location.origin+ '/img/obu/insurance.png'
 			// let self= this
 
