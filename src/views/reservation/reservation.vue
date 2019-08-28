@@ -167,7 +167,7 @@ export default {
 		},
 		datetimeSlot(){
 			let startYear= this.startDate.getFullYear(),years= [startYear+'年', startYear+1+'年'], hours= []
-			for(let i =9; i<19; i++){
+			for(let i =9; i<18; i++){
 				hours.push(i+ '时')
 			}
 			return [
