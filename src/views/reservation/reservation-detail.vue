@@ -46,7 +46,7 @@
 	</Form>
 
 
-	<div v-show="info.STATUS!='10201007'" class="common-submit" @click="cancel"><a class="on">取消预约</a></div>
+	<div v-show="cancelShow" class="common-submit" @click="cancel"><a class="on">取消预约</a></div>
 
 	<mt-actionsheet
 			:actions="actions"
@@ -89,6 +89,18 @@ export default {
 				}
 			}]
 		},
+		cancelShow(){
+			let show= false
+			if(this.info && this.info.STATUS)
+				switch (this.info.STATUS){
+					case '10421001':
+					case '10421002':{
+						show= true
+						break
+					}
+				}
+			return show
+		}
 	},
 	mounted(){
 		// console.log(this.$route.query)
