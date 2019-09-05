@@ -50,11 +50,11 @@
 	</router-link>
 	<ul :class="['coupons block', {noborder: showToRemark}]">
 		<p class="title">车主权益<span @click="goCoupons(null)">查看更多</span></p>
-		<router-link tag="li" to="/obu" class="etc">
-			<img src="~@/assets/img/index/etc.png"/>
-		</router-link>&thinsp;
-		<li @click="goCoupons('洗车')">洗车券<span>查看可用券</span></li>&thinsp;
-		<li @click="goCoupons('保养')">保养券<span>查看可用券</span></li>
+		<!--<router-link tag="li" to="/obu" class="etc">-->
+			<!--<img src="~@/assets/img/index/etc.png"/>-->
+		<!--</router-link>&thinsp;-->
+		<li @click="goCoupons('保养')">保养券<span>查看可用券</span></li>&thinsp;
+		<li @click="goCoupons('检测')">检测券<span>查看可用券</span></li>
 	</ul>
 	<ul class="block">
 		<p class="title">车谈话题
