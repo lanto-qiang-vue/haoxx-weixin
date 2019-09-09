@@ -53,8 +53,9 @@
 		<!--<router-link tag="li" to="/obu" class="etc">-->
 			<!--<img src="~@/assets/img/index/etc.png"/>-->
 		<!--</router-link>&thinsp;-->
+		<li @click="goCoupons('检测')">检测券<span>查看可用券</span></li>&thinsp;
 		<li @click="goCoupons('保养')">保养券<span>查看可用券</span></li>&thinsp;
-		<li @click="goCoupons('检测')">检测券<span>查看可用券</span></li>
+		<li style="opacity: 0"></li>
 	</ul>
 	<ul class="block">
 		<p class="title">车谈话题
