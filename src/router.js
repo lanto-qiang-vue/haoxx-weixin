@@ -405,5 +405,13 @@ routes: [
 		},
 		component: () => import('@/views/remark/remark.vue')
 	},
+	{
+		path: '/turntable',
+		name: 'turntable',
+		meta: {
+			tourist: true,
+		},
+		component: () => import('@/views/activity/turntable.vue')
+	},
 
 ]})

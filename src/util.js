@@ -557,3 +557,17 @@ export const wxPay= (data, callback)=>{
 		onBridgeReady();
 	}
 }
+
+/**
+ * @description 按长度分割字符串
+ * @param {String} str 字符串
+ * @param {Number} len 分割长度
+ * @returns {Array} 分割完数组
+ */
+export const splitByLength= (str, len)=>{
+	let strArr = [];
+	for (let i = 0, l = str.length; i < l/len; i++) {
+		let a = str.slice(len*i, len*(i+1)); strArr.push(a);
+	}
+	return strArr
+}
