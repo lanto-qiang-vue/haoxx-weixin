@@ -30,15 +30,15 @@
 		<h3>//////   活动说明   //////</h3>
 		<ul>
 			<label>活动时间：</label>
-			<li>2019年9月20日——2019年9月30日</li>
+			<li>2019年9月21日——2019年9月30日</li>
 		</ul>
 		<ul>
 			<label>活动规则：</label>
 			<li>1、活动期间，用户关注微信公众号并登录后即可参与抽奖。</li>
 			<li>2、活动期间，每个ID最多只可以抽奖一次。</li>
-			<li>3、抽中奖品后，请于当日24点前，在“我的”-“我的奖品”列表中“点击领取”并正确填写收件地址等信息。如用户未在当日24点前及时领取奖品，则奖品自动过期作废；因错填漏填造成的奖品发放错误将由用户承担责任。</li>
+			<li>3、抽中奖品后，请在24小时内，在“我的” - “我的奖品”列表中“点击领取”并正确填写收件地址等信息。如用户未在抽中奖品后的24小时内及时领取奖品，则奖品自动过期作废；因错填漏填造成的奖品发放错误将由用户承担责任。</li>
 			<li>4、奖品将于5个工作日内统一安排寄送，奖品仅限中国大陆地区寄送。</li>
-			<li>5、奖品以实物为准</li>
+			<li>5、奖品以实物为准。</li>
 		</ul>
 	</div>
 
@@ -73,7 +73,8 @@ export default {
 		return{
 			turnplate:{
 				restaraunts:["应急电源", "无线吸尘器", "燃油系统清洗剂","发动机保护剂", "防滑垫", "谢谢参与"],				//大转盘奖品名称
-				colors:["#9B23F4","#FDEC49","#9B23F4","#FDEC49","#9B23F4","#FDEC49"],					//大转盘奖品区块对应背景颜色
+				// colors:["#9B23F4","#FDEC49","#9B23F4","#FDEC49","#9B23F4","#FDEC49"],					//大转盘奖品区块对应背景颜色
+				colors:["#fc9110","#FDEC49","#fc9110","#FDEC49","#fc9110","#FDEC49"],					//大转盘奖品区块对应背景颜色
 				outsideRadius:140,			//大转盘外圆的半径
 				textRadius:110,				//大转盘奖品位置距离圆心的距离
 				insideRadius: 20,			//大转盘内圆的半径
@@ -228,8 +229,9 @@ export default {
 				//strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式
 				ctx.strokeStyle = "#FFBE04";
 				//font 属性设置或返回画布上文本内容的当前字体属性
-				ctx.font = 'bold 14px Microsoft YaHei';
+
 				for(let i = 0; i < turnplate.restaraunts.length; i++) {
+					ctx.font = 'bold 14px Microsoft YaHei';
 					let angle = turnplate.startAngle + i * arc;
 					ctx.fillStyle = turnplate.colors[i];
 					ctx.beginPath();
@@ -260,72 +262,140 @@ export default {
 					//rotate方法旋转当前的绘图
 					ctx.rotate(angle + arc / 2 + Math.PI / 2);
 
+					let top= 0
+
 					/** 下面代码根据奖品类型、奖品名称长度渲染不同效果，如字体、颜色、图片效果。(具体根据实际情况改变) **/
-					if(text.indexOf("盘")>0){//判断字符进行换行
-						let texts = text.split("盘");
-						for(let j = 0; j<texts.length; j++){
-							ctx.font = j == 0?'bold 20px Microsoft YaHei':'bold 18px Microsoft YaHei';
-							if(j == 0){
-								ctx.fillText(texts[j]+"盘", -ctx.measureText(texts[j]+"盘").width / 2, j * line_height);
-							}else{
-								ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height*1.2); //调整行间距
-							}
-						}
-					}else if(text.indexOf("盘") == -1 && text.length>6){//奖品名称长度超过一定范围
-						text = text.substring(0,6)+"||"+text.substring(6);
+					// if(text.indexOf("盘")>0){//判断字符进行换行
+					// 	let texts = text.split("盘");
+					// 	for(let j = 0; j<texts.length; j++){
+					// 		ctx.font = j == 0?'bold 20px Microsoft YaHei':'bold 18px Microsoft YaHei';
+					// 		if(j == 0){
+					// 			ctx.fillText(texts[j]+"盘", -ctx.measureText(texts[j]+"盘").width / 2, j * line_height);
+					// 		}else{
+					// 			ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height*1.2); //调整行间距
+					// 		}
+					// 	}
+					// }else
+
+						if(text.indexOf("盘") == -1 && text.length>7){//奖品名称长度超过一定范围
+						text = text.substring(0,7)+"||"+text.substring(7);
 						let texts = text.split("||");
 						for(let j = 0; j<texts.length; j++){
-							ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height * .8);
+							top=  j * line_height * .8
+							ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, top+5);
 						}
 					}else{
 
 						//在画布上绘制填色的文本。文本的默认颜色是黑色
 
 						//measureText()方法返回包含一个对象，该对象包含以像素计的指定字体宽度
-						ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+						ctx.fillText(text, -ctx.measureText(text).width / 2, 0 +5);
 					}
 
 					//添加对应图标
+					// let awarr= this.awardCode
+					// for(let key in awarr){
+					// 	if(awarr[key].index== i){
+					// 		let img= document.getElementById('p'+ key);
+					// 		let x=0, y=0, w=0 ,h=0
+					// 		switch(key){
+					// 			case '101':{
+					// 				x= -30, y= 30
+					// 				w= 60; h= 20
+					// 				break
+					// 			}
+					// 			case '102':{
+					// 				x= -12, y= 30
+					// 				w= 28; h= 46
+					// 				break
+					// 			}
+					// 			case '103':{
+					// 				x= -12, y= 30
+					// 				w= 28; h= 50
+					// 				break
+					// 			}
+					// 			case '104':{
+					// 				x= -12, y= 30
+					// 				w= 28; h= 50
+					// 				break
+					// 			}
+					// 			case '105':{
+					// 				x= -23, y= 30
+					// 				w= 45; h= 45
+					// 				break
+					// 			}
+					// 			case '106':{
+					// 				x= -20, y= 30
+					// 				w= 45; h= 45
+					// 				break
+					// 			}
+					// 		}
+					//
+					//
+					// 		ctx.drawImage(img, x, y, w, h);
+					//
+					// 		// let img=new Image();
+					// 		// img.οnlοad=()=>{
+					// 		// 	ctx.drawImage(img, -20, 35, img.width, img.height);
+					// 		// };
+					// 		// img.src= `/img/turntable/${key}.png`;
+					// 	}
+					// }
+
 					let awarr= this.awardCode
 					for(let key in awarr){
+						ctx.font = 'normal 12px Microsoft YaHei';
 						if(awarr[key].index== i){
-							let img= document.getElementById('p'+ key);
-							let x=0, y=0, w=0 ,h=0
+							let x=0, y=0, w=0 ,h=0, txt=""
+							top+= 20
 							switch(key){
 								case '101':{
-									x= -30, y= 30
-									w= 60; h= 20
+									ctx.font = 'normal 10px Microsoft YaHei';
+									txt= "(充电/照明/启动汽车)"
+									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
+									ctx.font = 'normal 12px Microsoft YaHei';
+									txt= "价值368元*1台"
+									top+= 16
+									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
 									break
 								}
 								case '102':{
-									x= -12, y= 30
-									w= 28; h= 46
+									txt= "(车家两用)"
+
+									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
+									txt= "价值198元*1台"
+									top+= 16
+									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
 									break
 								}
 								case '103':{
-									x= -12, y= 30
-									w= 28; h= 50
+									txt= "价值98元*1瓶"
+									top+= 10
+									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
 									break
 								}
 								case '104':{
-									x= -12, y= 30
-									w= 28; h= 50
+									txt= "价值98元*1瓶"
+									top+= 10
+									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
 									break
 								}
 								case '105':{
-									x= -23, y= 30
-									w= 45; h= 45
+									txt= "价值10元*1张"
+									top+= 10
+									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
 									break
 								}
 								case '106':{
-									x= -20, y= 30
+									let img= document.getElementById('p'+ key);
+									x= -20, y= 18
 									w= 45; h= 45
+									ctx.drawImage(img, x, y, w, h);
 									break
 								}
 							}
 
 
-							ctx.drawImage(img, x, y, w, h);
 
 							// let img=new Image();
 							// img.οnlοad=()=>{
@@ -440,7 +510,7 @@ export default {
 	}
 	.f3{
 		position: absolute;
-		bottom: 6%;
+		bottom: 20%;
 		right: 10px;
 	}
 

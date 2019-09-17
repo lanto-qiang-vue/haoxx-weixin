@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 	</mt-loadmore>
-	<a class="tips">奖品有效期间未领取，过期将作废</a>
+	<a class="tips">奖品有效期内未领取，过期将作废</a>
 
 
 </div>
