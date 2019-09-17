@@ -258,8 +258,9 @@ axiosQixiu.interceptors.response.use(response => {
 	//   position: 'bottom',
 	//   duration: 2000
 	// });
+	// console.log('error.response', error.response)
 	if(error.response.status==400){
-		let msg= (error.response.data&& error.response.data.msg)? error.response.data.msg: '系统异常'
+		let msg= (error.response.data)?(error.response.data.msg || error.response.data.message) : '系统异常'
 		Toast({
 			message: msg,
 			// position: 'bottom',
@@ -273,7 +274,7 @@ axiosQixiu.interceptors.response.use(response => {
 		});
 	}else{
 		Toast({
-			message: '系统异常',
+			message: error.response.data.message ||'系统异常',
 			position: 'bottom',
 			duration: 2000
 		});
