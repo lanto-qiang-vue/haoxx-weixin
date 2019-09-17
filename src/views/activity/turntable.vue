@@ -7,7 +7,7 @@
 
 	<div class="table">
 		<img class="triangle" src="/img/turntable/table3.png"/>
-		<canvas class="wheelcanvas" id="wheelcanvas" width="280px" height="280px"></canvas>
+		<canvas class="wheelcanvas" id="wheelcanvas" width="560px" height="560px" style="width: 280px;height: 280px"></canvas>
 		<img class="circle" src="/img/turntable/table1.png"/>
 		<img class="pointer" src="/img/turntable/table2.png"  @click="click"/>
 
@@ -224,6 +224,7 @@ export default {
 				//根据奖品个数计算圆周角度
 				let arc = Math.PI / (turnplate.restaraunts.length/2);
 				let ctx = canvas.getContext("2d");
+				ctx.scale(2, 2);
 				//在给定矩形内清空一个矩形
 				ctx.clearRect(0,0,280,280);
 				//strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式
@@ -285,9 +286,7 @@ export default {
 							ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, top+5);
 						}
 					}else{
-
 						//在画布上绘制填色的文本。文本的默认颜色是黑色
-
 						//measureText()方法返回包含一个对象，该对象包含以像素计的指定字体宽度
 						ctx.fillText(text, -ctx.measureText(text).width / 2, 0 +5);
 					}
