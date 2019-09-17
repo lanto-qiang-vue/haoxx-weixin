@@ -3,7 +3,7 @@
 	<h2>请输入您的手机号和地址以便邮寄您的奖品</h2>
 	<Form :class="['common-form']" :model="form" :rules="ruleValidate"
 	      :label-width="80" label-position="left" ref="form">
-		<FormItem label="联系电话" prop="mobile">
+		<FormItem label="联系手机" prop="mobile">
 			<Input v-model.trim="form.mobile" type="tel" :maxlength="11"></Input>
 		</FormItem>
 		<FormItem label="收货地址" prop="address">
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { reg} from '@/util'
 export default {
 	name: "get-awards",
 	data(){
@@ -25,7 +26,13 @@ export default {
 				address: '',
 			},
 			ruleValidate: {
-				mobile: rule,
+				mobile: [rule,  { validator: (rule, value, callback) => {
+						if( reg.mobile.test(value)){
+							callback()
+						}else{
+							callback(new Error('请输入正确手机号'))
+						}
+					}}],
 				address: rule,
 			}
 		}
