@@ -127,7 +127,7 @@ export default {
 	methods:{
 		vaptcha(){
 			window.vaptcha({
-				vid: '5d7c4eb8fc650e06bc552e45', // 验证单元id
+				vid: '5d808098fc650fd878051c82', // 验证单元id
 				type: 'embed', // 显示类型 点击式
 				container: '#vaptcha' // 按钮容器，可为Element 或者 selector
 			}).then( (vaptchaObj)=> {
