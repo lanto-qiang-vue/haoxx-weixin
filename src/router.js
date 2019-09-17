@@ -413,5 +413,19 @@ routes: [
 		},
 		component: () => import('@/views/activity/turntable.vue')
 	},
+	{
+		path: '/my-awards',
+		name: 'my-awards',
+		meta: {
+		},
+		component: () => import('@/views/awards/my-awards.vue')
+	},
+	{
+		path: '/get-awards',
+		name: 'get-awards',
+		meta: {
+		},
+		component: () => import('@/views/awards/get-awards.vue')
+	},
 
 ]})

@@ -220,7 +220,8 @@ axiosQixiu.interceptors.request.use(config => {
 axiosQixiu.interceptors.response.use(response => {
 	// console.log('response', response)
 	Indicator.close()
-	switch (response.data.code){
+	let code= response.data.code|| response.data.status
+	switch (code){
 		case '0': break
 		case '808':
 		case '401':

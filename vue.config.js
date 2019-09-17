@@ -20,8 +20,8 @@ module.exports = {
 				// target: 'https://hxx.test.hoxiuxiu.com/',
 				// target: 'http://developer.hxx.hoxiuxiu.com/',
 				// target: 'http://mendian.dev.hoxiuxiu.com/',
-				target: 'http://192.168.169.231:10032/hxx-proxy/',
-				// target: 'https://weixin.test.hoxiuxiu.com/hxx-proxy/',
+				// target: 'http://192.168.169.231:10032/hxx-proxy/',
+				target: 'https://weixin.test.hoxiuxiu.com/hxx-proxy/',
                 pathRewrite: {'^/hxx-proxy/': ''},
                 secure: false
 			},
@@ -58,6 +58,11 @@ module.exports = {
 				target: 'http://192.168.169.211:7210/',
 				// target: 'https://www.shanghaiqixiu.org/repair/',
 				pathRewrite: {'^/repair-proxy-shandong/': ''},
+				secure: false
+			},
+			'/laozhao-api/': {
+				target: 'http://212.64.108.93:10001/',
+				pathRewrite: {'^/laozhao-api/': ''},
 				secure: false
 			},
 		}
