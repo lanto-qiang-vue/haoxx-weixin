@@ -83,27 +83,27 @@ export default {
 			awardCode:{
 				'101':{
 					name: '应急电源',
-					index: 0
+					index: 1
 				},
 				'102':{
 					name: '无线吸尘器',
-					index: 1
+					index: 2
 				},
 				'103':{
 					name: '燃油系统清洗剂',
-					index: 2
+					index: 3
 				},
 				'104':{
 					name: '发动机保护剂',
-					index: 3
+					index: 4
 				},
 				'105':{
 					name: '防滑垫',
-					index: 4
+					index: 5
 				},
 				'106':{
 					name: '谢谢参与',
-					index: 5
+					index: 6
 				},
 			},
 			vaptchaShow: false,
@@ -111,7 +111,8 @@ export default {
 			vaptchaToken: '',
 			winners: [],
 			winname: '',
-			bingo: false
+			bingo: false,
+			timer: null
 		}
 	},
 	beforeMount(){
@@ -123,6 +124,11 @@ export default {
 		}, 500)
 		this.vaptcha()
 		this.getWinner()
+	},
+	beforeRouteLeave (to, from, next) {
+		window.clearInterval(this.timer)
+		this.timer= null
+		next(); //正常执行手机返回键也是正常返回上一个路由
 	},
 	methods:{
 		vaptcha(){
@@ -149,6 +155,8 @@ export default {
 					})
 					console.log('this.vaptchaToken', this.vaptchaToken)
 				})
+
+				this.vaptchaObj.render()
 			})
 		},
 		getWinner(){
@@ -156,7 +164,7 @@ export default {
 				{baseURL: '/laozhao-api', noIndicator: true}).then(res=>{
 				if(res.data.rows && res.data.rows.length){
 					this.winners= res.data.rows
-					this.setSroll()
+					this.timer= this.setSroll()
 				}
 			})
 		},
@@ -339,7 +347,7 @@ export default {
 				return
 			}else{
 				this.vaptchaShow= true
-				this.vaptchaObj.render()
+				this.vaptchaObj.reset()
 			}
 		}
 	}
