@@ -207,7 +207,7 @@ export default {
 				callback: ()=>{
 					turnplate.bRotate = !turnplate.bRotate;
 
-					if(item==5){
+					if(item==6){
 						this.$toast('很遗憾，您未中奖')
 					}else{
 						this.winname= name
