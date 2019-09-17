@@ -83,27 +83,27 @@ export default {
 			awardCode:{
 				'101':{
 					name: '应急电源',
-					index: 1
+					index: 0
 				},
 				'102':{
 					name: '无线吸尘器',
-					index: 2
+					index: 1
 				},
 				'103':{
 					name: '燃油系统清洗剂',
-					index: 3
+					index: 2
 				},
 				'104':{
 					name: '发动机保护剂',
-					index: 4
+					index: 3
 				},
 				'105':{
 					name: '防滑垫',
-					index: 5
+					index: 4
 				},
 				'106':{
 					name: '谢谢参与',
-					index: 6
+					index: 5
 				},
 			},
 			vaptchaShow: false,
@@ -150,7 +150,7 @@ export default {
 					}, {baseURL: '/laozhao-api', noIndicator: true, hxxtoken: true}).then(res=>{
 						let key= res.data.awardKey
 						if(key){
-							this.rotateFn(this.awardCode[key].index, this.awardCode[key].name)
+							this.rotateFn(this.awardCode[key].index +1 , this.awardCode[key].name)
 						}
 					})
 					console.log('this.vaptchaToken', this.vaptchaToken)
