@@ -17,6 +17,7 @@
 			<img src="~@/assets/img/obu/icon-v.png"/><span>ETC分享·30元专属特权奖励</span>
 			<span class="more">查看详情</span><i></i>
 		</router-link>
+		<router-link tag="li" to="/my-awards">我的奖品 <i></i></router-link>
 		<router-link tag="li" :to="myCarPath">我的爱车 <i></i></router-link>
 		<router-link tag="li" to="/my/car-report" v-show="showReport">我的车史报告 <i></i></router-link>
 		<router-link tag="li" to="/my-forum">我的车谈 <i></i></router-link>
