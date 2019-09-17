@@ -98,7 +98,7 @@ export default {
 				margin: 15px;
 				width: 80px;
 				height: 80px;
-				border: 1px solid #cccccc;
+				/*border: 1px solid #cccccc;*/
 				border-radius: 3px;
 				overflow: hidden;
 				left: 0;
