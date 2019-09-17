@@ -38,7 +38,7 @@
 			<li>2、活动期间，每个ID最多只可以抽奖一次。</li>
 			<li>3、抽中奖品后，请在24小时内，在“我的” - “我的奖品”列表中“点击领取”并正确填写收件地址等信息。如用户未在抽中奖品后的24小时内及时领取奖品，则奖品自动过期作废；因错填漏填造成的奖品发放错误将由用户承担责任。</li>
 			<li>4、奖品将于5个工作日内统一安排寄送，奖品仅限中国大陆地区寄送。</li>
-			<li>5、奖品以实物为准。</li>
+			<li>5、奖品不可兑现，奖品以实物为准。</li>
 		</ul>
 	</div>
 
@@ -368,8 +368,10 @@ export default {
 									break
 								}
 								case '103':{
+									txt= "(燃油宝)"
+									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
 									txt= "价值98元*1瓶"
-									top+= 10
+									top+= 13
 									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
 									break
 								}
