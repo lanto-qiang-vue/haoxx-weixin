@@ -72,7 +72,7 @@ export default {
 	data(){
 		return{
 			turnplate:{
-				restaraunts:["应急电源", "无线吸尘器", "燃油系统清洗剂","发动机保护剂", "防滑垫", "谢谢参与"],				//大转盘奖品名称
+				restaraunts:["应急电源", "无线吸尘器", "燃油系统清洗剂","发动机保护剂", "汽车轮胎清石钩", "谢谢参与"],				//大转盘奖品名称
 				// colors:["#9B23F4","#FDEC49","#9B23F4","#FDEC49","#9B23F4","#FDEC49"],					//大转盘奖品区块对应背景颜色
 				colors:["#fc9110","#FDEC49","#fc9110","#FDEC49","#fc9110","#FDEC49"],					//大转盘奖品区块对应背景颜色
 				outsideRadius:140,			//大转盘外圆的半径
@@ -99,7 +99,7 @@ export default {
 					index: 3
 				},
 				'105':{
-					name: '防滑垫',
+					name: '汽车轮胎清石钩',
 					index: 4
 				},
 				'106':{
@@ -382,7 +382,7 @@ export default {
 									break
 								}
 								case '105':{
-									txt= "价值10元*1张"
+									txt= "价值15元*1把"
 									top+= 10
 									ctx.fillText(txt, -ctx.measureText(txt).width / 2, top);
 									break
