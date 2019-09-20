@@ -133,8 +133,8 @@ export default {
 	methods:{
 		vaptcha(){
 			window.vaptcha({
-				vid: '5d808098fc650fd878051c82', // 预发布
-				// vid: '5d80a59ffc650fd878051e67', // 生产
+				// vid: '5d808098fc650fd878051c82', // 预发布
+				vid: '5d80a59ffc650fd878051e67', // 生产
 				type: 'embed', // 显示类型 点击式
 				container: '#vaptcha' // 按钮容器，可为Element 或者 selector
 			}).then( (vaptchaObj)=> {
