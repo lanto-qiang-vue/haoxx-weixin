@@ -49,7 +49,6 @@
 			<img src="/img/turntable/bingo.png"/>
 			<router-link to="/my-awards">立即领取</router-link>
 		</div>
-
 		<i class="zmdi zmdi-close-circle-o" @click="bingo= false"></i>
 	</div>
 
@@ -418,8 +417,15 @@ export default {
 				this.$router.push({path: '/login', query: { redirect: this.$route.fullPath }})
 				return
 			}else{
-				this.vaptchaShow= true
-				this.vaptchaObj.reset()
+				this.axiosQixiu.post('/lucky-draw/isAllowDraw', {
+					activityKey: "20190917",
+				}, {baseURL: '/laozhao-api', noIndicator: true, hxxtoken: true}).then(res=>{
+					if(res.data.status=='200'){
+						this.vaptchaShow= true
+						this.vaptchaObj.reset()
+					}
+				})
+
 			}
 		}
 	}
